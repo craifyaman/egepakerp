@@ -48,3 +48,8 @@ Thumbs.db
 *.mov
 *.wmv
 
+/.vs
+/EgepakErp/.vs/EgepakErp
+/EgepakErp/EgepakErp/bin
+/EgepakErp/EgepakErp/obj/Debug
+/EgepakErp/packages

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31605.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EgepakErp", "EgepakErp\EgepakErp.csproj", "{DFF9B50D-1B73-4936-B10F-06B8AE967F1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFF9B50D-1B73-4936-B10F-06B8AE967F1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFF9B50D-1B73-4936-B10F-06B8AE967F1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFF9B50D-1B73-4936-B10F-06B8AE967F1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFF9B50D-1B73-4936-B10F-06B8AE967F1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {542B38DD-2FDF-4408-8089-20A5722FE834}
+	EndGlobalSection
+EndGlobal
