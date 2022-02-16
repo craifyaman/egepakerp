@@ -1,0 +1,43 @@
+﻿@model Personel
+@{
+    var kisitlamalar = (List<Kisitlama>)ViewBag.kisitlamalar;
+    var seciliKisitlamalar = (List<Kisitlama>)ViewBag.seciliKisitlamalar;
+}
+
+
+<form class="form">
+    <input type="hidden" id="PersonelId" value="@Model.PersonelId" />
+    <div class="card-body">
+         
+        @foreach (var k in kisitlamalar.GroupBy(g => g.Grup))
+        {
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label font-weight-bold text-left text-lg-right">@k.Key</label>
+                <div class="col-lg-9 col-xl-6">
+                    <div class="checkbox-list">
+                        @foreach (var item in k)
+                        {
+                            var chk = seciliKisitlamalar.Select(s => s.KisitlamaId).Contains(item.KisitlamaId) ? "checked" : "";
+                            <label class="checkbox">
+                                <input type="checkbox" @chk name="kid" class="kid" value="@item.KisitlamaId">
+                                <span></span>@item.Aciklama
+                            </label>
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="separator separator-dashed my-10"></div>
+
+        }
+         
+    </div>
+</form>
+ 
+
+
+
+
+
+

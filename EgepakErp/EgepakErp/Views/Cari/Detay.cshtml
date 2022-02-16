@@ -1,0 +1,162 @@
+﻿@model  Cari
+@{
+    ViewBag.Title = Model.Unvan;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--begin::Subheader-->
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Mobile Toggle-->
+            <button class="burger-icon burger-icon-left mr-4 d-inline-block d-lg-none" id="kt_subheader_mobile_toggle">
+                <span></span>
+            </button>
+            <!--end::Mobile Toggle-->
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">@Model.Unvan</h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+
+                    <li class="breadcrumb-item">
+                        <a href="/Cari" class="text-muted">Cari Listesi</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#" class="text-muted">Detay</a>
+                    </li>
+
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+
+    </div>
+</div>
+<!--end::Subheader-->
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!--begin::Profile Personal Information-->
+        <div class="d-flex flex-row">
+            <!--begin::Aside-->
+            <div class="flex-row-auto offcanvas-mobile w-250px w-xxl-350px" id="kt_profile_aside">
+                <!--begin::Profile Card-->
+                <div class="card card-custom card-stretch">
+                    <!--begin::Body-->
+                    <div class="card-body pt-4">
+                        <!--begin::User-->
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <a href="#" class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">@Model.Unvan</a>
+                            </div>
+                        </div>
+                        <!--end::User-->
+                        <!--begin::Nav-->
+                        <div class="navi navi-bold navi-hover navi-active navi-link-rounded" id="navi">
+                            <input type="hidden" id="CariId" value="@Model.CariId" />
+                            <div class="navi-item mb-2 mt-2">
+                                <a href="#" id="@Model.CariId" form="/Cari/Form" displayType="form" triggerEvent="cariKaydet" triggerText="Kaydet" cardLTitle="@(Model.Unvan +" Profil")" cardDescription="" class="navi-link py-4 active">
+                                    <span class="navi-icon mr-2">
+                                        <i class="flaticon2-user"></i>
+                                    </span>
+                                    <span id="first-item" class="navi-text font-size-lg">Profil</span>
+                                </a>
+                            </div>
+                            <div class="navi-item mb-2">
+                                <a href="#" id="@Model.CariId" form="/Kisi/Liste" displayType="list" filterForm="/Kisi/FilterForm" triggerEvent="kisiFormPopup" triggerText="Yeni Kişi" btnId="0" coloumns="kisi" cardLTitle="Kişi Listesi" cardDescription="Müşteriye Bağlı Kisi Listesi" class="navi-link py-4">
+                                    <span class="navi-icon mr-2">
+                                        <span class="svg-icon">
+                                            <i class="flaticon-security"></i>
+                                        </span>
+                                    </span>
+                                    <span class="navi-text font-size-lg">Kişiler</span>
+                                </a>
+                            </div>
+                            <div class="navi-item mb-2">
+                                <a href="#" id="@Model.CariId" form="/Gorusme/Liste" displayType="list" filterForm="/Gorusme/FilterForm" triggerEvent="gorusmeFormPopup" triggerText="Yeni Görüşme Notu" btnId="0" coloumns="gorusme" cardLTitle="@(Model.Unvan) Görüşme Listesi" cardDescription="Müşteriye ile yapılan görüşmeler" class="navi-link py-4">
+                                    <span class="navi-icon mr-2">
+                                        <span class="svg-icon">
+                                            <i class="flaticon-chat-1"></i>
+                                        </span>
+                                    </span>
+                                    <span class="navi-text font-size-lg">Görüşme Notları</span>
+                                </a>
+                            </div>
+                            <div class="navi-item mb-2">
+                                <a href="#" id="@Model.CariId" form="/Not/Liste" displayType="list" filterForm="/Not/FilterForm" triggerEvent="notFormPopup" triggerText="Yeni Müşteri Notu" btnId="0" coloumns="not" cardLTitle="@(Model.Unvan) Müşteri Notları Listesi" cardDescription="Müşteriye ile ilgili notlar" class="navi-link py-4">
+                                    <span class="navi-icon mr-2">
+                                        <span class="svg-icon">
+                                            <i class="flaticon-chat-1"></i>
+                                        </span>
+                                    </span>
+                                    <span class="navi-text font-size-lg">Müşteri Notları</span>
+                                </a>
+                            </div>
+                        </div>
+                        <!--end::Nav-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Profile Card-->
+            </div>
+            <!--end::Aside-->
+            <!--begin::Content-->
+            <div class="flex-row-fluid ml-lg-8">
+                <div class="card card-custom card-stretch">
+                    <!--begin::Header-->
+                    <div class="card-header py-3">
+                        <div class="card-title align-items-start flex-column">
+                            <h3 id="cardTitle" class="card-label font-weight-bolder text-dark"></h3>
+                            <span id="cardDescription" class="text-muted font-weight-bold font-size-sm mt-1"></span>
+                        </div>
+                        <div class="card-toolbar">
+                            <button type="button" id="" class="btn btn-success mr-2 eventButton"></button>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!--begin: Search Form-->
+                        <!--begin::Search Form-->
+                        <div class="mb-10" id="filterForm">
+                        </div>
+                        <!--end::Search Form-->
+                        <!--end: Search Form-->
+                        <!--begin: Datatable-->
+                        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+                        <div id="formArea"></div>
+                        <!--end: Datatable-->
+                    </div>
+                </div>
+            </div>
+            <!--end::Content-->
+        </div>
+        <!--end::Profile Personal Information-->
+    </div>
+    <!--end::Container-->
+</div>
+
+
+@section Scripts{
+    
+    <script>
+        $(document).ready(function () {
+
+            Cari.EventInit();
+            Kisi.EventInit();
+            Gorusme.EventInit();
+            Tanim.EventInit();
+            Not.EventInit();
+
+            $("#first-item").trigger("click");
+
+        })
+    </script>
+
+}

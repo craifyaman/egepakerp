@@ -1,0 +1,113 @@
+﻿@model Kisi
+
+
+<!--begin::Form-->
+<form id="kisiForm">
+    <input type="hidden" name="KisiId" value="@(Model?.KisiId)" />
+
+ 
+
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label>Ad Soyad:</label>
+            <input type="text" name="AdSoyad" class="form-control" placeholder="Ad Soyad" value="@(Model?.AdSoyad)">
+        </div>
+        <div class="col-lg-6">
+            <label>Branş:</label>
+
+            <div class="input-group">
+                <select name="BransId" class="form-control form-control-solid selectpicker" data-live-search="true" id="BransId">
+                    <option value="">Branş Seçiniz</option>
+                    @foreach (var item in baseBrans)
+                    {
+                        var slc = (Model != null && Model.BransId != null && Model.BransId == item.BransId) ? "selected" : "";
+                        <option @slc value="@item.BransId">@item.Adi</option>
+                    }
+                </select>
+                <a href="#" class="btn btn-success" event="bransFormPopup" formTitle="Branş Ekle" id="0" title="Branş Ekle" data-toggle="tooltip" data-placement="top">
+                    <i class="flaticon2-add"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label>Görev:</label>
+            <input type="text" name="Görev" class="form-control" placeholder="Görev" value="@(Model?.Görev)">
+        </div>
+        <div class="col-lg-6">
+            <label>Bağlı Olduğu Cari:</label>
+            <select name="CariId" class="form-control form-control-solid selectpicker" data-live-search="true" id="CariId">
+                <option value="">Bağlı Olduğu Cariyi Seçiniz</option>
+                @foreach (var item in baseCari)
+                {
+                    var slc = (Model != null && Model.CariId == item.CariId) ? "selected" : "";
+                    <option @slc value="@item.CariId">@item.Unvan</option>
+                }
+            </select>
+
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label>Eposta:</label>
+            <input type="text" name="Eposta" class="form-control" placeholder="Eposta" value="@(Model?.Eposta)">
+        </div>
+
+        <div class="col-lg-6">
+            <label>Eposta:</label>
+            <input type="text" name="Eposta2" class="form-control" placeholder="İkinci Eposta" value="@(Model?.Eposta2)">
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label>Telefon:</label>
+            <input type="text" name="Telefon" class="form-control" placeholder="Telefon Numarası" value="@(Model?.Telefon)">
+        </div>
+
+        <div class="col-lg-6">
+            <label>Telefon:</label>
+            <input type="text" name="Telefon2" class="form-control" placeholder="İkinci Telefon Numarası" value="@(Model?.Telefon2)">
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label>Aktif</label>
+            <span class="switch switch-outline switch-icon switch-success">
+                <label>
+                    @{
+                        var chk = Model == null || Model.Aktif ? "checked" : "";
+                    }
+
+                    <input class="globalSwitch" @chk type="checkbox" name="Aktif" value="@(chk=="checked"?true:false)">
+                    <span></span>
+                </label>
+            </span>
+        </div>
+
+        <div class="col-lg-6">
+            <label>Birincil Kişi</label>
+            <span class="switch switch-outline switch-icon switch-success">
+                <label>
+                    @{
+                        chk = Model == null || Model.Aktif ? "checked" : "";
+                    }
+                    <input class="globalSwitch" @chk type="checkbox" name="Birincil" value="@(chk=="checked"?true:false)">
+                    <span></span>
+                </label>
+            </span>
+        </div>
+
+    </div>
+
+
+
+</form>
+<!--end::Form-->

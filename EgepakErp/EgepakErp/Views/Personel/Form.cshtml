@@ -1,0 +1,47 @@
+﻿@model Personel
+
+<div class="card card-custom gutter-b example example-compact">
+    <!--begin::Form-->
+    <form class="form" id="form">
+        <input type="hidden" name="PersonelId" value="@(Model!=null?Model.PersonelId.ToString():"0")" />
+        <div class="card-body">
+            <div class="form-group">
+                <label>Ad Soyad:</label>
+                <input type="text" class="form-control" name="Adi" placeholder="Ad Soyad" value="@(Model!=null?Model.Adi:"")">
+            </div>
+            <div class="form-group">
+                <label>Kod:</label>
+                <input type="text" class="form-control" name="Kod" placeholder="Kod" value="@(Model!=null?Model.Kod:"")" >
+            </div>
+            <div class="form-group">
+                <label>E-Posta:</label>
+                <input type="text" class="form-control" name="Eposta" placeholder="Eposta" value="@(Model!=null?Model.Kod:"")">
+            </div>
+            <div class="form-group">
+                <label>Deparman</label>
+                <select class="form-control selectpicker" name="DepartmanId">
+                    <option value="">Seçiniz</option>
+                    @foreach (var item in baseDepartman)
+                    {
+                        <option value="@item.DepartmanId">@item.Adi</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Personel Tip</label>
+                <select class="form-control selectpicker" name="PersonelTipId">
+                    <option value="">Seçiniz</option>
+                    @foreach (var item in basePersonelTip)
+                    {
+                        <option value="@item.PersonelTipId">@item.Adi</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+         
+    </form>
+    <!--end::Form-->
+</div>
+
+

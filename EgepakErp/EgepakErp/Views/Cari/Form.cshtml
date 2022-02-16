@@ -1,0 +1,116 @@
+﻿@model Cari
+
+
+<!--begin::Form-->
+<form id="cariForm">
+    <input type="hidden" name="CariId" value="@(Model?.CariId)" />
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <div class="form-group mb-5">
+                <label>Ünvan:</label>
+                <input type="text" name="Unvan" class="form-control" placeholder="Ünvan" value="@(Model?.Unvan)">
+            </div>
+            <div class="form-group mb-5">
+                <label>Vergi Dairesi:</label>
+                <input type="text" name="VergiDairesi" class="form-control" placeholder="Vergi Dairesi" value="@(Model?.VergiDairesi)">
+            </div>
+            <div class="form-group mb-5">
+                <label>Vergi Numarası:</label>
+                <input type="text" name="VergiNumarasi" class="form-control" placeholder="Vergi Numarası" value="@(Model?.VergiNumarasi)">
+            </div>
+            <div class="form-group mb-5">
+                <label>Web Sitesi</label>
+                <input type="text" name="WebSitesi" class="form-control" placeholder="Web Sitesi" value="@(Model?.WebSitesi)">
+            </div>
+            <div class="form-group mb-5">
+                <label>Eposta</label>
+                <input type="email" name="Eposta" class="form-control" placeholder="Eposta" value="@(Model?.Eposta)">
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Telefon</label>
+                <input type="email" name="Telefon" class="form-control" placeholder="Telefon" value="@(Model?.Telefon)">
+            </div>
+
+            <div class="form-group">
+                <label>Cari Grup</label>
+                <div class="input-group">
+
+                    <select name="CariGrupId" class="form-control form-control-solid selectpicker" id="CariGrupId">
+                        <option value="">Seçiniz</option>
+                        @foreach (var item in baseCariGrup)
+                        {
+                            var slc = (Model != null && Model.CariGrupId != null && Model.CariGrupId == item.CariGrupId) ? "selected" : "";
+                            <option @slc value="@item.CariGrupId">@item.Adi</option>
+                        }
+                    </select>
+                    <a href="#" class="btn btn-success cariGrupFormPopup" formTitle="Cari Grup Ekle" id="0" title="Cari Grup Ekle" data-toggle="tooltip" data-placement="top">
+                        <i class="flaticon2-add"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Ülke:</label>
+                <br />
+                <select name="UlkeId" class="form-control form-control-solid selectpicker" data-live-search="true" id="UlkeId">
+                    @foreach (var item in baseUlke())
+                    {
+                        var slc = (Model != null && Model.UlkeId != null && Model.UlkeId == item.UlkeId) ? "selected" : "";
+                        <option @slc value="@item.UlkeId">@item.Adi</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Şehir:</label>
+                <br />
+                <select class="form-control form-control-solid selectpicker selectIl" data-live-search="true" name="IlId" id="IlId">
+                    <option value="">İl Şeçiniz</option>
+                    @foreach (var item in baseIl(Model != null && Model.UlkeId != null ? Model.UlkeId.Value : 1))
+                    {
+                        var slc = (Model != null && Model.IlId != null && Model.IlId == item.IlId) ? "selected" : "";
+                        <option @slc value="@item.IlId">@item.Adi</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label>İlçe:</label>
+                <br />
+                <select class="form-control form-control-solid selectpicker" data-live-search="true" name="IlceId" id="IlceId">
+                    <option value="">İlce Şeçiniz</option>
+                    @if (Model != null && Model.IlId != null)
+                    {
+                        foreach (var item in baseIlce(Model.IlId.Value))
+                        {
+                            var slc = (Model != null && Model.IlceId != null && Model.IlceId == item.IlceId) ? "selected" : "";
+                            <option @slc value="@item.IlceId">@item.Adi</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="form-group mb-5">
+                <label>Adres:</label>
+                <textarea name="Adres" class="form-control" rows="5">@Html.Raw(Model?.Adres?.Trim())</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Aktif</label>
+
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        @{
+                            var chk = Model == null || Model.Aktif ? "checked" : "";
+                        }
+
+                        <input class="globalSwitch" @chk type="checkbox" name="Aktif" value="@(chk=="checked"?true:false)">
+                        <span></span>
+                    </label>
+                </span>
+
+
+            </div>
+        </div>
+    </div>
+</form>
+<!--end::Form-->

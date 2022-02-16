@@ -1,0 +1,20 @@
+﻿@model GorusmeTip
+
+<div class="card card-custom example example-compact">
+    <!--begin::Form-->
+    <form id="GorusmeTipForm">
+        <div class="card-body">
+            <div class="form-group row">
+                <input type="hidden" name="GorusmeTipId" value="@(Model?.GorusmeTipId)" />
+                <div class="col-lg-12">
+                    <div class="form-group mb-5">
+                        <label>GorusmeTip Adi:</label>
+                        <input type="text" name="Adi" class="form-control" placeholder="Adi" value="@(Model?.Adi)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--end::Form-->
+</div>
+

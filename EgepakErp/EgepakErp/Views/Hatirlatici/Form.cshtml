@@ -1,0 +1,77 @@
+﻿@model Hatirlatici
+<!--begin::Form-->
+<form id="hatirlaticiForm">
+    <input type="hidden" name="HatirlaticiId" value="@(Model?.HatirlaticiId)" />
+    <div class="form-group  ">
+        <div class="col-lg-12">
+            <label>Personel:</label>
+            <select name="PersonelId" class="form-control form-control-solid selectpicker" data-live-search="true" id="PersonelId">
+                <option value="">Personel Seçiniz</option>
+                @foreach (var item in basePersonel)
+                {
+                    var slc = (Model != null && Model.PersonelId == item.PersonelId) ? "selected" : "";
+                    <option @slc value="@item.PersonelId">@item.Adi</option>
+                }
+            </select>
+        </div>
+
+    </div>
+    <div class="form-group  ">
+        <div class="col-lg-12">
+            <label>Hatırlatma Tarih ve Saat:</label>
+            <input class="form-control" name="HatirlatmaTarihi" type="datetime-local" value="@(Model==null? DateTime.Now.AddHours(2).ToString("yyyy-MM-ddTHH:mm"):Model.HatirlatmaTarihi.ToString("yyyy-MM-ddTHH:mm"))">
+        </div>
+    </div>
+    <div class="form-group  ">
+        <div class="col-lg-12">
+            <label>Açıklama:</label>
+            <textarea class="form-control" name="Aciklama" rows="5">@(Html.Raw(Model?.Aciklama))</textarea>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-4">
+            <label>Eposta</label>
+            <span class="switch switch-outline switch-icon switch-success">
+                <label>
+                    @{
+                        var chk = Model == null || Model.Eposta ? "checked" : "";
+                    }
+
+                    <input class="globalSwitch" @chk type="checkbox" name="Eposta" value="@(chk=="checked"?true:false)">
+                    <span></span>
+                </label>
+            </span>
+        </div>
+        <div class="col-lg-4">
+            <label>Sms</label>
+            <span class="switch switch-outline switch-icon switch-success">
+                <label>
+                    @{
+                          chk = Model == null || Model.Sms ? "checked" : "";
+                    }
+
+                    <input class="globalSwitch" @chk type="checkbox" name="Sms" value="@(chk=="checked"?true:false)">
+                    <span></span>
+                </label>
+            </span>
+
+        </div>
+        <div class="col-lg-4">
+            <label>Whatsapp</label>
+            <span class="switch switch-outline switch-icon switch-success">
+                <label>
+                    @{
+                          chk = Model == null || Model.Whatsapp ? "checked" : "";
+                    }
+
+                    <input class="globalSwitch" @chk type="checkbox" name="Whatsapp" value="@(chk=="checked"?true:false)">
+                    <span></span>
+                </label>
+            </span>
+        </div>
+    </div>
+
+
+</form>
+<!--end::Form-->

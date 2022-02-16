@@ -1,30 +1,25 @@
-﻿using System;
+﻿using EgePakErp.Custom;
+using EgePakErp.Helper;
+using EgePakErp.Models;
+using EgePakErp.Models.Audit;
+using ExcelDataReader;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
-using System.Web;
+using System.Reflection;
 using System.Web.Mvc;
 
-namespace EgepakErp.Controllers
+namespace EgePakErp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        [Menu("Anasayfa", "flaticon-squares icon-xl", "Anasayfa", 0, 0)]
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
     }
 }
