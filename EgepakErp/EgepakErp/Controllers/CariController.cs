@@ -188,6 +188,8 @@ namespace EgePakErp.Controllers
             
             return PartialView();
         }
+
+        [Yetki("Müşteri Kaydet", "Müşteri")]
         public JsonResult Kaydet(Cari cari)
         {
             var response = new Response();
@@ -199,9 +201,20 @@ namespace EgePakErp.Controllers
             }
             else
             {
-                Db.Update<Cari>(cari);
+                var entity = Db.Cari.Find(cari.CariId);
+                if (entity != null)
+                {
+                    foreach (var prop in entity.GetType().GetProperties())
+                    {
+                        if (cari.Include.Contains(prop.Name))
+                        {
+                            prop.SetValue(entity, cari.GetType().GetProperty(prop.Name).GetValue(cari, null));
+                        }
+                    }
+
+                }
             }
-            Db.SaveChanges();
+            Db.SaveChanges(CurrentUser.PersonelId);
 
             response.Success = true;
             response.Description = "İşlem Başarılı";

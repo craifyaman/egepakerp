@@ -15,5 +15,7 @@
         public  Kisitlama Kisitlama { get; set; }
         public string Controller { get; set; }
         public string Action { get; set; }
+        [NotMapped]
+        public List<string> Include { get; set; }
     }
 }

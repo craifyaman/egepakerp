@@ -150,7 +150,7 @@ namespace EgePakErp.Custom
             }
             set { }
         }
-       
+
         public List<Departman> baseDepartman
         {
             get
@@ -185,6 +185,8 @@ namespace EgePakErp.Custom
             }
             set { }
         }
+
+
         public Dictionary<string, string> baseDurum
         {
             get
@@ -196,6 +198,24 @@ namespace EgePakErp.Custom
                     };
 
                 return _dictonary;
+            }
+            set { }
+        }
+
+        public List<UrunCinsi> baseUrunCinsi
+        {
+            get
+            {
+                if (Session["UrunCinsi"] == null)
+                {
+                    var list = db.UrunCinsi.ToList();
+                    Session["UrunCinsi"] = list;
+                    return list;
+                }
+                else
+                {
+                    return (List<UrunCinsi>)Session["UrunCinsi"];
+                }
             }
             set { }
         }

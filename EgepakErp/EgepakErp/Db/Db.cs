@@ -49,6 +49,7 @@ namespace EgePakErp
         public virtual DbSet<UrunCinsi> UrunCinsi{ get; set; }
         public virtual DbSet<Kalip> Kalip{ get; set; }
         public virtual DbSet<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }
+        public virtual DbSet<KalipUrunRelation> KalipUrunRelation { get; set; }
         public virtual DbSet<UretimTeminSekli> UretimTeminSekli { get; set; }
 
         #endregion
@@ -166,12 +167,14 @@ namespace EgePakErp
         }
         public int SaveChanges(int personelId)
         {
+            var referance = Guid.NewGuid();
             // Get all Added/Deleted/Modified entities (not Unmodified or Detached)
             foreach (var ent in this.ChangeTracker.Entries().Where(p => p.State == EntityState.Added || p.State == EntityState.Deleted || p.State == EntityState.Modified))
             {
                 // For each changed record, get the audit record entries and add them
                 foreach (AuditLog x in GetAuditRecordsForChange(ent, personelId))
                 {
+                    x.Referance = referance;
                     this.AuditLog.Add(x);
                 }
             }

@@ -5,6 +5,11 @@
         validation.validate().then(function (status) {
             if (status == 'Valid') {
                 var cari = $("#cariForm").serializeObject();
+
+                var keys = Object.keys(cari);
+                var include = keys.slice(1, cari.length);
+                cari.Include = include;
+
                 console.log("cari", cari);
 
                 Post('/Cari/Kaydet',

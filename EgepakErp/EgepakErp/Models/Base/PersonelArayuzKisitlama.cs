@@ -15,5 +15,8 @@ namespace EgePakErp
         public int ArayuzKisitlamaId { get; set; }
 
         public virtual ArayuzKisitlama ArayuzKisitlama { get; set; }
+
+        [NotMapped]
+        public List<string> Include { get; set; }
     }
 }

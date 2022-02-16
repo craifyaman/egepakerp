@@ -21,5 +21,8 @@ namespace EgePakErp.Models
        
         public DateTime KayitTarihi{ get; set; }
 
+        [NotMapped]
+        public List<string> Include { get; set; }
+
     }
 }

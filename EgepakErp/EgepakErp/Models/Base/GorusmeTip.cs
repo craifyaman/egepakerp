@@ -12,5 +12,8 @@ namespace EgePakErp.Models
         public int GorusmeTipId { get; set; }
         public string Adi { get; set; }
         public virtual ICollection<Gorusme> Gorusme { get; set; }
+
+        [NotMapped]
+        public List<string> Include { get; set; }
     }
 }

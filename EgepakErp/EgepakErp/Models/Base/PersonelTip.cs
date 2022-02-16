@@ -13,6 +13,8 @@ namespace EgePakErp
         public string Adi { get; set; }
         
         public virtual ICollection<Personel> Personel { get; set; }
+        [NotMapped]
+        public List<string> Include { get; set; }
     }
 
 

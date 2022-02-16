@@ -86,7 +86,15 @@
             },
             Telefon: {
                 validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
+                    notEmpty: { message: 'Bos Birakilamaz' },
+                    stringLength: {
+                        min:10, 
+                        max: 10,
+                        message: 'Başında 0 olmadan 10 haneli telefon numarası giriniz'
+                    },
+                    integer: {
+                        message: 'Sadece Rakam Giriniz',
+                    },
                 }
             },
         };
@@ -114,6 +122,22 @@
         return fields;
     }
 
+    function urunFormFields() {
+        var fields = {
+            UrunCinsiId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            UrunNo: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            } 
+        };
+        return fields;
+    }
+
     return {
         // public functions
         GorusmeFormFields: function () {
@@ -130,6 +154,9 @@
         },
         HatirlaticiFormFields: function () {
             return hatirlaticiFormFields();
+        },
+        UrunFormFields: function () {
+            return urunFormFields();
         }
     };
 }();

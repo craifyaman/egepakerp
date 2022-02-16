@@ -81,13 +81,6 @@
                 width: 50
             },
             {
-                field: 'Brans.Adi',
-                title: 'Branş',
-                template: function (row) {
-                    return row.Brans
-                }
-            },
-            {
                 field: 'AdSoyad',
                 title: 'Ad Soyad'
             },
@@ -315,6 +308,61 @@
         console.log("clm", clm);
         return clm;
     }
+    function urunColumns() {
+        var columns = [
+            {
+                field: 'UrunId',
+                title: 'ID',
+                width: 50
+            },
+            {
+                field: 'UrunCinsi.Kisaltmasi',
+                title: 'Ürün Kodu',
+                template: function (row) {
+                    return row.UrunKodu
+                }
+
+            },
+            {
+                field: 'UrunCinsi',
+                title: 'UrunCinsi',
+                sortable: false
+
+            },
+            {
+                field: 'Kalip',
+                title: 'Kalıp',
+                ortable: false,
+                template: function (row) {
+                    console.log(row);
+                    return row.Kalip
+                }
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'formTitle = "'+row.UrunKodu+' Ürün Düzenle"';
+                    str += 'formId = "urunForm"';
+                    str += 'formUrl = "/Urun/Form"';
+                    str += 'submitUrl = "/Urun/Kaydet"';
+                    str += 'event="urunFormPopup" href = "#" id = "' + row.UrunId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    //str += ' <a class="btn btn-icon btn-primary mr-1" href = "/kisi/detay/' + row.KisiId + '" title = "Kişi Detay" data - toggle="tooltip" data - placement="top" > <i class="flaticon-search" ></i></a>'
+                    //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
+
+                    return str;
+
+                    return str;
+                },
+            }];
+        return columns;
+    }
 
     return {
         // public functions
@@ -333,6 +381,9 @@
         HatirlaticiColumns: function () {
             return hatirlaticiColumns();
         },
+        UrunColumns: function () {
+            return urunColumns();
+        },
         GetColoums: function (name) {
             if (name == "cari") {
                 return cariColumns();
@@ -348,6 +399,8 @@
             }
             else if (name == "hatirlatici") {
                 return hatirlaticiColumns();
+            } else if (name == "urun") {
+                return urunColumns();
             }
         }
     };

@@ -37,7 +37,6 @@ namespace EgePakErp.Controllers
 
             var model = Db.Kisi
                 .Include("Cari")
-                .Include("Brans")
                 .AsQueryable();
 
             if (cariId != null)
@@ -72,8 +71,6 @@ namespace EgePakErp.Controllers
                 var durum = Request.Form["query[durum]"] == "Aktif";
                 model = model.Where(i => i.Aktif == durum);
             }
-
-            
 
             try
             {
@@ -115,7 +112,6 @@ namespace EgePakErp.Controllers
             //kabasını aldır
             var model = Db.Kisi
                 .Include("Cari")
-                .Include("Brans")
                 .AsQueryable();
             var count = model.Count();
             //Filtre

@@ -11,11 +11,11 @@
                 </div>
             </div>
             <div class="col-md-3 my-2 my-md-0">
-                <select class="form-control form-control-solid" id="durum">
-                    <option value="">Durum Şeçiniz</option>
-                    @foreach (var item in baseDurum)
+                <select class="form-control form-control-solid selectpicker" data-live-search="true" id="urunCinsiId">
+                    <option value="">Ürün Cinsi Seçiniz</option>
+                    @foreach (var item in baseUrunCinsi)
                     {
-                        <option value="@item.Key">@item.Value</option>
+                        <option value="@item.UrunCinsiId">@(item.Kisaltmasi+"/"+item.Adi)</option>
                     }
 
                 </select>

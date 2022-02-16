@@ -12,5 +12,7 @@ namespace EgePakErp.Models
         public string Adi { get; set; }
         public string Aciklamasi { get; set; }
         public virtual ICollection<Urun> Urun { get; set; }
+        [NotMapped]
+        public List<string> Include { get; set; }
     }
 }

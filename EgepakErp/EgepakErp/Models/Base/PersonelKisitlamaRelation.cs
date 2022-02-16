@@ -17,6 +17,8 @@ namespace EgePakErp
 
         public int KisitlamaId { get; set; }
         public Kisitlama Kisitlama { get; set; }
+        [NotMapped]
+        public List<string> Include { get; set; }
 
     }
 }

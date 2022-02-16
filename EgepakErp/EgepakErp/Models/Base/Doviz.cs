@@ -24,6 +24,9 @@ namespace EgePakErp
 
         [InverseProperty("Doviz3")]
         public virtual ICollection<Cari> Doviz3CariListesi { get; set; }
+
+        [NotMapped]
+        public List<string> Include { get; set; }
     }
 
 

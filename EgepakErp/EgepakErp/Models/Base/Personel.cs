@@ -29,7 +29,10 @@ namespace EgePakErp
         public virtual ICollection<Kisi> Kisi { get; set; }
         public virtual ICollection<Gorusme> Gorusme { get; set; }
         public virtual ICollection<PersonelKisitlamaRelation> PersonelKisitlamaRelation { get; set; }
-         
+
+        [NotMapped]
+        public List<string> Include { get; set; }
+
 
 
     }

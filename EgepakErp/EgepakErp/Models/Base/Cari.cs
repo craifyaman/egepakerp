@@ -33,6 +33,9 @@ namespace EgePakErp.Models
         public bool Efatura { get; set; }
         public virtual ICollection<Kisi> Kisi { get; set; }
         public virtual ICollection<Not> Not { get; set; }
+        [NotMapped]
+        public List<string> Include { get; set; }
+
 
     }
 }

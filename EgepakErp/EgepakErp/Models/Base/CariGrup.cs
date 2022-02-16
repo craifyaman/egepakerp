@@ -15,5 +15,8 @@ namespace EgePakErp.Models
         public string Adi { get; set; }
         public virtual ICollection<Cari> Cari { get; set; }
 
+        [NotMapped]
+        public List<string> Include { get; set; }
+
     }
 }

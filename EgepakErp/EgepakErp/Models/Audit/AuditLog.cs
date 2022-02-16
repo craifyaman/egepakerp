@@ -38,5 +38,6 @@ namespace EgePakErp.Models.Audit
         public string NewValue { get; set; }
         public string OriginalJson { get; set; }
         public string NewJson { get; set; }
+        public Guid Referance { get; set; }
     }
 }

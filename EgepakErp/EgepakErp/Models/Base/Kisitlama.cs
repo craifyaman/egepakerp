@@ -20,6 +20,8 @@ namespace EgePakErp
 
         public virtual ICollection<PersonelKisitlamaRelation> PersonelKisitlamaRelation { get; set; }
         public virtual ICollection<KisitlamaControllerAction> KisitlamaControllerAction { get; set; }
+        [NotMapped]
+        public List<string> Include { get; set; }
 
     }
 }

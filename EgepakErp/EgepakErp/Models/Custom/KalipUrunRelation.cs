@@ -4,15 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EgePakErp.Models
 {
-    [Table("KalipHammaddeRelation")]
-    public class KalipHammaddeRelation
+    [Table("KalipUrunRelation")]
+    public class KalipUrunRelation
     {
         [Key]
-        public int KalipHammaddeRelationId { get; set; }
+        public int KalipUrunRelationId { get; set; }
         public int  KalipId{ get; set; }
         public Kalip Kalip { get; set; }
-        public int HammaddeCinsiId { get; set; }
-        public HammaddeCinsi HammaddeCinsi { get; set; }
+        public int UrunId { get; set; }
+        public Urun Urun { get; set; }
+
         [NotMapped]
         public List<string> Include { get; set; }
 

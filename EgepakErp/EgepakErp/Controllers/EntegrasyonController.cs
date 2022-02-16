@@ -19,7 +19,7 @@ namespace EgePakErp.Controllers
         /// excellden cari
         /// </summary>
         /// <returns></returns>
-        public ActionResult Cari()
+        public void Cari()
         {
             var ulkeler = Db.Ulke.ToList();
             ulkeler.ForEach(f => f.Adi = f.Adi.ToUpper());
@@ -124,8 +124,6 @@ namespace EgePakErp.Controllers
             };
             Db.Cari.AddRange(list);
             Db.SaveChanges(1);
-
-            return View();
         }
         public void UrunCinsi()
         {
@@ -151,19 +149,20 @@ namespace EgePakErp.Controllers
 
             var urunler = Db.HamUrunGrup
                 .Where(i => urnCins.Contains(i.UrunCinsi))
-                .Select(i=>new { 
-                 i.UrunCinsi,
-                 i.UrunNo
+                .Select(i => new
+                {
+                    i.UrunCinsi,
+                    i.UrunNo
                 })
                 .GroupBy(x => new { x.UrunCinsi, x.UrunNo }, (key, group) => new
                 {
                     UrunCinsi = key.UrunCinsi,
-                    UrunNo = key.UrunNo 
+                    UrunNo = key.UrunNo
                 }).ToList()
                 ;
 
             var list = new List<Urun>();
-            
+
             foreach (var item in urunler)
             {
                 var urun = new Urun();
@@ -175,7 +174,6 @@ namespace EgePakErp.Controllers
             Db.Urun.AddRange(list);
             Db.SaveChanges();
         }
-
         public void HammaddeCinsi()
         {
             var cins = Db.HamUrunGrup
@@ -195,6 +193,122 @@ namespace EgePakErp.Controllers
 
             Db.HammaddeCinsi.AddRange(list);
             Db.SaveChanges();
+        }
+        public void Kalip()
+        {
+            try
+            {
+                var hammaddeCinsleri = Db.HammaddeCinsi.ToList();
+                var uretimTeminSekli = Db.UretimTeminSekli.ToList();
+                var urunler = Db.Urun.Include("UrunCinsi").ToList();
+
+                var kaliplar = Db.HamUrunGrup
+                    .Where(i => i.KalipNo != "00" || i.KalipOzellik != "00")
+                    .GroupBy(x => new { x.KalipNo, x.KalipOzellik }, (key, group) => new
+                    {
+                        KalipNo = key.KalipNo,
+                        KalipOzellik = key.KalipOzellik,
+                        ParcaAdi = group.FirstOrDefault().ParcaAdi,
+                        Hammadde = group.FirstOrDefault().Hammadde,
+                        Agirlik = group.FirstOrDefault().Agirlik,
+                        TeminŞekli = group.FirstOrDefault().TeminŞekli,
+                        KalıpSayisi = group.FirstOrDefault().KalıpSayisi,
+                        UretimZamani = group.FirstOrDefault().UretimZamani,
+                        Aciklama = group.FirstOrDefault().Aciklama,
+                        UrunCinsi = group.FirstOrDefault().UrunCinsi,
+                        UrunNo = group.FirstOrDefault().UrunNo,
+
+                    })
+                    .ToList();
+
+
+                var list = new List<Kalip>();
+
+                foreach (var item in kaliplar)
+                {
+                    var kalip = new Kalip();
+                    kalip.Aciklama = item.Aciklama;
+                    kalip.Adi = item.ParcaAdi;
+                    kalip.KalipGozSayisi = Convert.ToInt32(item.KalıpSayisi);
+                    var hammaddeCins = hammaddeCinsleri.FirstOrDefault(i => i.Kisaltmasi == item.Hammadde);
+                    if (hammaddeCins != null)
+                    {
+                        kalip.KalipHammaddeRelation = new List<KalipHammaddeRelation>
+                        {
+                            new KalipHammaddeRelation
+                            {
+                                HammaddeCinsiId=hammaddeCins.HammaddeCinsiId
+                            }
+                        };
+                    }
+                    kalip.KalipNo = item.KalipNo;
+                    kalip.KalipOzellik = item.KalipOzellik;
+                    kalip.ParcaAgirlik = Convert.ToDecimal(item.Agirlik);
+                    kalip.UretimTeminSekliId = uretimTeminSekli.FirstOrDefault(i => i.Kisaltmasi == item.TeminŞekli).UretimTeminSekliId;
+                    kalip.UretimZamani = Convert.ToInt32(item.UretimZamani);
+
+
+
+                    list.Add(kalip);
+                }
+
+                Db.Kalip.AddRange(list);
+                Db.SaveChanges(1);
+            }
+            catch (Exception ex)
+            {
+
+                var a = ex;
+            }
+        }
+
+        public void KalipUrun()
+        {
+            try
+            {
+
+                var urunler = Db.Urun.Include("UrunCinsi").ToList();
+                var kaliplar = Db.Kalip.ToList();
+
+                var list = Db.HamUrunGrup
+                   
+                    .Where(i => !string.IsNullOrEmpty(i.UrunCinsi))
+                    .GroupBy(x => new { x.UrunCinsi, x.UrunNo }, (key, group) => new
+                    {
+                         
+                        UrunCinsi = key.UrunCinsi,
+                        UrunNo = key.UrunNo,
+                        Kaliplar = group
+
+                    })
+                    .ToList();
+
+                var relations = new List<KalipUrunRelation>();
+                foreach (var item in list)
+                {
+                    var urun = urunler.FirstOrDefault(f => f.UrunCinsi.Kisaltmasi == item.UrunCinsi && f.UrunNo == item.UrunNo);
+                    if (urun == null) continue;
+                    foreach (var k in item.Kaliplar)
+                    {
+                        var kalip = kaliplar.FirstOrDefault(i => i.KalipNo == k.KalipNo && i.KalipOzellik == k.KalipOzellik);
+                        if (kalip == null) continue;
+
+                        relations.Add(new KalipUrunRelation
+                        {
+                            KalipId = kalip.KalipId,
+                            UrunId = urun.UrunId
+                        });
+                    }
+                }
+
+                Db.KalipUrunRelation.AddRange(relations);
+                Db.SaveChanges(1);
+            }
+            catch (Exception ex)
+            {
+
+                var a = ex;
+            }
         }
 
     }
