@@ -16,18 +16,16 @@ namespace EgePakErp.Models
         public string UrunNo { get; set; }
 
         [NotMapped]
-        public string UrunKodu
-        {
-            get
-            {
-                return string.Concat(this.UrunCinsi?.Kisaltmasi + this.UrunNo);
-            }
-            set { }
-        }
+        public string UrunKodu { get; set; }
+
         public virtual ICollection<KalipUrunRelation> KalipUrunRelation { get; set; }
+        public virtual ICollection<SepetIcerik> SepetIcerik { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }
+
+        [NotMapped]
+        public List<int> KalipList { get; set; }
 
     }
 }

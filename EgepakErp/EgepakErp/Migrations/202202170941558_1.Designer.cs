@@ -7,13 +7,13 @@ namespace EgePakErp.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class _9 : IMigrationMetadata
+    public sealed partial class _1 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(_9));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(_1));
         
         string IMigrationMetadata.Id
         {
-            get { return "202202160943045_9"; }
+            get { return "202202170941558_1"; }
         }
         
         string IMigrationMetadata.Source

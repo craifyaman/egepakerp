@@ -138,6 +138,55 @@
         return fields;
     }
 
+    function kalipFormFields() {
+        var fields = {
+            KalipNo: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            KalipOzellik: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Adi: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            UretimTeminSekliId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            ParcaAgirlik: {
+                validators: {
+                    integer: {
+                        message: 'Rakam Giriniz',
+                        thousandsSeparator: '',
+                        decimalSeparator: ',',
+                    },
+                }
+            },
+            KalipGozSayisi: {
+                validators: {
+                    integer: {
+                        message: 'Rakam Giriniz'
+                    },
+                }
+            },
+            UretimZamani: {
+                validators: {
+                    integer: {
+                        message: 'Rakam Giriniz'
+                    },
+                }
+            }
+        };
+        return fields;
+    }
+
     return {
         // public functions
         GorusmeFormFields: function () {
@@ -157,6 +206,9 @@
         },
         UrunFormFields: function () {
             return urunFormFields();
+        },
+        KalipFormFields: function () {
+            return kalipFormFields();
         }
     };
 }();

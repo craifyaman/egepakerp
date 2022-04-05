@@ -2,7 +2,7 @@
 <!--begin::Form-->
 <form id="urunForm">
     <input type="hidden" name="UrunId" value="@(Model?.UrunId)" />
-    <div class="form-group  ">
+    <div class="form-group row">
         <div class="col-lg-12">
             <label>Ürün Cinsi:</label>
             <select name="UrunCinsiId" class="form-control form-control-solid selectpicker" data-live-search="true" id="UrunCinsiId">
@@ -15,12 +15,30 @@
             </select>
         </div>
     </div>
-    <div class="form-group  ">
+    <div class="form-group row ">
+        <label>Ürün No:</label>
+        <input class="form-control" name="UrunNo" type="text" value="@(Model?.UrunNo)">
+    </div>
+
+    <div class="form-group row">
         <div class="col-lg-12">
-            <label>Ürün No:</label>
-            <input class="form-control" name="UrunNo" type="text" value="@(Model?.UrunNo)">
+            <label>Kullandığı Kalıplar:</label>
+            <select name="KalipList" class="form-control form-control-solid selectpicker" data-actions-box="true" multiple data-live-search="true" id="KalipList">
+
+                @foreach (var item in baseKalip)
+                {
+                    var slc = "";
+                    if (Model != null && Model.KalipUrunRelation != null && Model.KalipUrunRelation.Count() > 0)
+                    {
+                        slc = Model.KalipUrunRelation.Select(i => i.KalipId).Contains(item.KalipId) ? "selected" : "";
+                    }
+                    <option @slc value="@item.KalipId">@(item.KalipNo+""+item.KalipOzellik+" "+item.Adi)</option>
+                }
+
+            </select>
         </div>
     </div>
+ 
 
 </form>
 <!--end::Form-->

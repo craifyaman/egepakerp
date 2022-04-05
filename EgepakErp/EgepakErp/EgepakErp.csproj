@@ -142,6 +142,8 @@
     <Compile Include="Controllers\CariController.cs" />
     <Compile Include="Controllers\DataTableController.cs" />
     <Compile Include="Controllers\GorusmeController.cs" />
+    <Compile Include="Controllers\SiparisController.cs" />
+    <Compile Include="Controllers\KalipController.cs" />
     <Compile Include="Controllers\UrunController.cs" />
     <Compile Include="Controllers\HatirlaticiController.cs" />
     <Compile Include="Controllers\EntegrasyonController.cs" />
@@ -170,21 +172,9 @@
     </Compile>
     <Compile Include="Helper\CookieHelper.cs" />
     <Compile Include="Helper\StringCipher.cs" />
-    <Compile Include="Migrations\202202160648347_5.cs" />
-    <Compile Include="Migrations\202202160648347_5.designer.cs">
-      <DependentUpon>202202160648347_5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202202160740442_6.cs" />
-    <Compile Include="Migrations\202202160740442_6.designer.cs">
-      <DependentUpon>202202160740442_6.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202202160943045_9.cs" />
-    <Compile Include="Migrations\202202160943045_9.designer.cs">
-      <DependentUpon>202202160943045_9.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202202161125382_10.cs" />
-    <Compile Include="Migrations\202202161125382_10.designer.cs">
-      <DependentUpon>202202161125382_10.cs</DependentUpon>
+    <Compile Include="Migrations\202202170941558_1.cs" />
+    <Compile Include="Migrations\202202170941558_1.designer.cs">
+      <DependentUpon>202202170941558_1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Audit\AuditLog.cs" />
     <Compile Include="Models\Audit\IAuditLogEntity.cs" />
@@ -198,6 +188,8 @@
     <Compile Include="Models\Base\Doviz.cs" />
     <Compile Include="Models\Base\PersonelTip.cs" />
     <Compile Include="Models\Brans.cs" />
+    <Compile Include="Models\Custom\SepetIcerik.cs" />
+    <Compile Include="Models\Custom\Sepet.cs" />
     <Compile Include="Models\Custom\KalipUrunRelation.cs" />
     <Compile Include="Models\Custom\UretimTeminSekli.cs" />
     <Compile Include="Models\Custom\KalipHammaddeRelation.cs" />
@@ -2456,6 +2448,8 @@
     <Content Include="Scripts\Custom\ValidateForm.js" />
     <Content Include="Scripts\Custom\ValidationFields.js" />
     <Content Include="Scripts\Gorusme.js" />
+    <Content Include="Scripts\Siparis.js" />
+    <Content Include="Scripts\Kalip.js" />
     <Content Include="Scripts\Urun.js" />
     <Content Include="Scripts\Hatirlatici.js" />
     <Content Include="Scripts\Kisi.js" />
@@ -2525,19 +2519,14 @@
     <Content Include="Views\Urun\FilterForm.cshtml" />
     <Content Include="Views\Urun\Form.cshtml" />
     <Content Include="Views\Urun\Index.cshtml" />
+    <Content Include="Views\Kalip\FilterForm.cshtml" />
+    <Content Include="Views\Kalip\Form.cshtml" />
+    <Content Include="Views\Kalip\Index.cshtml" />
+    <Content Include="Views\Siparis\SiparisFormu.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202202160648347_5.resx">
-      <DependentUpon>202202160648347_5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202202160740442_6.resx">
-      <DependentUpon>202202160740442_6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202202160943045_9.resx">
-      <DependentUpon>202202160943045_9.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202202161125382_10.resx">
-      <DependentUpon>202202161125382_10.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202202170941558_1.resx">
+      <DependentUpon>202202170941558_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

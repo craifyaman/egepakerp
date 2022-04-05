@@ -55,6 +55,25 @@ namespace EgePakErp.Custom
             set { }
         }
 
+
+        public List<UretimTeminSekli> baseUretimTeminSekli
+        {
+            get
+            {
+                if (Session["UretimTeminSekli"] == null)
+                {
+                    var list = db.UretimTeminSekli.ToList();
+                    Session["UretimTeminSekli"] = list;
+                    return list;
+                }
+                else
+                {
+                    return (List<UretimTeminSekli>)Session["UretimTeminSekli"];
+                }
+            }
+            set { }
+        }
+
         public override void Execute()
         {
 
@@ -215,6 +234,77 @@ namespace EgePakErp.Custom
                 else
                 {
                     return (List<UrunCinsi>)Session["UrunCinsi"];
+                }
+            }
+            set { }
+        }
+
+        public List<UretimTeminSekli> baseUretimTeminSekli
+        {
+            get
+            {
+                if (Session["UretimTeminSekli"] == null)
+                {
+                    var list = db.UretimTeminSekli.ToList();
+                    Session["UretimTeminSekli"] = list;
+                    return list;
+                }
+                else
+                {
+                    return (List<UretimTeminSekli>)Session["UretimTeminSekli"];
+                }
+            }
+            set { }
+        }
+
+        public List<HammaddeCinsi> baseHammaddeCinsi
+        {
+            get
+            {
+                if (Session["HammaddeCinsi"] == null)
+                {
+                    var list = db.HammaddeCinsi.ToList();
+                    Session["HammaddeCinsi"] = list;
+                    return list;
+                }
+                else
+                {
+                    return (List<HammaddeCinsi>)Session["HammaddeCinsi"];
+                }
+            }
+            set { }
+        }
+
+        public List<Urun> baseUrun
+        {
+            get
+            {
+                if (Session["Urun"] == null)
+                {
+                    var list = db.Urun.Include("UrunCinsi").ToList();
+                    Session["Urun"] = list;
+                    return list;
+                }
+                else
+                {
+                    return (List<Urun>)Session["Urun"];
+                }
+            }
+            set { }
+        }
+        public List<Kalip> baseKalip
+        {
+            get
+            {
+                if (Session["Kalip"] == null)
+                {
+                    var list = db.Kalip.ToList();
+                    Session["Kalip"] = list;
+                    return list;
+                }
+                else
+                {
+                    return (List<Kalip>)Session["Kalip"];
                 }
             }
             set { }

@@ -229,7 +229,7 @@ namespace EgePakErp
                         TableName = tableName,
                         RecordID = dbEntry.OriginalValues.GetValue<int>(keyName),
                         ColumnName = "*ALL",
-                        NewJson = JsonConvert.SerializeObject(dbEntry.CurrentValues.ToObject()),
+                        NewJson ="", //JsonConvert.SerializeObject(dbEntry.CurrentValues.ToObject()),
                         OriginalJson = JsonConvert.SerializeObject(dbEntry.OriginalValues.ToObject())
                     }
                     );

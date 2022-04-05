@@ -19,7 +19,6 @@
     }
 
     var init = function () {
-
         $.each($(".select2"), function (index, item) {
 
             var url = $(item).attr("url");
@@ -63,15 +62,58 @@
                 templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
             });
 
-            
-        })
 
+        })
+    };
+    var initById = function (id) {
+        var url = $(id).attr("url");
+        var placeHolder = $(id).attr("placeHolder");
+        $(id).select2({
+            placeholder: placeHolder,
+            allowClear: true,
+            ajax: {
+                url: url,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term // search term
+                        //page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+                    // parse the results into the format expected by Select2
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data, except to indicate that infinite
+                    // scrolling can be used
+                    //params.page = params.page || 1;
+                    params.page = 1;
+
+                    return {
+                        results: data.items
+                        //pagination: {
+                        //    more: (params.page * 30) < data.total_count
+                        //}
+                    };
+                },
+                cache: true
+            },
+            escapeMarkup: function (markup) {
+                return markup;
+            }, // let our custom formatter work
+            minimumInputLength: 3,
+            templateResult: formatRepo, // omitted for brevity, see the source of this page
+            templateSelection: formatRepoSelection // omitted for brevity, see the source of this page
+        });
     };
 
     return {
         // public functions
         init: function () {
             init();
+        },
+        initById: function (id) {
+            initById(id);
         }
     };
 }();

@@ -348,11 +348,106 @@
                 template: function (row) {
 
                     var str = '<a class="btn btn-icon btn-info mr-1"';
-                    str += 'formTitle = "'+row.UrunKodu+' Ürün Düzenle"';
+                    str += 'formTitle = "' + row.UrunKodu + ' Ürün Düzenle"';
                     str += 'formId = "urunForm"';
                     str += 'formUrl = "/Urun/Form"';
                     str += 'submitUrl = "/Urun/Kaydet"';
                     str += 'event="urunFormPopup" href = "#" id = "' + row.UrunId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    //str += ' <a class="btn btn-icon btn-primary mr-1" href = "/kisi/detay/' + row.KisiId + '" title = "Kişi Detay" data - toggle="tooltip" data - placement="top" > <i class="flaticon-search" ></i></a>'
+                    //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
+
+                    return str;
+
+                    return str;
+                },
+            }];
+        return columns;
+    }
+
+    function kalipColumns() {
+        var columns = [
+            {
+                field: 'KalipId',
+                title: 'ID',
+                width: 50
+            },
+            {
+                field: 'KalipNo',
+                title: 'Kalıp Kodu',
+                template: function (row) {
+                    return row.KalipKodu
+                }
+
+            },
+            {
+                field: 'Adi',
+                title: 'Adı',
+                template: function (row) {
+                    return row.Adi
+                }
+
+            },
+            {
+                field: 'UretimTeminSekli.Adi',
+                title: 'Üretim Şekli',
+                template: function (row) {
+                    return row.UretimTeminSekli
+                }
+
+            },
+            {
+                field: 'ParcaAgirlik',
+                title: 'Agırlık',
+                template: function (row) {
+                   
+                    return row.Agirlik
+                }
+            },
+            {
+                field: 'KalipGozSayisi',
+                title: 'Göz Sayısı',
+                template: function (row) {
+                    return row.GozSayisi
+                }
+            },
+            {
+                field: 'UretimZamani',
+                title: 'Üretim Zamanı',
+                template: function (row) {
+                    return row.UretimZamani
+                }
+            },
+            {
+                field: 'Hammadde',
+                title: 'Hammadde',
+                sortable:false,
+                template: function (row) {
+                    return row.Hammadde
+                }
+            },
+            {
+                field: 'Urun',
+                title: 'Ürün',
+                sortable: false,
+                template: function (row) {
+                    return row.Urun
+                }
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'formTitle = "' + row.KalipKodu +' '+row.Adi + ' Ürün Düzenle"';
+                    str += 'formId = "kalipForm"';
+                    str += 'formUrl = "/Kalip/Form"';
+                    str += 'submitUrl = "/Kalip/Kaydet"';
+                    str += 'event="kalipFormPopup" href = "#" id = "' + row.KalipId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
                     //str += ' <a class="btn btn-icon btn-primary mr-1" href = "/kisi/detay/' + row.KisiId + '" title = "Kişi Detay" data - toggle="tooltip" data - placement="top" > <i class="flaticon-search" ></i></a>'
                     //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
 
@@ -384,6 +479,9 @@
         UrunColumns: function () {
             return urunColumns();
         },
+        KalipColumns: function () {
+            return kalipColumns();
+        },
         GetColoums: function (name) {
             if (name == "cari") {
                 return cariColumns();
@@ -399,8 +497,12 @@
             }
             else if (name == "hatirlatici") {
                 return hatirlaticiColumns();
-            } else if (name == "urun") {
+            }
+            else if (name == "urun") {
                 return urunColumns();
+            }
+            else if (name == "kalip") {
+                return kalipColumns();
             }
         }
     };

@@ -14,32 +14,35 @@ using EgePakErp.Models;
 namespace EgePakErp.Controllers
 {
 
-    public class UrunController : BaseController
+    public class KalipController : BaseController
     {
         // GET: Cari
-        [Menu("Ürünler", "flaticon2-list-2 icon-xl", "Üretim", 0, 4)]
+        [Menu("Kalıplar", "flaticon2-download icon-xl", "Üretim", 0, 4)]
         public ActionResult Index()
         {
             return View();
         }
 
-        [Yetki("Ürün Listesi", "Üretim")]
+        [Yetki("Kalıp Listesi", "Üretim")]
         public JsonResult Liste()
         {
             //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
 
-            dtMeta.field = Request.Form["sort[field]"] == null ? "UrunId" : Request.Form["sort[field]"];
+            dtMeta.field = Request.Form["sort[field]"] == null ? "KalıpId" : Request.Form["sort[field]"];
             dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
 
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
             dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
 
-            var model = Db.Urun
-                .Include("UrunCinsi")
+            var model = Db.Kalip
+                .Include("UretimTeminSekli")
                 .Include("KalipUrunRelation")
-                .Include("KalipUrunRelation.Kalip")
+                .Include("KalipUrunRelation.Urun")
+                .Include("KalipUrunRelation.Urun.UrunCinsi")
+                .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.HammaddeCinsi")
                 .AsQueryable();
 
 
@@ -52,17 +55,17 @@ namespace EgePakErp.Controllers
             {
                 var searchQuery = Request.Form["query[searchQuery]"].ToString();
                 model = model.Where(i =>
-                i.UrunCinsi.Aciklamasi.ToLower().Contains(searchQuery.ToLower()) ||
-                i.UrunCinsi.Kisaltmasi.ToLower().Contains(searchQuery.ToLower()) ||
-                i.UrunCinsi.Aciklamasi.ToLower().Contains(searchQuery.ToLower()) ||
-                string.Concat(i.UrunCinsi.Kisaltmasi.ToLower() + i.UrunNo).Contains(searchQuery.ToLower())
+                i.KalipNo.ToLower().Contains(searchQuery.ToLower())||
+                i.KalipOzellik.ToLower().Contains(searchQuery.ToLower()) ||
+                i.Adi.ToLower().Contains(searchQuery.ToLower()) ||
+                string.Concat(i.KalipNo.ToLower()+i.KalipOzellik).Contains(searchQuery.ToLower())
                 );
             }
 
-            if (!string.IsNullOrEmpty(Request.Form["query[urunCinsiId]"]))
+            if (!string.IsNullOrEmpty(Request.Form["query[uretimTeminSekliId]"]))
             {
-                var urunCinsiId = Convert.ToInt32(Request.Form["query[urunCinsiId]"]);
-                model = model.Where(i => i.UrunCinsiId == urunCinsiId);
+                var uretimTeminSekliId = Convert.ToInt32(Request.Form["query[uretimTeminSekliId]"]);
+                model = model.Where(i => i.UretimTeminSekliId == uretimTeminSekliId);
             }
 
             try
@@ -71,7 +74,7 @@ namespace EgePakErp.Controllers
             }
             catch (Exception)
             {
-                model = model.OrderBy("UrunId Desc");
+                model = model.OrderBy("KalipId Desc");
                 dtMeta.field = "UrunId";
                 dtMeta.sort = "Desc";
             }
@@ -81,10 +84,15 @@ namespace EgePakErp.Controllers
             //dto yap burda
             var dto = model.AsEnumerable().Select(i => new
             {
-                UrunId = i.UrunId,
-                UrunKodu = string.Concat(i.UrunCinsi.Kisaltmasi + i.UrunNo),
-                UrunCinsi = i.UrunCinsi.Adi,
-                Kalip = i.KalipUrunRelation.Select(s => s.Kalip).Select(s => s.KalipNo + " " + s.KalipOzellik)
+                KalipId=i.KalipId,
+                KalipKodu = string.Concat(i.KalipNo+"-"+ i.KalipOzellik),
+                Adi = i.Adi,
+                UretimTeminSekli=i.UretimTeminSekli.Adi,
+                Agirlik=i.ParcaAgirlik,
+                GozSayisi=i.KalipGozSayisi,
+                UretimZamani=i.UretimZamani,
+                Hammadde=i.KalipHammaddeRelation.Select(s=>s.HammaddeCinsi).Select(s=>s.Adi),
+                Urun=i.KalipUrunRelation.Select(s=>s.Urun).Select(s=>s.UrunCinsi.Kisaltmasi+s.UrunNo)
 
             }).ToList<dynamic>();
 
@@ -96,9 +104,14 @@ namespace EgePakErp.Controllers
         public PartialViewResult Form(int? id)
         {
             id = id == null ? 0 : id.Value;
-            var model = Db.Urun
-                .Include("UrunCinsi")
-                .FirstOrDefault(i => i.UrunId == id);
+            var model = Db.Kalip
+                 .Include("UretimTeminSekli")
+                .Include("KalipUrunRelation")
+                .Include("KalipUrunRelation.Urun")
+                .Include("KalipUrunRelation.Urun.UrunCinsi")
+                .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.HammaddeCinsi")
+                .FirstOrDefault(i => i.KalipId == id);
 
             return PartialView(model);
         }
@@ -107,23 +120,29 @@ namespace EgePakErp.Controllers
             return PartialView();
         }
 
-        [Yetki("Ürün Kaydet", "Üretim")]
-        public JsonResult Kaydet(Urun form)
+        [Yetki("Kalıp Kaydet", "Üretim")]
+        public JsonResult Kaydet(Kalip form)
         {
             var response = new Response();
 
             try
             {
-                if (form.UrunId == 0)
+                if (form.KalipId == 0)
                 {
-                    form.KalipUrunRelation = form.KalipList.Select(s => new KalipUrunRelation { KalipId = s }).ToList();
-                    Db.Urun.Add(form);
+
+                    form.KalipHammaddeRelation= form.HammaddeList.Select(s => new KalipHammaddeRelation { HammaddeCinsiId = s }).ToList();
+                    form.KalipUrunRelation=form.UrunList.Select(s => new KalipUrunRelation { UrunId = s }).ToList();
+                    Db.Kalip.Add(form);
                 }
                 else
                 {
-                    var entity = Db.Urun.Find(form.UrunId);
+                    var entity = Db.Kalip
+                        .Include("KalipHammaddeRelation")
+                        .Include("KalipUrunRelation")
+                        .FirstOrDefault(i=>i.KalipId ==form.KalipId);
                     if (entity != null)
                     {
+                        //alanları güncelle
                         var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
                         foreach (var prop in propList)
                         {
@@ -133,15 +152,22 @@ namespace EgePakErp.Controllers
                             }
                         }
 
-
-                        Db.KalipUrunRelation.RemoveRange(Db.KalipUrunRelation.Where(i => i.UrunId == form.UrunId));
-                        if (form.KalipList != null)
+                        //relationları güncelle
+                        Db.KalipHammaddeRelation.RemoveRange(Db.KalipHammaddeRelation.Where(i=>i.KalipId==form.KalipId));
+                        Db.KalipUrunRelation.RemoveRange(Db.KalipUrunRelation.Where(i => i.KalipId == form.KalipId));
+                        if (form.HammaddeList!=null)
                         {
-                            Db.KalipUrunRelation.AddRange(form.KalipList.Select(s => new KalipUrunRelation { KalipId = s, UrunId = entity.UrunId }));
+                            Db.KalipHammaddeRelation.AddRange(form.HammaddeList.Select(s => new KalipHammaddeRelation { KalipId = entity.KalipId, HammaddeCinsiId = s }));
                         }
-
-
+                        if (form.UrunList!=null)
+                        {
+                            Db.KalipUrunRelation.AddRange(form.UrunList.Select(s => new KalipUrunRelation { KalipId = entity.KalipId, UrunId = s }));
+                        }
+                        
+                        
                     }
+
+                    
                 }
                 Db.SaveChanges(CurrentUser.PersonelId);
                 response.Success = true;
@@ -162,8 +188,7 @@ namespace EgePakErp.Controllers
         public JsonResult ListeSelect2(string q)
         {
             //kabasını aldır
-            var model = Db.Urun
-                .Include("UrunCinsi")
+            var model = Db.Kalip
                 .AsQueryable();
             var count = model.Count();
             //Filtre
@@ -171,12 +196,12 @@ namespace EgePakErp.Controllers
             {
                 var searchQuery = q;
                 model = model.Where(i =>
-                string.Concat(i.UrunCinsi.Kisaltmasi + i.UrunNo).Contains(searchQuery.ToLower()) ||
-                i.UrunCinsi.Kisaltmasi.ToLower().Contains(searchQuery.ToLower())
+                string.Concat(i.KalipNo+ i.KalipNo).Contains(searchQuery.ToLower()) ||
+                i.Adi.ToLower().Contains(searchQuery.ToLower())
                 );
             }
 
-            model = model.OrderBy("UrunId Asc");
+            model = model.OrderBy("KalipId Asc");
 
             //sayfala
             model = model.Take(10);
@@ -187,8 +212,8 @@ namespace EgePakErp.Controllers
                 incomplete_results = true,
                 items = model.Select(i => new
                 {
-                    id = i.UrunId,
-                    text = string.Concat(i.UrunCinsi.Kisaltmasi + i.UrunNo),
+                    id = i.KalipId,
+                    text = string.Concat(i.KalipNo + i.KalipNo+" "+i.Adi),
                     markup = "urun"
 
                 }),
