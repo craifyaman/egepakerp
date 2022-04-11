@@ -73,6 +73,70 @@
         return clm;
     }
 
+    function hammaddeColumns() {
+        var clm = [
+            {
+                field: 'HammaddeId',
+                title: 'ID',
+                width: 50
+            },
+            {
+                field: 'Adi',
+                title: 'Adı'
+            },
+
+            {
+                field: 'Aciklamasi',
+                title: 'Açıklama',
+                sortable: false,
+                width: 200
+            },
+            {
+                field: 'BirimId',
+                title: 'Birimi',
+                sortable: false,
+                
+            },
+            {
+                field: 'Kodu',
+                title: 'Kodu',             
+            },
+            {
+                field: 'Kaliplar',
+                title: 'Kalıplar'
+            },
+            {
+                field: 'KalipKodu',
+                title: 'Kalıp Kodları'
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var cls = row.Durum == "Aktif" ? "danger" : "success";
+                    var durum = row.Durum == "Aktif" ? "Pasif" : "Aktif";
+                    return '\
+	                       <a class="btn btn-icon btn-info" event="hammaddeFormPopup" formTitle="'+ row.Unvan + ' Düzenle" href="#" id="' + row.hammaddeId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top">\
+                                <i class="flaticon-edit" ></i>\
+                           </a>\
+                             <a class="btn btn-icon btn-primary" href="/hammadde/detay/'+ row.HammaddeId + '" title="Hammadde Detay Sayfası" data-toggle="tooltip" data-placement="top">\
+                                <i class="flaticon-search" ></i>\
+                           </a>\
+                            <a class="btn btn-icon btn-'+ cls + '" event="durum" href="#" id="' + row.HammaddeId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top">\
+                                <i class="flaticon-user" ></i>\
+                           </a>\
+	                    ';
+                },
+            }]
+
+        console.log("clm", clm);
+        return clm;
+    }
+
     function kisiColumns() {
         var columns = [
             {
@@ -463,6 +527,9 @@
         // public functions
         CariColumns: function () {
             return cariColumns();
+        },
+        HammaddeColumns: function () {
+            return hammaddeColumns();
         },
         KisiColoumns: function () {
             return kisiColumns();
