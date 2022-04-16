@@ -212,6 +212,7 @@
     <Compile Include="Models\Custom\Urun.cs" />
     <Compile Include="Models\Custom\HammaddeCinsi.cs" />
     <Compile Include="Models\Custom\UrunCinsi.cs" />
+    <Compile Include="Models\HammaddeHareket.cs" />
     <Compile Include="Models\Micro\BaglantiTipi.cs" />
     <Compile Include="Models\Micro\Cari.cs" />
     <Compile Include="Models\Base\Cari.cs" />
@@ -2492,6 +2493,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Migrations\" />
     <Folder Include="Views\DataTable\" />
     <Folder Include="Views\Timer\" />
   </ItemGroup>
