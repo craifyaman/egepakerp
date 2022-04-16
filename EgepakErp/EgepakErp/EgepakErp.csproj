@@ -172,10 +172,6 @@
     </Compile>
     <Compile Include="Helper\CookieHelper.cs" />
     <Compile Include="Helper\StringCipher.cs" />
-    <Compile Include="Migrations\202202170941558_1.cs" />
-    <Compile Include="Migrations\202202170941558_1.designer.cs">
-      <DependentUpon>202202170941558_1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Audit\AuditLog.cs" />
     <Compile Include="Models\Audit\IAuditLogEntity.cs" />
     <Compile Include="Models\Base\ArayuzKisitlama.cs" />
@@ -197,6 +193,7 @@
     <Compile Include="Models\Custom\Urun.cs" />
     <Compile Include="Models\Custom\HammaddeCinsi.cs" />
     <Compile Include="Models\Custom\UrunCinsi.cs" />
+    <Compile Include="Models\HammaddeHareket.cs" />
     <Compile Include="Models\Micro\BaglantiTipi.cs" />
     <Compile Include="Models\Micro\Cari.cs" />
     <Compile Include="Models\Base\Cari.cs" />
@@ -2476,6 +2473,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Migrations\" />
     <Folder Include="Views\DataTable\" />
     <Folder Include="Views\Timer\" />
   </ItemGroup>
@@ -2523,11 +2521,6 @@
     <Content Include="Views\Kalip\Form.cshtml" />
     <Content Include="Views\Kalip\Index.cshtml" />
     <Content Include="Views\Siparis\SiparisFormu.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202202170941558_1.resx">
-      <DependentUpon>202202170941558_1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
