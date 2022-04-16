@@ -17,7 +17,6 @@ namespace EgePakErp.Controllers
             return View();
         }
 
-
         [Yetki("Hammadde Cinsi", "Üretim")]
         public JsonResult Liste()
         {
@@ -87,7 +86,6 @@ namespace EgePakErp.Controllers
             return Json(dtModel);
 
         }
-
         public PartialViewResult Form(int? id)
         {
             id = id == null ? 0 : id.Value;
@@ -102,7 +100,6 @@ namespace EgePakErp.Controllers
 
             return PartialView(new HammaddeCinsi());
         }
-
 
         [Yetki("Hammadde Kaydet", "Üretim")]
         public JsonResult Kaydet(HammaddeCinsi form)
