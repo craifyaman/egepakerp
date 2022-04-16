@@ -141,6 +141,7 @@
     <Compile Include="Controllers\DataTableController.cs" />
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
+    <Compile Include="Controllers\HammaddeHareketController.cs" />
     <Compile Include="Migrations\202204152340044_HammaddeCinsiVeHammaddeHareket.cs" />
     <Compile Include="Migrations\202204152340044_HammaddeCinsiVeHammaddeHareket.designer.cs">
       <DependentUpon>202204152340044_HammaddeCinsiVeHammaddeHareket.cs</DependentUpon>
@@ -2493,7 +2494,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Migrations\" />
     <Folder Include="Views\DataTable\" />
     <Folder Include="Views\Timer\" />
   </ItemGroup>
