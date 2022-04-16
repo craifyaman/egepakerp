@@ -53,5 +53,7 @@ Thumbs.db
 /EgepakErp/EgepakErp/bin
 /EgepakErp/EgepakErp/obj/Debug
 /EgepakErp/packages
+/EgepakErp/EgepakErp/Migrations
+*/EgepakErp/EgepakErp/Migrations
 /EgepakErp/EgepakErp/obj/Release
 /EgepakErp/EgepakErp/Properties/PublishProfiles
