@@ -17,6 +17,7 @@ namespace EgePakErp.Models
 
         public virtual ICollection<Kalip> Kalip { get; set; }
         public virtual ICollection<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }
-        [NotMapped] public List<string> Include { get; set; }
+        [NotMapped] 
+        public List<string> Include { get; set; }
     }
 }

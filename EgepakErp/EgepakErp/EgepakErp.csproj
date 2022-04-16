@@ -141,14 +141,6 @@
     <Compile Include="Controllers\DataTableController.cs" />
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
-    <Compile Include="Migrations\202204152340044_HammaddeCinsiVeHammaddeHareket.cs" />
-    <Compile Include="Migrations\202204152340044_HammaddeCinsiVeHammaddeHareket.designer.cs">
-      <DependentUpon>202204152340044_HammaddeCinsiVeHammaddeHareket.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204152345583_HammaddeCinsiVeHammaddeHareket1.cs" />
-    <Compile Include="Migrations\202204152345583_HammaddeCinsiVeHammaddeHareket1.designer.cs">
-      <DependentUpon>202204152345583_HammaddeCinsiVeHammaddeHareket1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHaraket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
@@ -181,14 +173,6 @@
     </Compile>
     <Compile Include="Helper\CookieHelper.cs" />
     <Compile Include="Helper\StringCipher.cs" />
-    <Compile Include="Migrations\202202170941558_1.cs" />
-    <Compile Include="Migrations\202202170941558_1.designer.cs">
-      <DependentUpon>202202170941558_1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204101225057_HammaddeCinsiUpdate.cs" />
-    <Compile Include="Migrations\202204101225057_HammaddeCinsiUpdate.designer.cs">
-      <DependentUpon>202204101225057_HammaddeCinsiUpdate.cs</DependentUpon>
-    </Compile>
     <Compile Include="Models\Audit\AuditLog.cs" />
     <Compile Include="Models\Audit\IAuditLogEntity.cs" />
     <Compile Include="Models\Base\ArayuzKisitlama.cs" />
@@ -2543,20 +2527,6 @@
     <Content Include="Views\Siparis\SiparisFormu.cshtml" />
     <Content Include="Views\HammaddeCinsi\Index.cshtml" />
     <Content Include="Views\HammaddeCinsi\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202202170941558_1.resx">
-      <DependentUpon>202202170941558_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204101225057_HammaddeCinsiUpdate.resx">
-      <DependentUpon>202204101225057_HammaddeCinsiUpdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204152340044_HammaddeCinsiVeHammaddeHareket.resx">
-      <DependentUpon>202204152340044_HammaddeCinsiVeHammaddeHareket.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204152345583_HammaddeCinsiVeHammaddeHareket1.resx">
-      <DependentUpon>202204152345583_HammaddeCinsiVeHammaddeHareket1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
