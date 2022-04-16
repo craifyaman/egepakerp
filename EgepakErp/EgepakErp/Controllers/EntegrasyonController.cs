@@ -118,7 +118,6 @@ namespace EgePakErp.Controllers
                 catch (Exception ex)
                 {
                     continue;
-                    var a = 1;
                 }
 
             };

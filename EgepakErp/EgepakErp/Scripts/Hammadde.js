@@ -143,6 +143,7 @@
 
         $(document).on("click", "[event='hammaddeFormPopup']", function (e) {
             e.preventDefault();
+            debugger;
             var title = $(this).attr("formTitle");
             var id = $(this).attr("id");
             Post('/HammaddeCinsi/Form',
