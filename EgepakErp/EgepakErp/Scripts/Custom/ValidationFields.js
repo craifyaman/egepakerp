@@ -88,7 +88,7 @@
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' },
                     stringLength: {
-                        min:10, 
+                        min: 10,
                         max: 10,
                         message: 'Başında 0 olmadan 10 haneli telefon numarası giriniz'
                     },
@@ -117,52 +117,43 @@
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' },
                 }
-            } 
+            }
         };
         return fields;
     }
 
     function hammaddeFormFields() {
         var fields = {
-            Id: {
+            HammaddeCinsiId: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            BransId: {
+            Adi: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            Eposta: {
+            Kisaltmasi: {
                 validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' },
-                    emailAddress: { message: 'Gecerli Bir Eposta Adresi Girin', },
+                    notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            Eposta2: {
+            Aciklamasi: {
                 validators: {
-                    emailAddress: { message: 'Gecerli Bir Eposta Adresi Girin', },
+                    notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            Telefon: {
+            Aciklamasi: {
                 validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' },
-                    stringLength: {
-                        min: 10,
-                        max: 10,
-                        message: 'Başında 0 olmadan 10 haneli telefon numarası giriniz'
-                    },
-                    integer: {
-                        message: 'Sadece Rakam Giriniz',
-                    },
+                    notEmpty: { message: 'Bos Birakilamaz' }
                 }
             }
         };
         return fields;
     }
 
-     
+
 
     function urunFormFields() {
         var fields = {
@@ -175,7 +166,7 @@
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
-            } 
+            }
         };
         return fields;
     }
