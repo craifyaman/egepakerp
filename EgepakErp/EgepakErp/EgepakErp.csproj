@@ -141,6 +141,7 @@
     <Compile Include="Controllers\DataTableController.cs" />
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
+    <Compile Include="Controllers\HammaddeHareketController.cs" />
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHaraket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
