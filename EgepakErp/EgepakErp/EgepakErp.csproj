@@ -142,6 +142,22 @@
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
+    <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.cs" />
+    <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.designer.cs">
+      <DependentUpon>202204161142390_HammaddeHaraketAciklama.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202204161231319_HammaddeHaraketFaturaBilgileri.cs" />
+    <Compile Include="Migrations\202204161231319_HammaddeHaraketFaturaBilgileri.designer.cs">
+      <DependentUpon>202204161231319_HammaddeHaraketFaturaBilgileri.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202204161254023_HammaddeHaraketFaturaBilgileri2.cs" />
+    <Compile Include="Migrations\202204161254023_HammaddeHaraketFaturaBilgileri2.designer.cs">
+      <DependentUpon>202204161254023_HammaddeHaraketFaturaBilgileri2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202204161256214_HammaddeHaraketFaturaBilgileri3.cs" />
+    <Compile Include="Migrations\202204161256214_HammaddeHaraketFaturaBilgileri3.designer.cs">
+      <DependentUpon>202204161256214_HammaddeHaraketFaturaBilgileri3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHaraket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
@@ -197,7 +213,6 @@
     <Compile Include="Models\Custom\Urun.cs" />
     <Compile Include="Models\Custom\HammaddeCinsi.cs" />
     <Compile Include="Models\Custom\UrunCinsi.cs" />
-    <Compile Include="Models\HammaddeHareket.cs" />
     <Compile Include="Models\Micro\BaglantiTipi.cs" />
     <Compile Include="Models\Micro\Cari.cs" />
     <Compile Include="Models\Base\Cari.cs" />
@@ -2441,6 +2456,7 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.ttf" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
+    <Content Include="Scripts\HammaddeHareket.js" />
     <Content Include="Scripts\Cari.js" />
     <Content Include="Scripts\Custom\DtColums.js" />
     <Content Include="Scripts\Custom\Form.js" />
@@ -2527,6 +2543,22 @@
     <Content Include="Views\Siparis\SiparisFormu.cshtml" />
     <Content Include="Views\HammaddeCinsi\Index.cshtml" />
     <Content Include="Views\HammaddeCinsi\Form.cshtml" />
+    <Content Include="Views\HammaddeHareket\Form.cshtml" />
+    <Content Include="Views\HammaddeHareket\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202204161142390_HammaddeHaraketAciklama.resx">
+      <DependentUpon>202204161142390_HammaddeHaraketAciklama.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204161231319_HammaddeHaraketFaturaBilgileri.resx">
+      <DependentUpon>202204161231319_HammaddeHaraketFaturaBilgileri.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204161254023_HammaddeHaraketFaturaBilgileri2.resx">
+      <DependentUpon>202204161254023_HammaddeHaraketFaturaBilgileri2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204161256214_HammaddeHaraketFaturaBilgileri3.resx">
+      <DependentUpon>202204161256214_HammaddeHaraketFaturaBilgileri3.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

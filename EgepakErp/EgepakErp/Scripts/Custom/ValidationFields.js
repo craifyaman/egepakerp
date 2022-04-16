@@ -220,6 +220,53 @@
         return fields;
     }
 
+    function hammaddeHareketFormFields() {
+        var fields = {
+            
+            HammaddeCinsiId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            TedarikciId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            DovizId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            MarkaId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            KdvOranı: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            ToplamTutar: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            KdvTutari: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Aciklama: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
+
     return {
         // public functions
         GorusmeFormFields: function () {
@@ -245,7 +292,12 @@
         },
         HammaddeFormFields: function () {
             return hammaddeFormFields();
+        },
+        HammaddeHareketFormFields: function () {
+            return hammaddeHareketFormFields();
         }
+
+        
     };
 }();
 

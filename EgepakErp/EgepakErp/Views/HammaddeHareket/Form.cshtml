@@ -1,0 +1,104 @@
+﻿@model EgePakErp.Controllers.HammaddeHaraket
+<!--begin::Form-->
+<form id="hammaddeForm">
+    
+    <div class="form-group row">
+        <div class="col-lg-6">
+            @Html.HiddenFor(x => x.HammaddeHaraketId)
+            <div class="form-group mb-5">
+                <label>Hammadde Cinsi</label>
+                @Html.DropDownListFor(m => m.HammaddeCinsiId, BaseHammmaddeCinsiSelectList(Model.HammaddeCinsiId), "Seçiniz", new {@class = "form-control selectpiker",})
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Marka</label>
+                @Html.DropDownListFor(m => m.MarkaId, BaseMarkaSelectList(Model.MarkaId), "Seçiniz", new {@class = "form-control selectpiker",})
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Hammadde Tipi</label>
+                @Html.DropDownListFor(m => m.HammaddetipiId, BaseHammaddeTipiSelectList(Model.HammaddetipiId), "Seçiniz", new {@class = "form-control selectpiker",})
+            </div>
+            <div class="form-group mb-5">
+                <label>Tedarikçi</label>
+                @Html.DropDownListFor(m => m.TedarikciId, BaseCariSelectList(Model.TedarikciId), "Seçiniz", new {@class = "form-control selectpiker",})
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Miktar</label>
+                @Html.TextBoxFor(x => x.Miktar, new {@class = "form-control", placeholder = "Açıklaması"})
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Birim Fiyat</label>
+                @Html.TextBoxFor(x => x.BirimFiyat, new {@class = "form-control", placeholder = "Birim Fiyat"})
+            </div>
+            <div class="form-group mb-5">
+                <label>Doviz</label>
+                @Html.DropDownListFor(m => m.DovizId, BaseDovizSelectList(Model.DovizId), "Seçiniz", new {@class = "form-control selectpiker",})
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Kdv Tutarı</label>
+                @Html.TextBoxFor(x => x.KdvTutari, new {@class = "form-control", placeholder = "Kdv Tutari"})
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Dolar Kuru</label>
+                @Html.TextBoxFor(x => x.DolarKuru, new {@class = "form-control", placeholder = "Kdv Tutari"})
+            </div>
+
+
+        </div>
+        <div class="col-lg-6">
+
+            <div class="form-group mb-5">
+                <label>Euro Kuru</label>
+                @Html.TextBoxFor(x => x.EuroKuru, new { @class = "form-control", placeholder = "Kdv Tutari" })
+            </div>
+
+
+
+            <div class="form-group mb-5">
+                <label>Pound Kuru</label>
+                @Html.TextBoxFor(x => x.PoundKuru, new { @class = "form-control", placeholder = "Kdv Tutari" })
+            </div>
+            <div class="form-group mb-5">
+                <label>Fatura No</label>
+                @Html.TextBoxFor(x => x.FaturaNo, new { @class = "form-control", placeholder = "Fatura No" })
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Fatura Tarihi</label>
+                @Html.TextBoxFor(x => x.FaturaTarihi, new { @class = "form-control", placeholder = "Sira No", type = "datetime-local" })
+
+                @*<div class="col-10">
+                <input class="form-control" type="datetime-local" value="2011-08-19T13:45:00" id="example-datetime-local-input" />
+            </div>*@
+            </div>
+
+
+            <div class="form-group mb-5">
+                <label>Belge No</label>
+                @Html.TextBoxFor(x => x.BelgeNo, new { @class = "form-control", placeholder = "Belge No" })
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Sıra No</label>
+                @Html.TextBoxFor(x => x.SiraNo, new { @class = "form-control", placeholder = "Sira No" })
+            </div>
+
+
+            <div class="form-group mb-5">
+                <label>Hammadde Giriş Tarihi</label>
+                @Html.TextBoxFor(x => x.HammaddeGirisTarihi, new { @class = "form-control", placeholder = "Hammadde Giriş Tarihi", type = "datetime-local" })
+            </div>
+
+            <div class="form-group mb-5">
+                <label>Açıklama</label>
+                @Html.TextAreaFor(x => x.Aciklama, new { @class = "form-control", placeholder = "Açıklama" })
+            </div>
+        </div>
+    </div>
+</form>
+<!--end::Form-->

@@ -115,6 +115,72 @@ namespace EgePakErp.Custom
 
             return result;
         }
+
+        public IEnumerable<SelectListItem> BaseHammmaddeCinsiSelectList(int? id)
+        {
+            var result = db.HammaddeCinsi.Select(x => new SelectListItem()
+            {
+                Value = x.HammaddeCinsiId.ToString(),
+                Text = x.Adi,
+                Selected = x.HammaddeCinsiId == id
+            }).ToList();
+
+            return result;
+        }
+
+
+        public IEnumerable<SelectListItem> BaseMarkaSelectList(int? id)
+        {
+            var result = db.Marka.Select(x => new SelectListItem()
+            {
+                Value = x.Id.ToString(),
+                Text = x.Adi,
+                Selected = x.Id== id
+            }).ToList();
+
+            return result;
+        }
+
+
+        public IEnumerable<SelectListItem> BaseDovizSelectList(int? id)
+        {
+            var result = db.Doviz.Select(x => new SelectListItem()
+            {
+                Value = x.DovizId.ToString(),
+                Text = x.Sembol + " " + x.Adi,
+                Selected = x.DovizId == id
+            }).ToList();
+
+            return result;
+        }
+
+        public IEnumerable<SelectListItem> BaseHammaddeTipiSelectList(int? id)
+        {
+            var result = db.HammaddeTipi.Select(x => new SelectListItem()
+            {
+                Value = x.Id.ToString(),
+                Text = x.Tipi,
+                Selected = x.Id== id
+            }).ToList();
+
+            return result;
+        }
+
+
+        public IEnumerable<SelectListItem> BaseCariSelectList(int? id)
+        {
+            var result = db.Cari.Select(x => new SelectListItem()
+            {
+                Value = x.CariId.ToString(),
+                Text = x.Unvan,
+                Selected = x.CariId == id
+            }).ToList();
+
+            return result;
+        }
+
+
+
         public List<Ilce> baseIlce(int ilId)
         {
             return db.Ilce.Where(i => i.IlId == ilId).ToList();

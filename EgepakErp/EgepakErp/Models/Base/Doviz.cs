@@ -9,7 +9,7 @@ namespace EgePakErp
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Doviz")]
-    public partial class Doviz
+    public  class Doviz
     {
         [Key]
         public int DovizId { get; set; }

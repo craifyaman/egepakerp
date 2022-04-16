@@ -523,7 +523,76 @@
             }];
         return columns;
     }
-
+    function hammaddeHareketColumns() {
+        var columns = [
+            {
+                field: 'HammaddeHaraketId',
+                title: 'ID',
+                width: 50
+            },
+            {
+                field: 'FaturaTarihi',
+                title: 'Fatura Tarihi'
+            },
+            {
+                field: 'Miktar',
+                title: 'Miktar'
+            },
+            {
+                field: 'KdvOranı',
+                title: 'Kdv Oranı'
+            },
+            {
+                field: 'FaturaNo',
+                title: 'Fatura No'
+            },
+            {
+                field: 'OrjinalDovizCinsi',
+                title: 'Orjinal Doviz Cinsi'
+            },
+            {
+                field: 'KdvTutarı',
+                title: 'Kdv Tutarı'
+            },
+            {
+                field: 'ToplamTutar',
+                title: 'Toplam Tutar'
+            },
+            {
+                field: 'HammaddeCinsi',
+                title: 'Hammadde Cinsi',
+                sortable: false,
+            },
+            {
+                field: 'Aciklama',
+                title: 'Açıklama',
+                sortable: false,
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var cls = row.Durum == "Aktif" ? "danger" : "success";
+                    var durum = row.Durum == "Aktif" ? "Pasif" : "Aktif";
+                    return '\
+	                       <a class="btn btn-icon btn-info" event="hammaddeFormPopup" formTitle="'+ row.FaturaNo + ' Düzenle" href="#" id="' + row.HammaddeHaraketId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top">\
+                                <i class="flaticon-edit" ></i>\
+                           </a>\
+                             <a class="btn btn-icon btn-primary" href="/hammadde/detay/'+ row.HammaddeHaraketId + '" title="Hammadde Detay Sayfası" data-toggle="tooltip" data-placement="top">\
+                                <i class="flaticon-search" ></i>\
+                           </a>\
+                            <a class="btn btn-icon btn-'+ cls + '" event="durum" href="#" id="' + row.HammaddeHaraketId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top">\
+                                <i class="flaticon-user" ></i>\
+                           </a>\
+	                    ';
+                },
+            }];
+        return columns;
+    }
     return {
         // public functions
         CariColumns: function () {
@@ -572,6 +641,9 @@
             else if (name == "kalip") {
                 return kalipColumns();
             }
+        },
+        HammaddeHareketColumns: function () {
+            return hammaddeHareketColumns();
         }
     };
 }();
