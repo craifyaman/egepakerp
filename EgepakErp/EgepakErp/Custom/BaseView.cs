@@ -103,6 +103,18 @@ namespace EgePakErp.Custom
             ulkeId = ulkeId == null ? 1 : ulkeId.Value;
             return db.Il.Where(i => i.UlkeId == ulkeId).ToList();
         }
+
+        public IEnumerable<SelectListItem> BaseBirimSelectList(int? birimId)
+        {
+            var result=db.HammaddeBirimi.Select(x => new SelectListItem()
+            {
+                Value = x.Id.ToString(),
+                Text = x.Birimi,
+                Selected = x.Id == birimId
+            }).ToList();
+
+            return result;
+        }
         public List<Ilce> baseIlce(int ilId)
         {
             return db.Ilce.Where(i => i.IlId == ilId).ToList();

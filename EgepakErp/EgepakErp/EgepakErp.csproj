@@ -141,6 +141,16 @@
     <Compile Include="Controllers\DataTableController.cs" />
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
+    <Compile Include="Migrations\202204152340044_HammaddeCinsiVeHammaddeHareket.cs" />
+    <Compile Include="Migrations\202204152340044_HammaddeCinsiVeHammaddeHareket.designer.cs">
+      <DependentUpon>202204152340044_HammaddeCinsiVeHammaddeHareket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202204152345583_HammaddeCinsiVeHammaddeHareket1.cs" />
+    <Compile Include="Migrations\202204152345583_HammaddeCinsiVeHammaddeHareket1.designer.cs">
+      <DependentUpon>202204152345583_HammaddeCinsiVeHammaddeHareket1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\HammaddeBirimi.cs" />
+    <Compile Include="Models\Custom\HammaddeHaraket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
     <Compile Include="Controllers\KalipController.cs" />
     <Compile Include="Controllers\UrunController.cs" />
@@ -191,6 +201,8 @@
     <Compile Include="Models\Base\Doviz.cs" />
     <Compile Include="Models\Base\PersonelTip.cs" />
     <Compile Include="Models\Brans.cs" />
+    <Compile Include="Models\Custom\HammaddeTipi.cs" />
+    <Compile Include="Models\Custom\Marka.cs" />
     <Compile Include="Models\Custom\SepetIcerik.cs" />
     <Compile Include="Models\Custom\Sepet.cs" />
     <Compile Include="Models\Custom\KalipUrunRelation.cs" />
@@ -2528,6 +2540,7 @@
     <Content Include="Views\Kalip\Index.cshtml" />
     <Content Include="Views\Siparis\SiparisFormu.cshtml" />
     <Content Include="Views\HammaddeCinsi\Index.cshtml" />
+    <Content Include="Views\HammaddeCinsi\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202202170941558_1.resx">
@@ -2535,6 +2548,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202204101225057_HammaddeCinsiUpdate.resx">
       <DependentUpon>202204101225057_HammaddeCinsiUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204152340044_HammaddeCinsiVeHammaddeHareket.resx">
+      <DependentUpon>202204152340044_HammaddeCinsiVeHammaddeHareket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204152345583_HammaddeCinsiVeHammaddeHareket1.resx">
+      <DependentUpon>202204152345583_HammaddeCinsiVeHammaddeHareket1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

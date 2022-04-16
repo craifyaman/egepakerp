@@ -1,49 +1,55 @@
 ﻿var Hammadde = function () {
 
     function Kaydet() {
-        var validation = ValidateForm.IsValid("HammaddeForm", ValidationFields.HammaddeFormFields());
-        validation.validate().then(function (status) {
-            if (status == 'Valid') {
-                var Hammadde = $("#HammaddeForm").serializeObject();
+        debugger;
+        try {
+            var valFields = ValidationFields.HammaddeFormFields();
+            var validation = ValidateForm.IsValid("hammaddeForm",valFields );
+            validation.validate().then(function (status) {
+                if (status == 'Valid') {
+                    var Hammadde = $("#hammaddeForm").serializeObject();
 
-                var keys = Object.keys(Hammadde);
-                var include = keys.slice(1, Hammadde.length);
-                Hammadde.Include = include;
+                    var keys = Object.keys(Hammadde);
+                    var include = keys.slice(1, Hammadde.length);
+                    Hammadde.Include = include;
 
-                console.log("Hammadde", Hammadde);
+                    console.log("Hammadde", Hammadde);
 
-                Post('/Hammadde/Kaydet',
-                    { Hammadde: Hammadde },
-                    function (response) {
-                        if (response.Success) {
-                            toastr.success(response.Description);
-                        } else {
-                            toastr.error(response.Description);
-                        }
-                    },
-                    function (x, y, z) {
-                        //Error
-                    },
-                    function () {
-                        //BeforeSend
-                    },
-                    function () {
-                        //Complete
-                        bootbox.hideAll();
-                        setTimeout(function () { $('#kt_datatable').KTDatatable('reload'); }, 3000)
-                    },
-                    "json");
+                    Post('/HammaddeCinsi/Kaydet',
+                        { Hammadde: Hammadde },
+                        function (response) {
+                            if (response.Success) {
+                                toastr.success(response.Description);
+                            } else {
+                                toastr.error(response.Description);
+                            }
+                        },
+                        function (x, y, z) {
+                            //Error
+                        },
+                        function () {
+                            //BeforeSend
+                        },
+                        function () {
+                            //Complete
+                            bootbox.hideAll();
+                            setTimeout(function () { $('#kt_datatable').KTDatatable('reload'); }, 3000)
+                        },
+                        "json");
 
-            } else {
-                return false;
-            }
-        });
+                } else {
+                    return false;
+                }
+            });
+        } catch (e) {
+            console.log(e);
+        } 
     }
 
 
 
     function DurumGuncelle(id) {
-        Post('/Hammadde/DurumGuncelle',
+        Post('/HammaddeCinsi/DurumGuncelle',
             { id: id },
             function (response) {
 
@@ -135,11 +141,11 @@
             });
         });
 
-        $(document).on("click", "[event='HammaddeFormPopup']", function (e) {
+        $(document).on("click", "[event='hammaddeFormPopup']", function (e) {
             e.preventDefault();
             var title = $(this).attr("formTitle");
             var id = $(this).attr("id");
-            Post('/Hammadde/Form',
+            Post('/HammaddeCinsi/Form',
                 { id: id },
                 function (response) {
                     bootbox.dialog({

@@ -1,8 +1,11 @@
 ﻿using EgePakErp.Custom;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web.Mvc;
 using System.Linq.Dynamic;
+using EgePakErp.Models;
+
 namespace EgePakErp.Controllers
 {
     public class HammaddeCinsiController : BaseController
@@ -74,8 +77,8 @@ namespace EgePakErp.Controllers
                 BirimId = i.BirimId,/*Daaha Sonra değişcek*/
                 Kodu= i.Kisaltmasi,
                 //UretimZamani = i.UretimZamani,
-                Kaliplar = i.Kalip.Select(s => s.Adi),
-                KalipKodu = i.Kalip.Select(s => s.Adi+ "-"+s.KalipOzellik)             
+                //Kaliplar = i.Kalip.Select(s => s.Adi),
+                //KalipKodu = i.Kalip.Select(s => s.Adi+ "-"+s.KalipOzellik)             
 
             }).ToList<dynamic>();
 
@@ -84,5 +87,70 @@ namespace EgePakErp.Controllers
             return Json(dtModel);
 
         }
+
+        public PartialViewResult Form(int? id)
+        {
+            id = id == null ? 0 : id.Value;
+            if (id!=0)
+            {
+                var model = Db.HammaddeCinsi
+                    
+                    .FirstOrDefault(i => i.HammaddeCinsiId == id);
+
+                return PartialView(model);
+            }
+
+            return PartialView(new HammaddeCinsi());
+        }
+
+
+        [Yetki("Hammadde Kaydet", "Üretim")]
+        public JsonResult Kaydet(HammaddeCinsi form)
+        {
+            var response = new Response();
+
+            try
+            {
+                if (form.HammaddeCinsiId == 0)
+                {
+                    
+                    Db.HammaddeCinsi.Add(form);
+                }
+                else
+                {
+                    var entity = Db.HammaddeCinsi
+                        .FirstOrDefault(i => i.HammaddeCinsiId== form.HammaddeCinsiId);
+
+                    if (entity != null)
+                    {
+                        //alanları güncelle
+                        var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                        foreach (var prop in propList)
+                        {
+                            if (form.Include.Contains(prop.Name))
+                            {
+                                prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
+                            }
+                        }
+                    }
+                }
+
+                Db.SaveChanges(CurrentUser.PersonelId);
+                response.Success = true;
+                response.Description = "İşlem Başarılı";
+            }
+            catch (Exception ex)
+            {
+                response.Success = true;
+                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
+            }
+
+
+
+            return Json(response);
+
+        }
+
+
     }
 }

@@ -1,3 +1,5 @@
+using EgePakErp.Controllers;
+
 namespace EgePakErp
 {
     using EgePakErp.Models;
@@ -27,9 +29,8 @@ namespace EgePakErp
 
         [NotMapped]
         public List<string> Include { get; set; }
+
+        public virtual ICollection<HammaddeHaraket> HammaddeHaraket { get; set; }
     }
-
-
-
 
 }

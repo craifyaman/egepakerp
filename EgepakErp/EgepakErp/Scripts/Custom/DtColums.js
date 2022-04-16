@@ -99,16 +99,17 @@
             },
             {
                 field: 'Kodu',
-                title: 'Kodu',             
+                title: 'Kodu',
+                sortable: false,
             },
-            {
-                field: 'Kaliplar',
-                title: 'Kalıplar'
-            },
-            {
-                field: 'KalipKodu',
-                title: 'Kalıp Kodları'
-            },
+            //{
+            //    field: 'Kaliplar',
+            //    title: 'Kalıplar'
+            //},
+            //{
+            //    field: 'KalipKodu',
+            //    title: 'Kalıp Kodları'
+            //},
             {
                 field: 'İşlem',
                 title: 'İşlem',
@@ -120,13 +121,13 @@
                     var cls = row.Durum == "Aktif" ? "danger" : "success";
                     var durum = row.Durum == "Aktif" ? "Pasif" : "Aktif";
                     return '\
-	                       <a class="btn btn-icon btn-info" event="hammaddeFormPopup" formTitle="'+ row.Unvan + ' Düzenle" href="#" id="' + row.hammaddeId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top">\
+	                       <a class="btn btn-icon btn-info" event="hammaddeFormPopup" formTitle="'+ row.Adi + ' Düzenle" href="#" id="' + row.HammaddeCinsiId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top">\
                                 <i class="flaticon-edit" ></i>\
                            </a>\
-                             <a class="btn btn-icon btn-primary" href="/hammadde/detay/'+ row.HammaddeId + '" title="Hammadde Detay Sayfası" data-toggle="tooltip" data-placement="top">\
+                             <a class="btn btn-icon btn-primary" href="/hammadde/detay/'+ row.HammaddeCinsiId + '" title="Hammadde Detay Sayfası" data-toggle="tooltip" data-placement="top">\
                                 <i class="flaticon-search" ></i>\
                            </a>\
-                            <a class="btn btn-icon btn-'+ cls + '" event="durum" href="#" id="' + row.HammaddeId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top">\
+                            <a class="btn btn-icon btn-'+ cls + '" event="durum" href="#" id="' + row.HammaddeCinsiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top">\
                                 <i class="flaticon-user" ></i>\
                            </a>\
 	                    ';

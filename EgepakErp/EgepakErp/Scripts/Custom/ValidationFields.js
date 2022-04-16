@@ -122,6 +122,48 @@
         return fields;
     }
 
+    function hammaddeFormFields() {
+        var fields = {
+            Id: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            BransId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Eposta: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' },
+                    emailAddress: { message: 'Gecerli Bir Eposta Adresi Girin', },
+                }
+            },
+            Eposta2: {
+                validators: {
+                    emailAddress: { message: 'Gecerli Bir Eposta Adresi Girin', },
+                }
+            },
+            Telefon: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' },
+                    stringLength: {
+                        min: 10,
+                        max: 10,
+                        message: 'Başında 0 olmadan 10 haneli telefon numarası giriniz'
+                    },
+                    integer: {
+                        message: 'Sadece Rakam Giriniz',
+                    },
+                }
+            }
+        };
+        return fields;
+    }
+
+     
+
     function urunFormFields() {
         var fields = {
             UrunCinsiId: {
@@ -209,6 +251,9 @@
         },
         KalipFormFields: function () {
             return kalipFormFields();
+        },
+        HammaddeFormFields: function () {
+            return hammaddeFormFields();
         }
     };
 }();
