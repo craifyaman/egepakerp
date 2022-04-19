@@ -84,7 +84,7 @@ namespace EgePakErp.Controllers
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
 
 
-            var dto = model.Select(i => new
+            var dto = model.AsEnumerable().Select(i => new
             {
                 HammaddeHaraketId = i.HammaddeHaraketId,
                 FaturaTarihi = i.FaturaTarihi.ToString("dd/MM/yyyyy"),
