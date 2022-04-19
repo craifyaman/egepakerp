@@ -43,6 +43,8 @@ var HammaddeHareket = function () {
         var validation = ValidateForm.IsValid("hammaddeHareketForm", ValidationFields.HammaddeHareketFormFields());
         validation.validate().then(function (status) {
             if (status == 'Valid') {
+
+                debugger;
                 var hammaddeHareket = $("#hammaddeHareketForm").serializeObject();
 
                 var keys = Object.keys(hammaddeHareket);
@@ -52,7 +54,7 @@ var HammaddeHareket = function () {
                 console.log("hammaddeHareket", hammaddeHareket);
 
                 Post('/HammaddeHareket/Kaydet',
-                    { hammaddeHareket: hammaddeHareket },
+                    { form: hammaddeHareket },
                     function (response) {
                         if (response.Success) {
                             toastr.success(response.Description);
@@ -77,6 +79,8 @@ var HammaddeHareket = function () {
                 return false;
             }
         });
+
+        
     }
 
     

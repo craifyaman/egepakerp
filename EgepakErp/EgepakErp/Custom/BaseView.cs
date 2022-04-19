@@ -106,11 +106,11 @@ namespace EgePakErp.Custom
 
         public IEnumerable<SelectListItem> BaseBirimSelectList(int? birimId)
         {
-            var result=db.HammaddeBirimi.Select(x => new SelectListItem()
+            var result=db.Birim.Select(x => new SelectListItem()
             {
-                Value = x.Id.ToString(),
-                Text = x.Birimi,
-                Selected = x.Id == birimId
+                Value = x.BirimId.ToString(),
+                Text = x.Adi,
+                Selected = x.BirimId == birimId
             }).ToList();
 
             return result;

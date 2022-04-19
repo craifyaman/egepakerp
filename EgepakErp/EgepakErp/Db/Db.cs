@@ -47,7 +47,7 @@ namespace EgePakErp
         #region Custom
         public virtual DbSet<HammaddeCinsi> HammaddeCinsi { get; set; }
         public virtual DbSet<HammaddeTipi> HammaddeTipi { get; set; }
-        public virtual DbSet<HammaddeBirimi> HammaddeBirimi { get; set; }
+        public virtual DbSet<Birim> Birim { get; set; }
         public virtual DbSet<Marka> Marka { get; set; }
         public virtual DbSet<HammaddeHaraket> HammaddeHaraket { get; set; }
         public virtual DbSet<Doviz> Doviz{ get; set; }

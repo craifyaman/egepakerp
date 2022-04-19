@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
+using EgepakErp.Custom.Attribute;
 using EgePakErp.Controllers;
 using EgePakErp.Custom;
 using EgePakErp.Models;
@@ -83,10 +84,10 @@ namespace EgePakErp.Controllers
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
 
 
-            var dto = model.Select(i => new
+            var dto = model.AsEnumerable().Select(i => new
             {
                 HammaddeHaraketId = i.HammaddeHaraketId,
-                FaturaTarihi = i.FaturaTarihi,
+                FaturaTarihi = i.FaturaTarihi.ToString("dd/MM/yyyyy"),
                 Miktar = i.Miktar,
                 KdvOranı = i.KdvOranı,
                 FaturaNo = i.FaturaNo,
@@ -123,6 +124,7 @@ namespace EgePakErp.Controllers
         }
 
 
+        //[AjaxValidation]
         [Yetki("Hammadde Hareket Kaydet", "Üretim")]
         public JsonResult Kaydet(HammaddeHaraket form)
         {
@@ -130,9 +132,9 @@ namespace EgePakErp.Controllers
 
             try
             {
-                if (form.HammaddeCinsiId == 0)
+                if (form.HammaddeHaraketId == 0)
                 {
-
+                    form.KayitTarihi = DateTime.Now;
                     Db.HammaddeHaraket.Add(form);
                 }
                 else

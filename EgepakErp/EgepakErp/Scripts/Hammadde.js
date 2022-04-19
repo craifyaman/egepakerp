@@ -16,7 +16,7 @@
                     console.log("Hammadde", Hammadde);
 
                     Post('/HammaddeCinsi/Kaydet',
-                        { Hammadde: Hammadde },
+                        { form: Hammadde },
                         function (response) {
                             if (response.Success) {
                                 toastr.success(response.Description);

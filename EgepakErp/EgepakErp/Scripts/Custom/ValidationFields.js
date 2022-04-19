@@ -124,22 +124,12 @@
 
     function hammaddeFormFields() {
         var fields = {
-            HammaddeCinsiId: {
-                validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
-                }
-            },
             Adi: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
             Kisaltmasi: {
-                validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
-                }
-            },
-            Aciklamasi: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
@@ -222,13 +212,22 @@
 
     function hammaddeHareketFormFields() {
         var fields = {
-            
             HammaddeCinsiId: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            TedarikciId: {
+            HammaddetipiId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Miktar: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            BirimFiyat: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
@@ -238,12 +237,7 @@
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            MarkaId: {
-                validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
-                }
-            },
-            KdvOranı: {
+            KdvTutari: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
@@ -253,12 +247,12 @@
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            KdvTutari: {
+            FaturaTarihi: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            Aciklama: {
+            HammaddeGirisTarihi: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
