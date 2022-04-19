@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Web;
 using System.Web.Mvc;
+using EgepakErp.Custom.Attribute;
 using EgePakErp.Controllers;
 using EgePakErp.Custom;
 using EgePakErp.Models;
@@ -123,6 +124,7 @@ namespace EgePakErp.Controllers
         }
 
 
+        [AjaxValidation]
         [Yetki("Hammadde Hareket Kaydet", "Üretim")]
         public JsonResult Kaydet(HammaddeHaraket form)
         {

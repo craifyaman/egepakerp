@@ -1,43 +1,46 @@
 ﻿var HammaddeHareket = function () {
 
     function Kaydet() {
-        var validation = ValidateForm.IsValid("hammaddeHareketForm", ValidationFields.HammaddeHareketFormFields());
-        validation.validate().then(function (status) {
-            if (status == 'Valid') {
-                var hammaddeHareket = $("#hammaddeHareketForm").serializeObject();
+        //var validation = ValidateForm.IsValid("hammaddeHareketForm", ValidationFields.HammaddeHareketFormFields());
+        //validation.validate().then(function (status) {
+        //    if (status == 'Valid') {
 
-                var keys = Object.keys(hammaddeHareket);
-                var include = keys.slice(1, hammaddeHareket.length);
-                hammaddeHareket.Include = include;
+              
 
-                console.log("hammaddeHareket", hammaddeHareket);
+        //    } else {
+        //        return false;
+        //    }
+        //});
 
-                Post('/HammaddeHareket/Kaydet',
-                    { hammaddeHareket: hammaddeHareket },
-                    function (response) {
-                        if (response.Success) {
-                            toastr.success(response.Description);
-                        } else {
-                            toastr.error(response.Description);
-                        }
-                    },
-                    function (x, y, z) {
-                        //Error
-                    },
-                    function () {
-                        //BeforeSend
-                    },
-                    function () {
-                        //Complete
-                        bootbox.hideAll();
-                        setTimeout(function () { $('#kt_datatable').KTDatatable('reload'); }, 3000)
-                    },
-                    "json");
+        var hammaddeHareket = $("#hammaddeHareketForm").serializeObject();
 
-            } else {
-                return false;
-            }
-        });
+        var keys = Object.keys(hammaddeHareket);
+        var include = keys.slice(1, hammaddeHareket.length);
+        hammaddeHareket.Include = include;
+
+        console.log("hammaddeHareket", hammaddeHareket);
+
+        Post('/HammaddeHareket/Kaydet',
+            { hammaddeHareket: hammaddeHareket },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+                //Complete
+                bootbox.hideAll();
+                setTimeout(function () { $('#kt_datatable').KTDatatable('reload'); }, 3000)
+            },
+            "json");
     }
 
     

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EgePakErp.Controllers
+namespace EgePakErp.Models
 {
     public class Marka
     {

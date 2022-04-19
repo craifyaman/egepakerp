@@ -1,10 +1,14 @@
-﻿using System;
+﻿using EgepakErp.Validator;
+using FluentValidation.Attributes;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using EgePakErp.Models;
 
-namespace EgePakErp.Controllers
+
+namespace EgePakErp.Models
 {
+    [Validator(typeof(HammaddeHareketValidator))]
     public class HammaddeHaraket
     {
         public int HammaddeHaraketId { get; set; }

@@ -33,6 +33,7 @@ namespace EgePakErp.Controllers
 
             var model = Db.HammaddeCinsi
                 .Include("Kalip")                
+                .Include("Birim")                
                 .AsQueryable();
 
 
@@ -74,11 +75,8 @@ namespace EgePakErp.Controllers
                 HammaddeCinsiId = i.HammaddeCinsiId,
                 Adi = i.Adi,                
                 Aciklamasi = i.Aciklamasi,
-                BirimId = i.BirimId,/*Daaha Sonra değişcek*/
-                Kodu= i.Kisaltmasi,
-                //UretimZamani = i.UretimZamani,
-                //Kaliplar = i.Kalip.Select(s => s.Adi),
-                //KalipKodu = i.Kalip.Select(s => s.Adi+ "-"+s.KalipOzellik)             
+                BirimId = i.Birim?.Adi,/*Daaha Sonra değişcek*/
+                Kodu= i.Kisaltmasi
 
             }).ToList<dynamic>();
 

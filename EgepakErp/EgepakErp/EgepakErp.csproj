@@ -58,11 +58,23 @@
     <Reference Include="ExcelDataReader.DataSet, Version=3.6.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelDataReader.DataSet.3.6.0\lib\net35\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
+    <Reference Include="FluentValidation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.8.6.1\lib\net45\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.Mvc5.8.6.1\lib\net45\FluentValidation.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentValidation.ValidatorAttribute, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.ValidatorAttribute.8.6.1\lib\net45\FluentValidation.ValidatorAttribute.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
@@ -75,6 +87,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Workflow.ComponentModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -142,22 +155,13 @@
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
-    <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.cs" />
-    <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.designer.cs">
-      <DependentUpon>202204161142390_HammaddeHaraketAciklama.cs</DependentUpon>
+    <Compile Include="Custom\Attribute\AjaxValidationAttribute.cs" />
+    <Compile Include="Custom\ValidationResponse.cs" />
+    <Compile Include="Migrations\202204190947400_1.cs" />
+    <Compile Include="Migrations\202204190947400_1.designer.cs">
+      <DependentUpon>202204190947400_1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202204161231319_HammaddeHaraketFaturaBilgileri.cs" />
-    <Compile Include="Migrations\202204161231319_HammaddeHaraketFaturaBilgileri.designer.cs">
-      <DependentUpon>202204161231319_HammaddeHaraketFaturaBilgileri.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204161254023_HammaddeHaraketFaturaBilgileri2.cs" />
-    <Compile Include="Migrations\202204161254023_HammaddeHaraketFaturaBilgileri2.designer.cs">
-      <DependentUpon>202204161254023_HammaddeHaraketFaturaBilgileri2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202204161256214_HammaddeHaraketFaturaBilgileri3.cs" />
-    <Compile Include="Migrations\202204161256214_HammaddeHaraketFaturaBilgileri3.designer.cs">
-      <DependentUpon>202204161256214_HammaddeHaraketFaturaBilgileri3.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Custom\Birim.cs" />
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHaraket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
@@ -227,6 +231,8 @@
     <Compile Include="Models\Base\Not.cs" />
     <Compile Include="Models\Base\Ulke.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validator\Class1.cs" />
+    <Compile Include="Validator\HammaddeHareketValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\pages\error\error-3.css" />
@@ -2547,17 +2553,8 @@
     <Content Include="Views\HammaddeHareket\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202204161142390_HammaddeHaraketAciklama.resx">
-      <DependentUpon>202204161142390_HammaddeHaraketAciklama.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204161231319_HammaddeHaraketFaturaBilgileri.resx">
-      <DependentUpon>202204161231319_HammaddeHaraketFaturaBilgileri.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204161254023_HammaddeHaraketFaturaBilgileri2.resx">
-      <DependentUpon>202204161254023_HammaddeHaraketFaturaBilgileri2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202204161256214_HammaddeHaraketFaturaBilgileri3.resx">
-      <DependentUpon>202204161256214_HammaddeHaraketFaturaBilgileri3.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202204190947400_1.resx">
+      <DependentUpon>202204190947400_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
