@@ -1,4 +1,43 @@
-﻿var HammaddeHareket = function () {
+﻿(function ($, $validator) {
+
+    $validator = $validator || $.validator;
+    if ($validator) {
+        // Create a custom validator rule for our server errors that are just going to ensure that a different value is used
+        $validator.addMethod("serverError", function (value, element) {
+            return this.optional(element) || $(element).data("serverError-value") != value;
+        }, $validator.format("{0} is not a valid value"));
+    }
+
+})(jQuery, jQuery.validator);
+
+// Add a flag for ajax errors to make global identification of them easier
+$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+    // Based on: http://lithostech.com/2011/04/jquery-deferreds-and-the-jquery-promise-method/
+    var jqXHRWrapper = $.Deferred(function (defer) {
+        jqXHR
+                .done(defer.resolve)
+                .fail(function (jqXHR, status, thrownError) {
+                    jqXHR.isResponseValidationErrors = false;
+                    if (thrownError === "Bad Request" && jqXHR.responseJSON && jqXHR.responseJSON.TypeName === "ValidationErrors") {
+                        jqXHR.isResponseValidationErrors = true;
+                    }
+                    defer.rejectWith(this, [jqXHR, status, thrownError])
+                })
+            ;
+    });
+
+  
+    // Impose our wrapper on the jqXHR
+    jqXHRWrapper.promise(jqXHR);
+
+    // For compatibility, map done/fail onto success/error handlers.
+    jqXHR.success = jqXHR.done;
+    jqXHR.error = jqXHR.fail;
+});
+
+
+
+var HammaddeHareket = function () {
 
     function Kaydet() {
         var validation = ValidateForm.IsValid("hammaddeHareketForm", ValidationFields.HammaddeHareketFormFields());

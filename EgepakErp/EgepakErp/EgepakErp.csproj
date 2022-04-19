@@ -142,6 +142,7 @@
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
+    <Compile Include="Filter\Validationfilter.cs" />
     <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.cs" />
     <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.designer.cs">
       <DependentUpon>202204161142390_HammaddeHaraketAciklama.cs</DependentUpon>
