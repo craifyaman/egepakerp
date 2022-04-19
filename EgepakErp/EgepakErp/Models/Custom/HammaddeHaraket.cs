@@ -11,6 +11,7 @@ namespace EgePakErp.Models
     [Validator(typeof(HammaddeHareketValidator))]
     public class HammaddeHaraket
     {
+        [Key]
         public int HammaddeHaraketId { get; set; }
 
         public DateTime KayitTarihi { get; set; }
@@ -18,7 +19,8 @@ namespace EgePakErp.Models
         public int HammaddeCinsiId { get; set; }
         public decimal Miktar { get; set; }
         public decimal BirimFiyat { get; set; }
-        public int TedarikciId { get; set; }
+        public int? TedarikciId { get; set; }
+        public Cari Tedarikci { get; set; }
         public decimal KdvTutari { get; set; }
 
         public decimal ToplamTutar { get; set; }
@@ -28,7 +30,8 @@ namespace EgePakErp.Models
         public string BelgeNo { get; set; }
         public string SiraNo { get; set; }
 
-        public int MarkaId { get; set; }
+        public int? MarkaId { get; set; }
+        public Marka Marka { get; set; }
 
         public int DovizId { get; set; }
 
@@ -37,18 +40,13 @@ namespace EgePakErp.Models
         public decimal EuroKuru { get; set; }
 
         public decimal PoundKuru { get; set; }
-
         public int HammaddetipiId { get; set; }
-        
         public DateTime FaturaTarihi { get; set; }
-
         public string Aciklama { get; set; }
         //Virtual
-        public virtual Marka Marka { get; set; }
         public virtual HammaddeCinsi HammaddeCinsi { get; set; }
         public virtual Doviz Doviz { get; set; }
         public virtual HammaddeTipi HammaddeTipi { get; set; }
-        public virtual Cari Tedarikci { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }

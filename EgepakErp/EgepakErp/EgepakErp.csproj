@@ -161,6 +161,10 @@
     <Compile Include="Migrations\202204190947400_1.designer.cs">
       <DependentUpon>202204190947400_1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202204191043178_2.cs" />
+    <Compile Include="Migrations\202204191043178_2.designer.cs">
+      <DependentUpon>202204191043178_2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\Birim.cs" />
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHaraket.cs" />
@@ -2555,6 +2559,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202204190947400_1.resx">
       <DependentUpon>202204190947400_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202204191043178_2.resx">
+      <DependentUpon>202204191043178_2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -13,7 +13,7 @@ namespace EgepakErp.Validator
     {
         public HammaddeHareketValidator()
         {
-            RuleFor(h => h.BirimFiyat).GreaterThan(0).WithMessage("Birim Fiyat Boş Bırakılamaz");
+            //RuleFor(h => h.BirimFiyat).Null().WithMessage("Birim Fiyat Boş Bırakılamaz");
         }
     }
 }

@@ -87,7 +87,7 @@ namespace EgePakErp.Controllers
             var dto = model.Select(i => new
             {
                 HammaddeHaraketId = i.HammaddeHaraketId,
-                FaturaTarihi = i.FaturaTarihi,
+                FaturaTarihi = i.FaturaTarihi.ToString("dd/MM/yyyyy"),
                 Miktar = i.Miktar,
                 KdvOranı = i.KdvOranı,
                 FaturaNo = i.FaturaNo,
@@ -124,7 +124,7 @@ namespace EgePakErp.Controllers
         }
 
 
-        [AjaxValidation]
+        //[AjaxValidation]
         [Yetki("Hammadde Hareket Kaydet", "Üretim")]
         public JsonResult Kaydet(HammaddeHaraket form)
         {
@@ -132,9 +132,9 @@ namespace EgePakErp.Controllers
 
             try
             {
-                if (form.HammaddeCinsiId == 0)
+                if (form.HammaddeHaraketId == 0)
                 {
-
+                    form.KayitTarihi = DateTime.Now;
                     Db.HammaddeHaraket.Add(form);
                 }
                 else
