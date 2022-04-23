@@ -157,9 +157,11 @@
     <Compile Include="Controllers\HammaddeHareketController.cs" />
     <Compile Include="Custom\Attribute\AjaxValidationAttribute.cs" />
     <Compile Include="Custom\ValidationResponse.cs" />
-    <Compile Include="Migrations\202204190947400_1.cs" />
-    <Compile Include="Migrations\202204190947400_1.designer.cs">
-      <DependentUpon>202204190947400_1.cs</DependentUpon>
+   
+    <Compile Include="Filter\Validationfilter.cs" />
+    <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.cs" />
+    <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.designer.cs">
+      <DependentUpon>202204161142390_HammaddeHaraketAciklama.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\202204191043178_2.cs" />
     <Compile Include="Migrations\202204191043178_2.designer.cs">
