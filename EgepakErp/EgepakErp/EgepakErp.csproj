@@ -155,19 +155,10 @@
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
-    <Compile Include="Custom\Attribute\AjaxValidationAttribute.cs" />
-    <Compile Include="Custom\ValidationResponse.cs" />
-   
-    <Compile Include="Filter\Validationfilter.cs" />
-    <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.cs" />
-    <Compile Include="Migrations\202204161142390_HammaddeHaraketAciklama.designer.cs">
-      <DependentUpon>202204161142390_HammaddeHaraketAciklama.cs</DependentUpon>
+    <Compile Include="Migrations\202205100751382_1.cs" />
+    <Compile Include="Migrations\202205100751382_1.designer.cs">
+      <DependentUpon>202205100751382_1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202204191043178_2.cs" />
-    <Compile Include="Migrations\202204191043178_2.designer.cs">
-      <DependentUpon>202204191043178_2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Custom\Birim.cs" />
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHaraket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
@@ -2564,6 +2555,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202204191043178_2.resx">
       <DependentUpon>202204191043178_2.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202205100751382_1.resx">
+      <DependentUpon>202205100751382_1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
