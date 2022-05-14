@@ -1,0 +1,52 @@
+﻿@model List<Kalip>
+
+<table class="table table-bordered table-hover table-sm mt-8">
+    <thead>
+        <tr>
+            <th>Ürün Adı</th>
+            @foreach (var kalip in Model)
+            {
+                <th>@kalip.Adi</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @*<tr>
+            <td>Malzeme Cinsi ve Maliyeti</td>
+            <td></td>
+        </tr>*@
+        <tr>
+            <td>Hammadde</td>
+
+            @foreach (var kalip in Model)
+            {
+                <td>
+                    <select class="form-control mb-2">
+                        @foreach (var item in kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi))
+                        {
+                            <option id="@item.HammaddeCinsiId">@item.Adi</option>
+                        }
+                    </select>
+                    <select class="form-control mb-2">
+                        <option>Son Fatura Birim Fiyat</option>
+                        <option>Son 1 Ay Ortalaması</option>
+                        <option>Son 3 Ay Ortalaması</option>
+                        <option>Son 6 Ay Ortalaması</option>
+                        <option>Son 12 Ay Ortalaması</option>
+                    </select>
+                    @{
+                        var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
+                        var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
+                        var birimFiyat = sonHammaddeHareket?.BirimFiyat;
+                        var birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik:0;
+                    }
+                    <input type="text" class="form-control" value="@birimMaliyet" />
+                </td>
+                 
+            }
+
+
+        </tr>
+
+    </tbody>
+</table>

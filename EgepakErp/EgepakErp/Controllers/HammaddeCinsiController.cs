@@ -142,8 +142,6 @@ namespace EgePakErp.Controllers
                 response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
             }
 
-
-
             return Json(response);
 
         }

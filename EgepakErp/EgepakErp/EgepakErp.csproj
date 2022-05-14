@@ -147,6 +147,10 @@
     <Compile Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.designer.cs">
       <DependentUpon>202205140753028_update_hammaddeHaraket_to_hammaddehareket.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205140930215_3.cs" />
+    <Compile Include="Migrations\202205140930215_3.designer.cs">
+      <DependentUpon>202205140930215_3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHareket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
@@ -2527,10 +2531,15 @@
     <Content Include="Views\Siparis\SiparisFormu.cshtml" />
     <Content Include="Views\HammaddeCinsi\Index.cshtml" />
     <Content Include="Views\HammaddeCinsi\Form.cshtml" />
+    <Content Include="Views\Siparis\UrunKaliplari.cshtml" />
+    <Content Include="Views\Siparis\MaliyetForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.resx">
       <DependentUpon>202205140753028_update_hammaddeHaraket_to_hammaddehareket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205140930215_3.resx">
+      <DependentUpon>202205140930215_3.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using EgePakErp.Models;
 
-namespace EgePakErp.Controllers
+namespace EgePakErp.Models
 {
     public class HammaddeBirimi
     {

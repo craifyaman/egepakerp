@@ -20,6 +20,7 @@ namespace EgePakErp
     using EgePakErp.Models.Audit;
     using Newtonsoft.Json;
 
+
     public partial class Db : DbContext
     {
 
@@ -57,6 +58,7 @@ namespace EgePakErp
         public virtual DbSet<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }
         public virtual DbSet<KalipUrunRelation> KalipUrunRelation { get; set; }
         public virtual DbSet<UretimTeminSekli> UretimTeminSekli { get; set; }
+        
 
         #endregion
 

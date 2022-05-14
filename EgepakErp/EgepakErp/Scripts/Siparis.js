@@ -47,8 +47,26 @@
             }
         });
     }
-    
 
+    function UrunKaliplari() {
+        var form = $("#KalipIdler").serializeObject();
+        var keys = Object.keys(form);
+        var include = keys.slice(1, form.length);
+        form.Include = include;
+
+        console.log("form", form);
+        $.ajax({
+            type: "GET",
+            url: "/siparis/Form",
+            data: form,
+            success: function (html) {
+                console.log(html);
+            },
+            error: function () {
+                toastr.error("bir hata oluştu");
+            }
+        })
+    }
     var handleEvent = function () {
 
         $(document).on("click", "[event='kalipFormPopup']", function (e) {
@@ -138,6 +156,52 @@
                 },
                 "html");
         });
+
+        $(document).on("click", "[event='maliyetTablosuGetir']", function (event) {
+
+            event.preventDefault();
+            var idList = $("#kalipIdList").val().split(",");
+
+            Post("/siparis/maliyetForm",
+                { idList: idList },
+                function (response) {
+                    $("#maliyetTablosu").empty().html(response);
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+
+                },
+                "html");
+          
+        });
+
+        $(document).on("change", "#UrunId", function (event) {
+
+            event.preventDefault();
+            var urunId = $("#UrunId").val();
+
+            Post("/siparis/UrunKaliplari",
+                { urunid: urunId },
+                function (response) {
+                    $("#UrunKaliplari").empty().html(response);
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+
+                },
+                "html");
+          
+        });
     }
 
     var DtInit = function (domId, url, columns, params) {
@@ -180,6 +244,7 @@
             datatable.search($(this).val().toLowerCase(), $(this).attr("id"));
         });
     }
+
 
     return {
 

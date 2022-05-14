@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using EgePakErp.Models;
 
-namespace EgePakErp.Controllers
+namespace EgePakErp.Models
 {
     [Table("HammaddeHareket")]
     public class HammaddeHareket

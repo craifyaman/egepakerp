@@ -20,7 +20,7 @@ namespace EgePakErp.Models
         [NotMapped]
         public string ParcaKodu { get; set; }
         public string Adi { get; set; }
-        public int UretimTeminSekliId { get; set; }
+        public int? UretimTeminSekliId { get; set; }
         public UretimTeminSekli UretimTeminSekli { get; set; }
         public decimal ParcaAgirlik { get; set; }
         public int KalipGozSayisi{ get; set; }

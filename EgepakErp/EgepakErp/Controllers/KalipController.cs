@@ -87,7 +87,7 @@ namespace EgePakErp.Controllers
                 KalipId=i.KalipId,
                 KalipKodu = string.Concat(i.KalipNo+"-"+ i.KalipOzellik),
                 Adi = i.Adi,
-                UretimTeminSekli=i.UretimTeminSekli.Adi,
+                UretimTeminSekli=i.UretimTeminSekli?.Adi,
                 Agirlik=i.ParcaAgirlik,
                 GozSayisi=i.KalipGozSayisi,
                 UretimZamani=i.UretimZamani,

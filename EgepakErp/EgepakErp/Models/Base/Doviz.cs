@@ -1,12 +1,11 @@
-using EgePakErp.Controllers;
+ 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EgePakErp
+namespace EgePakErp.Models
 {
-    using EgePakErp.Models;
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Doviz")]
     public partial class Doviz

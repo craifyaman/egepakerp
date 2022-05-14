@@ -271,11 +271,11 @@ namespace EgePakErp.Controllers
                 var kaliplar = Db.Kalip.ToList();
 
                 var list = Db.HamUrunGrup
-                   
+
                     .Where(i => !string.IsNullOrEmpty(i.UrunCinsi))
                     .GroupBy(x => new { x.UrunCinsi, x.UrunNo }, (key, group) => new
                     {
-                         
+
                         UrunCinsi = key.UrunCinsi,
                         UrunNo = key.UrunNo,
                         Kaliplar = group
@@ -310,7 +310,7 @@ namespace EgePakErp.Controllers
                 var a = ex;
             }
         }
-        public string HammaddeHareket()
+        public void HammaddeHareket()
         {
             var HammaddeCinsleri = Db.HammaddeCinsi.ToList();
             var Cariler = Db.Cari.Include("BaglantiTipi").ToList();
@@ -335,6 +335,7 @@ namespace EgePakErp.Controllers
                     hareket.FaturaNo = currentRow.ItemArray[0].ToString();
                     hareket.KayitTarihi = (DateTime)currentRow.ItemArray[1];
                     hareket.HammaddeGirisTarihi = (DateTime)currentRow.ItemArray[1];
+                    hareket.Miktar = Convert.ToDecimal(currentRow.ItemArray[8]);
 
                     //tedarikci eşleştirmesi
                     string cariUnvan = currentRow.ItemArray[3].ToString().ToLower();
@@ -352,8 +353,26 @@ namespace EgePakErp.Controllers
                     //hammaddecins eşleştirmesi
                     try
                     {
-                        string cins = currentRow.ItemArray[2].ToString().ToLower();
-                        hareket.HammaddeCinsiId = HammaddeCinsleri.Where(x => x.Kisaltmasi.ToLower() == cins).FirstOrDefault().HammaddeCinsiId;
+                        string cins = currentRow.ItemArray[2].ToString();
+                        var hammaddeCins = HammaddeCinsleri.FirstOrDefault(x => x.Kisaltmasi.ToLower() == cins.ToLower());
+                        if (hammaddeCins != null)
+                        {
+                            hareket.HammaddeCinsiId = hammaddeCins.HammaddeCinsiId;
+                        }
+                        else
+                        {
+                            var hm = new Models.HammaddeCinsi
+                            {
+                                Adi = cins,
+                                Aciklamasi = cins,
+                                Kisaltmasi = cins
+                            };
+                            Db.HammaddeCinsi.Add(hm);
+                            Db.SaveChanges();
+                            HammaddeCinsleri.Add(hm);
+
+                        }
+
                     }
                     catch (Exception ex)
                     {
@@ -373,7 +392,7 @@ namespace EgePakErp.Controllers
                             hareket.DovizId = 2;
                             try
                             {
-                                if (currentRow.ItemArray[7].ToString() == "")
+                                if (string.IsNullOrEmpty(currentRow.ItemArray[7].ToString()))
                                 {
                                     hareket.DolarKuru = DovizHelper.DovizKuruGetir("USD", hareket.HammaddeGirisTarihi);
                                 }
@@ -381,6 +400,8 @@ namespace EgePakErp.Controllers
                                 {
                                     hareket.DolarKuru = Convert.ToDecimal(currentRow.ItemArray[7]);
                                 }
+                                hareket.BirimFiyat = hareket.BirimFiyat * hareket.DolarKuru.Value;
+                                hareket.ToplamTutar = hareket.BirimFiyat * hareket.Miktar;
                             }
                             catch (Exception ex)
                             {
@@ -402,6 +423,9 @@ namespace EgePakErp.Controllers
                                 {
                                     hareket.EuroKuru = Convert.ToDecimal(currentRow.ItemArray[7]);
                                 }
+
+                                hareket.BirimFiyat = hareket.BirimFiyat * hareket.EuroKuru.Value;
+                                hareket.ToplamTutar = hareket.BirimFiyat * hareket.Miktar;
                             }
                             catch (Exception ex)
                             {
@@ -414,7 +438,7 @@ namespace EgePakErp.Controllers
 
                     // doviz eşleştirmesi son
 
-                    hareket.Miktar = Convert.ToDecimal(currentRow.ItemArray[8]);
+
                     list.Add(hareket);
                 }
                 catch (Exception ex)
@@ -425,8 +449,7 @@ namespace EgePakErp.Controllers
             }
             Db.HammaddeHareket.AddRange(list);
             Db.SaveChanges(1);
-            string json = JsonConvert.SerializeObject(list);
-            return json;
+
 
         }
 
