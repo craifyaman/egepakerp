@@ -30,7 +30,7 @@ namespace EgePakErp
         [NotMapped]
         public List<string> Include { get; set; }
 
-        public virtual ICollection<HammaddeHaraket> HammaddeHaraket { get; set; }
+        public virtual ICollection<HammaddeHareket> HammaddeHareket { get; set; }
     }
 
 }

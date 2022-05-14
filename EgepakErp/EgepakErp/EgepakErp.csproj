@@ -143,8 +143,12 @@
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
     <Compile Include="Helper\DovizHelper.cs" />
+    <Compile Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.cs" />
+    <Compile Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.designer.cs">
+      <DependentUpon>202205140753028_update_hammaddeHaraket_to_hammaddehareket.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
-    <Compile Include="Models\Custom\HammaddeHaraket.cs" />
+    <Compile Include="Models\Custom\HammaddeHareket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
     <Compile Include="Controllers\KalipController.cs" />
     <Compile Include="Controllers\UrunController.cs" />
@@ -186,7 +190,6 @@
     <Compile Include="Models\Base\PersonelKisitlamaRelation.cs" />
     <Compile Include="Models\Base\Doviz.cs" />
     <Compile Include="Models\Base\PersonelTip.cs" />
-    <Compile Include="Models\Brans.cs" />
     <Compile Include="Models\Custom\HammaddeTipi.cs" />
     <Compile Include="Models\Custom\Marka.cs" />
     <Compile Include="Models\Custom\SepetIcerik.cs" />
@@ -198,7 +201,6 @@
     <Compile Include="Models\Custom\Urun.cs" />
     <Compile Include="Models\Custom\HammaddeCinsi.cs" />
     <Compile Include="Models\Custom\UrunCinsi.cs" />
-    <Compile Include="Models\HammaddeHareket.cs" />
     <Compile Include="Models\Micro\BaglantiTipi.cs" />
     <Compile Include="Models\Micro\Cari.cs" />
     <Compile Include="Models\Base\Cari.cs" />
@@ -2479,9 +2481,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Migrations\" />
-    <Folder Include="Views\DataTable\" />
-    <Folder Include="Views\Timer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -2517,7 +2516,6 @@
     <Content Include="Views\Personel\ParoloGuncelleForm.cshtml" />
     <Content Include="Views\Personel\PersonelDetayForm.cshtml" />
     <Content Include="Views\Personel\YetkiForm.cshtml" />
-    <Content Include="Views\Tanim\BransForm.cshtml" />
     <Content Include="Views\Tanim\CariGrupForm.cshtml" />
     <Content Include="Views\Tanim\GorusmeTipForm.cshtml" />
     <Content Include="Views\Urun\FilterForm.cshtml" />
@@ -2529,6 +2527,11 @@
     <Content Include="Views\Siparis\SiparisFormu.cshtml" />
     <Content Include="Views\HammaddeCinsi\Index.cshtml" />
     <Content Include="Views\HammaddeCinsi\Form.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.resx">
+      <DependentUpon>202205140753028_update_hammaddeHaraket_to_hammaddehareket.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

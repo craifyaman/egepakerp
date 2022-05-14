@@ -4,6 +4,7 @@ using EgePakErp.Helper;
 using EgePakErp.Models;
 using EgePakErp.Models.Audit;
 using ExcelDataReader;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -324,13 +325,13 @@ namespace EgePakErp.Controllers
                 }
             }
             var dataTable = dataset.Tables[0];
-            var list = new List<HammaddeHaraket>();
+            var list = new List<HammaddeHareket>();
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
                 var currentRow = dataTable.Rows[i];
                 try
                 {
-                    var hareket = new HammaddeHaraket();
+                    var hareket = new HammaddeHareket();
                     hareket.FaturaNo = currentRow.ItemArray[0].ToString();
                     hareket.KayitTarihi = (DateTime)currentRow.ItemArray[1];
                     hareket.HammaddeGirisTarihi = (DateTime)currentRow.ItemArray[1];
@@ -422,7 +423,7 @@ namespace EgePakErp.Controllers
                 }
 
             }
-            Db.HammaddeHaraket.AddRange(list);
+            Db.HammaddeHareket.AddRange(list);
             Db.SaveChanges(1);
             string json = JsonConvert.SerializeObject(list);
             return json;

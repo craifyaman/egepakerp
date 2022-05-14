@@ -33,7 +33,7 @@ namespace EgepakErp.Controllers
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
             dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
 
-            var model = Db.HammaddeHaraket
+            var model = Db.HammaddeHareket
                 .Include("HammaddeTipi")
                 .Include("Marka")
                 .Include("HammaddeCinsi")

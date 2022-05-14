@@ -49,7 +49,7 @@ namespace EgePakErp
         public virtual DbSet<HammaddeTipi> HammaddeTipi { get; set; }
         public virtual DbSet<HammaddeBirimi> HammaddeBirimi { get; set; }
         public virtual DbSet<Marka> Marka { get; set; }
-        public virtual DbSet<HammaddeHaraket> HammaddeHaraket { get; set; }
+        public virtual DbSet<HammaddeHareket> HammaddeHareket { get; set; }
         public virtual DbSet<Doviz> Doviz{ get; set; }
         public virtual DbSet<Urun> Urun { get; set; }
         public virtual DbSet<UrunCinsi> UrunCinsi{ get; set; }

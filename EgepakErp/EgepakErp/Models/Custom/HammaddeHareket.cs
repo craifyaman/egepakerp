@@ -5,11 +5,11 @@ using EgePakErp.Models;
 
 namespace EgePakErp.Controllers
 {
-    [Table("HammaddeHaraket")]
-    public class HammaddeHaraket
+    [Table("HammaddeHareket")]
+    public class HammaddeHareket
     {
         [Key]
-        public int HammaddeHaraketId { get; set; }
+        public int HammaddeHareketId { get; set; }
         public string FaturaNo { get; set; }
         public DateTime KayitTarihi { get; set; }
         public DateTime HammaddeGirisTarihi { get; set; }
