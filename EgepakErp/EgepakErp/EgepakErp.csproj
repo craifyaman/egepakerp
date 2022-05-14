@@ -142,10 +142,7 @@
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
-    <Compile Include="Migrations\202204161717056_1.cs" />
-    <Compile Include="Migrations\202204161717056_1.designer.cs">
-      <DependentUpon>202204161717056_1.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Helper\DovizHelper.cs" />
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHaraket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
@@ -2482,6 +2479,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Migrations\" />
     <Folder Include="Views\DataTable\" />
     <Folder Include="Views\Timer\" />
   </ItemGroup>
@@ -2531,11 +2529,6 @@
     <Content Include="Views\Siparis\SiparisFormu.cshtml" />
     <Content Include="Views\HammaddeCinsi\Index.cshtml" />
     <Content Include="Views\HammaddeCinsi\Form.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202204161717056_1.resx">
-      <DependentUpon>202204161717056_1.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

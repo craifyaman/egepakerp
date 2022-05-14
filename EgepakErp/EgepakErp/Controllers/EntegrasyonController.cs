@@ -1,4 +1,5 @@
-﻿using EgePakErp.Custom;
+﻿using EgepakErp.Helper;
+using EgePakErp.Custom;
 using EgePakErp.Helper;
 using EgePakErp.Models;
 using EgePakErp.Models.Audit;
@@ -260,7 +261,6 @@ namespace EgePakErp.Controllers
                 var a = ex;
             }
         }
-
         public void KalipUrun()
         {
             try
@@ -309,9 +309,125 @@ namespace EgePakErp.Controllers
                 var a = ex;
             }
         }
+        public string HammaddeHareket()
+        {
+            var HammaddeCinsleri = Db.HammaddeCinsi.ToList();
+            var Cariler = Db.Cari.Include("BaglantiTipi").ToList();
+            var Dovizler = Db.Doviz.ToList();
+
+            var dataset = new DataSet();
+            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\hammaddeHareketYeni.xlsx", FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    dataset = reader.AsDataSet();
+                }
+            }
+            var dataTable = dataset.Tables[0];
+            var list = new List<HammaddeHaraket>();
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                var currentRow = dataTable.Rows[i];
+                try
+                {
+                    var hareket = new HammaddeHaraket();
+                    hareket.FaturaNo = currentRow.ItemArray[0].ToString();
+                    hareket.KayitTarihi = (DateTime)currentRow.ItemArray[1];
+                    hareket.HammaddeGirisTarihi = (DateTime)currentRow.ItemArray[1];
+
+                    //tedarikci eşleştirmesi
+                    string cariUnvan = currentRow.ItemArray[3].ToString().ToLower();
+                    try
+                    {
+                        hareket.TedarikciId = Cariler.Where(x => x.Unvan.ToLower().Contains(cariUnvan)).FirstOrDefault().CariId;
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    //tedarikci eşleştirmesi son
 
 
-        //TEST
+                    //hammaddecins eşleştirmesi
+                    try
+                    {
+                        string cins = currentRow.ItemArray[2].ToString().ToLower();
+                        hareket.HammaddeCinsiId = HammaddeCinsleri.Where(x => x.Kisaltmasi.ToLower() == cins).FirstOrDefault().HammaddeCinsiId;
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                    //hammaddecins eşleştirmesi son
+
+
+                    hareket.ToplamTutar = Convert.ToDecimal(currentRow.ItemArray[5]);
+                    hareket.BirimFiyat = Convert.ToDecimal(currentRow.ItemArray[5]);
+                    // doviz eşleştirmesi
+                    string para = currentRow.ItemArray[6].ToString();
+                    if (para != "TL")
+                    {
+                        if (para == "USD")
+                        {
+                            hareket.DovizId = 2;
+                            try
+                            {
+                                if (currentRow.ItemArray[7].ToString() == "")
+                                {
+                                    hareket.DolarKuru = DovizHelper.DovizKuruGetir("USD", hareket.HammaddeGirisTarihi);
+                                }
+                                else
+                                {
+                                    hareket.DolarKuru = Convert.ToDecimal(currentRow.ItemArray[7]);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+
+                        }
+
+                        else if (para == "EUR")
+                        {
+                            try
+                            {
+                                hareket.DovizId = 3;
+                                if (currentRow.ItemArray[7].ToString() == "")
+                                {
+                                    hareket.EuroKuru = DovizHelper.DovizKuruGetir("EUR", hareket.HammaddeGirisTarihi);
+                                }
+                                else
+                                {
+                                    hareket.EuroKuru = Convert.ToDecimal(currentRow.ItemArray[7]);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        }
+                    }
+                    else
+                        hareket.DovizId = 1;
+
+                    // doviz eşleştirmesi son
+
+                    hareket.Miktar = Convert.ToDecimal(currentRow.ItemArray[8]);
+                    list.Add(hareket);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+            Db.HammaddeHaraket.AddRange(list);
+            Db.SaveChanges(1);
+            string json = JsonConvert.SerializeObject(list);
+            return json;
+
+        }
 
     }
 }
