@@ -10,5 +10,6 @@ namespace EgePakErp.Models
         public string Birimi { get; set; }
 
         public virtual ICollection<HammaddeCinsi> HammaddeHaraket { get; set; }
+        public virtual ICollection<HammaddeHareket> HammaddeHareket { get; set; }
     }
 }

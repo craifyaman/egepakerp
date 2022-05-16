@@ -119,6 +119,13 @@ namespace EgePakErp.Custom
         {
             return db.Ilce.Where(i => i.IlId == ilId).ToList();
         }
+
+        public List<HammaddeHareket> baseHammaddeHareket(int id)
+        {
+            return db.HammaddeHareket
+                .Include("Tedarikci")
+                .Where(i => i.HammaddeCinsiId== id).ToList();
+        }
         public List<Cari> baseCari
         {
             get

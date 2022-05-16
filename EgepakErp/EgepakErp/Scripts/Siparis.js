@@ -67,6 +67,8 @@
             }
         })
     }
+
+    
     var handleEvent = function () {
 
         $(document).on("click", "[event='kalipFormPopup']", function (e) {

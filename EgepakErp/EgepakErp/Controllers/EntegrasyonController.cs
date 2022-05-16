@@ -315,6 +315,7 @@ namespace EgePakErp.Controllers
             var HammaddeCinsleri = Db.HammaddeCinsi.ToList();
             var Cariler = Db.Cari.Include("BaglantiTipi").ToList();
             var Dovizler = Db.Doviz.ToList();
+            var Birimler = Db.HammaddeBirimi.ToList();
 
             var dataset = new DataSet();
             using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\hammaddeHareketYeni.xlsx", FileMode.Open, FileAccess.Read))
@@ -336,6 +337,7 @@ namespace EgePakErp.Controllers
                     hareket.KayitTarihi = (DateTime)currentRow.ItemArray[1];
                     hareket.HammaddeGirisTarihi = (DateTime)currentRow.ItemArray[1];
                     hareket.Miktar = Convert.ToDecimal(currentRow.ItemArray[8]);
+                    hareket.UrunAdi = currentRow.ItemArray[4].ToString();
 
                     //tedarikci eşleştirmesi
                     string cariUnvan = currentRow.ItemArray[3].ToString().ToLower();
@@ -438,6 +440,25 @@ namespace EgePakErp.Controllers
 
                     // doviz eşleştirmesi son
 
+                    //hammadde birimi eşleştirmesi
+                    try
+                    {
+                        int BirimId = Birimler.FirstOrDefault(x => x.Birimi == currentRow.ItemArray[9].ToString()).Id;
+                        hareket.HammaddeBirimiId = BirimId;
+                    }
+                    catch(Exception ex)
+                    {
+                        HammaddeBirimi hBirim = new HammaddeBirimi();
+                        string _birim = currentRow.ItemArray[9].ToString();
+                        hBirim.Birimi = _birim;
+                        Db.HammaddeBirimi.Add(hBirim);
+                        Db.SaveChanges();                        
+                        Birimler.Add(hBirim);
+                        hareket.HammaddeBirimiId = hBirim.Id;
+
+                    }                    
+                    //hammadde birimi eşleştirmesi son
+
 
                     list.Add(hareket);
                 }
@@ -448,7 +469,7 @@ namespace EgePakErp.Controllers
 
             }
             Db.HammaddeHareket.AddRange(list);
-            Db.SaveChanges(1);
+            Db.BulkSaveChanges();
 
 
         }

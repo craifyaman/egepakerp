@@ -25,6 +25,7 @@ namespace EgePakErp.Controllers
 
         public PartialViewResult MaliyetForm(List<int> idList)
         {
+            ViewBag.HammaddeBirimler = Db.HammaddeBirimi.ToList();
             var kaliplar = Db.Kalip
                 .Include("KalipHammaddeRelation")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")

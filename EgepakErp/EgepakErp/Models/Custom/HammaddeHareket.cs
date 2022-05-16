@@ -17,6 +17,7 @@ namespace EgePakErp.Models
         public Cari Tedarikci { get; set; }
         public int? HammaddeCinsiId { get; set; }
         public HammaddeCinsi HammaddeCinsi { get; set; }
+        public string UrunAdi { get; set; }
         public decimal BirimFiyat { get; set; }
         public decimal ToplamTutar { get; set; }
         public int DovizId { get; set; }
@@ -26,6 +27,9 @@ namespace EgePakErp.Models
         public decimal? DolarKuru { get; set; }
         public decimal? EuroKuru { get; set; }
         public decimal? PoundKuru { get; set; }
+
+        public int HammaddeBirimiId { get; set; }
+        public HammaddeBirimi HammaddeBirimi { get; set; }
 
 
         public int? HammaddetipiId { get; set; }
