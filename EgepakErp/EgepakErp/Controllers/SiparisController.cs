@@ -25,7 +25,6 @@ namespace EgePakErp.Controllers
 
         public PartialViewResult MaliyetForm(List<int> idList)
         {
-            ViewBag.HammaddeBirimler = Db.HammaddeBirimi.ToList();
             ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x=>x.UrunAdi.Contains("toz")).BirimFiyat;
             var kaliplar = Db.Kalip
                 .Include("KalipHammaddeRelation")
