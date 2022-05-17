@@ -113,12 +113,23 @@
         Global.init();
         SelectPickerRemote.init();
 
-        function TdCikar(tdId) {
-            $("td[td-cikar='" + tdId + "'] input").prop("disabled", true);
-            //var btn = $("button[btn-cikar='" + tdId + "']");
-            // btn.removeClass("btn-danger");
-            $("button[btn-cikar='" + tdId + "']").removeClass('bg-danger').addClass("bg-success");
+        function FaturadanCikar(id, tagname) {
+            var tdInputs = $("td[" + tagname + "-cikar='" + id + "'] input");
+            var SelectBoxes = $("td[" + tagname + "-cikar='" + id + "'] select");
+
+            var btn = $("button[" + tagname + "-cikar='" + id + "']");
+            if (btn.hasClass("btn-danger")) {
+                tdInputs.prop("disabled", true);
+                SelectBoxes.prop("disabled", true);
+                btn.removeClass("btn-danger").addClass("btn-success");
+            }
+            else {
+                btn.removeClass("btn-success").addClass("btn-danger");
+                tdInputs.prop("disabled", false);
+                SelectBoxes.prop("disabled", false);
+            }
         }
+
 
     </script>
 

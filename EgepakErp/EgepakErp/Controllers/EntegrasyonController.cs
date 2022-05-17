@@ -469,7 +469,7 @@ namespace EgePakErp.Controllers
 
             }
             Db.HammaddeHareket.AddRange(list);
-            Db.BulkSaveChanges();
+            Db.SaveChanges();
 
 
         }

@@ -102,7 +102,7 @@
         </tr>
         <tr>
             <td>Sıcak baskı + tampon saat maliyeti</td>
-            
+
             @foreach (var kalip in Model)
             {
                 try
@@ -110,8 +110,8 @@
                     double SicakBaskiTamponSaatAdet = 300;
                     double SicakBaskiTamponSaatMaliyet = 35;
                     double birimSicakBaskiTamponMaliyet = SicakBaskiTamponSaatMaliyet / SicakBaskiTamponSaatAdet;
-                    <td td-cikar="@kalip.KalipId">
-                        <button btn-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="TdCikar(@kalip.KalipId)">X</button>
+                    <td sicakBaski-cikar="@kalip.KalipId">
+                        <button sicakBaski-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'sicakBaski')">+</button>
                         <div class="form-group row">
                             <div class="col-lg-12 mb-2">
                                 <label>sıcak baskı tampon saat adet</label>
@@ -145,7 +145,8 @@
                     double PersonelSaatMaliyet = 35;
                     double SaatlikUretimAdet = 300;
                     double Maliyet = PersonelSaatMaliyet / SaatlikUretimAdet;
-                    <td>
+                    <td montaj-cikar="@kalip.KalipId">
+                        <button montaj-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'montaj')">+</button>
                         <div class="form-group row">
                             <div class="col-lg-12 mb-2">
                                 <label>saatlik üretim adedi</label>
@@ -172,7 +173,8 @@
             <td>Koli</td>
             @foreach (var kalip in Model)
             {
-                <td>
+                <td koli-cikar="@kalip.KalipId">
+                    <button koli-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'koli')">+</button>
                     <div class="form-group row">
                         <div class="col-lg-12 mb-2">
                             <label>Hammadde Cinsi:</label>
@@ -224,8 +226,9 @@
             <td>Poşet</td>
             @foreach (var kalip in Model)
             {
-                
-                <td>                    
+
+                <td poset-cikar="@kalip.KalipId">
+                    <button poset-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'poset')">+</button>
                     <div class="form-group row">
                         <div class="col-lg-12 mb-2">
                             <label>Hammadde Cinsi:</label>
@@ -272,5 +275,46 @@
 
         </tr>
 
+        <tr>
+            <td>Toz Boya Tutarı</td>
+
+            @foreach (var kalip in Model)
+            {
+                try
+                {
+                    double sabit = 12.0 / 1000.0;
+                    decimal KalipAgirlik = kalip.ParcaAgirlik;
+                    decimal KullanilanBoyaMiktar = Convert.ToDecimal(sabit) * KalipAgirlik;
+                    decimal BoyaBirimFiyat = ViewBag.TozBoyaSonBirimFiyat / 1000;
+                    decimal Maliyet = KalipAgirlik * KullanilanBoyaMiktar * BoyaBirimFiyat;
+                    <td boya-cikar="@kalip.KalipId">
+                        <button boya-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'boya')">+</button>
+                        <div class="form-group row">
+                            <div class="col-lg-12 mb-2">
+                                <label>Kalıp Ağırlığı</label>
+                                <input type="text" class="form-control" value="@KalipAgirlik" />
+                            </div>
+                            <div class="col-lg-12 mb-2">
+                                <label>Kullanılan Boya Miktarı</label>
+                                <input type="text" class="form-control" value="@KullanilanBoyaMiktar" />
+                            </div>
+
+                            <div class="col-lg-12 mb-2">
+                                <label>bir adet için üretim maliyeti</label>
+                                <input type="text" class="form-control birimFiyat" value="@Maliyet" />
+                            </div>
+                        </div>
+
+                    </td>
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+
+        </tr>
     </tbody>
 </table>
