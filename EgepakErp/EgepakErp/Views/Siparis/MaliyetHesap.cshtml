@@ -1,0 +1,40 @@
+﻿@using EgepakErp.DtModels;
+
+@model List<MaliyetDto>
+@{
+    var ToplamTutar = 0.0;
+}
+<tr>
+    <td>Toplam Maliyetler</td>
+    @{
+        var liste = Model.OrderBy(i => i.Sira).GroupBy(x => new { x.KalipId, x.Sira, x.Tutar }, (key, group) => new
+        {
+            KalipId = key.KalipId,
+            Sira = key.Sira,
+            Tutar = key.Tutar,
+            Result = group.ToList()
+        }).ToList();
+    }
+    @foreach (var item in liste)
+    {
+        ToplamTutar += item.Tutar;
+    }
+
+        <td>
+            <div class="form-group row">
+                <div class="col-lg-12 mb-2">
+                    <label>Toplam Malzeme Maliyeti</label>
+                    @ToplamTutar tl
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Üretim Maliyeti</label>
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Toplam Maliyet</label>
+                </div>
+            </div>
+        </td>
+    
+
+
+</tr>

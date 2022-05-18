@@ -129,48 +129,7 @@
                 SelectBoxes.prop("disabled", false);
             }
         }
-
-        function maliyetHesapla() {
-            var toplamMalzemeMaliyet = 0.0;
-            var toplamUretimMaliyeti = 0.0;
-            var toplamMaliyet = 0.0;
-
-            $("input.birimFiyat").each(function (index, value) {
-                var input = value;
-                console.log(input);
-                if (input.getAttribute("maliyetType") == "malzeme") {
-                    toplamMalzemeMaliyet += parseFloat(input.value);
-                }
-                else if (input.getAttribute("maliyetType") == "uretim") {
-                    toplamUretimMaliyeti += parseFloat(input.value);
-                }
-            });
-            toplamMaliyet = toplamMalzemeMaliyet + toplamUretimMaliyeti;
-            console.log(toplamMaliyet);
-
-            //$("input[maliyetType=malzeme]").each(function (index, value) {
-            //    var fiyat = parseFloat(value.value);
-            //    var kalipId = value.getAttribute("kalipId");
-            //    toplamMalzemeMaliyet += fiyat;
-            //    console.log(kalipId);
-            //});
-            //console.log("toplam malzeme maliyeti :" + toplamMalzemeMaliyet);
-        }
-
-        //var liste = [];
-        //var maliyet = {};
-        
-
-        //$.each($(".birimFiyat"), function (index, item) {
-        //    debugger;
-        //    var kalipId = $(item).attr("kalipId");
-        //    var m = $(item).value;
-        //    maliyet.Maliyet = m;
-        //    maliyet.KalipId = kalipId;
-        //    liste.push(maliyet);
-        //})
-
-        //console.log("liste", liste);
+ 
     </script>
 
 }

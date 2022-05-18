@@ -68,6 +68,35 @@
         })
     }
 
+    function maliyetHesapla() {
+        var liste = [];
+        var Maliyet = function () {
+            this.KalipId;
+            this.Tutar;
+            this.Sira;
+        }
+        $("input.birimFiyat").each(function (index, value) {
+            var input = value;
+            var maliyet = new Maliyet();
+            maliyet.kalipId = input.getAttribute("kalipId");
+            maliyet.Tutar = input.value;
+            maliyet.Sira = index;
+            liste.push(maliyet);
+        });
+        debugger
+        $.ajax({
+            type: "POST",
+            url: "/siparis/MaliyetHesap",
+            data: { liste: liste },
+            success: function (res) {
+                $("#MaliyetTablo").append(res);
+            },
+            error: function () {
+                alert("bir hata oluştu");
+            }
+        })
+    }
+
     
     var handleEvent = function () {
 
@@ -168,6 +197,7 @@
                 { idList: idList },
                 function (response) {
                     $("#maliyetTablosu").empty().html(response);
+                    maliyetHesapla();
                 },
                 function (x, y, z) {
                     //Error

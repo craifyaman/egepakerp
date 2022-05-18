@@ -1,5 +1,7 @@
-﻿using EgePakErp.Custom;
+﻿using EgepakErp.DtModels;
+using EgePakErp.Custom;
 using EgePakErp.Models;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -32,6 +34,11 @@ namespace EgePakErp.Controllers
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
                 .Where(i => idList.Contains(i.KalipId)).ToList();
             return PartialView(kaliplar);
+        }
+
+        public PartialViewResult MaliyetHesap(List<MaliyetDto> liste)
+        {
+            return PartialView(liste);
         }
 
 

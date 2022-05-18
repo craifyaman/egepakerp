@@ -145,6 +145,7 @@
     <Compile Include="Controllers\GorusmeController.cs" />
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
+    <Compile Include="DtModels\MaliyetDto.cs" />
     <Compile Include="Helper\DovizHelper.cs" />
     <Compile Include="Helper\SonAylarFaturaHelper.cs" />
     <Compile Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.cs" />
@@ -2553,6 +2554,7 @@
     <Content Include="Views\HammaddeCinsi\Form.cshtml" />
     <Content Include="Views\Siparis\UrunKaliplari.cshtml" />
     <Content Include="Views\Siparis\MaliyetForm.cshtml" />
+    <Content Include="Views\Siparis\MaliyetHesap.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.resx">
