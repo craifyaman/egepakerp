@@ -106,7 +106,7 @@ namespace EgePakErp.Custom
 
         public IEnumerable<SelectListItem> BaseBirimSelectList(int? birimId)
         {
-            var result=db.HammaddeBirimi.Select(x => new SelectListItem()
+            var result = db.HammaddeBirimi.Select(x => new SelectListItem()
             {
                 Value = x.Id.ToString(),
                 Text = x.Birimi,
@@ -124,7 +124,7 @@ namespace EgePakErp.Custom
         {
             return db.HammaddeHareket
                 .Include("Tedarikci")
-                .Where(i => i.HammaddeCinsiId== id).ToList();
+                .Where(i => i.HammaddeCinsiId == id).ToList();
         }
         public List<Cari> baseCari
         {

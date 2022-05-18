@@ -163,6 +163,14 @@
     <Compile Include="Migrations\202205161037535_hammaddebirim_duzenleme.designer.cs">
       <DependentUpon>202205161037535_hammaddebirim_duzenleme.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205180704446_kalip_model_duzenleme.cs" />
+    <Compile Include="Migrations\202205180704446_kalip_model_duzenleme.designer.cs">
+      <DependentUpon>202205180704446_kalip_model_duzenleme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205180857200_kalip_model_duzenleme2.cs" />
+    <Compile Include="Migrations\202205180857200_kalip_model_duzenleme2.designer.cs">
+      <DependentUpon>202205180857200_kalip_model_duzenleme2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHareket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
@@ -2558,6 +2566,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202205161037535_hammaddebirim_duzenleme.resx">
       <DependentUpon>202205161037535_hammaddebirim_duzenleme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205180704446_kalip_model_duzenleme.resx">
+      <DependentUpon>202205180704446_kalip_model_duzenleme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205180857200_kalip_model_duzenleme2.resx">
+      <DependentUpon>202205180857200_kalip_model_duzenleme2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

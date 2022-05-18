@@ -141,7 +141,7 @@ namespace EgePakErp.Controllers
             }
 
             Db.UrunCinsi.AddRange(list);
-            Db.SaveChanges();
+            Db.BulkSaveChanges();
         }
         public void Urun()
         {
@@ -173,7 +173,7 @@ namespace EgePakErp.Controllers
             }
 
             Db.Urun.AddRange(list);
-            Db.SaveChanges();
+            Db.BulkSaveChanges();
         }
         public void HammaddeCinsi()
         {
@@ -193,7 +193,7 @@ namespace EgePakErp.Controllers
             }
 
             Db.HammaddeCinsi.AddRange(list);
-            Db.SaveChanges();
+            Db.BulkSaveChanges();
         }
         public void Kalip()
         {
@@ -230,7 +230,14 @@ namespace EgePakErp.Controllers
                     var kalip = new Kalip();
                     kalip.Aciklama = item.Aciklama;
                     kalip.Adi = item.ParcaAdi;
-                    kalip.KalipGozSayisi = Convert.ToInt32(item.KalıpSayisi);
+                    try
+                    {
+                        kalip.KalipGozSayisi = Convert.ToInt32(item.KalıpSayisi);
+                    }
+                    catch
+                    {
+                        kalip.KalipGozSayisi = 0;
+                    }
                     var hammaddeCins = hammaddeCinsleri.FirstOrDefault(i => i.Kisaltmasi == item.Hammadde);
                     if (hammaddeCins != null)
                     {
@@ -244,17 +251,30 @@ namespace EgePakErp.Controllers
                     }
                     kalip.KalipNo = item.KalipNo;
                     kalip.KalipOzellik = item.KalipOzellik;
-                    kalip.ParcaAgirlik = Convert.ToDecimal(item.Agirlik);
-                    kalip.UretimTeminSekliId = uretimTeminSekli.FirstOrDefault(i => i.Kisaltmasi == item.TeminŞekli).UretimTeminSekliId;
-                    kalip.UretimZamani = Convert.ToInt32(item.UretimZamani);
-
+                    try
+                    {
+                        kalip.ParcaAgirlik = Convert.ToDecimal(item.Agirlik);
+                    }
+                    catch
+                    {
+                        kalip.ParcaAgirlik = 0;
+                    }
+                    //kalip.UretimTeminSekliId = uretimTeminSekli.FirstOrDefault(i => i.Kisaltmasi == item.TeminŞekli).UretimTeminSekliId;
+                    try
+                    {
+                        kalip.UretimZamani = Convert.ToInt32(item.UretimZamani);
+                    }
+                    catch
+                    {
+                        kalip.UretimZamani = 0;
+                    }
 
 
                     list.Add(kalip);
                 }
 
                 Db.Kalip.AddRange(list);
-                Db.SaveChanges(1);
+                Db.BulkSaveChanges();
             }
             catch (Exception ex)
             {
@@ -262,6 +282,7 @@ namespace EgePakErp.Controllers
                 var a = ex;
             }
         }
+
         public void KalipUrun()
         {
             try
@@ -302,7 +323,7 @@ namespace EgePakErp.Controllers
                 }
 
                 Db.KalipUrunRelation.AddRange(relations);
-                Db.SaveChanges(1);
+                Db.BulkSaveChanges();
             }
             catch (Exception ex)
             {
@@ -383,7 +404,7 @@ namespace EgePakErp.Controllers
                     //hammaddecins eşleştirmesi son
 
 
-                    hareket.ToplamTutar = Convert.ToDecimal(currentRow.ItemArray[5]);
+
                     hareket.BirimFiyat = Convert.ToDecimal(currentRow.ItemArray[5]);
                     // doviz eşleştirmesi
                     string para = currentRow.ItemArray[6].ToString();
@@ -403,7 +424,6 @@ namespace EgePakErp.Controllers
                                     hareket.DolarKuru = Convert.ToDecimal(currentRow.ItemArray[7]);
                                 }
                                 hareket.BirimFiyat = hareket.BirimFiyat * hareket.DolarKuru.Value;
-                                hareket.ToplamTutar = hareket.BirimFiyat * hareket.Miktar;
                             }
                             catch (Exception ex)
                             {
@@ -427,7 +447,6 @@ namespace EgePakErp.Controllers
                                 }
 
                                 hareket.BirimFiyat = hareket.BirimFiyat * hareket.EuroKuru.Value;
-                                hareket.ToplamTutar = hareket.BirimFiyat * hareket.Miktar;
                             }
                             catch (Exception ex)
                             {
@@ -438,6 +457,8 @@ namespace EgePakErp.Controllers
                     else
                         hareket.DovizId = 1;
 
+                    hareket.ToplamTutar = hareket.BirimFiyat * hareket.Miktar;
+
                     // doviz eşleştirmesi son
 
                     //hammadde birimi eşleştirmesi
@@ -446,17 +467,17 @@ namespace EgePakErp.Controllers
                         int BirimId = Birimler.FirstOrDefault(x => x.Birimi == currentRow.ItemArray[9].ToString()).Id;
                         hareket.HammaddeBirimiId = BirimId;
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         HammaddeBirimi hBirim = new HammaddeBirimi();
                         string _birim = currentRow.ItemArray[9].ToString();
                         hBirim.Birimi = _birim;
                         Db.HammaddeBirimi.Add(hBirim);
-                        Db.SaveChanges();                        
+                        Db.SaveChanges();
                         Birimler.Add(hBirim);
                         hareket.HammaddeBirimiId = hBirim.Id;
 
-                    }                    
+                    }
                     //hammadde birimi eşleştirmesi son
 
 
@@ -469,7 +490,7 @@ namespace EgePakErp.Controllers
 
             }
             Db.HammaddeHareket.AddRange(list);
-            Db.SaveChanges();
+            Db.BulkSaveChanges();
 
 
         }
