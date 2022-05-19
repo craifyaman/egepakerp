@@ -47,7 +47,7 @@
                                 var birimFiyat = sonHammaddeHareket?.BirimFiyat;
                                 decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
                             }
-                            <input maliyetType="malzeme" colSira="@i" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@birimMaliyet.Value.ToString("N4")" />
+                            <input maliyetType="malzeme" colSira="" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@birimMaliyet.Value.ToString("N4")" />
                         </div>
 
                     </div>
@@ -170,10 +170,6 @@
                             </select>
                         </div>
                         <div class="col-lg-12 mb-2">
-                            @{
-                                //EgepakErp.Helper.SonAylarFaturaHelper fHelper = new EgepakErp.Helper.SonAylarFaturaHelper(DateTime.Now.AddMonths(-1), DateTime.Now);
-                                //var SonBirAyOrtalamasi = fHelper.Calculate();
-                            }
                             <label>Birim Fiyat Tipi:</label>
                             <select class="form-control">
                                 <option>Son Fatura Birim Fiyat</option>
@@ -215,7 +211,7 @@
                     <div class="form-group row">
                         <div class="col-lg-12 mb-2">
                             <label>Intercom varak Yaldız:</label>
-                            <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control" value="@Maliyet.ToString("n2")" />
+                            <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
                         </div>
                     </div>
                 </td>
@@ -267,7 +263,7 @@
                     <div class="form-group row">
                         <div class="col-lg-12 mb-2">
                             <label>Maliyet:</label>
-                            <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control" value="" />
+                            <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="" />
                         </div>
                     </div>
                 </td>
@@ -345,41 +341,6 @@
 
 
         </tr>
-        @*<tr>
-                <td>Toplam Maliyetler</td>
-
-                @foreach (var kalip in Model)
-                {
-                    try
-                    {
-                        <td>
-                            <div class="form-group row">
-                                <div class="col-lg-12 mb-2">
-                                    <label>Toplam Malzeme Maliyeti</label>
-                                    3 tl
-                                </div>
-                                <div class="col-lg-12 mb-2">
-                                    <label>Üretim Maliyeti</label>
-                                    5 tl
-                                </div>
-                                <div class="col-lg-12 mb-2">
-                                    <label>Toplam Maliyet</label>
-                                    8 tl
-                                </div>
-                            </div>
-
-                        </td>
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-
-                }
-
-
-            </tr>*@
-
 
     </tbody>
 </table>

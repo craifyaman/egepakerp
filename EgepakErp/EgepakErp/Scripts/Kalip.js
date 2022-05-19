@@ -8,6 +8,8 @@
             if (status == 'Valid') {
                 var form = $("#"+formId).serializeJSON();
 
+                debugger;
+
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;

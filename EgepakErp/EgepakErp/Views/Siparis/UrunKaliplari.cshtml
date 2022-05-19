@@ -1,8 +1,9 @@
 ﻿@model List<Kalip>
 
 <input type="hidden" id="kalipIdList" value="@Model.Select(s=>s.KalipId.ToString()).Aggregate((a,b)=>a+","+b)" />
-    
-<table class="table table-bordered table-hover table-sm mt-8">
+<input type="hidden" name="exclude" id="exclude"/>
+
+<table class="table table-bordered table-hover table-sm mt-8" id="KalipListeTable">
     <thead>
         <tr>
             <th>Adı</th>
@@ -15,7 +16,7 @@
         @foreach (var item in Model)
         {
 
-            <tr>
+            <tr KalipId="@item.KalipId">
                 <td>
 
                     @item.Adi
@@ -23,8 +24,8 @@
                 <td>@item.KalipNo</td>
                 <td>@item.KalipGozSayisi</td>
                 <td>
-                    <a href="#" class="btn btn-primary btn-sm">Ekle</a>
-                    <a href="#" class="btn btn-info btn-sm">Sil</a>
+                    <a href="#" class="btn btn-danger btn-sm" event="KalipListesindenCikar"> x </a>
+                    <a class="btn btn-icon btn-info mr-1" formtitle="@item.ParcaKodu @item.Adi Düzenle" formid="kalipForm" formurl="/Kalip/Form" submiturl="/Kalip/Kaydet" event="kalipFormPopup" href="#" id="@item.KalipId" title="Hızlı Düzenle" data="" -="" toggle="tooltip" placement="top"> <i class="flaticon-edit"></i> </a>
                 </td>
             </tr>
         }

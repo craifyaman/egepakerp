@@ -50,7 +50,7 @@
     <div class="form-group row">
         <div class="col-lg-12">
             <label>Kullandığı Hammaddeler:</label>
-            <select name="HammaddeList" class="form-control form-control-solid selectpicker" data-actions-box="true" multiple data-live-search="true" id="HammaddeList">
+            <select name="HammaddeList[]" class="form-control form-control-solid selectpicker" data-actions-box="true" multiple data-live-search="true" id="HammaddeList">
                 @foreach (var item in baseHammaddeCinsi)
                 {
                     var slc = "";
@@ -67,7 +67,7 @@
     <div class="form-group row">
         <div class="col-lg-12">
             <label>Kullanıldığı Ürünler:</label>
-            <select name="UrunList" class="form-control form-control-solid selectpicker" data-actions-box="true" multiple data-live-search="true" id="UrunList">
+            <select name="UrunList[]" class="form-control form-control-solid selectpicker" data-actions-box="true" multiple data-live-search="true" id="UrunList">
 
                 @foreach (var item in baseUrun)
                 {

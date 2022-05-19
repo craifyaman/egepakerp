@@ -1,18 +1,18 @@
 ﻿var Siparis = function () {
-    
-    function Kaydet(formId,submitUrl) {
+
+    function Kaydet(formId, submitUrl) {
 
         var validation = ValidateForm.IsValid(formId, ValidationFields.KalipFormFields())
 
         validation.validate().then(function (status) {
             if (status == 'Valid') {
-                var form = $("#"+formId).serializeJSON();
+                var form = $("#" + formId).serializeJSON();
 
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;
-                
-                
+
+
                 Post(submitUrl,
                     { form: form },
                     function (response) {
@@ -35,7 +35,7 @@
                                 bootbox.hideAll();
                                 $('#kt_datatable').KTDatatable('reload');
                             }, 3000)
-                            
+
                         } else {
                             bootbox.hideAll();
                         }
@@ -70,34 +70,40 @@
 
     function maliyetHesapla() {
         var liste = [];
+
         var Maliyet = function () {
             this.KalipId;
             this.Tutar;
-            this.Sira;
         }
         $("input.birimFiyat").each(function (index, value) {
+
             var input = value;
             var maliyet = new Maliyet();
             maliyet.kalipId = input.getAttribute("kalipId");
             maliyet.Tutar = input.value;
-            maliyet.Sira = index;
             liste.push(maliyet);
+
         });
         debugger
-        $.ajax({
-            type: "POST",
-            url: "/siparis/MaliyetHesap",
-            data: { liste: liste },
-            success: function (res) {
-                $("#MaliyetTablo").append(res);
+        Post("/siparis/MaliyetHesap",
+            { liste: liste },
+            function (response) {
+                $("#MaliyetTablo").append(response);
+                toastr.success("Maliyet hesplandı.");
             },
-            error: function () {
-                alert("bir hata oluştu");
-            }
-        })
+            function (x, y, z) {
+                toastr.error("bir hata oluştu");
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+
+            },
+            "html");
     }
 
-    
+
     var handleEvent = function () {
 
         $(document).on("click", "[event='kalipFormPopup']", function (e) {
@@ -191,8 +197,8 @@
         $(document).on("click", "[event='maliyetTablosuGetir']", function (event) {
 
             event.preventDefault();
+            debugger
             var idList = $("#kalipIdList").val().split(",");
-
             Post("/siparis/maliyetForm",
                 { idList: idList },
                 function (response) {
@@ -209,14 +215,43 @@
 
                 },
                 "html");
-          
+
+        });
+
+        $(document).on("click", "[event='KalipListesindenCikar']", function (event) {
+            event.preventDefault();
+            var _this = $(this);
+            var tr = _this.parents("tr");
+            var id = tr.attr("KalipId");
+            $("#exclude").val($("#exclude").val() + id + ",");
+            tr.remove();
+
+            var urunId = $("#UrunId").val();
+            var excludes = ",";
+            if ($("#exclude").val() != undefined) {
+                excludes = $("#exclude").val().slice(0, -1);
+            }
+            Post("/siparis/UrunKaliplari",
+                { urunid: urunId, exclude: excludes },
+                function (response) {
+                    $("#UrunKaliplari").empty().html(response);
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+
+                },
+                "html");
         });
 
         $(document).on("change", "#UrunId", function (event) {
 
             event.preventDefault();
             var urunId = $("#UrunId").val();
-
             Post("/siparis/UrunKaliplari",
                 { urunid: urunId },
                 function (response) {
@@ -232,7 +267,7 @@
 
                 },
                 "html");
-          
+
         });
     }
 
@@ -284,10 +319,14 @@
             handleEvent();
         },
 
-        DtInit: function (domId, url, columns,params) {
-            DtInit(domId, url, columns,params);
+        DtInit: function (domId, url, columns, params) {
+            DtInit(domId, url, columns, params);
+        },
+        MaliyetHesapla: function () {
+
+            maliyetHesapla();
         }
+
     };
 }();
 
- 

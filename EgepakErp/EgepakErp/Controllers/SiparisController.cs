@@ -19,15 +19,24 @@ namespace EgePakErp.Controllers
             return View();
         }
 
-        public PartialViewResult UrunKaliplari(int urunId)
+        public PartialViewResult UrunKaliplari(int urunId, List<int> exclude)
         {
-            var model = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId).Select(x => x.Kalip).ToList();
+            //exclude = çıkarılan kalıpların id listesi.
+            var model = new List<Kalip>();
+            if (exclude == null)
+            {
+                model = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId).Select(x => x.Kalip).ToList();
+            }
+            else
+            {
+                model = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId && !exclude.Contains(x.KalipId)).Select(x => x.Kalip).ToList();
+            }
             return PartialView(model);
         }
 
         public PartialViewResult MaliyetForm(List<int> idList)
         {
-            ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x=>x.UrunAdi.Contains("toz")).BirimFiyat;
+            ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("toz")).BirimFiyat;
             var kaliplar = Db.Kalip
                 .Include("KalipHammaddeRelation")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
