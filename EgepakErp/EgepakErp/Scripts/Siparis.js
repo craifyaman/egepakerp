@@ -239,7 +239,7 @@
             UrunKaliplariGetir();
         });
 
-        $(document).on("change", "input.birimFiyat", function () {
+        $(document).on("change", ".birimFiyat", function () {
             maliyetHesapla();
         })
     }
