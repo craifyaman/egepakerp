@@ -238,6 +238,10 @@
             event.preventDefault();
             UrunKaliplariGetir();
         });
+
+        $(document).on("change", "input.birimFiyat", function () {
+            maliyetHesapla();
+        })
     }
 
     var DtInit = function (domId, url, columns, params) {
