@@ -1,10 +1,21 @@
 ﻿@using EgepakErp.DtModels;
 
 @model List<MaliyetDto>
+@{
+    var liste = Model.GroupBy(x => x.KalipId);
+    double ToplamTutar = 0;
+    decimal DolarKur = ViewBag.dolarKur;
+}
 
-<tr>
-    <td>Toplam Maliyet</td>
-    @{ var liste = Model.GroupBy(x => x.KalipId); }
+<tr class="sum">
+    <td>
+        <table>
+            <tr>
+                <td>Genel giderli Toplam Maliyet</td>
+                <td><input type="text" class="form-control" value="1" /></td>
+            </tr>
+        </table>
+    </td>
 
     @foreach (var item in liste)
     {
@@ -12,10 +23,75 @@
             <div class="form-group row">
                 <div class="col-lg-12 mb-2">
                     <label>Toplam</label>
-                    @item.Sum(x=>x.Tutar) tl
+                    @item.Sum(x => x.Tutar) tl
+                    @{ ToplamTutar += item.Sum(x => x.Tutar);}
                 </div>
             </div>
         </td>
     }
 
+</tr>
+
+<tr class="sum">
+    <td>
+        <table>
+            <tr>
+                <td>Nakit Satış Fiyatıs</td>
+                <td>
+                    <input type="text" class="form-control" value="1,25" />
+                </td>
+            </tr>
+        </table>
+    </td>
+    @foreach (var item in liste)
+    {
+        <td>
+            <div class="form-group row">
+                <div class="col-lg-12 mb-2">
+                    <label>Toplam</label>
+                    @(item.Sum(x => x.Tutar) * (1.25)) tl
+                </div>
+            </div>
+        </td>
+    }
+
+</tr>
+<tr class="sum">
+    <td>
+        <table>
+            <tr>
+                <td>Vadeli Satış </td>
+                <td>
+                    <input type="text" class="form-control" value="1,4" />
+                </td>
+            </tr>
+        </table>
+    </td>
+    @foreach (var item in liste)
+    {
+        <td>
+            <div class="form-group row">
+                <div class="col-lg-12 mb-2">
+                    <label>Toplam</label>
+                    @(item.Sum(x => x.Tutar) * (1.4)) tl
+                </div>
+            </div>
+        </td>
+    }
+
+</tr>
+
+<tr class="sum">
+    <td>Teklif Tutar Tl</td>
+    <td style="position: absolute; width: 100%; font-size: 15px;">@ToplamTutar.ToString("n2") ₺
+</td>
+</tr>
+
+
+<tr class="sum">
+    <td>Teklif Tutar Usd</td>
+    @{
+        var DolarFiyat = (decimal)ToplamTutar / DolarKur;
+    }
+    <td style="position: absolute; width: 100%; font-size: 15px;">@DolarFiyat.ToString("n2") $</td>
 </tr>

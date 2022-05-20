@@ -1,9 +1,8 @@
 ﻿var Siparis = function () {
 
-    function Kaydet(formId, submitUrl) {
+    function KalipKaydet(formId, submitUrl) {
 
         var validation = ValidateForm.IsValid(formId, ValidationFields.KalipFormFields())
-
         validation.validate().then(function (status) {
             if (status == 'Valid') {
                 var form = $("#" + formId).serializeJSON();
@@ -33,7 +32,7 @@
                         if (r.responseJSON.Success) {
                             setTimeout(function () {
                                 bootbox.hideAll();
-                                $('#kt_datatable').KTDatatable('reload');
+                                UrunKaliplariGetir();
                             }, 3000)
 
                         } else {
@@ -86,7 +85,7 @@
                 //BeforeSend
             },
             function () {
-
+                maliyetTablosuGetir();
             },
             "html");
     }
@@ -100,23 +99,55 @@
             this.Tutar;
         }
         $("input.birimFiyat").each(function (index, value) {
-
             var input = value;
-            var maliyet = new Maliyet();
-            maliyet.kalipId = input.getAttribute("kalipId");
-            maliyet.Tutar = input.value;
-            liste.push(maliyet);
-
+            if ($(input).prop('disabled') == false) {
+                var maliyet = new Maliyet();
+                maliyet.kalipId = input.getAttribute("kalipId");
+                maliyet.Tutar = input.value;
+                liste.push(maliyet);
+            }   
         });
-
+        
         Post("/siparis/MaliyetHesap",
             { liste: liste },
             function (response) {
+                $("tr.sum").each(function (index, value) {
+                    $(this).remove();
+                });
                 $("#MaliyetTablo").append(response);
                 toastr.success("Maliyet hesplandı.");
             },
             function (x, y, z) {
                 toastr.error("bir hata oluştu");
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+
+            },
+            "html");
+    }
+
+    function maliyetTablosuGetir() {
+
+
+        var idList = $("#kalipIdList").val().split(",");
+        var excludes = $("#exclude").val().slice(0, -1).split(",");
+        var FixedIdList = [];
+        for (var i = 0; i < idList.length; i++) {
+            if (checkValue(idList[i], excludes) == false) {
+                FixedIdList.push(idList[i])
+            }
+        }
+        Post("/siparis/maliyetForm",
+            { idList: FixedIdList },
+            function (response) {
+                $("#maliyetTablosu").empty().html(response);
+                maliyetHesapla();
+            },
+            function (x, y, z) {
+                //Error
             },
             function () {
                 //BeforeSend
@@ -138,6 +169,7 @@
         }
         return status;
     }
+
     var handleEvent = function () {
 
         $(document).on("click", "[event='kalipFormPopup']", function (e) {
@@ -165,51 +197,7 @@
                                 label: "Kaydet",
                                 className: 'btn-info',
                                 callback: function () {
-                                    Kaydet(formId, submitUrl);
-                                    return false;
-                                }
-                            }
-                        }
-                    });
-                },
-                function (x, y, z) {
-                    //Error
-                },
-                function () {
-                    //BeforeSend
-                },
-                function () {
-                    Global.init();
-                },
-                "html");
-        });
-
-        $(document).on("click", "[event='kalipFormPopup']", function (e) {
-            e.preventDefault();
-            var title = $(this).attr("formTitle");
-            var id = $(this).attr("id");
-            var formId = $(this).attr("formId");
-            var formUrl = $(this).attr("formUrl");
-            var submitUrl = $(this).attr("submitUrl");
-
-            Post(formUrl,
-                { id: id },
-                function (response) {
-                    bootbox.dialog({
-                        title: title,
-                        message: Global.cardTemplate(response),
-                        size: 'large',
-                        buttons: {
-                            cancel: {
-                                label: "Kapat",
-                                className: 'btn-danger',
-                                callback: function () { }
-                            },
-                            ok: {
-                                label: "Kaydet",
-                                className: 'btn-info',
-                                callback: function () {
-                                    Kaydet(formId, submitUrl);
+                                    KalipKaydet(formId, submitUrl);
                                     return false;
                                 }
                             }
@@ -229,32 +217,8 @@
         });
 
         $(document).on("click", "[event='maliyetTablosuGetir']", function (event) {
-
             event.preventDefault();
-            var idList = $("#kalipIdList").val().split(",");
-            var excludes = $("#exclude").val().slice(0, -1).split(",");
-            var FixedIdList = [];
-            for (var i = 0; i < idList.length; i++) {
-                if (checkValue(idList[i], excludes) == false) {
-                    FixedIdList.push(idList[i])
-                }
-            }
-            Post("/siparis/maliyetForm",
-                { idList: FixedIdList },
-                function (response) {
-                    $("#maliyetTablosu").empty().html(response);
-                    maliyetHesapla();
-                },
-                function (x, y, z) {
-                    //Error
-                },
-                function () {
-                    //BeforeSend
-                },
-                function () {
-
-                },
-                "html");
+            maliyetTablosuGetir();
 
         });
 
@@ -265,7 +229,9 @@
             var id = tr.attr("KalipId");
             $("#exclude").val($("#exclude").val() + id + ",");
             tr.remove();
-            //UrunKaliplariGetir();
+            setTimeout(function () {
+                maliyetTablosuGetir();
+            }, 1000)
         });
 
         $(document).on("change", "#UrunId", function (event) {

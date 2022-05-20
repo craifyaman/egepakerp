@@ -178,11 +178,6 @@
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            KalipOzellik: {
-                validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
-                }
-            },
             Adi: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }

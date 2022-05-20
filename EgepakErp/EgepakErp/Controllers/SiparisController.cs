@@ -1,4 +1,5 @@
 ﻿using EgepakErp.DtModels;
+using EgepakErp.Helper;
 using EgePakErp.Custom;
 using EgePakErp.Models;
 using Newtonsoft.Json;
@@ -47,6 +48,7 @@ namespace EgePakErp.Controllers
 
         public PartialViewResult MaliyetHesap(List<MaliyetDto> liste)
         {
+            ViewBag.dolarKur = DovizHelper.DovizKuruGetir("USD", System.DateTime.Now.AddDays(-1));
             return PartialView(liste);
         }
 

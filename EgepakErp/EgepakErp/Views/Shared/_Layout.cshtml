@@ -3213,7 +3213,11 @@ License: You must have a valid license purchased only from themeforest(the above
     <script>
 
         $(document).ajaxStart(function (event, jqxhr, settings, thrownError) {
-
+            KTApp.blockPage({
+                overlayColor: '#000000',
+                state: 'danger',
+                message: 'İşleminiz Yapılıyor'
+            });
         });
 
         $(document).ajaxError(function (event, jqxhr, settings, thrownError) {
@@ -3232,6 +3236,8 @@ License: You must have a valid license purchased only from themeforest(the above
         });
 
         $(document).ajaxComplete(function (event, jqxhr, settings, thrownError) {
+             
+            KTApp.unblockPage();
             Global.init();
         });
 
