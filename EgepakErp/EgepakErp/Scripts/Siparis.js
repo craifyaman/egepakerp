@@ -68,7 +68,31 @@
         })
     }
 
+    function UrunKaliplariGetir() {
+        var urunId = $("#UrunId").val();
+        var excludes = ",";
+        if ($("#exclude").val() != undefined) {
+            excludes = $("#exclude").val().slice(0, -1);
+        }
+        Post("/siparis/UrunKaliplari",
+            { urunid: urunId, exclude: excludes },
+            function (response) {
+                $("#UrunKaliplari").empty().html(response);
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+
+            },
+            "html");
+    }
+
     function maliyetHesapla() {
+
         var liste = [];
 
         var Maliyet = function () {
@@ -84,7 +108,7 @@
             liste.push(maliyet);
 
         });
-        debugger
+
         Post("/siparis/MaliyetHesap",
             { liste: liste },
             function (response) {
@@ -103,7 +127,17 @@
             "html");
     }
 
-
+    function checkValue(value, arr) {
+        var status = false;
+        for (var i = 0; i < arr.length; i++) {
+            var val = arr[i];
+            if (val == value) {
+                status = true;
+                break;
+            }
+        }
+        return status;
+    }
     var handleEvent = function () {
 
         $(document).on("click", "[event='kalipFormPopup']", function (e) {
@@ -197,10 +231,16 @@
         $(document).on("click", "[event='maliyetTablosuGetir']", function (event) {
 
             event.preventDefault();
-            debugger
             var idList = $("#kalipIdList").val().split(",");
+            var excludes = $("#exclude").val().slice(0, -1).split(",");
+            var FixedIdList = [];
+            for (var i = 0; i < idList.length; i++) {
+                if (checkValue(idList[i], excludes) == false) {
+                    FixedIdList.push(idList[i])
+                }
+            }
             Post("/siparis/maliyetForm",
-                { idList: idList },
+                { idList: FixedIdList },
                 function (response) {
                     $("#maliyetTablosu").empty().html(response);
                     maliyetHesapla();
@@ -225,49 +265,12 @@
             var id = tr.attr("KalipId");
             $("#exclude").val($("#exclude").val() + id + ",");
             tr.remove();
-
-            var urunId = $("#UrunId").val();
-            var excludes = ",";
-            if ($("#exclude").val() != undefined) {
-                excludes = $("#exclude").val().slice(0, -1);
-            }
-            Post("/siparis/UrunKaliplari",
-                { urunid: urunId, exclude: excludes },
-                function (response) {
-                    $("#UrunKaliplari").empty().html(response);
-                },
-                function (x, y, z) {
-                    //Error
-                },
-                function () {
-                    //BeforeSend
-                },
-                function () {
-
-                },
-                "html");
+            //UrunKaliplariGetir();
         });
 
         $(document).on("change", "#UrunId", function (event) {
-
             event.preventDefault();
-            var urunId = $("#UrunId").val();
-            Post("/siparis/UrunKaliplari",
-                { urunid: urunId },
-                function (response) {
-                    $("#UrunKaliplari").empty().html(response);
-                },
-                function (x, y, z) {
-                    //Error
-                },
-                function () {
-                    //BeforeSend
-                },
-                function () {
-
-                },
-                "html");
-
+            UrunKaliplariGetir();
         });
     }
 
@@ -323,7 +326,6 @@
             DtInit(domId, url, columns, params);
         },
         MaliyetHesapla: function () {
-
             maliyetHesapla();
         }
 
