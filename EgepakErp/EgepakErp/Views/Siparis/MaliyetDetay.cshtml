@@ -1,0 +1,264 @@
+﻿@model Kalip
+@{
+    string type = ViewBag.MaliyetType;
+    Kalip kalip = Model;
+}
+
+@if (type == "hammadde")
+{
+    <tr>
+        <td>
+            <div class="form-group row">
+                <div class="col-lg-12 mb-2">
+                    <label>Hammadde Cinsi:</label>
+                    <select class="form-control ">
+                        @foreach (var item in kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi))
+                        {
+                            <option id="@item.HammaddeCinsiId">@item.Adi</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Birim Fiyat Tipi:</label>
+                    <select class="form-control">
+                        <option>Son Fatura Birim Fiyat</option>
+                        <option>Son 1 Ay Ortalaması</option>
+                        <option>Son 3 Ay Ortalaması</option>
+                        <option>Son 6 Ay Ortalaması</option>
+                        <option>Son 12 Ay Ortalaması</option>
+                    </select>
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Birim Fiyat:</label>
+                    @{
+                        var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
+                        var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
+                        var birimFiyat = sonHammaddeHareket?.BirimFiyat;
+                        decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
+                    }
+                    <input maliyetType="malzeme" colSira="" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N2")" />
+                </div>
+            </div>
+        </td>
+    </tr>
+}
+
+@if (type == "tozBoya")
+{
+    <tr>
+        <td>Toz Boya Tutarı</td>
+        @try
+        {
+            double sabit = 12.0 / 1000.0;
+            decimal KalipAgirlik = (decimal)Model.ParcaAgirlik;
+            decimal KullanilanBoyaMiktar = Convert.ToDecimal(sabit) * KalipAgirlik;
+            decimal BoyaBirimFiyat = ViewBag.TozBoyaSonBirimFiyat / 1000;
+            decimal Maliyet = KalipAgirlik * KullanilanBoyaMiktar * BoyaBirimFiyat;
+            <td boya-cikar="@Model.KalipId">
+                <div class="form-group row">
+                    <div class="col-lg-12 mb-2">
+                        <label>Kalıp Ağırlığı</label>
+                        <input type="text" class="form-control" value="@KalipAgirlik.ToString("n2")" />
+                    </div>
+                    <div class="col-lg-12 mb-2">
+                        <label>Kullanılan Boya Miktarı</label>
+                        <input type="text" class="form-control" value="@KullanilanBoyaMiktar.ToString("n2")" />
+                    </div>
+
+                    <div class="col-lg-12 mb-2">
+                        <label>bir adet için üretim maliyeti</label>
+                        <input maliyetType="malzeme" kalipId="@Model.KalipId" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
+                    </div>
+                </div>
+
+            </td>
+        }
+        catch (Exception ex)
+        {
+
+        }
+
+    </tr>
+}
+
+@if (type == "koli")
+{
+    <tr>
+        <td koli-cikar="@kalip.KalipId">
+            <div class="form-group row">
+                <div class="col-lg-12 mb-2">
+                    <label>Koli Türü:</label>
+                    <select class="form-control ">
+                        @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("koli")))
+                        {
+                            <option id="@item.HammaddeCinsiId">@(item.UrunAdi) (@item.BirimFiyat)</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Birim Fiyat Tipi:</label>
+                    <select class="form-control">
+                        <option>Son Fatura Birim Fiyat</option>
+                        <option>Son 1 Ay Ortalaması ()</option>
+                        <option>Son 3 Ay Ortalaması</option>
+                        <option>Son 6 Ay Ortalaması</option>
+                        <option>Son 12 Ay Ortalaması</option>
+                    </select>
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Birim Fiyat:</label>
+                    @{
+                        var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
+                        var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
+                        var birimFiyat = sonHammaddeHareket?.BirimFiyat;
+                        decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
+                    }
+                    <input maliyetType="malzeme" kalipId="@Model.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N2")" />
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Koli Kapasitesi:</label>
+                    <input type="text" class="form-control" value="1500" />
+                </div>
+            </div>
+        </td>
+    </tr>
+}
+
+@if (type == "poset")
+{
+    <tr>
+        <td poset-cikar="@kalip.KalipId">
+            <div class="form-group row">
+                <div class="col-lg-12 mb-2">
+                    <label>Poşet Türü:</label>
+                    <select class="form-control ">
+                        @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("poşet")))
+                        {
+                            <option id="@item.HammaddeCinsiId">@(item.UrunAdi) (@item.BirimFiyat)</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Birim Fiyat Tipi:</label>
+                    <select class="form-control">
+                        <option>Son Fatura Birim Fiyat</option>
+                        <option>Son 1 Ay Ortalaması ()</option>
+                        <option>Son 3 Ay Ortalaması</option>
+                        <option>Son 6 Ay Ortalaması</option>
+                        <option>Son 12 Ay Ortalaması</option>
+                    </select>
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Birim Fiyat:</label>
+                    @{
+                        var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
+                        var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
+                        var birimFiyat = sonHammaddeHareket?.BirimFiyat;
+                        decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
+                    }
+                    <input maliyetType="malzeme" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N2")" />
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Peşet Kapasitesi:</label>
+                    <input type="text" class="form-control" value="1500" />
+                </div>
+            </div>
+        </td>
+    </tr>
+}
+
+@if (type == "enjeksiyon")
+{
+    <tr>
+        @try
+        {
+            double enjeksiyonSaatMaliyet = 100;
+            double birAdetUrunUretimMaliyeti = (3600 / (int)kalip.UretimZamani) * (int)kalip.KalipGozSayisi / enjeksiyonSaatMaliyet;
+            <td>
+                <div class="form-group row">
+                    <div class="col-lg-12 mb-2">
+                        <label>enjeksiyon saat maliyet</label>
+                        <input type="text" class="form-control" value="@enjeksiyonSaatMaliyet" />
+                    </div>
+                    <div class="col-lg-12 mb-2">
+                        <label>bir adet için üretim maliyeti</label>
+                        <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@birAdetUrunUretimMaliyeti.ToString("N2")" />
+                    </div>
+                </div>
+            </td>
+        }
+        catch (Exception ex)
+        {
+            <td>
+                <div class="form-group row">
+                    <div class="col-lg-12 mb-2">
+                        <label>enjeksiyon saat maliyet</label>
+                        <input type="text" class="form-control" value="" />
+                    </div>
+                    <div class="col-lg-12 mb-2">
+                        <label>bir adet için üretim maliyeti</label>
+                        <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="" />
+                    </div>
+                </div>
+            </td>
+        }
+    </tr>
+}
+
+@if (type == "sicakbaski")
+{
+    <tr>
+        @try
+        {
+            double SicakBaskiTamponSaatAdet = 300;
+            double SicakBaskiTamponSaatMaliyet = 35;
+            double birimSicakBaskiTamponMaliyet = SicakBaskiTamponSaatMaliyet / SicakBaskiTamponSaatAdet;
+            <td sicakBaski-cikar="@kalip.KalipId">
+                <div class="form-group row">
+                    <div class="col-lg-12 mb-2">
+                        <label>sıcak baskı tampon saat adet</label>
+                        <input type="text" class="form-control" value="@SicakBaskiTamponSaatAdet" />
+                    </div>
+                    <div class="col-lg-12 mb-2">
+                        <label>birim sıcak baskı tampon maliyet</label>
+                        <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@birimSicakBaskiTamponMaliyet.ToString("N2")" />
+                    </div>
+                </div>
+
+            </td>
+        }
+        catch (Exception ex)
+        {
+
+        }
+    </tr>
+}
+
+@if (type == "montaj")
+{
+    <tr>
+        @try
+        {
+            double PersonelSaatMaliyet = 35;
+            double SaatlikUretimAdet = 300;
+            double Maliyet = PersonelSaatMaliyet / SaatlikUretimAdet;
+            <td montaj-cikar="@kalip.KalipId">
+                <div class="form-group row">
+                    <div class="col-lg-12 mb-2">
+                        <label>saatlik üretim adedi</label>
+                        <input type="text" class="form-control" value="@SaatlikUretimAdet" />
+                    </div>
+                    <div class="col-lg-12 mb-2">
+                        <label>aded maliyeti</label>
+                        <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@Maliyet.ToString("N2")" />
+                    </div>
+                </div>
+
+            </td>
+        }
+        catch (Exception ex)
+        {
+
+        }
+    </tr>
+}

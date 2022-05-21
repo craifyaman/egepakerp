@@ -1,7 +1,4 @@
 ﻿@model List<Kalip>
-@{
-    var tdCounter = 0;
-}
 
 <table class="table table-bordered table-hover table-sm mt-8">
     <thead>
@@ -18,27 +15,8 @@
             <td>Hammadde</td>
             @foreach (var kalip in Model)
             {
-                <td>
+                <td hammadde-cikar="@kalip.KalipId">
                     <div class="form-group row">
-                        <div class="col-lg-12 mb-2">
-                            <label>Hammadde Cinsi:</label>
-                            <select class="form-control ">
-                                @foreach (var item in kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi))
-                                {
-                                    <option id="@item.HammaddeCinsiId">@item.Adi</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-lg-12 mb-2">
-                            <label>Birim Fiyat Tipi:</label>
-                            <select class="form-control">
-                                <option>Son Fatura Birim Fiyat</option>
-                                <option>Son 1 Ay Ortalaması</option>
-                                <option>Son 3 Ay Ortalaması</option>
-                                <option>Son 6 Ay Ortalaması</option>
-                                <option>Son 12 Ay Ortalaması</option>
-                            </select>
-                        </div>
                         <div class="col-lg-12 mb-2">
                             <label>Birim Fiyat:</label>
                             @{
@@ -47,16 +25,19 @@
                                 var birimFiyat = sonHammaddeHareket?.BirimFiyat;
                                 decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
                             }
-                            <input maliyetType="malzeme" colSira="" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@birimMaliyet.Value.ToString("N2")" />
+                            <div class="input-group mb-5">
+                                <span class="input-group-text" event="MaliyetDetay" maliyetType="hammadde" kalipId="@kalip.KalipId">
+                                    <i class="flaticon-mark"></i>
+                                </span>
+                                <input maliyetType="malzeme" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N2")" />
+                                <span hammadde-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="hammadde" event="FaturadanCikar">
+                                    +
+                                </span>
+                            </div>
                         </div>
-
                     </div>
-
                 </td>
-                tdCounter++;
             }
-
-
         </tr>
         <tr>
             <td>Toz Boya Tutarı</td>
@@ -71,22 +52,19 @@
                     decimal BoyaBirimFiyat = ViewBag.TozBoyaSonBirimFiyat / 1000;
                     decimal Maliyet = KalipAgirlik * KullanilanBoyaMiktar * BoyaBirimFiyat;
                     <td boya-cikar="@kalip.KalipId">
-                        <button boya-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'boya')">+</button>
-                        <div class="form-group row">
-                            <div class="col-lg-12 mb-2">
-                                <label>Kalıp Ağırlığı</label>
-                                <input type="text" class="form-control" value="@KalipAgirlik.ToString("n2")" />
-                            </div>
-                            <div class="col-lg-12 mb-2">
-                                <label>Kullanılan Boya Miktarı</label>
-                                <input type="text" class="form-control" value="@KullanilanBoyaMiktar.ToString("n2")" />
-                            </div>
-
-                            <div class="col-lg-12 mb-2">
-                                <label>bir adet için üretim maliyeti</label>
-                                <input maliyetType="malzeme" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@Maliyet.ToString("n2")" />
+                        <div class="col-lg-12 mb-2">
+                            <label>bir adet için üretim maliyeti</label>
+                            <div class="input-group mb-5">
+                                <span class="input-group-text" event="MaliyetDetay" maliyetType="tozBoya" kalipId="@kalip.KalipId">
+                                    <i class="flaticon-mark"></i>
+                                </span>
+                                <input maliyetType="malzeme" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
+                                <span boya-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="boya" event="FaturadanCikar">
+                                    +
+                                </span>
                             </div>
                         </div>
+
 
                     </td>
                 }
@@ -99,106 +77,58 @@
 
 
         </tr>
-
         <tr>
             <td>Koli</td>
             @foreach (var kalip in Model)
             {
+
+                var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
+                var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
+                var birimFiyat = sonHammaddeHareket?.BirimFiyat;
+                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
+
                 <td koli-cikar="@kalip.KalipId">
-                    <button koli-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'koli')">+</button>
-                    <div class="form-group row">
-                        <div class="col-lg-12 mb-2">
-                            <label>Koli Türü:</label>
-                            <select class="form-control ">
-                                @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("koli")))
-                                {
-                                    <option id="@item.HammaddeCinsiId">@(item.UrunAdi) (@item.BirimFiyat)</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-lg-12 mb-2">
-                            @{
-                                //EgepakErp.Helper.SonAylarFaturaHelper fHelper = new EgepakErp.Helper.SonAylarFaturaHelper(DateTime.Now.AddMonths(-1), DateTime.Now);
-                                //var SonBirAyOrtalamasi = fHelper.Calculate();
-                            }
-                            <label>Birim Fiyat Tipi:</label>
-                            <select class="form-control">
-                                <option>Son Fatura Birim Fiyat</option>
-                                <option>Son 1 Ay Ortalaması ()</option>
-                                <option>Son 3 Ay Ortalaması</option>
-                                <option>Son 6 Ay Ortalaması</option>
-                                <option>Son 12 Ay Ortalaması</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-12 mb-2">
-                            <label>Birim Fiyat:</label>
-                            @{
-                                var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
-                                var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
-                                var birimFiyat = sonHammaddeHareket?.BirimFiyat;
-                                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
-                            }
-                            <input maliyetType="malzeme" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@birimMaliyet.Value.ToString("N2")" />
-                        </div>
-                        <div class="col-lg-12 mb-2">
-                            <label>Koli Kapasitesi:</label>
-                            <input type="text" class="form-control" value="1500" />
+                    <div class="col-lg-12 mb-2">
+                        <label>Birim Fiyat:</label>
+                        <div class="input-group mb-5">
+                            <span class="input-group-text" event="MaliyetDetay" maliyetType="koli" kalipId="@kalip.KalipId">
+                                <i class="flaticon-mark"></i>
+                            </span>
+                            <input maliyetType="malzeme" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N2")" />
+                            <span koli-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="koli" event="FaturadanCikar">
+                                +
+                            </span>
                         </div>
                     </div>
                 </td>
 
             }
-
-
         </tr>
-
         <tr>
             <td>Poşet</td>
             @foreach (var kalip in Model)
             {
+                var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
+                var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
+                var birimFiyat = sonHammaddeHareket?.BirimFiyat;
+                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
 
                 <td poset-cikar="@kalip.KalipId">
-                    <button poset-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'poset')">+</button>
-                    <div class="form-group row">
-                        <div class="col-lg-12 mb-2">
-                            <label>Poşet Türü:</label>
-                            <select class="form-control ">
-                                @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("poşet")))
-                                {
-                                    <option id="@item.HammaddeCinsiId">@(item.UrunAdi) (@item.BirimFiyat)</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-lg-12 mb-2">
-                            <label>Birim Fiyat Tipi:</label>
-                            <select class="form-control">
-                                <option>Son Fatura Birim Fiyat</option>
-                                <option>Son 1 Ay Ortalaması ()</option>
-                                <option>Son 3 Ay Ortalaması</option>
-                                <option>Son 6 Ay Ortalaması</option>
-                                <option>Son 12 Ay Ortalaması</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-12 mb-2">
-                            <label>Birim Fiyat:</label>
-                            @{
-                                var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
-                                var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
-                                var birimFiyat = sonHammaddeHareket?.BirimFiyat;
-                                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
-                            }
-                            <input maliyetType="malzeme" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@birimMaliyet.Value.ToString("N2")" />
-                        </div>
-                        <div class="col-lg-12 mb-2">
-                            <label>Peşet Kapasitesi:</label>
-                            <input type="text" class="form-control" value="1500" />
+                    <div class="col-lg-12 mb-2">
+                        <label>Birim Fiyat:</label>
+                        <div class="input-group mb-5">
+                            <span class="input-group-text" event="MaliyetDetay" maliyetType="poset" kalipId="@kalip.KalipId">
+                                <i class="flaticon-mark"></i>
+                            </span>
+                            <input maliyetType="malzeme" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N2")" />
+                            <span poset-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="poset" event="FaturadanCikar">
+                                +
+                            </span>
                         </div>
                     </div>
                 </td>
 
             }
-
-
         </tr>
         <tr>
             <td>Intercom varak Yaldız</td>
@@ -207,11 +137,13 @@
                 double BobinFiyat = 818.33;
                 double Maliyet = (BobinFiyat * 40) / 10000;
                 <td yaldiz-cikar="@kalip.KalipId">
-                    <button yaldiz-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'yaldiz')">+</button>
-                    <div class="form-group row">
-                        <div class="col-lg-12 mb-2">
-                            <label>Intercom varak Yaldız:</label>
+                    <div class="col-lg-12 mb-2">
+                        <label>Intercom varak Yaldız:</label>
+                        <div class="input-group mb-5">
                             <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
+                            <span yaldiz-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="yaldiz" event="FaturadanCikar">
+                                +
+                            </span>
                         </div>
                     </div>
                 </td>
@@ -220,10 +152,8 @@
 
 
         </tr>
-
         <tr>
             <td>Enjeksiyon Makine Saati</td>
-
             @foreach (var kalip in Model)
             {
                 try
@@ -231,23 +161,31 @@
                     double enjeksiyonSaatMaliyet = 100;
                     double birAdetUrunUretimMaliyeti = (3600 / (int)kalip.UretimZamani) * (int)kalip.KalipGozSayisi / enjeksiyonSaatMaliyet;
                     <td>
-                        <div class="form-group row">
-                            <div class="col-lg-12 mb-2">
-                                <label>enjeksiyon saat maliyet</label>
-                                <input type="text" class="form-control" value="@enjeksiyonSaatMaliyet" />
-                            </div>
-                            <div class="col-lg-12 mb-2">
-                                <label>bir adet için üretim maliyeti</label>
-                                <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@birAdetUrunUretimMaliyeti.ToString("N2")" />
+                        <div class="col-lg-12 mb-2">
+                            <label>bir adet için üretim maliyeti:</label>
+                            <div class="input-group mb-5">
+                                <span class="input-group-text" event="MaliyetDetay" maliyetType="enjeksiyon" kalipId="@kalip.KalipId">
+                                    <i class="flaticon-mark"></i>
+                                </span>
+                                <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birAdetUrunUretimMaliyeti.ToString("N2")" />
+
                             </div>
                         </div>
-
-
                     </td>
                 }
                 catch (Exception ex)
                 {
-                    <td> asd</td>
+                    <td>
+                        <div class="col-lg-12 mb-2">
+                            <label>bir adet için üretim maliyeti:</label>
+                            <div class="input-group mb-5">
+                                <span class="input-group-text" event="MaliyetDetay" maliyetType="enjeksiyon" kalipId="@kalip.KalipId">
+                                    <i class="flaticon-mark"></i>
+                                </span>
+                                <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control" value="" />
+                            </div>
+                        </div>
+                    </td>
                 }
 
             }
@@ -259,22 +197,20 @@
             @foreach (var kalip in Model)
             {
                 <td metalize-cikar="@kalip.KalipId">
-                    <button metalize-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'metalize')">+</button>
-                    <div class="form-group row">
-                        <div class="col-lg-12 mb-2">
-                            <label>Maliyet:</label>
+                    <div class="col-lg-12 mb-2">
+                        <label>Maliyet:</label>
+                        <div class="input-group mb-5">
                             <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="" />
+                            <span metalize-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="metalize" event="FaturadanCikar">
+                                +
+                            </span>
                         </div>
                     </div>
                 </td>
-
             }
-
-
         </tr>
         <tr>
             <td>Sıcak baskı + tampon saat maliyeti</td>
-
             @foreach (var kalip in Model)
             {
                 try
@@ -282,19 +218,20 @@
                     double SicakBaskiTamponSaatAdet = 300;
                     double SicakBaskiTamponSaatMaliyet = 35;
                     double birimSicakBaskiTamponMaliyet = SicakBaskiTamponSaatMaliyet / SicakBaskiTamponSaatAdet;
+                   
                     <td sicakBaski-cikar="@kalip.KalipId">
-                        <button sicakBaski-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'sicakBaski')">+</button>
-                        <div class="form-group row">
-                            <div class="col-lg-12 mb-2">
-                                <label>sıcak baskı tampon saat adet</label>
-                                <input type="text" class="form-control" value="@SicakBaskiTamponSaatAdet" />
-                            </div>
-                            <div class="col-lg-12 mb-2">
-                                <label>birim sıcak baskı tampon maliyet</label>
-                                <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@birimSicakBaskiTamponMaliyet.ToString("N2")" />
+                        <div class="col-lg-12 mb-2">
+                            <label>birim sıcak baskı tampon maliyet:</label>
+                            <div class="input-group mb-5">
+                                <span class="input-group-text" event="MaliyetDetay" maliyetType="sicakbaski" kalipId="@kalip.KalipId">
+                                    <i class="flaticon-mark"></i>
+                                </span>
+                                <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimSicakBaskiTamponMaliyet.ToString("N2")" />
+                                <span sicakBaski-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="sicakBaski" event="FaturadanCikar">
+                                    +
+                                </span>
                             </div>
                         </div>
-
                     </td>
                 }
                 catch (Exception ex)
@@ -306,10 +243,8 @@
 
 
         </tr>
-
         <tr>
             <td>Montaj personel saati</td>
-
             @foreach (var kalip in Model)
             {
                 try
@@ -318,18 +253,18 @@
                     double SaatlikUretimAdet = 300;
                     double Maliyet = PersonelSaatMaliyet / SaatlikUretimAdet;
                     <td montaj-cikar="@kalip.KalipId">
-                        <button montaj-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger float-right" onclick="FaturadanCikar(@kalip.KalipId,'montaj')">+</button>
-                        <div class="form-group row">
-                            <div class="col-lg-12 mb-2">
-                                <label>saatlik üretim adedi</label>
-                                <input type="text" class="form-control" value="@SaatlikUretimAdet" />
-                            </div>
-                            <div class="col-lg-12 mb-2">
-                                <label>aded maliyeti</label>
-                                <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat birimMaliyet_@kalip.KalipId" value="@Maliyet.ToString("N2")" />
+                        <div class="col-lg-12 mb-2">
+                            <label>aded maliyeti:</label>
+                            <div class="input-group mb-5">
+                                <span class="input-group-text" event="MaliyetDetay" maliyetType="montaj" kalipId="@kalip.KalipId">
+                                    <i class="flaticon-mark"></i>
+                                </span>
+                                <input maliyetType="uretim" kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("N2")" />
+                                <span montaj-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="montaj" event="FaturadanCikar">
+                                    +
+                                </span>
                             </div>
                         </div>
-
                     </td>
                 }
                 catch (Exception ex)
@@ -338,9 +273,6 @@
                 }
 
             }
-
-
         </tr>
-
     </tbody>
 </table>

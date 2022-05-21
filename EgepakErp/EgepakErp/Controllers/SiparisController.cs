@@ -48,10 +48,21 @@ namespace EgePakErp.Controllers
 
         public PartialViewResult MaliyetHesap(List<MaliyetDto> liste)
         {
-            ViewBag.dolarKur = DovizHelper.DovizKuruGetir("USD", System.DateTime.Now.AddDays(-1));
+            ViewBag.dolarKur = DovizHelper.DovizKuruGetir("USD", System.DateTime.Now);
             return PartialView(liste);
         }
 
+        public PartialViewResult MaliyetDetay(string MaliyetType, int KalipId)
+        {
+            var Kalip = Db.Kalip
+                .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.HammaddeCinsi")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .FirstOrDefault(x => x.KalipId == KalipId);
 
+            ViewBag.MaliyetType = MaliyetType;
+            ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("toz")).BirimFiyat;
+            return PartialView(Kalip);
+        }
     }
 }

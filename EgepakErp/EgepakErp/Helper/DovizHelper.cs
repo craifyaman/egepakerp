@@ -11,7 +11,7 @@ namespace EgepakErp.Helper
         public static decimal DovizKuruGetir(string Kod, DateTime date)
         {
             decimal deger;
-            DateTime tarih = Convert.ToDateTime(date.AddDays(-1).ToString("dd/MM/yyyy"));
+            DateTime tarih = Convert.ToDateTime(date.ToString("dd/MM/yyyy"));
             if (tarih.DayOfWeek == DayOfWeek.Saturday)
             {
                 tarih = tarih.AddDays(-1);

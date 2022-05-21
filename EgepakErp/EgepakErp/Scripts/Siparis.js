@@ -47,25 +47,44 @@
         });
     }
 
-    function UrunKaliplari() {
-        var form = $("#KalipIdler").serializeObject();
-        var keys = Object.keys(form);
-        var include = keys.slice(1, form.length);
-        form.Include = include;
+    function FaturadanCikar(id, tagname) {
+        debugger
+        var tdInputs = $("td[" + tagname + "-cikar='" + id + "'] input");
+        var SelectBoxes = $("td[" + tagname + "-cikar='" + id + "'] select");
 
-        console.log("form", form);
-        $.ajax({
-            type: "GET",
-            url: "/siparis/Form",
-            data: form,
-            success: function (html) {
-                console.log(html);
-            },
-            error: function () {
-                toastr.error("bir hata oluştu");
-            }
-        })
+        var btn = $("span[" + tagname + "-cikar='" + id + "']");
+        if (btn.hasClass("btn-danger")) {
+            tdInputs.prop("disabled", true);
+            SelectBoxes.prop("disabled", true);
+            btn.removeClass("btn-danger").addClass("btn-success");
+        }
+        else {
+            btn.removeClass("btn-success").addClass("btn-danger");
+            tdInputs.prop("disabled", false);
+            SelectBoxes.prop("disabled", false);
+        }
+        Siparis.MaliyetHesapla();
     }
+
+    //function UrunKaliplari() {
+    //    var form = $("#KalipIdler").serializeObject();
+    //    var keys = Object.keys(form);
+    //    var include = keys.slice(1, form.length);
+    //    form.Include = include;
+
+    //    console.log("form", form);
+    //    $.ajax({
+    //        type: "GET",
+    //        url: "/siparis/Form",
+    //        data: form,
+    //        success: function (html) {
+    //            console.log(html);
+    //        },
+    //        error: function () {
+    //            toastr.error("bir hata oluştu");
+    //        }
+    //    })
+    //}
 
     function UrunKaliplariGetir() {
         var urunId = $("#UrunId").val();
@@ -98,7 +117,7 @@
             this.KalipId;
             this.Tutar;
         }
-        $("input.birimFiyat").each(function (index, value) {
+        $(".birimFiyat").each(function (index, value) {
             var input = value;
             if ($(input).prop('disabled') == false) {
                 var maliyet = new Maliyet();
@@ -154,6 +173,44 @@
             },
             function () {
 
+            },
+            "html");
+    }
+
+    function maliyetDetayGetir(maliyetType, kalipId) {
+        debugger
+        Post("/siparis/MaliyetDetay",
+            { MaliyetType: maliyetType, KalipId: kalipId },
+            function (response) {
+                bootbox.dialog({
+                    title: maliyetType.toUpperCase() + " DETAY",
+                    message: Global.cardTemplate(response),
+                    size: 'large',
+                    buttons: {
+                        cancel: {
+                            label: "Kapat",
+                            className: 'btn-danger',
+                            callback: function () { }
+                        },
+                        ok: {
+                            label: "Kaydet",
+                            className: 'btn-info',
+                            callback: function () {
+                                //KalipKaydet(formId, submitUrl);
+                                return false;
+                            }
+                        }
+                    }
+                });
+
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
             },
             "html");
     }
@@ -242,6 +299,19 @@
         $(document).on("change", ".birimFiyat", function () {
             maliyetHesapla();
         })
+        $(document).on("click", "[event='MaliyetDetay']", function (event) {
+            event.preventDefault();
+            var MaliyetType = $(this).attr("maliyetType");
+            var KalipId = $(this).attr("kalipId");
+            maliyetDetayGetir(MaliyetType, KalipId);
+        });
+
+        $(document).on("click", "[event='FaturadanCikar']", function (event) {
+            event.preventDefault();
+            var KalipId = $(this).attr("KalipId");
+            var cikarType = $(this).attr("cikar-type");
+            FaturadanCikar(KalipId, cikarType);
+        });
     }
 
     var DtInit = function (domId, url, columns, params) {

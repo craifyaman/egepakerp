@@ -2555,6 +2555,7 @@
     <Content Include="Views\Siparis\UrunKaliplari.cshtml" />
     <Content Include="Views\Siparis\MaliyetForm.cshtml" />
     <Content Include="Views\Siparis\MaliyetHesap.cshtml" />
+    <Content Include="Views\Siparis\MaliyetDetay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.resx">
