@@ -10,8 +10,14 @@ namespace EgepakErp.Helper
     {
         public static decimal DovizKuruGetir(string Kod, DateTime date)
         {
-            decimal deger;
+            decimal deger;          
             DateTime tarih = Convert.ToDateTime(date.ToString("dd/MM/yyyy"));
+            if (tarih.ToString("dd/MM/yyyy") == DateTime.Now.ToString("dd/MM/yyyy") && tarih.DayOfWeek == DayOfWeek.Monday)
+            {
+                //bugün pazartesi ise geçen cumanın kuru alınır.
+                tarih = tarih.AddDays(-3);
+
+            }
             if (tarih.DayOfWeek == DayOfWeek.Saturday)
             {
                 tarih = tarih.AddDays(-1);

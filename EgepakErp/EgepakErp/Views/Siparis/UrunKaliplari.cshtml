@@ -8,7 +8,6 @@
         <tr>
             <th>Adı</th>
             <th>Kalıp Özellik</th>
-            <th>Kalıp Açıklama</th>
             <th>İşlem</th>
         </tr>
     </thead>
@@ -22,7 +21,6 @@
                     @item.Adi
                 </td>
                 <td>@item.KalipOzellik</td>
-                <td>@item.Aciklama</td>
                 <td>
                     <a href="#" class="btn btn-icon btn-danger mr-1" event="KalipListesindenCikar"> <i class="flaticon2-cancel-music"></i> </a>
                     <a class="btn btn-icon btn-info mr-1" formtitle="@item.ParcaKodu @item.Adi Düzenle" formid="kalipForm" formurl="/Kalip/Form" submiturl="/Kalip/Kaydet" event="kalipFormPopup" href="#" id="@item.KalipId" title="Hızlı Düzenle" data="" -="" toggle="tooltip" placement="top"> <i class="flaticon-edit"></i> </a>
