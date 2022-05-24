@@ -2479,6 +2479,7 @@
     <Content Include="Scripts\Custom\ValidateForm.js" />
     <Content Include="Scripts\Custom\ValidationFields.js" />
     <Content Include="Scripts\Gorusme.js" />
+    <Content Include="Scripts\HammaddeHareket.js" />
     <Content Include="Scripts\Hammadde.js" />
     <Content Include="Scripts\Siparis.js" />
     <Content Include="Scripts\Kalip.js" />
@@ -2558,6 +2559,7 @@
     <Content Include="Views\Siparis\MaliyetForm.cshtml" />
     <Content Include="Views\Siparis\MaliyetHesap.cshtml" />
     <Content Include="Views\Siparis\MaliyetDetay.cshtml" />
+    <Content Include="Views\HammaddeHareket\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.resx">

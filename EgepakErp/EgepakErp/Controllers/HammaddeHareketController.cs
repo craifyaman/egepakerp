@@ -14,91 +14,57 @@ namespace EgepakErp.Controllers
     public class HammaddeHareketController:BaseController
     {
         // GET: Cari
-        [Menu("Hammadde Hareket", "flaticon-customer icon-xl", "Üretim", 1, 2)]
+        [Menu("Hammadde Hareket", "flaticon-customer icon-xl", "Hammade Hreket", 1, 4)]
         public ActionResult Index()
         {
             return View();
         }
 
 
-        [Yetki("Hammadde Cinsi", "Üretim")]
+        [Yetki("Hammadde Hareket", "Üretim")]
         public JsonResult Liste()
         {
+            //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
 
-            dtMeta.field = Request.Form["sort[field]"] == null ? "CariId" : Request.Form["sort[field]"];
+            dtMeta.field = Request.Form["sort[field]"] == null ? "HammaddeHareketId" : Request.Form["sort[field]"];
             dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
 
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
             dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
 
-            var model = Db.HammaddeHareket
-                .Include("HammaddeTipi")
-                .Include("Marka")
-                .Include("HammaddeCinsi")
-                .Include("Doviz")
-                .AsQueryable();
+            var model = Db.HammaddeHareket.AsQueryable();
+
 
             var count = model.Count();
             dtMeta.total = count;
             dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
 
-            ////Filtre
-            //if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
-            //{
-            //    var searchQuery = Request.Form["query[searchQuery]"].ToString();
-            //    model = model.Where(i =>
-            //    i.Unvan.ToLower().Contains(searchQuery.ToLower()) ||
-            //    i.Il.Adi.ToLower().Contains(searchQuery) ||
-            //    i.Eposta.ToLower().Contains(searchQuery) ||
-            //    i.WebSitesi.ToLower().Contains(searchQuery) ||
-            //    i.Telefon.ToLower().Contains(searchQuery)
-            //    );
-            //}
+            try
+            {
+                model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
+            }
+            catch (Exception)
+            {
+                model = model.OrderBy("HammaddeHareketId Desc");
+                dtMeta.field = "HammaddeHareketId";
+                dtMeta.sort = "Desc";
+            }
+            //sayfala
+            model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
 
-            //if (!string.IsNullOrEmpty(Request.Form["query[durum]"]))
-            //{
-            //    var durum = Request.Form["query[durum]"] == "Aktif";
-            //    model = model.Where(i => i.Aktif == durum);
-            //}
+            //dto yap burda
+            var dto = model.AsEnumerable().Select(i => new
+            {
+                HammaddeHareketId = i.HammaddeHareketId,
+                FaturaNo = i.FaturaNo,
+                UrunAdi = i.UrunAdi
+            }).ToList<dynamic>();
 
-            //if (!string.IsNullOrEmpty(Request.Form["query[cariGrupId]"]))
-            //{
-            //    var cariGrupId = Convert.ToInt32(Request.Form["query[cariGrupId]"]);
-            //    model = model.Where(i => i.CariGrupId == cariGrupId);
-            //}
-
-            //try
-            //{
-            //    model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
-            //}
-            //catch (Exception)
-            //{
-            //    model = model.OrderBy("CariId Desc");
-            //    dtMeta.field = "CariId";
-            //    dtMeta.sort = "Desc";
-            //}
-            
-            //model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
-
-            
-            //var dto = model.Select(i => new
-            //{
-            //    CariId = i.CariId,
-            //    Unvan = i.Unvan,
-            //    BirincilKisi = i.Kisi.Count >= 1 ? i.Kisi.FirstOrDefault(f => f.Birincil).AdSoyad : "",
-            //    BirincilKisiEposta = i.Kisi.Count >= 1 ? i.Kisi.FirstOrDefault(f => f.Birincil).Eposta : "",
-            //    Ilce = i.IlceId != null ? i.Ilce.Adi : "",
-            //    Il = i.IlId != null ? i.Il.Adi : "",
-            //    Durum = i.Aktif ? "Aktif" : "Pasif"
-            //}).ToList<dynamic>();
-
-
-            //dtModel.meta = dtMeta;
-            //dtModel.data = dto;
+            dtModel.meta = dtMeta;
+            dtModel.data = dto;
             return Json(dtModel);
-
         }
 
         public PartialViewResult Form(int? id)
@@ -117,7 +83,7 @@ namespace EgepakErp.Controllers
         }
 
 
-        [Yetki("Hammadde Kaydet", "Üretim")]
+        [Yetki("Hammadde Hareket Kaydet", "Üretim")]
         public JsonResult Kaydet(HammaddeCinsi form)
         {
             var response = new Response();

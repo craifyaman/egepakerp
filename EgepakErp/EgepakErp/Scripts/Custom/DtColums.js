@@ -138,6 +138,25 @@
         return clm;
     }
 
+    function hammaddeHareketColumns() {
+        var clm = [
+            {
+                field: 'HammaddeHareketId',
+                title: '#',
+                width: 50
+            },
+            {
+                field: 'FaturaNo',
+                title: 'Fatura No'
+            },
+            {
+                field: 'UrunAdi',
+                title: 'UrunAdi'
+            }
+        ];
+        return clm;
+    }
+
     function kisiColumns() {
         var columns = [
             {
@@ -531,6 +550,9 @@
         },
         HammaddeColumns: function () {
             return hammaddeColumns();
+        },
+        HammaddeHareketColumns: function () {
+            return hammaddeHareketColumns();
         },
         KisiColoumns: function () {
             return kisiColumns();

@@ -48,7 +48,7 @@
     }
 
     function FaturadanCikar(id, tagname) {
-        
+
         var tdInputs = $("td[" + tagname + "-cikar='" + id + "'] input");
         var SelectBoxes = $("td[" + tagname + "-cikar='" + id + "'] select");
 
@@ -106,9 +106,9 @@
                 maliyet.kalipId = input.getAttribute("kalipId");
                 maliyet.Tutar = input.value;
                 liste.push(maliyet);
-            }   
+            }
         });
-        
+
         Post("/siparis/MaliyetHesap",
             { liste: liste },
             function (response) {
@@ -183,7 +183,7 @@
                             label: "Kaydet",
                             className: 'btn-info',
                             callback: function () {
-                                var value = $(".Fiyat").val();                                
+                                var value = $(".Fiyat").val();
                                 InputBulEkle(maliyetType, kalipId, value);
                                 maliyetHesapla();
                                 bootbox.hideAll();
@@ -205,7 +205,10 @@
             "html");
     }
 
-   
+    function HammaddeDetayHesapla(BirimFiyat, KalipAgirlik) {
+        var sonuc = (BirimFiyat / 1000) * KalipAgirlik;
+        return sonuc;
+    }
 
     function checkValue(value, arr) {
         var status = false;
@@ -304,6 +307,19 @@
             var cikarType = $(this).attr("cikar-type");
             FaturadanCikar(KalipId, cikarType);
         });
+
+        $(document).on("change", "#FiyatOrtalamaSelect", function (event) {
+            event.preventDefault();
+            var type = $(this).attr("UrunType");
+            var target = $(".Fiyat");
+            var birimFiyat = parseFloat($(this).val().replace(",", "."));
+
+            if (type == "hammadde") {
+                var kalipAgirlik = parseFloat($(".kalipAgirlik").val().replace(",", "."));
+                var sonuc = (birimFiyat / 1000) * kalipAgirlik;
+                target.val(sonuc.toFixed(2));               
+            }
+        })
     }
 
     var DtInit = function (domId, url, columns, params) {
