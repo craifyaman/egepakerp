@@ -1,0 +1,8 @@
+﻿#maliyetTablosu .birimFiyat {
+    border: none !important;
+    border-radius: 0 !important;
+}
+#maliyetTablosu .input-group-text{
+    border:none !important;
+    border-radius:0 !important;
+}

@@ -3,7 +3,7 @@
     ViewBag.Title = "Sipariş Formu";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<link href="~/Content/Siparis.css" rel="stylesheet" />
 <!--begin::Subheader-->
 <!--begin::Subheader-->
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
@@ -107,11 +107,11 @@
 <!--end::Entry-->
 
 @section Scripts{
-    <script src="~/Scripts/Siparis.js"></script>
+    <script src="~/Scripts/Siparis.js?v=@ScriptVersion"></script>
     <script>
         Siparis.EventInit();
         Global.init();
-        SelectPickerRemote.init(); 
+        SelectPickerRemote.init();
     </script>
 
 }

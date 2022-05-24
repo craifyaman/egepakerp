@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Web;
@@ -93,6 +94,8 @@ namespace EgePakErp.Custom
         }
         public BaseController Controller => ViewContext.Controller as BaseController;
         public Personel CurrentUser => Controller.CurrentUser;
+
+        public string ScriptVersion { get { return ConfigurationManager.AppSettings["scriptVersion"].ToString(); } set { } }
 
         public List<Ulke> baseUlke()
         {

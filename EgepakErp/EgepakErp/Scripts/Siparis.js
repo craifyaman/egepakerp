@@ -48,7 +48,7 @@
     }
 
     function FaturadanCikar(id, tagname) {
-        debugger
+        
         var tdInputs = $("td[" + tagname + "-cikar='" + id + "'] input");
         var SelectBoxes = $("td[" + tagname + "-cikar='" + id + "'] select");
 
@@ -57,34 +57,17 @@
             tdInputs.prop("disabled", true);
             SelectBoxes.prop("disabled", true);
             btn.removeClass("btn-danger").addClass("btn-success");
+            debugger
+            btn.html("+");
         }
         else {
             btn.removeClass("btn-success").addClass("btn-danger");
             tdInputs.prop("disabled", false);
             SelectBoxes.prop("disabled", false);
+            btn.html("-");
         }
         Siparis.MaliyetHesapla();
     }
-
-    //function UrunKaliplari() {
-    //    var form = $("#KalipIdler").serializeObject();
-    //    var keys = Object.keys(form);
-    //    var include = keys.slice(1, form.length);
-    //    form.Include = include;
-
-    //    console.log("form", form);
-    //    $.ajax({
-    //        type: "GET",
-    //        url: "/siparis/Form",
-    //        data: form,
-    //        success: function (html) {
-    //            console.log(html);
-    //        },
-    //        error: function () {
-    //            toastr.error("bir hata oluştu");
-    //        }
-    //    })
-    //}
 
     function UrunKaliplariGetir() {
         var urunId = $("#UrunId").val();
@@ -112,7 +95,6 @@
     function maliyetHesapla() {
 
         var liste = [];
-
         var Maliyet = function () {
             this.KalipId;
             this.Tutar;
@@ -177,6 +159,11 @@
             "html");
     }
 
+    function InputBulEkle(MaliyetType, KalipId, Value) {
+        var Input = $("td[" + MaliyetType + "-cikar='" + KalipId + "'] input");
+        Input.val(Value);
+    }
+
     function maliyetDetayGetir(maliyetType, kalipId) {
         debugger
         Post("/siparis/MaliyetDetay",
@@ -196,7 +183,10 @@
                             label: "Kaydet",
                             className: 'btn-info',
                             callback: function () {
-                                //KalipKaydet(formId, submitUrl);
+                                var value = $(".Fiyat").val();                                
+                                InputBulEkle(maliyetType, kalipId, value);
+                                maliyetHesapla();
+                                bootbox.hideAll();
                                 return false;
                             }
                         }
@@ -214,6 +204,8 @@
             },
             "html");
     }
+
+   
 
     function checkValue(value, arr) {
         var status = false;

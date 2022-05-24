@@ -1,4 +1,5 @@
 ﻿using EgepakErp.DtModels;
+using EgepakErp.Enums;
 using EgepakErp.Helper;
 using EgePakErp.Custom;
 using EgePakErp.Models;
@@ -38,6 +39,7 @@ namespace EgePakErp.Controllers
         public PartialViewResult MaliyetForm(List<int> idList)
         {
             ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("toz")).BirimFiyat;
+            ViewBag.BaskiMalzemeler = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.HammaddeCinsiId == 6632).ToList();
             var kaliplar = Db.Kalip
                 .Include("KalipHammaddeRelation")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
@@ -62,7 +64,14 @@ namespace EgePakErp.Controllers
 
             ViewBag.MaliyetType = MaliyetType;
             ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("toz")).BirimFiyat;
+            ViewBag.BaskiMalzemeler = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.HammaddeCinsiId == 6632).ToList();
             return PartialView(Kalip);
+        }
+
+        public string sayi(int sayi)
+        {
+            sayi += 5;
+            return sayi.ToString();
         }
     }
 }
