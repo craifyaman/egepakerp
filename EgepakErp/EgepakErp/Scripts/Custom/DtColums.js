@@ -151,8 +151,77 @@
             },
             {
                 field: 'UrunAdi',
-                title: 'UrunAdi'
+                title: 'Ürün'
+            },
+            {
+                field: 'KayitTarihi',
+                title: 'Tarih',
+                type: 'date',
+                format: 'YYYY/MM/DD'
+            },
+            {
+                field: 'TedarikciId',
+                title: 'Tedarikci Id'
+            },
+            {
+                field: 'HammaddeCinsi.Adi',
+                title: 'Hammadde',
+                template: function (row) {
+                    return row.HammaddeCinsi
+                }
+            },
+            {
+                field: 'BirimFiyat',
+                title: 'Birim Fiyat'
+            },
+            {
+                field: 'ToplamTutar',
+                title: 'Toplam Tutar'
+            },
+            {
+                field: 'Doviz.Adi',
+                title: 'Para Birimi',
+                template: function (row) {
+                    return row.Doviz
+                }
+            },
+            {
+                field: 'Miktar',
+                title: 'Miktar'
+            },
+            {
+                field: 'DolarKuru',
+                title: 'DolarKuru'
+            },
+            {
+                field: 'EuroKuru',
+                title: 'EuroKuru'
+            },
+            {
+                field: 'HammaddeBirimi.Birimi',
+                title: 'HammaddeBirimi',
+                template: function (row) {
+                    return row.HammaddeBirimi
+                }
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var cls = row.Aktif == "Aktif" ? "danger" : "success";
+                    var durum = row.Aktif == "Aktif" ? "Pasif" : "Aktif";
+                    var str = '<a href="#" id="' + row.HammaddeHareketId +'" class="btn btn-success font-weight-bolder font-size-sm " event = "hammaddeHareketFormPopup" formTitle = "Düzenle" formId = "hammaddeHareketForm" formUrl = "/HammaddeHareket/Form" submitUrl = "/HammaddeHareket/Kaydet" aria - haspopup="true" aria - expanded="false" > <i class="flaticon-edit"></i> </a >';
+                    //str += ' <a class="btn btn-icon btn-primary mr-1" href = "/kisi/detay/' + row.KisiId + '" title = "Kişi Detay" data - toggle="tooltip" data - placement="top" > <i class="flaticon-search" ></i></a>'
+                    //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
+
+                    return str;
+                },
             }
+
         ];
         return clm;
     }
@@ -593,6 +662,9 @@
             }
             else if (name == "kalip") {
                 return kalipColumns();
+            }
+            else if (name == "hammaddehareket") {
+                return hammaddeHareketColumns();
             }
         }
     };

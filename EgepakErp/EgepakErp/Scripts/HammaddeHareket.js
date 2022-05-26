@@ -1,88 +1,96 @@
 ﻿var HammaddeHareket = function () {
 
+    function Kaydet(formId, submitUrl) {
 
-    function GetForm(formUrl, id, appendto) {
-        Post(formUrl,
-            { id: id },
-            function (response) {
-                $("#" + appendto).empty().html(response);
-            },
-            function (x, y, z) {
-                //Error
-            },
-            function () {
-                //BeforeSend
-            },
-            function () {
-                //Complete
-            },
-            "html");
-    }
+        var validation = ValidateForm.IsValid(formId, ValidationFields.HammaddeHareketFormFields())
 
-    function GetFilterForm(formUrl, appendto) {
-        Post(formUrl,
-            {},
-            function (response) {
+        validation.validate().then(function (status) {
+            if (status == 'Valid') {
+                var form = $("#" + formId).serializeJSON();
 
-                $("#" + appendto).empty().html(response);
-            },
-            function (x, y, z) {
-                //Error
-            },
-            function () {
-                //BeforeSend
-            },
-            function () {
-                //Complete
-            },
-            "html");
+                var keys = Object.keys(form);
+                var include = keys.slice(1, keys.length);
+                form.Include = include;
+
+
+                Post(submitUrl,
+                    { form: form },
+                    function (response) {
+                        if (response.Success) {
+                            toastr.success(response.Description);
+                        } else {
+                            toastr.error(response.Description);
+                        }
+                    },
+                    function (x, y, z) {
+                        //Error
+                    },
+                    function () {
+                        //BeforeSend
+                    },
+                    function (r) {
+                        //Complete
+                        if (r.responseJSON.Success) {
+                            setTimeout(function () {
+                                bootbox.hideAll();
+                                $('#kt_datatable').KTDatatable('reload');
+                            }, 3000)
+
+                        } else {
+                            bootbox.hideAll();
+                        }
+
+                    },
+                    "json");
+            } else {
+                return false;
+            }
+        });
     }
 
     var handleEvent = function () {
-
-
-
-        $(".navi-link").click(function (event) {
-            event.preventDefault();
-
-            $(".navi-link").removeClass("active");
-            $(this).addClass("active");
-
-            $("#cardTitle").html($(this).attr("cardLTitle"));
-            $("#cardDescription").html($(this).attr("cardDescription"));
-
-            var formUrl = $(this).attr("form");
-            var displayType = $(this).attr("displayType");
+        $(document).on("click", "[event='hammaddeHareketFormPopup']", function (e) {
+            e.preventDefault();
+            var title = $(this).attr("formTitle");
             var id = $(this).attr("id");
-
-            $(".eventButton").attr("event", $(this).attr("triggerEvent"));
-            $(".eventButton").text($(this).attr("triggerText"));
-
-            if (displayType == "form") {
-
-                $("#kt_datatable").empty();
-                $("#filterForm").empty();
-
-                GetForm(formUrl, id, "formArea");
-
-            } else if (displayType == "list") {
-
-                $("#formArea").empty();
-
-                var coloumns = $(this).attr("coloumns");
-                var filterForm = $(this).attr("filterForm");
-                if (filterForm !== "") {
-                    GetFilterForm(filterForm, "filterForm");
-                }
-
-                $('#kt_datatable').KTDatatable('destroy');
-
-                var params = { HammaddeId: id };
-                DtInit("kt_datatable", formUrl, DtColums.GetColoums(coloumns), params)
-            }
-
+            var formId = $(this).attr("formId");
+            var formUrl = $(this).attr("formUrl");
+            var submitUrl = $(this).attr("submitUrl");
+            Post(formUrl,
+                { id: id },
+                function (response) {
+                    bootbox.dialog({
+                        title: title,
+                        message: Global.cardTemplate(response),
+                        size: 'large',
+                        buttons: {
+                            cancel: {
+                                label: "Kapat",
+                                className: 'btn-danger',
+                                callback: function () { }
+                            },
+                            ok: {
+                                label: "Kaydet",
+                                className: 'btn-info',
+                                callback: function () {
+                                    Kaydet(formId, submitUrl);
+                                    return false;
+                                }
+                            }
+                        }
+                    });
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+                    Global.init();
+                },
+                "html");
         });
-
     }
 
     var DtInit = function (domId, url, columns, params) {
@@ -98,7 +106,7 @@
                         params: params
                     },
                 },
-                pageSize: 20, // display 20 records per page
+                pageSize: 10, // display 20 records per page
                 serverPaging: true,
                 serverFiltering: true,
                 serverSorting: true,
@@ -121,12 +129,9 @@
 
         });
 
-        $(document).on("change", ".form-control", function (e) {
-            e.preventDefault();
+        $('.form-control').on('change', function (e) {
             datatable.search($(this).val().toLowerCase(), $(this).attr("id"));
         });
-
-
     }
 
     return {
@@ -135,9 +140,8 @@
             handleEvent();
         },
 
-        DtInit: function (domId, url, columns) {
-            DtInit(domId, url, columns);
+        DtInit: function (domId, url, columns, params) {
+            DtInit(domId, url, columns, params);
         }
     };
 }();
-

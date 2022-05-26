@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using EgePakErp.Models;
@@ -41,6 +42,8 @@ namespace EgePakErp.Models
         public decimal? KdvTutarı { get; set; }
 
         public int? KdvOranı { get; set; }
+        [NotMapped]
+        public List<string> Include { get; set; }
 
     }
 }

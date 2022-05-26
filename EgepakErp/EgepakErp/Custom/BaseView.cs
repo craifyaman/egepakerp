@@ -129,13 +129,14 @@ namespace EgePakErp.Custom
                 .Include("Tedarikci")
                 .Where(i => i.HammaddeCinsiId == id).ToList();
         }
+
         public List<Cari> baseCari
         {
             get
             {
                 if (Session["Cari"] == null)
                 {
-                    var list = db.Cari.Where(i => !string.IsNullOrEmpty(i.Unvan)).ToList().Select(s => new Cari { CariId = s.CariId, Unvan = s.Unvan }).ToList();
+                    var list = db.Cari.Include("BaglantiTipi").ToList();
                     Session["Cari"] = list;
                     return list;
                 }
@@ -328,6 +329,25 @@ namespace EgePakErp.Custom
                 {
                     return (List<Kalip>)Session["Kalip"];
                 }
+            }
+            set { }
+        }
+
+        public List<Doviz> baseDoviz
+        {
+            get
+            {
+                var list = db.Doviz.ToList();
+                return list;
+            }
+            set { }
+        }
+        public List<HammaddeBirimi> baseHammaddeBirimi
+        {
+            get
+            {
+                var list = db.HammaddeBirimi.ToList();
+                return list;
             }
             set { }
         }

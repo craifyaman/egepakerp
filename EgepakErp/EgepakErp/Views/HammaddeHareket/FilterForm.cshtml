@@ -1,0 +1,32 @@
+﻿<div class="row align-items-center">
+    <div class="col-lg-12 col-xl-12">
+        <div class="row align-items-center">
+            <div class="col-md-3 my-2 my-md-0">
+                <div class="input-icon">
+                    <input type="text" class="xxxx form-control form-control-solid" placeholder="Search..." id="searchQuery" />
+                    <span>
+                        <i class="flaticon2-search-1 text-muted"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-3 my-2 my-md-0">
+                <select class="form-control form-control-solid" id="dovizId">
+                    <option value="">Para Birimi</option>
+                    @foreach (var item in baseDoviz)
+                    {
+                        <option value="@item.DovizId">@item.Adi ( @item.Sembol )</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3 my-2 my-md-0">
+                <select class="form-control form-control-solid" id="hammaddeCinsiId">
+                    <option value="">Hammadde Cinsi</option>
+                    @foreach (var item in baseHammaddeCinsi)
+                    {
+                        <option value="@item.HammaddeCinsiId">@item.Adi</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

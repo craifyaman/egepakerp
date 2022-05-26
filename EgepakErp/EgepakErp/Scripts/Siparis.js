@@ -48,16 +48,15 @@
     }
 
     function FaturadanCikar(id, tagname) {
-
+        debugger
         var tdInputs = $("td[" + tagname + "-cikar='" + id + "'] input");
         var SelectBoxes = $("td[" + tagname + "-cikar='" + id + "'] select");
-
         var btn = $("span[" + tagname + "-cikar='" + id + "']");
+
         if (btn.hasClass("btn-danger")) {
             tdInputs.prop("disabled", true);
             SelectBoxes.prop("disabled", true);
             btn.removeClass("btn-danger").addClass("btn-success");
-            debugger
             btn.html("+");
         }
         else {
@@ -66,7 +65,7 @@
             SelectBoxes.prop("disabled", false);
             btn.html("-");
         }
-        Siparis.MaliyetHesapla();
+        maliyetHesapla();
     }
 
     function UrunKaliplariGetir() {
@@ -93,20 +92,27 @@
     }
 
     function maliyetHesapla() {
-
+        debugger
         var liste = [];
         var Maliyet = function () {
             this.KalipId;
             this.Tutar;
+            this.Status;
         }
-        $(".birimFiyat").each(function (index, value) {
+        var array = $(".birimFiyat").sort();
+        array.each(function (index, value) {
             var input = value;
+            var maliyet = new Maliyet();
+            maliyet.kalipId = input.getAttribute("kalipId");
+            maliyet.Tutar = input.value;            
+
             if ($(input).prop('disabled') == false) {
-                var maliyet = new Maliyet();
-                maliyet.kalipId = input.getAttribute("kalipId");
-                maliyet.Tutar = input.value;
-                liste.push(maliyet);
+                maliyet.Status = true;
+            } else {
+                maliyet.Status = false;
             }
+
+            liste.push(maliyet);
         });
 
         Post("/siparis/MaliyetHesap",
@@ -165,7 +171,6 @@
     }
 
     function maliyetDetayGetir(maliyetType, kalipId) {
-        debugger
         Post("/siparis/MaliyetDetay",
             { MaliyetType: maliyetType, KalipId: kalipId },
             function (response) {
@@ -205,10 +210,7 @@
             "html");
     }
 
-    function HammaddeDetayHesapla(BirimFiyat, KalipAgirlik) {
-        var sonuc = (BirimFiyat / 1000) * KalipAgirlik;
-        return sonuc;
-    }
+ 
 
     function checkValue(value, arr) {
         var status = false;
@@ -310,16 +312,63 @@
 
         $(document).on("change", "#FiyatOrtalamaSelect", function (event) {
             event.preventDefault();
-            var type = $(this).attr("UrunType");
-            var target = $(".Fiyat");
+            var target = $("#BirimFiyat");
             var birimFiyat = parseFloat($(this).val().replace(",", "."));
+            target.val(birimFiyat);
+            $(document.getElementById("BirimFiyat")).trigger("change");
+        });
+
+        $(document).on("change", "#KoliBirimFiyat", function (event) {
+            event.preventDefault();
+            var target = $("#BirimFiyat");
+            var birimFiyat = parseFloat($(this).val().replace(",", "."));
+            target.val(birimFiyat);
+            $(document.getElementById("BirimFiyat")).trigger("change");
+        });
+
+        $(document).on("change", "#PosetBirimFiyat", function (event) {
+            event.preventDefault();
+            var target = $("#BirimFiyat");
+            var birimFiyat = parseFloat($(this).val().replace(",", "."));
+            target.val(birimFiyat);
+            $(document.getElementById("BirimFiyat")).trigger("change");
+        });
+        
+
+        $(document).on("change", ".hesaplama", function (event) {
+            event.preventDefault();
+            debugger
+            var Parent = $(this).parents(".parentDiv");
+            var type = Parent.attr("UrunType");
 
             if (type == "hammadde") {
-                var kalipAgirlik = parseFloat($(".kalipAgirlik").val().replace(",", "."));
-                var sonuc = (birimFiyat / 1000) * kalipAgirlik;
-                target.val(sonuc.toFixed(2));               
+                HesapFunctionHammadde();
             }
-        })
+            if (type == "tozBoya") {
+                HesapFunctionTozBoya();
+            }
+            if (type == "koli") {
+                HesapFunctionKoli();
+            }
+            if (type == "poset") {
+                HesapFunctionPoset();
+            }   
+            if (type == "yaldiz") {
+                HesapFunctionYaldiz();
+            }
+            if (type == "enjeksiyon") {
+                HesapFunctionEnjeksiyon();
+            }
+            if (type == "sicakbaski") {
+                HesapFunctionSicakBaski();
+            }
+            if (type == "montaj") {
+                HesapFunctionMontaj();
+            }
+            
+        });
+
+        
     }
 
     var DtInit = function (domId, url, columns, params) {
@@ -372,9 +421,6 @@
 
         DtInit: function (domId, url, columns, params) {
             DtInit(domId, url, columns, params);
-        },
-        MaliyetHesapla: function () {
-            maliyetHesapla();
         }
 
     };

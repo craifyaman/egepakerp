@@ -3,20 +3,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web.Mvc;
+using EgePakErp.Controllers;
 using EgePakErp.Custom;
 using EgePakErp.Models;
 
-namespace EgePakErp.Controllers
+namespace EgepakErp.Controllers
 {
-
     public class HammaddeHareketController : BaseController
     {
-        // GET: Cari
-        [Menu("Satın Alma Listesi", "flaticon2-list-1 icon-xl", "Üretim", 0,6)]
+        //[Menu("Hammadde Satın Alma Listesi", "flaticon2-list-2 icon-xl", "Hammadde", 0, 0)]
         public ActionResult Index()
         {
             return View();
         }
+
 
         [Yetki("Hammadde Hareket", "Üretim")]
         public JsonResult Liste()
@@ -82,7 +82,7 @@ namespace EgePakErp.Controllers
                 UrunAdi = i.UrunAdi,
                 KayitTarihi = i.KayitTarihi.ToString("yyyy/MM/dd"),
                 TedarikciId = i.TedarikciId,
-                HammaddeCinsi = i.HammaddeCinsi?.Adi,
+                HammaddeCinsi = i.HammaddeCinsi.Adi,
                 BirimFiyat = i.BirimFiyat,
                 ToplamTutar = i.ToplamTutar,
                 Doviz = i.Doviz.Adi,
@@ -100,12 +100,16 @@ namespace EgePakErp.Controllers
         public PartialViewResult Form(int? id)
         {
             id = id == null ? 0 : id.Value;
-            var model = Db.HammaddeHareket
-                .Include("Doviz")
-                .Include("HammaddeCinsi")
-                .Include("HammaddeBirimi")
-                .FirstOrDefault(i => i.HammaddeHareketId == id);
-            return PartialView(model);
+            if (id != 0)
+            {
+                var model = Db.HammaddeCinsi
+
+                    .FirstOrDefault(i => i.HammaddeCinsiId == id);
+
+                return PartialView(model);
+            }
+
+            return PartialView(new HammaddeCinsi());
         }
 
         public PartialViewResult FilterForm()
@@ -114,33 +118,37 @@ namespace EgePakErp.Controllers
         }
 
 
-        [Yetki("HammaddeHareket Kaydet", "Uretim")]
-        public JsonResult Kaydet(HammaddeHareket form)
+        [Yetki("Hammadde Hareket Kaydet", "Üretim")]
+        public JsonResult Kaydet(HammaddeCinsi form)
         {
             var response = new Response();
 
             try
             {
-                if (form.HammaddeHareketId == 0)
+                if (form.HammaddeCinsiId == 0)
                 {
-                    form.KayitTarihi = DateTime.Now;                    
-                    Db.HammaddeHareket.Add(form);
+
+                    Db.HammaddeCinsi.Add(form);
                 }
                 else
                 {
-                    var entity = Db.HammaddeHareket.Find(form.HammaddeHareketId);
+                    var entity = Db.HammaddeCinsi
+                        .FirstOrDefault(i => i.HammaddeCinsiId == form.HammaddeCinsiId);
+
                     if (entity != null)
                     {
-                        foreach (var prop in entity.GetType().GetProperties())
+                        //alanları güncelle
+                        var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                        foreach (var prop in propList)
                         {
                             if (form.Include.Contains(prop.Name))
                             {
                                 prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
                             }
                         }
-
                     }
                 }
+
                 Db.SaveChanges(CurrentUser.PersonelId);
                 response.Success = true;
                 response.Description = "İşlem Başarılı";
@@ -150,8 +158,13 @@ namespace EgePakErp.Controllers
                 response.Success = true;
                 response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
             }
+
+
+
             return Json(response);
+
         }
+
 
     }
 }

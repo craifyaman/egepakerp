@@ -38,6 +38,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <link href="assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
+    <!--end::Fontawesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -116,7 +118,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
-                            @{ var m = baseMenu(); }
+                          
                             @foreach (var item in baseMenu().GroupBy(i => i.Parent))
                             {
                                 if (item.ToList().Count == 1)

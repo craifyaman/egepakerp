@@ -9,10 +9,14 @@ namespace EgePakErp.Controllers
     public class DataTableController : Controller
     {
         // GET: DataTable
-        
+
         public JsonResult Index()
         {
-           
+            var keys = Request.Form.AllKeys.Select(s => s);
+            foreach (var key in keys)
+            {
+                var deger = "";
+            }
             return Json("");
         }
     }

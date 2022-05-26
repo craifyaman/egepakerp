@@ -21,6 +21,7 @@ namespace EgePakErp.Controllers
         {
             return View();
         }
+
         [Yetki("Müşteri Listesi", "Müşteri")]
         public JsonResult Liste()
         {

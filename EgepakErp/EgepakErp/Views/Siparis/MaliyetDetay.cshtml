@@ -21,60 +21,59 @@
     {
         sonFaturaBirimFiyat = sonHammaddeHareket.BirimFiyat;
     }
-    catch {
+    catch
+    {
         sonFaturaBirimFiyat = 0;
     }
 
 
-    var son1AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-1)).GroupBy(x => new { x.UrunAdi }, (key, group) => new
+    var son1AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-1)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
     {
-        UrunAdi = key.UrunAdi,
+        HammaddeCinsiId = key.HammaddeCinsiId,
         Ortalama = group.Average(x => x.BirimFiyat)
-    })?.FirstOrDefault(x => x.UrunAdi == hammaddeCinsi.Adi)?.Ortalama;
+    })?.FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
 
     if (son1AyOrtalamaBirimFiyat == null)
     {
         son1AyOrtalamaBirimFiyat = sonFaturaBirimFiyat;
     }
 
-    var son3AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-3)).GroupBy(x => new { x.UrunAdi }, (key, group) => new
+    var son3AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-3)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
     {
-        UrunAdi = key.UrunAdi,
+        HammaddeCinsiId = key.HammaddeCinsiId,
         Ortalama = group.Average(x => x.BirimFiyat)
-    }).FirstOrDefault(x => x.UrunAdi == hammaddeCinsi.Adi)?.Ortalama;
+    }).FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
 
     if (son3AyOrtalamaBirimFiyat == null)
     {
         son3AyOrtalamaBirimFiyat = sonFaturaBirimFiyat;
     }
 
-    var son6AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-6)).GroupBy(x => new { x.UrunAdi }, (key, group) => new
+    var son6AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-6)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
     {
-        UrunAdi = key.UrunAdi,
+        HammaddeCinsiId = key.HammaddeCinsiId,
         Ortalama = group.Average(x => x.BirimFiyat)
-    }).FirstOrDefault(x => x.UrunAdi == hammaddeCinsi.Adi)?.Ortalama;
+    }).FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
 
     if (son6AyOrtalamaBirimFiyat == null)
     {
         son6AyOrtalamaBirimFiyat = sonFaturaBirimFiyat;
     }
-    var son12AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-12)).GroupBy(x => new { x.UrunAdi }, (key, group) => new
+    var son12AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-12)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
     {
-        UrunAdi = key.UrunAdi,
+        HammaddeCinsiId = key.HammaddeCinsiId,
         Ortalama = group.Average(x => x.BirimFiyat)
-    }).FirstOrDefault(x => x.UrunAdi == hammaddeCinsi.Adi)?.Ortalama;
+    }).FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
 
     if (son12AyOrtalamaBirimFiyat == null)
     {
         son12AyOrtalamaBirimFiyat = sonFaturaBirimFiyat;
     }
 
-
-
     var birimFiyat = sonHammaddeHareket?.BirimFiyat;
     decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
 
-    <div class="form-group row">
+    <div class="form-group row parentDiv" UrunType="hammadde">
         <div class="col-lg-12 mb-2">
             <label>Hammadde Cinsi:</label>
             <select class="form-control">
@@ -87,20 +86,21 @@
         <div class="col-lg-12 mb-2">
             <label>Birim Fiyat Tipi:</label>
             <select class="form-control" id="FiyatOrtalamaSelect" UrunType="hammadde">
-                <option value="@(sonHammaddeHareket?.BirimFiyat)">Son Fatura Birim Fiyat( @(sonHammaddeHareket?.BirimFiyat) )</option>
-                <option value="@son1AyOrtalamaBirimFiyat">Son 1 Ay Ortalaması ( @son1AyOrtalamaBirimFiyat )</option>
-                <option value="@son3AyOrtalamaBirimFiyat">Son 3 Ay Ortalaması ( @son3AyOrtalamaBirimFiyat )</option>
-                <option value="@son6AyOrtalamaBirimFiyat">Son 6 Ay Ortalaması ( @son6AyOrtalamaBirimFiyat)</option>
-                <option value="@son12AyOrtalamaBirimFiyat">Son 12 Ay Ortalaması ( @son12AyOrtalamaBirimFiyat )</option>
+                <option value="@(sonHammaddeHareket?.BirimFiyat.ToString("n2"))">Son Fatura Birim Fiyat( @(sonHammaddeHareket?.BirimFiyat.ToString("n2")) )</option>
+                <option value="@son1AyOrtalamaBirimFiyat.Value.ToString("n2")">Son 1 Ay Ortalaması ( @son1AyOrtalamaBirimFiyat.Value.ToString("n2") )</option>
+                <option value="@son3AyOrtalamaBirimFiyat.Value.ToString("n2")">Son 3 Ay Ortalaması ( @son3AyOrtalamaBirimFiyat.Value.ToString("n2") )</option>
+                <option value="@son6AyOrtalamaBirimFiyat.Value.ToString("n2")">Son 6 Ay Ortalaması ( @son6AyOrtalamaBirimFiyat.Value.ToString("n2"))</option>
+                <option value="@son12AyOrtalamaBirimFiyat.Value.ToString("n2")">Son 12 Ay Ortalaması ( @son12AyOrtalamaBirimFiyat.Value.ToString("n2") )</option>
             </select>
         </div>
         <div class="col-lg-12 mb-2">
             <label>Birim Fiyat:</label>
-            <input type="text" class="form-control" value="@birimFiyat" disabled />
+            <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@birimFiyat" />
             <span class="form-text text-muted">kg/tl</span>
+
             <div class="form-group">
                 <label>Kalıp Ağırlık:</label>
-                <input type="text" class="form-control kalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
+                <input type="text" class="form-control hesaplama" id="kalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
             </div>
             <div class="form-group">
                 <label>Birim Maliyet:</label>
@@ -113,93 +113,76 @@
 
 @if (type == "tozBoya")
 {
-    <tr>
-        @try
-        {
-            double sabit = 12.0 / 1000.0;
-            decimal KalipAgirlik = (decimal)Model.ParcaAgirlik;
-            decimal KullanilanBoyaMiktar = Convert.ToDecimal(sabit) * KalipAgirlik;
-            decimal BoyaBirimFiyat = ViewBag.TozBoyaSonBirimFiyat / 1000;
-            decimal Maliyet = KalipAgirlik * KullanilanBoyaMiktar * BoyaBirimFiyat;
-            <td tozBoya-cikar="@Model.KalipId">
-                <div class="form-group row">
-                    <div class="col-lg-12 mb-2">
-                        <label>Kalıp Ağırlığı</label>
-                        <input type="text" class="form-control" value="@KalipAgirlik.ToString("n2")" />
-                    </div>
-                    <div class="col-lg-12 mb-2">
-                        <label>Kullanılan Boya Miktarı</label>
-                        <input type="text" class="form-control" value="@KullanilanBoyaMiktar.ToString("n2")" />
-                        <span class="form-text text-muted">( 12 / 1000 ) * Kalıp Ağırlık</span>
-                    </div>
-                    <div class="col-lg-12 mb-2">
-                        <label>Boya Birim Fiyat</label>
-                        <input type="text" class="form-control" value="@BoyaBirimFiyat.ToString("n2")" disabled />
-                    </div>
-
-                    <div class="col-lg-12 mb-2">
-                        <label>bir adet için üretim maliyeti:</label>
-                        <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n2")" />
-                        <span class="form-text text-muted">Kalıp Ağırlık * Boya Miktarı * Birim Fiyat</span>
-                    </div>
+    try
+    {
+        double sabit = 12.0 / 1000.0;
+        decimal KalipAgirlik = (decimal)Model.ParcaAgirlik;
+        decimal KullanilanBoyaMiktar = Convert.ToDecimal(sabit) * KalipAgirlik;
+        decimal BoyaBirimFiyat = ViewBag.TozBoyaSonBirimFiyat / 1000;
+        decimal Maliyet = KalipAgirlik * KullanilanBoyaMiktar * BoyaBirimFiyat;
+        <td tozBoya-cikar="@Model.KalipId">
+            <div class="form-group row parentDiv" UrunType="tozBoya">
+                <div class="col-lg-12 mb-2">
+                    <label>Kalıp Ağırlığı</label>
+                    <input type="text" class="form-control" id="KalipAgirlik" value="@KalipAgirlik.ToString("n2")" disabled />
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Kullanılan Boya Miktarı</label>
+                    <input type="text" class="form-control hesaplama" id="BoyaMiktar" value="@KullanilanBoyaMiktar.ToString("n2")" />
+                    <span class="form-text text-muted">( 12 / 1000 ) * Kalıp Ağırlık</span>
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Boya Birim Fiyat</label>
+                    <input type="text" class="form-control" id="BirimFiyat" value="@BoyaBirimFiyat.ToString("n2")" disabled />
                 </div>
 
-            </td>
-        }
-        catch (Exception ex)
-        {
+                <div class="col-lg-12 mb-2">
+                    <label>bir adet için üretim maliyeti:</label>
+                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n2")" />
+                    <span class="form-text text-muted">Kalıp Ağırlık * Boya Miktarı * Birim Fiyat</span>
+                </div>
+            </div>
+        </td>
+    }
+    catch (Exception ex)
+    {
 
-        }
-
-    </tr>
+    }
 }
 
 @if (type == "koli")
 {
     <tr>
         <td koli-cikar="@kalip.KalipId">
-            <div class="form-group row">
+            <div class="form-group row parentDiv" UrunType="koli">
                 <div class="col-lg-12 mb-2">
                     <label>Koli Türü:</label>
-                    <select class="form-control ">
-                        @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("koli")))
+                    <select class="form-control" id="KoliBirimFiyat">
+                        @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")))
                         {
-                            <option id="@item.HammaddeCinsiId">@(item.UrunAdi) (@item.BirimFiyat)</option>
+                            <option value="@item.BirimFiyat">@(item.UrunAdi) (@item.BirimFiyat)</option>
                         }
-                    </select>
-                </div>
-                <div class="col-lg-12 mb-2">
-                    <label>Birim Fiyat Tipi:</label>
-                    <select class="form-control">
-                        <option>Son Fatura Birim Fiyat</option>
-                        <option>Son 1 Ay Ortalaması ()</option>
-                        <option>Son 3 Ay Ortalaması</option>
-                        <option>Son 6 Ay Ortalaması</option>
-                        <option>Son 12 Ay Ortalaması</option>
                     </select>
                 </div>
                 <div class="col-lg-12 mb-2">
 
                     @{
-                        var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
-                        var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
-                        var birimFiyat = sonHammaddeHareket?.BirimFiyat;
+                        //var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
+                        //var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
+                        //var birimFiyat = sonHammaddeHareket?.BirimFiyat;
+                        var birimFiyat = ViewBag.KoliSonBirimFiyat;
                         decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
                     }
                     <label>Birim Fiyat:</label>
-                    <input type="text" class="form-control" value="@birimFiyat" disabled />
+                    <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@birimFiyat" disabled />
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Kalıp Ağırlık:</label>
-                    <input type="text" class="form-control" value="@kalip.ParcaAgirlik" disabled />
+                    <input type="text" class="form-control" id="KalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Koli Kapasitesi:</label>
-                    <input type="text" class="form-control" value="1500" />
-                </div>
-                <div class="col-lg-12 mb-2">
-                    <label>Ham Madde:</label>
-                    <input type="text" class="form-control" value="@hammaddeCinsi.Adi" disabled />
+                    <input type="text" class="form-control hesaplama" id="Kapasite" value="1500" />
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Birim Maliyet:</label>
@@ -213,59 +196,42 @@
 
 @if (type == "poset")
 {
-    <tr>
-        <td poset-cikar="@kalip.KalipId">
-            <div class="form-group row">
-                <div class="col-lg-12 mb-2">
-                    <label>Poşet Türü:</label>
-                    <select class="form-control ">
-                        @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("poşet")))
-                        {
-                            <option id="@item.HammaddeCinsiId">@(item.UrunAdi) (@item.BirimFiyat)</option>
-                        }
-                    </select>
-                </div>
-                <div class="col-lg-12 mb-2">
-                    <label>Birim Fiyat Tipi:</label>
-                    <select class="form-control">
-                        <option>Son Fatura Birim Fiyat</option>
-                        <option>Son 1 Ay Ortalaması ()</option>
-                        <option>Son 3 Ay Ortalaması</option>
-                        <option>Son 6 Ay Ortalaması</option>
-                        <option>Son 12 Ay Ortalaması</option>
-                    </select>
-                </div>
-                <div class="col-lg-12 mb-2">
+    <div class="form-group row parentDiv" UrunType="poset">
+        <div class="col-lg-12 mb-2">
+            <label>Poşet Türü:</label>
+            <select class="form-control" id="PosetBirimFiyat">
+                @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("poşet")))
+                {
+                    <option value="@item.BirimFiyat">@(item.UrunAdi) (@item.BirimFiyat)</option>
+                }
+            </select>
+        </div>
+        <div class="col-lg-12 mb-2">
 
-                    @{
-                        var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
-                        var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
-                        var birimFiyat = sonHammaddeHareket?.BirimFiyat;
-                        decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
-                    }
-                    <label>Birim Fiyat:</label>
-                    <input type="text" class="form-control" value="@birimFiyat" disabled />
-                </div>
-                <div class="col-lg-12 mb-2">
-                    <label>Kalıp Ağırlık:</label>
-                    <input type="text" class="form-control" value="@kalip.ParcaAgirlik" disabled />
-                </div>
-                <div class="col-lg-12 mb-2">
-                    <label>Peşet Kapasitesi:</label>
-                    <input type="text" class="form-control" value="1500" />
-                </div>
-                <div class="col-lg-12 mb-2">
-                    <label>Ham Madde:</label>
-                    <input type="text" class="form-control" value="@hammaddeCinsi.Adi" disabled />
-                </div>
-                <div class="col-lg-12 mb-2">
-                    <label>Birim Maliyet:</label>
-                    <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N2")" />
-                    <span class="form-text text-muted">(Birim Fiyat /1000) * Kalıp Ağırlık</span>
-                </div>
-            </div>
-        </td>
-    </tr>
+            @{
+                //var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
+                //var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
+                //var birimFiyat = sonHammaddeHareket?.BirimFiyat;
+                var birimFiyat = ViewBag.PosetSonBirimFiyat;
+                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
+            }
+            <label>Birim Fiyat:</label>
+            <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@birimFiyat" disabled />
+        </div>
+        <div class="col-lg-12 mb-2">
+            <label>Kalıp Ağırlık:</label>
+            <input type="text" class="form-control hesaplama" id="KalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
+        </div>
+        <div class="col-lg-12 mb-2">
+            <label>Peşet Kapasitesi:</label>
+            <input type="text" class="form-control" id="Kapasite" value="1500" />
+        </div>
+        <div class="col-lg-12 mb-2">
+            <label>Birim Maliyet:</label>
+            <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N2")" />
+            <span class="form-text text-muted">(Birim Fiyat /1000) * Kalıp Ağırlık</span>
+        </div>
+    </div>
 }
 
 @if (type == "yaldiz")
@@ -278,29 +244,32 @@
             double Maliyet = (BirimFiyat * 40) / 10000;
         }
         <td yaldiz-cikar="@kalip.KalipId">
-            <div class="col-lg-12 mb-2">
-                <label>Malzeme:</label>
-                <select class="form-control">
-                    @foreach (var item in Malzemeler)
-                    {
-                        <option>@item.UrunAdi ( @item.BirimFiyat TL )</option>
-                    }
-                </select>
+            <div class="parentDiv" UrunType="yaldiz">
+                <div class="col-lg-12 mb-2">
+                    <label>Malzeme:</label>
+                    <select class="form-control">
+                        @foreach (var item in Malzemeler)
+                        {
+                            <option>@item.UrunAdi ( @item.BirimFiyat TL )</option>
+                        }
+                    </select>
 
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Birim Fiyat:</label>
+                    <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@BirimFiyat.ToString("n2")" disabled />
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Kat Sayı:</label>
+                    <input type="text" class="form-control hesaplama" id="KatSayi" value="40" />
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Birim Maliyet:</label>
+                    <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n2")" />
+                    <span class="form-text text-muted">(BirimFiyat * Kat Sayı) / 10000</span>
+                </div>
             </div>
-            <div class="col-lg-12 mb-2">
-                <label>Birim Fiyat:</label>
-                <input type="text" class="form-control" value="@BirimFiyat.ToString("n2")" disabled />
-            </div>
-            <div class="col-lg-12 mb-2">
-                <label>Kat Sayı:</label>
-                <input type="text" class="form-control" value="40" />
-            </div>
-            <div class="col-lg-12 mb-2">
-                <label>Birim Maliyet:</label>
-                <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n2")" />
-                <span class="form-text text-muted">(BirimFiyat * 40) / 10000</span>
-            </div>
+
         </td>
     </tr>
 }
@@ -312,19 +281,19 @@
         double enjeksiyonSaatMaliyet = 100;
         double birAdetUrunUretimMaliyeti = (3600 / (int)kalip.UretimZamani) * (int)kalip.KalipGozSayisi / enjeksiyonSaatMaliyet;
 
-        <div class="form-group row">
+        <div class="form-group row parentDiv" UrunType="enjeksiyon">
             <div class="col-lg-12 mb-2">
                 <label>enjeksiyon saat maliyet</label>
-                <input type="text" class="form-control" value="@enjeksiyonSaatMaliyet" />
+                <input type="text" class="form-control hesaplama" id="SaatMaliyet" value="@enjeksiyonSaatMaliyet" />
             </div>
             <div class="col-lg-12 mb-2">
                 <label>Üretim Zamanı:</label>
-                <input type="text" class="form-control" value="@kalip.UretimZamani" disabled />
+                <input type="text" class="form-control hesaplama" id="UretimZamani" value="@kalip.UretimZamani" disabled />
             </div>
 
             <div class="col-lg-12 mb-2">
                 <label>Göz Sayısı:</label>
-                <input type="text" class="form-control" value="@kalip.KalipGozSayisi" disabled />
+                <input type="text" class="form-control hesaplama" id="GozSayisi" value="@kalip.KalipGozSayisi" disabled />
             </div>
             <div class="col-lg-12 mb-2">
                 <label>bir adet için üretim maliyeti</label>
@@ -337,23 +306,23 @@
     catch (Exception ex)
     {
 
-        <div class="form-group row">
+        <div class="form-group row parentDiv" UrunType="enjeksiyon">
             <div class="col-lg-12 mb-2">
                 <label>enjeksiyon saat maliyet</label>
-                <input type="text" class="form-control" value="" />
+                <input type="text" class="form-control hesaplama" id="SaatMaliyet" value="" />
             </div>
             <div class="col-lg-12 mb-2">
                 <label>Üretim Zamanı:</label>
-                <input type="text" class="form-control" value="" disabled />
+                <input type="text" class="form-control hesaplama" id="UretimZamani" value="@kalip.UretimZamani" disabled />
             </div>
 
             <div class="col-lg-12 mb-2">
                 <label>Göz Sayısı:</label>
-                <input type="text" class="form-control" value="" disabled />
+                <input type="text" class="form-control hesaplama" id="GozSayisi" value="@kalip.KalipGozSayisi" disabled />
             </div>
             <div class="col-lg-12 mb-2">
                 <label>bir adet için üretim maliyeti</label>
-                <input kalipId="@kalip.KalipId" type="text" class="form-control" value="" placeholder="(3600/üretim zamanı)*(göz sayısı/enjeksiyon saat maliyet)" />
+                <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="" placeholder="(3600/üretim zamanı)*(göz sayısı/enjeksiyon saat maliyet)" />
                 <span class="form-text text-muted">(3600/üretim zamanı)*(göz sayısı/enjeksiyon saat maliyet)</span>
             </div>
         </div>
@@ -370,14 +339,14 @@
             double SicakBaskiTamponSaatMaliyet = 35;
             double birimSicakBaskiTamponMaliyet = SicakBaskiTamponSaatMaliyet / SicakBaskiTamponSaatAdet;
             <td sicakBaski-cikar="@kalip.KalipId">
-                <div class="form-group row">
+                <div class="form-group row parentDiv" UrunType="sicakbaski">
                     <div class="col-lg-12 mb-2">
                         <label>sıcak baskı tampon saat adet</label>
-                        <input type="text" class="form-control" value="@SicakBaskiTamponSaatAdet" />
+                        <input type="text" class="form-control hesaplama" id="SaatAdet" value="@SicakBaskiTamponSaatAdet" />
                     </div>
                     <div class="col-lg-12 mb-2">
                         <label>sıcak baskı tampon saat maliyet</label>
-                        <input type="text" class="form-control" value="@SicakBaskiTamponSaatMaliyet" />
+                        <input type="text" class="form-control hesaplama" id="SaatMaliyet" value="@SicakBaskiTamponSaatMaliyet" />
                     </div>
                     <div class="col-lg-12 mb-2">
                         <label>birim sıcak baskı tampon maliyet</label>
@@ -404,14 +373,14 @@
             double SaatlikUretimAdet = 300;
             double Maliyet = PersonelSaatMaliyet / SaatlikUretimAdet;
             <td montaj-cikar="@kalip.KalipId">
-                <div class="form-group row">
+                <div class="form-group row parentDiv" UrunType="montaj">
                     <div class="col-lg-12 mb-2">
                         <label>saatlik üretim adedi</label>
-                        <input type="text" class="form-control" value="@SaatlikUretimAdet" />
+                        <input type="text" class="form-control hesaplama" id="SaatAdet" value="@SaatlikUretimAdet" />
                     </div>
                     <div class="col-lg-12 mb-2">
                         <label>Personel Saat Maliyet</label>
-                        <input type="text" class="form-control" value="@PersonelSaatMaliyet" />
+                        <input type="text" class="form-control hesaplama" id="SaatMaliyet" value="@PersonelSaatMaliyet" />
                     </div>
                     <div class="col-lg-12 mb-2">
                         <label>aded maliyeti</label>

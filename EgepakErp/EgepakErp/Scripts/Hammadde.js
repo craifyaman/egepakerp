@@ -46,8 +46,6 @@
         } 
     }
 
-
-
     function DurumGuncelle(id) {
         Post('/HammaddeCinsi/DurumGuncelle',
             { id: id },

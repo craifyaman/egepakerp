@@ -5,6 +5,7 @@
     var liste = Model.GroupBy(x => x.KalipId);
     double ToplamTutar = 0;
     decimal DolarKur = ViewBag.dolarKur;
+    decimal EuroKur = ViewBag.euroKur;
 }
 
 <tr class="sum">
@@ -13,7 +14,7 @@
             <tr>
                 <td width="75%" style="border:none;">
                     Genel giderli Toplam Maliyet
-                    <input type="text" class="form-control" value="1" />
+                    <input type="text" class="form-control" value="1" disabled />
                 </td>
             </tr>
         </table>
@@ -24,7 +25,7 @@
         <td>
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
-                    @item.Sum(x => x.Tutar).ToString("n2") ₺
+                    @item.Where(x => x.Status == true).Sum(x => x.Tutar).ToString("n2") ₺
                     @{ ToplamTutar += item.Sum(x => x.Tutar);}
                 </div>
             </div>
@@ -39,7 +40,7 @@
             <tr>
                 <td width="75%" style="border:none;">
                     Nakit Satış Fiyatıs
-                    <input type="text" class="form-control" value="1,25" />
+                    <input type="text" class="form-control" value="1,25" disabled />
                 </td>
             </tr>
         </table>
@@ -49,7 +50,7 @@
         <td>
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
-                    @{ var NakitFiyat = item.Sum(x => x.Tutar) * (1.25);}
+                    @{ var NakitFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25);}
                     @NakitFiyat.ToString("n2") ₺
                 </div>
             </div>
@@ -63,7 +64,7 @@
             <tr>
                 <td width="75%" style="border:none;">
                     Vadeli Satış
-                    <input type="text" class="form-control" value="1,4" />
+                    <input type="text" class="form-control" value="1,4" disabled />
                 </td>
 
             </tr>
@@ -74,7 +75,7 @@
         <td>
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
-                    @{ var VadeliFiyat = item.Sum(x => x.Tutar) * (1.4);}
+                    @{ var VadeliFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.4);}
                     @VadeliFiyat.ToString("n2") ₺
                 </div>
             </div>
@@ -85,14 +86,22 @@
 
 <tr class="sum">
     <th>Teklif Tutar Tl</th>
-    <th style="position: absolute; width: 100%; font-size: 15px;">@ToplamTutar.ToString("n2") ₺</th>
+    <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">@ToplamTutar.ToString("n2") ₺</th>
 </tr>
 
 
 <tr class="sum">
-    <th>Teklif Tutar Usd</th>
+    <th>Teklif Tutar USD    </th>
     @{
         var DolarFiyat = (decimal)ToplamTutar / DolarKur;
     }
-    <th colspan="@(liste.Count()+1)" style="position: absolute; width: 100%; font-size: 15px;">@DolarFiyat.ToString("n2") $</th>
+    <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">@DolarFiyat.ToString("n2") $ <span style="font-size: 13px;"> (USD/TL @DolarKur) </span></th>
+</tr>
+
+<tr class="sum">
+    <th>Teklif Tutar EUR</th>
+    @{
+        var EuroFiyat = (decimal)ToplamTutar / EuroKur;
+    }
+    <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">@EuroFiyat.ToString("n2") € <span style="font-size: 13px;">(EUR/TL @EuroKur)</span></th>
 </tr>

@@ -1,0 +1,137 @@
+﻿@model HammaddeHareket
+<!--begin::Form-->
+<form id="hammaddeHareketForm">
+    <input type="hidden" name="HammaddeHareketId" value="@(Model?.HammaddeHareketId)" />
+    <div class="form-group  ">
+        <div class="col-lg-12">
+            <label>Fatura No:</label>
+            @Html.TextBoxFor(x => x.FaturaNo, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <label>Hammadde Cinsi:</label>
+                    <select name="HammaddeCinsiId" class="form-control form-control-solid selectpicker" data-live-search="true" id="HammaddeCinsiId">
+                        <option value="">Hammadde Cinsi Seçiniz</option>
+                        @foreach (var item in baseHammaddeCinsi)
+                        {
+                            var slc = (Model != null && Model.HammaddeCinsiId == item.HammaddeCinsiId) ? "selected" : "";
+                            <option @slc value="@item.HammaddeCinsiId">@item.Adi</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <label>Para Birimi:</label>
+                    <select name="DovizId" class="form-control form-control-solid selectpicker" data-live-search="true" id="DovizId">
+                        <option value="">Para Birimi Seçiniz</option>
+                        @foreach (var item in baseDoviz)
+                        {
+                            var slc = (Model != null && Model.DovizId == item.DovizId) ? "selected" : "";
+                            <option @slc value="@item.DovizId">@item.Adi</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <label>Hammadde Birimi:</label>
+                    <select name="HammaddeBirimiId" class="form-control form-control-solid selectpicker" data-live-search="true" id="HammaddeBirimiId">
+                        <option value="">Hammadde Birimi</option>
+                        @foreach (var item in baseHammaddeBirimi)
+                        {
+                            var slc = (Model != null && Model.HammaddeBirimiId == item.Id) ? "selected" : "";
+                            <option @slc value="@item.Id">@item.Birimi</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Tedarikci:</label>
+                    <select name="TedarikciId" class="form-control form-control-solid selectpicker" data-live-search="true" id="TedarikciId">
+                        <option value="">Tedarikci Seçiniz</option>
+                        @foreach (var item in baseCari)
+                        {
+                            var slc = (Model != null && Model.TedarikciId == item.CariId) ? "selected" : "";
+                            <option @slc value="@item.CariId">@item.Unvan</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Kdv Oranı:</label>
+                    @Html.TextBoxFor(x => x.KdvOranı, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Kdv Tutarı:</label>
+                    @Html.TextBoxFor(x => x.KdvTutarı, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Ürün Adı:</label>
+                    @Html.TextBoxFor(x => x.UrunAdi, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <label>Birim Fiyat:</label>
+                    @Html.TextBoxFor(x => x.BirimFiyat, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Toplam Tutar:</label>
+                    @Html.TextBoxFor(x => x.ToplamTutar, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Miktar:</label>
+                    @Html.TextBoxFor(x => x.Miktar, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Dolar Kur:</label>
+                    @Html.TextBoxFor(x => x.DolarKuru, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Euro Kur:</label>
+                    @Html.TextBoxFor(x => x.EuroKuru, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Pound Kur:</label>
+                    @Html.TextBoxFor(x => x.PoundKuru, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group  ">
+                <div class="col-lg-12">
+                    <label>Hammadde Giriş Tarih:</label>
+                    @Html.TextBoxFor(x => x.HammaddeGirisTarihi, new { @class = "form-control" })
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</form>
+<!--end::Form-->

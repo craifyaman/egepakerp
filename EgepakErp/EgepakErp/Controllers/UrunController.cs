@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Dynamic;
 using System.Linq;
 using System.Linq.Dynamic;
-using System.Reflection;
-using System.Web;
 using System.Web.Mvc;
 using EgePakErp.Custom;
 using EgePakErp.Models;
