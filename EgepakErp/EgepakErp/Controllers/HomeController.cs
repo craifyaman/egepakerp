@@ -20,6 +20,5 @@ namespace EgePakErp.Controllers
         {
             return View();
         }
-
     }
 }

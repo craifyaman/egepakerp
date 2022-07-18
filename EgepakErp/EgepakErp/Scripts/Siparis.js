@@ -104,7 +104,7 @@
             var input = value;
             var maliyet = new Maliyet();
             maliyet.kalipId = input.getAttribute("kalipId");
-            maliyet.Tutar = input.value;            
+            maliyet.Tutar = input.value;
 
             if ($(input).prop('disabled') == false) {
                 maliyet.Status = true;
@@ -170,9 +170,9 @@
         Input.val(Value);
     }
 
-    function maliyetDetayGetir(maliyetType, kalipId) {
+    function maliyetDetayGetir(maliyetType, kalipId, PosetParametre) {
         Post("/siparis/MaliyetDetay",
-            { MaliyetType: maliyetType, KalipId: kalipId },
+            { MaliyetType: maliyetType, KalipId: kalipId, PosetParametre: PosetParametre },
             function (response) {
                 bootbox.dialog({
                     title: maliyetType.toUpperCase() + " DETAY",
@@ -210,7 +210,7 @@
             "html");
     }
 
- 
+
 
     function checkValue(value, arr) {
         var status = false;
@@ -296,11 +296,14 @@
         $(document).on("change", ".birimFiyat", function () {
             maliyetHesapla();
         })
+
         $(document).on("click", "[event='MaliyetDetay']", function (event) {
             event.preventDefault();
+            debugger;
             var MaliyetType = $(this).attr("maliyetType");
             var KalipId = $(this).attr("kalipId");
-            maliyetDetayGetir(MaliyetType, KalipId);
+            var PosetParametre = $("#PosetParametre_" + KalipId).val();
+            maliyetDetayGetir(MaliyetType, KalipId, PosetParametre);
         });
 
         $(document).on("click", "[event='FaturadanCikar']", function (event) {
@@ -333,7 +336,7 @@
             target.val(birimFiyat);
             $(document.getElementById("BirimFiyat")).trigger("change");
         });
-        
+
 
         $(document).on("change", ".hesaplama", function (event) {
             event.preventDefault();
@@ -352,7 +355,7 @@
             }
             if (type == "poset") {
                 HesapFunctionPoset();
-            }   
+            }
             if (type == "yaldiz") {
                 HesapFunctionYaldiz();
             }
@@ -365,10 +368,10 @@
             if (type == "montaj") {
                 HesapFunctionMontaj();
             }
-            
+
         });
 
-        
+
     }
 
     var DtInit = function (domId, url, columns, params) {

@@ -41,7 +41,7 @@ namespace EgePakErp.Controllers
             ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("toz")).BirimFiyat;
             ViewBag.BaskiMalzemeler = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.HammaddeCinsiId == 6632).ToList();
             ViewBag.PosetSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("poşet")).BirimFiyat;
-            ViewBag.KoliSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")).BirimFiyat;
+            ViewBag.KoliSonHareket = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
             var kaliplar = Db.Kalip
                 .Include("KalipHammaddeRelation")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
@@ -52,12 +52,13 @@ namespace EgePakErp.Controllers
 
         public PartialViewResult MaliyetHesap(List<MaliyetDto> liste)
         {
-            ViewBag.dolarKur = DovizHelper.DovizKuruGetir("USD", System.DateTime.Now);
-            ViewBag.euroKur = DovizHelper.DovizKuruGetir("EUR", System.DateTime.Now);
+            var date = System.DateTime.Now;
+            ViewBag.dolarKur = DovizHelper.DovizKuruGetir("USD", date);
+            ViewBag.euroKur = DovizHelper.DovizKuruGetir("EUR", date);
             return PartialView(liste);
         }
 
-        public PartialViewResult MaliyetDetay(string MaliyetType, int KalipId)
+        public PartialViewResult MaliyetDetay(string MaliyetType, int KalipId, string PosetParametre = "0")
         {
             var Kalip = Db.Kalip
                 .Include("KalipHammaddeRelation")
@@ -71,6 +72,7 @@ namespace EgePakErp.Controllers
             ViewBag.PosetSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("poşet")).BirimFiyat;
             ViewBag.KoliSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")).BirimFiyat;
             ViewBag.HamMaddeHareket = Db.HammaddeHareket.ToList();
+            ViewBag.PosetParametre = PosetParametre;
             return PartialView(Kalip);
         }
 

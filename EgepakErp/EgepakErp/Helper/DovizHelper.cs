@@ -10,7 +10,7 @@ namespace EgepakErp.Helper
     {
         public static decimal DovizKuruGetir(string Kod, DateTime date)
         {
-            decimal deger;          
+            decimal deger = 0;          
             DateTime tarih = Convert.ToDateTime(date.ToString("dd/MM/yyyy"));
 
             if (tarih.DayOfWeek == DayOfWeek.Saturday)
@@ -35,8 +35,6 @@ namespace EgepakErp.Helper
                 //önceki günün kur değeri alınır.
                 tarih = Convert.ToDateTime(date.AddDays(-1));
             }
-            
-            
 
             var t = tarih.ToString("yyyyMM");
             var t1 = tarih.ToString("ddMMyyyy");
@@ -44,14 +42,23 @@ namespace EgepakErp.Helper
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Accept = "application/xml"; // <== THIS FIXED IT
 
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            try
             {
-                using (Stream stream = response.GetResponseStream())
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
-                    XDocument doc = XDocument.Load(stream);
-                    deger = Convert.ToDecimal(doc.Root.Descendants("Currency").FirstOrDefault(i => i.Attribute("Kod").Value == Kod).Descendants("ForexSelling").FirstOrDefault().Value.Replace(".", ",").ToString());
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        XDocument doc = XDocument.Load(stream);
+                        deger = Convert.ToDecimal(doc.Root.Descendants("Currency").FirstOrDefault(i => i.Attribute("Kod").Value == Kod).Descendants("ForexSelling").FirstOrDefault().Value.Replace(".", ",").ToString());
+                    }
                 }
             }
+            catch(Exception ex)
+            {
+
+            
+            }
+            
             return deger;
         }
     }
