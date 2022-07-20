@@ -99,13 +99,13 @@
             <span class="form-text text-muted">kg/tl</span>
 
             <div class="form-group">
-                <label>Kalıp Ağırlık:</label>
+                <label>Mamül Ağırlık:</label>
                 <input type="text" class="form-control hesaplama" id="kalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
             </div>
             <div class="form-group">
                 <label>Birim Maliyet:</label>
                 <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N2")" />
-                <span class="form-text text-muted">(Birim Fiyat(kg/tl) / 1000) * Kalıp Ağırlık</span>
+                <span class="form-text text-muted">(Birim Fiyat(kg/tl) / 1000) * Mamül Ağırlık</span>
             </div>
         </div>
     </div>
@@ -123,13 +123,13 @@
         <td tozBoya-cikar="@Model.KalipId">
             <div class="form-group row parentDiv" UrunType="tozBoya">
                 <div class="col-lg-12 mb-2">
-                    <label>Kalıp Ağırlığı</label>
+                    <label>Mamül Ağırlık</label>
                     <input type="text" class="form-control" id="KalipAgirlik" value="@KalipAgirlik.ToString("n2")" disabled />
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Kullanılan Boya Miktarı</label>
                     <input type="text" class="form-control hesaplama" id="BoyaMiktar" value="@KullanilanBoyaMiktar.ToString("n2")" />
-                    <span class="form-text text-muted">( 12 / 1000 ) * Kalıp Ağırlık</span>
+                    <span class="form-text text-muted">( 12 / 1000 ) * Mamül Ağırlık</span>
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Boya Birim Fiyat</label>
@@ -139,7 +139,7 @@
                 <div class="col-lg-12 mb-2">
                     <label>bir adet için üretim maliyeti:</label>
                     <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n2")" />
-                    <span class="form-text text-muted">Kalıp Ağırlık * Boya Miktarı * Birim Fiyat</span>
+                    <span class="form-text text-muted">Mamül Ağırlık * Boya Miktarı * Birim Fiyat</span>
                 </div>
             </div>
         </td>
@@ -158,9 +158,26 @@
                 <div class="col-lg-12 mb-2">
                     <label>Koli Türü:</label>
                     <select class="form-control" id="KoliBirimFiyat">
-                        @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")))
+                        @{
+                            HammaddeHareket KoliSonHareket = ViewBag.KoliSonHareket;
+                            var KoliBirimFiyat = KoliSonHareket?.BirimFiyat;
+
+                            decimal? KoliBirimMaliyet = KoliBirimFiyat != null ? (KoliBirimFiyat / 1500) : 0;
+                            string PosetParametre = ViewBag.PosetParametre;
+                            var _list = baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")).ToList();
+                        }
+
+                        @foreach (var item in _list)
                         {
-                            <option value="@item.BirimFiyat">@(item.UrunAdi) (@item.BirimFiyat)</option>
+                            if (item.UrunAdi.Contains(" 60*40*40 "))
+                            {
+                                PosetParametre = "0.060";
+                            }
+                            else if (item.UrunAdi.Contains("43*34*30"))
+                            {
+                                PosetParametre = "0.036";
+                            }
+                            <option value="@item.BirimFiyat" posetParametre="@PosetParametre">@(item.UrunAdi) (@item.BirimFiyat)</option>
                         }
                     </select>
                 </div>
@@ -168,13 +185,18 @@
 
                     @{
                         var birimFiyat = ViewBag.KoliSonBirimFiyat;
+                        //decimal koliBandiEkMaliyet = 0.001M;
                         decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1500) : 0;
                     }
                     <label>Birim Fiyat:</label>
                     <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@birimFiyat" disabled />
                 </div>
                 <div class="col-lg-12 mb-2">
-                    <label>Kalıp Ağırlık:</label>
+                    <label>Poşet Parametre:</label>
+                    <input type="text" class="form-control" id="posetParametre" targetInputId="PosetParametre_@Model.KalipId" value="@PosetParametre" disabled />
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Mamül Ağırlık:</label>
                     <input type="text" class="form-control" id="KalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
                 </div>
                 <div class="col-lg-12 mb-2">
@@ -183,7 +205,7 @@
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Birim Maliyet:</label>
-                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N2")" />
+                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N4")" />
                     <span class="form-text text-muted">(Birim Fiyat / Kapasite)</span>
                 </div>
             </div>
@@ -206,18 +228,19 @@
         <div class="col-lg-12 mb-2">
             @{
                 var birimFiyat = ViewBag.PosetSonBirimFiyat;
-                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
+                var Katsayi = (decimal)ViewBag.PosetParametre;
+                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat * Katsayi) / 1500 : 0;
             }
             <label>Birim Fiyat:</label>
             <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@birimFiyat" disabled />
         </div>
-        
+
         <div class="col-lg-12 mb-2">
-            <label>Poşet Parametre:</label>
-            <input type="text" class="form-control" value="@ViewBag.PosetParametre" id="PosetKatsayi"/>
+            <label>Katsayı:</label>
+            <input type="text" class="form-control hesaplama" value="@ViewBag.PosetParametre" id="PosetKatsayi" />
         </div>
         <div class="col-lg-12 mb-2">
-            <label>Kalıp Ağırlık:</label>
+            <label>Mamül Ağırlık:</label>
             <input type="text" class="form-control hesaplama" id="KalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
         </div>
         <div class="col-lg-12 mb-2">
@@ -226,7 +249,7 @@
         </div>
         <div class="col-lg-12 mb-2">
             <label>Birim Maliyet:</label>
-            <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N2")" />
+            <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N4")" />
             <span class="form-text text-muted">(Birim Fiyat * @ViewBag.PosetParametre) / Kapasite</span>
         </div>
     </div>

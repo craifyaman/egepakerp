@@ -170,6 +170,7 @@
         Input.val(Value);
     }
 
+    
     function maliyetDetayGetir(maliyetType, kalipId, PosetParametre) {
         Post("/siparis/MaliyetDetay",
             { MaliyetType: maliyetType, KalipId: kalipId, PosetParametre: PosetParametre },
@@ -190,6 +191,12 @@
                             callback: function () {
                                 var value = $(".Fiyat").val();
                                 InputBulEkle(maliyetType, kalipId, value);
+                                debugger;
+                                if ($(".parentDiv").attr("uruntype") == "koli") {
+                                    var posetKatsayi = $("#posetParametre").val();
+                                    var targetId = $("#posetParametre").attr("targetInputId");
+                                    $("#"+targetId).val(posetKatsayi);
+                                }
                                 maliyetHesapla();
                                 bootbox.hideAll();
                                 return false;
@@ -209,7 +216,6 @@
             },
             "html");
     }
-
 
 
     function checkValue(value, arr) {
@@ -323,8 +329,11 @@
 
         $(document).on("change", "#KoliBirimFiyat", function (event) {
             event.preventDefault();
+            debugger;
             var target = $("#BirimFiyat");
             var birimFiyat = parseFloat($(this).val().replace(",", "."));
+            var posetParametre = $("#KoliBirimFiyat option:selected").attr("posetParametre");
+            $("#posetParametre").val(posetParametre);
             target.val(birimFiyat);
             $(document.getElementById("BirimFiyat")).trigger("change");
         });

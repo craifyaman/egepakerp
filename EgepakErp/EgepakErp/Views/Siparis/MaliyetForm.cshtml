@@ -230,23 +230,13 @@
                 var birimFiyat = sonHareket?.BirimFiyat;
 
                 decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1500) : 0;
-                string PosetParametre = "0";
 
-                if (sonHareket.UrunAdi.Contains("60*40*40"))
-                {
-                    PosetParametre = "0.060";
-                }
-                else if (sonHareket.UrunAdi.Contains("43*34*30"))
-                {
-                    PosetParametre = "0.036";
-                }
-
-                <input type="hidden" value="@PosetParametre" id="PosetParametre_@kalip.KalipId" />
+                <input id="PosetParametre_@kalip.KalipId" type="hidden" value="0"/>
                 <td koli-cikar="@kalip.KalipId">
                     <div class="col-lg-12 mb-2">
                         <label>Birim Fiyat:</label>
                         <div class="input-group mb-5">
-                            <span class="input-group-text" event="MaliyetDetay" maliyetType="koli" kalipId="@kalip.KalipId" PosetParametreId="PosetParametre_@kalip.KalipId">
+                            <span class="input-group-text" event="MaliyetDetay" maliyetType="koli" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
                             <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N2")" />
@@ -265,7 +255,7 @@
             {
                 var birimFiyat = ViewBag.PosetSonBirimFiyat;
                 decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1500) * kalip.ParcaAgirlik : 0;
-
+                
                 <td poset-cikar="@kalip.KalipId">
                     <div class="col-lg-12 mb-2">
                         <label>Birim Fiyat:</label>
@@ -273,14 +263,13 @@
                             <span class="input-group-text" event="MaliyetDetay" maliyetType="poset" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
-                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N4")" />
+                            <input kalipId="@kalip.KalipId" mamulType="poset" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N4")" />
                             <span poset-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="poset" event="FaturadanCikar">
                                 -
                             </span>
                         </div>
                     </div>
                 </td>
-
             }
         </tr>
     </tbody>

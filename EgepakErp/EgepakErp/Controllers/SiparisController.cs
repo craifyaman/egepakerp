@@ -58,7 +58,7 @@ namespace EgePakErp.Controllers
             return PartialView(liste);
         }
 
-        public PartialViewResult MaliyetDetay(string MaliyetType, int KalipId, string PosetParametre = "0")
+        public PartialViewResult MaliyetDetay(string MaliyetType, int KalipId, string PosetParametre = "0.060")
         {
             var Kalip = Db.Kalip
                 .Include("KalipHammaddeRelation")
@@ -72,8 +72,10 @@ namespace EgePakErp.Controllers
             ViewBag.PosetSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("poşet")).BirimFiyat;
             ViewBag.KoliSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")).BirimFiyat;
             ViewBag.HamMaddeHareket = Db.HammaddeHareket.ToList();
+            ViewBag.KoliSonHareket = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
             ViewBag.PosetParametre = PosetParametre;
             return PartialView(Kalip);
+
         }
 
     }
