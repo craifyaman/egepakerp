@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace EgePakErp.Models
 {
@@ -22,8 +18,8 @@ namespace EgePakErp.Models
         public string ParcaAdi { get; set; }
         public string Hammadde { get; set; }
         public string Agirlik { get; set; }
-        public string TeminŞekli { get; set; }
-        public string KalıpSayisi { get; set; }
+        public string TeminSekli { get; set; }
+        public string KalipSayisi { get; set; }
         public string UretimZamani { get; set; }
         public string Aciklama { get; set; }
 

@@ -238,15 +238,15 @@
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            ParcaAgirlik: {
-                validators: {
-                    integer: {
-                        message: 'Rakam Giriniz',
-                        thousandsSeparator: '',
-                        decimalSeparator: ',',
-                    },
-                }
-            },
+            //ParcaAgirlik: {
+            //    validators: {
+            //        integer: {
+            //            message: 'Rakam Giriniz',
+            //            thousandsSeparator: '',
+            //            decimalSeparator: ',',
+            //        },
+            //    }
+            //},
             KalipGozSayisi: {
                 validators: {
                     integer: {

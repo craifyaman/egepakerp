@@ -161,8 +161,8 @@
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Z.EntityFramework.Extensions, Version=6.13.19.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
-      <HintPath>..\packages\Z.EntityFramework.Extensions.6.13.19\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
+    <Reference Include="Z.EntityFramework.Extensions, Version=6.14.3.0, Culture=neutral, PublicKeyToken=59b66d028979105b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Z.EntityFramework.Extensions.6.14.3\lib\net45\Z.EntityFramework.Extensions.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -180,29 +180,9 @@
     <Compile Include="Enums\FaturaOrtalama.cs" />
     <Compile Include="Helper\DovizHelper.cs" />
     <Compile Include="Helper\SonAylarFaturaHelper.cs" />
-    <Compile Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.cs" />
-    <Compile Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.designer.cs">
-      <DependentUpon>202205140753028_update_hammaddeHaraket_to_hammaddehareket.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205140930215_3.cs" />
-    <Compile Include="Migrations\202205140930215_3.designer.cs">
-      <DependentUpon>202205140930215_3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205160928527_hammaddehareket_duzenleme.cs" />
-    <Compile Include="Migrations\202205160928527_hammaddehareket_duzenleme.designer.cs">
-      <DependentUpon>202205160928527_hammaddehareket_duzenleme.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205161037535_hammaddebirim_duzenleme.cs" />
-    <Compile Include="Migrations\202205161037535_hammaddebirim_duzenleme.designer.cs">
-      <DependentUpon>202205161037535_hammaddebirim_duzenleme.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205180704446_kalip_model_duzenleme.cs" />
-    <Compile Include="Migrations\202205180704446_kalip_model_duzenleme.designer.cs">
-      <DependentUpon>202205180704446_kalip_model_duzenleme.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202205180857200_kalip_model_duzenleme2.cs" />
-    <Compile Include="Migrations\202205180857200_kalip_model_duzenleme2.designer.cs">
-      <DependentUpon>202205180857200_kalip_model_duzenleme2.cs</DependentUpon>
+    <Compile Include="Migrations\202207250933240_HamUrunGrup_tablo_duzenleme.cs" />
+    <Compile Include="Migrations\202207250933240_HamUrunGrup_tablo_duzenleme.designer.cs">
+      <DependentUpon>202207250933240_HamUrunGrup_tablo_duzenleme.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHareket.cs" />
@@ -264,7 +244,7 @@
     <Compile Include="Models\Base\CariGrup.cs" />
     <Compile Include="Models\Base\Gorusme.cs" />
     <Compile Include="Models\Base\GorusmeTip.cs" />
-    <Compile Include="Models\HamMusteri.cs" />
+    <Compile Include="Models\HamUrunGrup.cs" />
     <Compile Include="Models\Base\Hatirlatici.cs" />
     <Compile Include="Models\Base\Il.cs" />
     <Compile Include="Models\Base\Ilce.cs" />
@@ -2596,23 +2576,8 @@
     <Content Include="Views\HammaddeHareket\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202205140753028_update_hammaddeHaraket_to_hammaddehareket.resx">
-      <DependentUpon>202205140753028_update_hammaddeHaraket_to_hammaddehareket.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205140930215_3.resx">
-      <DependentUpon>202205140930215_3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205160928527_hammaddehareket_duzenleme.resx">
-      <DependentUpon>202205160928527_hammaddehareket_duzenleme.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205161037535_hammaddebirim_duzenleme.resx">
-      <DependentUpon>202205161037535_hammaddebirim_duzenleme.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205180704446_kalip_model_duzenleme.resx">
-      <DependentUpon>202205180704446_kalip_model_duzenleme.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202205180857200_kalip_model_duzenleme2.resx">
-      <DependentUpon>202205180857200_kalip_model_duzenleme2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202207250933240_HamUrunGrup_tablo_duzenleme.resx">
+      <DependentUpon>202207250933240_HamUrunGrup_tablo_duzenleme.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

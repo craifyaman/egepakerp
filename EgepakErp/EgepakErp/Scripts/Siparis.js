@@ -138,7 +138,6 @@
 
     function maliyetTablosuGetir() {
 
-
         var idList = $("#kalipIdList").val().split(",");
         var excludes = $("#exclude").val().slice(0, -1).split(",");
         var FixedIdList = [];
@@ -160,9 +159,19 @@
                 //BeforeSend
             },
             function () {
-
+                DisMalzemelerSifirla();
             },
             "html");
+    }
+
+    function DisMalzemelerSifirla() {
+        var arr = $("td");
+        $.each(arr, function (index, val) {
+            if ($(val).attr("KalipAd") == "LİPGLOSS PONPON") {
+                $(val).find(".birimFiyat").val("0");
+                
+            }
+        });
     }
 
     function InputBulEkle(MaliyetType, KalipId, Value) {
@@ -326,6 +335,7 @@
             target.val(birimFiyat);
             $(document.getElementById("BirimFiyat")).trigger("change");
         });
+        
 
         $(document).on("change", "#KoliBirimFiyat", function (event) {
             event.preventDefault();
@@ -333,7 +343,11 @@
             var target = $("#BirimFiyat");
             var birimFiyat = parseFloat($(this).val().replace(",", "."));
             var posetParametre = $("#KoliBirimFiyat option:selected").attr("posetParametre");
+            var Katsayi = $("#KoliBirimFiyat option:selected").attr("Katsayi");
+
             $("#posetParametre").val(posetParametre);
+            $("#KoliKatsayi").val(Katsayi);
+
             target.val(birimFiyat);
             $(document.getElementById("BirimFiyat")).trigger("change");
         });
@@ -380,6 +394,14 @@
 
         });
 
+        $(document).on("change", "#yaldizSelect", function (event) {
+            event.preventDefault();
+            debugger;
+            var target = $("#BirimFiyat");
+            var birimFiyat = parseFloat($(this).val().replace(",", "."));
+            target.val(birimFiyat);
+            $(document.getElementById("BirimFiyat")).trigger("change");
+        });
 
     }
 

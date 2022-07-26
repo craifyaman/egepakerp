@@ -5,7 +5,6 @@
     List<HammaddeHareket> hareketler = ViewBag.HamMaddeHareket;
     var hammaddeCinsleri = Model.KalipHammaddeRelation.Select(i => i.HammaddeCinsi);
 
-
 }
 
 @if (type == "hammadde")
@@ -26,49 +25,92 @@
         sonFaturaBirimFiyat = 0;
     }
 
+    decimal? son1AyOrtalamaBirimFiyat = null;
+    decimal? son3AyOrtalamaBirimFiyat = null;
+    decimal? son6AyOrtalamaBirimFiyat = null;
+    decimal? son12AyOrtalamaBirimFiyat = null;
 
-    var son1AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-1)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
+
+    try
     {
-        HammaddeCinsiId = key.HammaddeCinsiId,
-        Ortalama = group.Average(x => x.BirimFiyat)
-    })?.FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
+        son1AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.HammaddeCinsiId != null && x.KayitTarihi >= DateTime.Now.AddMonths(-1)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
+        {
+            HammaddeCinsiId = key.HammaddeCinsiId,
+            Ortalama = group.Average(x => x.BirimFiyat)
+        })?.FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
+    }
+    catch (Exception ex)
+    {
+
+    }
 
     if (son1AyOrtalamaBirimFiyat == null)
     {
         son1AyOrtalamaBirimFiyat = sonFaturaBirimFiyat;
     }
 
-    var son3AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-3)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
+
+    try
     {
-        HammaddeCinsiId = key.HammaddeCinsiId,
-        Ortalama = group.Average(x => x.BirimFiyat)
-    }).FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
+        son3AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-3)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
+        {
+            HammaddeCinsiId = key.HammaddeCinsiId,
+            Ortalama = group.Average(x => x.BirimFiyat)
+        }).FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
+
+    }
+    catch (Exception ex)
+    {
+
+    }
 
     if (son3AyOrtalamaBirimFiyat == null)
     {
         son3AyOrtalamaBirimFiyat = sonFaturaBirimFiyat;
     }
 
-    var son6AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-6)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
+
+    try
     {
-        HammaddeCinsiId = key.HammaddeCinsiId,
-        Ortalama = group.Average(x => x.BirimFiyat)
-    }).FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
+        son6AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-6)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
+        {
+            HammaddeCinsiId = key.HammaddeCinsiId,
+            Ortalama = group.Average(x => x.BirimFiyat)
+        }).FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
+
+    }
+    catch (Exception ex)
+    {
+
+    }
 
     if (son6AyOrtalamaBirimFiyat == null)
     {
         son6AyOrtalamaBirimFiyat = sonFaturaBirimFiyat;
     }
-    var son12AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-12)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
+
+
+    try
     {
-        HammaddeCinsiId = key.HammaddeCinsiId,
-        Ortalama = group.Average(x => x.BirimFiyat)
-    }).FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
+        son12AyOrtalamaBirimFiyat = son12AyHammaddeHareket.Where(x => x.KayitTarihi >= DateTime.Now.AddMonths(-12)).GroupBy(x => new { x.HammaddeCinsiId }, (key, group) => new
+        {
+            HammaddeCinsiId = key.HammaddeCinsiId,
+            Ortalama = group.Average(x => x.BirimFiyat)
+        }).FirstOrDefault(x => x.HammaddeCinsiId == hammaddeCinsi.HammaddeCinsiId)?.Ortalama;
+
+    }
+    catch (Exception ex)
+    {
+
+    }
+
 
     if (son12AyOrtalamaBirimFiyat == null)
     {
         son12AyOrtalamaBirimFiyat = sonFaturaBirimFiyat;
     }
+
+
 
     var birimFiyat = sonHammaddeHareket?.BirimFiyat;
     decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
@@ -118,7 +160,7 @@
         double sabit = 12.0 / 1000.0;
         decimal KalipAgirlik = (decimal)Model.ParcaAgirlik;
         decimal KullanilanBoyaMiktar = Convert.ToDecimal(sabit) * KalipAgirlik;
-        decimal BoyaBirimFiyat = ViewBag.TozBoyaSonBirimFiyat / 1000;
+        decimal BoyaBirimFiyat = TozBoyaSonBirimFiyat() / 1000;
         decimal Maliyet = KalipAgirlik * KullanilanBoyaMiktar * BoyaBirimFiyat;
         <td tozBoya-cikar="@Model.KalipId">
             <div class="form-group row parentDiv" UrunType="tozBoya">
@@ -159,12 +201,19 @@
                     <label>Koli Türü:</label>
                     <select class="form-control" id="KoliBirimFiyat">
                         @{
-                            HammaddeHareket KoliSonHareket = ViewBag.KoliSonHareket;
+                            HammaddeHareket KoliSonHareket = KoliSohHareket();
                             var KoliBirimFiyat = KoliSonHareket?.BirimFiyat;
 
                             decimal? KoliBirimMaliyet = KoliBirimFiyat != null ? (KoliBirimFiyat / 1500) : 0;
                             string PosetParametre = ViewBag.PosetParametre;
-                            var _list = baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")).ToList();
+                            var _list = BaseSarfMalzeme().Where(x => x.UrunAdi.ToLower().Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")).ToList();
+                            decimal Katsayi = 0;
+                            try
+                            {
+                                Katsayi = KoliSonHareket.UrunAdi.Contains("43*34*30") ? 0.03M : 0.04M;
+                            }
+                            catch { }
+
                         }
 
                         @foreach (var item in _list)
@@ -172,12 +221,14 @@
                             if (item.UrunAdi.Contains(" 60*40*40 "))
                             {
                                 PosetParametre = "0.060";
+                                Katsayi = 0.04M;
                             }
                             else if (item.UrunAdi.Contains("43*34*30"))
                             {
                                 PosetParametre = "0.036";
+                                Katsayi = 0.03M;
                             }
-                            <option value="@item.BirimFiyat" posetParametre="@PosetParametre">@(item.UrunAdi) (@item.BirimFiyat)</option>
+                            <option value="@item.BirimFiyat" posetParametre="@PosetParametre" Katsayi="@Katsayi">@(item.UrunAdi) (@item.BirimFiyat)</option>
                         }
                     </select>
                 </div>
@@ -186,15 +237,18 @@
                     @{
                         var birimFiyat = ViewBag.KoliSonBirimFiyat;
                         //decimal koliBandiEkMaliyet = 0.001M;
-                        decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1500) : 0;
+                        decimal? birimMaliyet = birimFiyat != null ? (birimFiyat * Katsayi) / 1500 : 0;
                     }
                     <label>Birim Fiyat:</label>
                     <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@birimFiyat" disabled />
                 </div>
+                <input type="hidden" id="posetParametre" targetInputId="PosetParametre_@Model.KalipId" value="@PosetParametre" />
+
                 <div class="col-lg-12 mb-2">
-                    <label>Poşet Parametre:</label>
-                    <input type="text" class="form-control" id="posetParametre" targetInputId="PosetParametre_@Model.KalipId" value="@PosetParametre" disabled />
+                    <label>Katsayı:</label>
+                    <input type="text" class="form-control hesaplama" id="KoliKatsayi" value="@Katsayi" />
                 </div>
+
                 <div class="col-lg-12 mb-2">
                     <label>Mamül Ağırlık:</label>
                     <input type="text" class="form-control" id="KalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
@@ -206,7 +260,7 @@
                 <div class="col-lg-12 mb-2">
                     <label>Birim Maliyet:</label>
                     <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N4")" />
-                    <span class="form-text text-muted">(Birim Fiyat / Kapasite)</span>
+                    <span class="form-text text-muted">(Birim Fiyat * Katsayı) / Kapasite</span>
                 </div>
             </div>
         </td>
@@ -219,7 +273,7 @@
         <div class="col-lg-12 mb-2">
             <label>Poşet Türü:</label>
             <select class="form-control" id="PosetBirimFiyat">
-                @foreach (var item in baseHammaddeHareket(6634).Where(x => x.UrunAdi.ToLower().Contains("poşet")))
+                @foreach (var item in BaseSarfMalzeme().Where(x => x.UrunAdi.ToLower().Contains("poşet")))
                 {
                     <option value="@item.BirimFiyat">@(item.UrunAdi) (@item.BirimFiyat)</option>
                 }
@@ -227,8 +281,8 @@
         </div>
         <div class="col-lg-12 mb-2">
             @{
-                var birimFiyat = ViewBag.PosetSonBirimFiyat;
-                var Katsayi = (decimal)ViewBag.PosetParametre;
+                decimal? birimFiyat = ViewBag.PosetSonBirimFiyat;
+                decimal Katsayi = Convert.ToDecimal(ViewBag.PosetParametre) / 1000;
                 decimal? birimMaliyet = birimFiyat != null ? (birimFiyat * Katsayi) / 1500 : 0;
             }
             <label>Birim Fiyat:</label>
@@ -239,19 +293,23 @@
             <label>Katsayı:</label>
             <input type="text" class="form-control hesaplama" value="@ViewBag.PosetParametre" id="PosetKatsayi" />
         </div>
+
         <div class="col-lg-12 mb-2">
             <label>Mamül Ağırlık:</label>
             <input type="text" class="form-control hesaplama" id="KalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
         </div>
+
         <div class="col-lg-12 mb-2">
             <label>Peşet Kapasitesi:</label>
             <input type="text" class="form-control" id="Kapasite" value="1500" />
         </div>
+
         <div class="col-lg-12 mb-2">
             <label>Birim Maliyet:</label>
             <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N4")" />
             <span class="form-text text-muted">(Birim Fiyat * @ViewBag.PosetParametre) / Kapasite</span>
         </div>
+
     </div>
 }
 
@@ -259,19 +317,19 @@
 {
     <tr>
         @{
-            List<HammaddeHareket> Malzemeler = ViewBag.BaskiMalzemeler;
+            List<HammaddeHareket> Malzemeler = BaskiMalzemeler();
 
-            double BirimFiyat = Convert.ToDouble(Malzemeler.FirstOrDefault().BirimFiyat);
+            double BirimFiyat = Convert.ToDouble(Malzemeler.FirstOrDefault()?.BirimFiyat);
             double Maliyet = (BirimFiyat * 40) / 10000;
         }
         <td yaldiz-cikar="@kalip.KalipId">
             <div class="parentDiv" UrunType="yaldiz">
                 <div class="col-lg-12 mb-2">
                     <label>Malzeme:</label>
-                    <select class="form-control">
+                    <select class="form-control" id="yaldizSelect">
                         @foreach (var item in Malzemeler)
                         {
-                            <option>@item.UrunAdi ( @item.BirimFiyat TL )</option>
+                            <option value="@item.BirimFiyat">@item.UrunAdi ( @item.BirimFiyat TL )</option>
                         }
                     </select>
 

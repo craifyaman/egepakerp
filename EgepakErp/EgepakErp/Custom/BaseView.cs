@@ -107,17 +107,17 @@ namespace EgePakErp.Custom
             return db.Il.Where(i => i.UlkeId == ulkeId).ToList();
         }
 
-        public IEnumerable<SelectListItem> BaseBirimSelectList(int? birimId)
-        {
-            var result = db.HammaddeBirimi.Select(x => new SelectListItem()
-            {
-                Value = x.Id.ToString(),
-                Text = x.Birimi,
-                Selected = x.Id == birimId
-            }).ToList();
+        //public IEnumerable<SelectListItem> BaseBirimSelectList(int? birimId)
+        //{
+        //    var result = db.HammaddeBirimi.Select(x => new SelectListItem()
+        //    {
+        //        Value = x.Id.ToString(),
+        //        Text = x.Birimi,
+        //        Selected = x.Id == birimId
+        //    }).ToList();
 
-            return result;
-        }
+        //    return result;
+        //}
         public List<Ilce> baseIlce(int ilId)
         {
             return db.Ilce.Where(i => i.IlId == ilId).ToList();
@@ -342,6 +342,8 @@ namespace EgePakErp.Custom
             }
             set { }
         }
+
+
         public List<HammaddeBirimi> baseHammaddeBirimi
         {
             get
@@ -351,6 +353,57 @@ namespace EgePakErp.Custom
             }
             set { }
         }
+
+        public List<HammaddeHareket> BaskiMalzemeListe()
+        {
+            var hammaddeCinsId = db.HammaddeCinsi.FirstOrDefault(x => x.Adi.Contains("BASKI MALZEMELERİ")).HammaddeCinsiId;
+            var liste = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.HammaddeCinsiId == hammaddeCinsId).ToList();
+            return liste;
+        }
+
+        public decimal PonponSonFiyat()
+        {
+            var fatura = db.HammaddeHareket.OrderByDescending(x => x.HammaddeGirisTarihi).FirstOrDefault(x => x.UrunAdi.Contains("PONPON"));
+            decimal fiyat = 0;
+            if (fatura != null)
+            {
+                fiyat = fatura.BirimFiyat;
+            }
+            return fiyat;
+        }
+
+        public List<HammaddeHareket> BaskiMalzemeler()
+        {
+            var baskiMalzemeCinsId = db.HammaddeCinsi.FirstOrDefault(x => x.Adi == "BASKI MALZEMELERİ").HammaddeCinsiId;
+            var liste = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.HammaddeCinsiId == baskiMalzemeCinsId).ToList();
+            return liste;
+        }
+        public decimal TozBoyaSonBirimFiyat()
+        {
+            decimal fiyat = 0;
+
+            var query = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("toz"));
+            if (query != null)
+            {
+                fiyat = query.BirimFiyat;
+            }
+            return fiyat;
+        }
+
+        public HammaddeHareket KoliSohHareket()
+        {
+            var liste = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
+            return liste;
+        }
+
+        public List<HammaddeHareket> BaseSarfMalzeme()
+        {
+            var id = db.HammaddeCinsi.FirstOrDefault(x => x.Adi == "SARF MALZEME").HammaddeCinsiId;
+            return db.HammaddeHareket
+              .Include("Tedarikci")
+              .Where(i => i.HammaddeCinsiId == id).ToList();
+        }
+
 
         public List<BaseMenu> baseMenu(string pre = "Menu", string nameSpace = "EgePakErp.Controllers")
         {

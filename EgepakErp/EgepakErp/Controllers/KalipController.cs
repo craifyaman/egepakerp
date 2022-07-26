@@ -223,5 +223,15 @@ namespace EgePakErp.Controllers
 
         }
 
+        public void KalipAgirlikDuzelt()
+        {
+            var list = Db.Kalip.ToList();
+            foreach(var kalip in list)
+            {
+                kalip.ParcaAgirlik *= 10;
+            }
+            Db.SaveChanges();
+        }
+
     }
 }

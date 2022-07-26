@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +18,11 @@ namespace EgePakErp.Controllers
 {
     public class EntegrasyonController : BaseController
     {
+        public CultureInfo culture { get; set; }
+        public EntegrasyonController()
+        {
+            culture = new CultureInfo("tr-TR");
+        }
         /// <summary>
         /// excellden cari
         /// </summary>
@@ -126,6 +132,50 @@ namespace EgePakErp.Controllers
             Db.Cari.AddRange(list);
             Db.SaveChanges(1);
         }
+        public void HamUrunGroup()
+        {
+            var dataset = new DataSet();
+            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Ham_Urun_Group_Aktarim_25_07_1.xlsx", FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    dataset = reader.AsDataSet();
+                }
+            }
+            var dataTable = dataset.Tables[0];
+            var list = new List<HamUrunGrup>();
+
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                var currentRow = dataTable.Rows[i];
+                try
+                {
+                    var UrunGroup = new HamUrunGrup();
+                    UrunGroup.UrunCinsi = currentRow.ItemArray[0]?.ToString();
+                    UrunGroup.UrunNo = currentRow.ItemArray[1]?.ToString();
+                    UrunGroup.UrunKodu = UrunGroup.UrunCinsi + UrunGroup.UrunNo;
+                    UrunGroup.KalipNo = currentRow.ItemArray[2]?.ToString();
+                    UrunGroup.KalipOzellik = currentRow.ItemArray[3]?.ToString();
+                    UrunGroup.KalipKodu = UrunGroup.KalipNo + UrunGroup.KalipOzellik;
+                    UrunGroup.ParcaAdi = currentRow.ItemArray[5]?.ToString();
+                    UrunGroup.Hammadde = currentRow.ItemArray[6]?.ToString();
+                    UrunGroup.Agirlik = currentRow.ItemArray[7]?.ToString();
+                    UrunGroup.TeminSekli = currentRow.ItemArray[10]?.ToString();
+                    UrunGroup.KalipSayisi = currentRow.ItemArray[11]?.ToString();
+                    UrunGroup.UretimZamani = currentRow.ItemArray[12]?.ToString();
+                    UrunGroup.Aciklama = currentRow.ItemArray[13]?.ToString();
+                    list.Add(UrunGroup);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+            Db.HamUrunGrup.AddRange(list);
+            Db.BulkSaveChanges();
+
+        }
         public void UrunCinsi()
         {
 
@@ -201,23 +251,41 @@ namespace EgePakErp.Controllers
             {
                 var hammaddeCinsleri = Db.HammaddeCinsi.ToList();
                 var uretimTeminSekli = Db.UretimTeminSekli.ToList();
-                var urunler = Db.Urun.Include("UrunCinsi").ToList();
+                //var urunler = Db.Urun.Include("UrunCinsi").ToList();
+
+                //var kaliplar = Db.HamUrunGrup
+                //    .Where(i => i.KalipNo != "00")
+                //    .GroupBy(x => new { x.KalipNo }, (key, group) => new
+                //    {
+                //        KalipNo = key.KalipNo,
+                //        KalipOzellik = group.FirstOrDefault().KalipOzellik,
+                //        ParcaAdi = group.FirstOrDefault().ParcaAdi,
+                //        Hammadde = group.FirstOrDefault().Hammadde,
+                //        Agirlik = group.FirstOrDefault().Agirlik,
+                //        TeminŞekli = group.FirstOrDefault().TeminSekli,
+                //        KalıpSayisi = group.FirstOrDefault().KalipSayisi,
+                //        UretimZamani = group.FirstOrDefault().UretimZamani,
+                //        Aciklama = group.FirstOrDefault().Aciklama,
+                //        UrunCinsi = group.FirstOrDefault().UrunCinsi,
+                //        UrunNo = group.FirstOrDefault().UrunNo,
+                //    })
+                //    .ToList();
 
                 var kaliplar = Db.HamUrunGrup
-                    .Where(i => i.KalipNo != "00" || i.KalipOzellik != "00")
-                    .GroupBy(x => new { x.KalipNo, x.KalipOzellik }, (key, group) => new
+                    .Where(i => i.KalipNo != "00")
+                    .Select(x => new
                     {
-                        KalipNo = key.KalipNo,
-                        KalipOzellik = key.KalipOzellik,
-                        ParcaAdi = group.FirstOrDefault().ParcaAdi,
-                        Hammadde = group.FirstOrDefault().Hammadde,
-                        Agirlik = group.FirstOrDefault().Agirlik,
-                        TeminŞekli = group.FirstOrDefault().TeminŞekli,
-                        KalıpSayisi = group.FirstOrDefault().KalıpSayisi,
-                        UretimZamani = group.FirstOrDefault().UretimZamani,
-                        Aciklama = group.FirstOrDefault().Aciklama,
-                        UrunCinsi = group.FirstOrDefault().UrunCinsi,
-                        UrunNo = group.FirstOrDefault().UrunNo,
+                        KalipNo = x.KalipNo,
+                        KalipOzellik = x.KalipOzellik,
+                        ParcaAdi = x.ParcaAdi,
+                        Hammadde = x.Hammadde,
+                        Agirlik = x.Agirlik,
+                        TeminŞekli = x.TeminSekli,
+                        KalıpSayisi = x.KalipSayisi,
+                        UretimZamani = x.UretimZamani,
+                        Aciklama = x.Aciklama,
+                        UrunCinsi = x.UrunCinsi,
+                        UrunNo = x.UrunNo,
 
                     })
                     .ToList();
@@ -249,11 +317,14 @@ namespace EgePakErp.Controllers
                             }
                         };
                     }
+
                     kalip.KalipNo = item.KalipNo;
+
                     kalip.KalipOzellik = item.KalipOzellik;
+
                     try
                     {
-                        kalip.ParcaAgirlik = Convert.ToDecimal(item.Agirlik);
+                        kalip.ParcaAgirlik = Convert.ToDecimal(item.Agirlik, culture);
                     }
                     catch
                     {
@@ -291,7 +362,7 @@ namespace EgePakErp.Controllers
                 var urunler = Db.Urun.Include("UrunCinsi").ToList();
                 var kaliplar = Db.Kalip.ToList();
 
-                var list = Db.HamUrunGrup
+                var HamUrunListe = Db.HamUrunGrup
 
                     .Where(i => !string.IsNullOrEmpty(i.UrunCinsi))
                     .GroupBy(x => new { x.UrunCinsi, x.UrunNo }, (key, group) => new
@@ -300,20 +371,20 @@ namespace EgePakErp.Controllers
                         UrunCinsi = key.UrunCinsi,
                         UrunNo = key.UrunNo,
                         Kaliplar = group
-
                     })
                     .ToList();
 
                 var relations = new List<KalipUrunRelation>();
-                foreach (var item in list)
+
+                foreach (var item in HamUrunListe)
                 {
+                    var urunKod = item.UrunCinsi + item.UrunNo;
                     var urun = urunler.FirstOrDefault(f => f.UrunCinsi.Kisaltmasi == item.UrunCinsi && f.UrunNo == item.UrunNo);
                     if (urun == null) continue;
                     foreach (var k in item.Kaliplar)
                     {
-                        var kalip = kaliplar.FirstOrDefault(i => i.KalipNo == k.KalipNo && i.KalipOzellik == k.KalipOzellik);
+                        var kalip = kaliplar.FirstOrDefault(i => i.KalipNo == k.KalipNo && i.Adi == k.ParcaAdi);
                         if (kalip == null) continue;
-
                         relations.Add(new KalipUrunRelation
                         {
                             KalipId = kalip.KalipId,
@@ -331,6 +402,7 @@ namespace EgePakErp.Controllers
                 var a = ex;
             }
         }
+
         public void HammaddeHareket()
         {
             var HammaddeCinsleri = Db.HammaddeCinsi.ToList();
@@ -339,7 +411,7 @@ namespace EgePakErp.Controllers
             var Birimler = Db.HammaddeBirimi.ToList();
 
             var dataset = new DataSet();
-            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\hammaddeHareketYeni.xlsx", FileMode.Open, FileAccess.Read))
+            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Hammadde_Hareket_import_22_07.xlsx", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
@@ -494,6 +566,27 @@ namespace EgePakErp.Controllers
 
 
         }
+
+        public void UretimBilgiTemizle()
+        {
+            var urunler = Db.Urun.ToList();
+            var kaliplar = Db.Kalip.ToList();
+            var kalipurunrel = Db.KalipUrunRelation.ToList();
+            var kaliphammadde = Db.KalipHammaddeRelation.ToList();
+            var urunCins = Db.UrunCinsi.ToList();
+            var hammaddehareket = Db.HammaddeHareket.ToList();
+            //var hamurun = Db.HamUrunGrup.ToList();
+
+            Db.Urun.RemoveRange(urunler);
+            Db.Kalip.RemoveRange(kaliplar);
+            Db.KalipUrunRelation.RemoveRange(kalipurunrel);
+            Db.KalipHammaddeRelation.RemoveRange(kaliphammadde);
+            Db.UrunCinsi.RemoveRange(urunCins);
+            Db.HammaddeHareket.RemoveRange(hammaddehareket);
+            //Db.HamUrunGrup.RemoveRange(hamurun);
+            Db.BulkSaveChanges();
+        }
+
 
     }
 }

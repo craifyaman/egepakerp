@@ -21,11 +21,12 @@ function HesapFunctionTozBoya() {
 
 function HesapFunctionKoli() {
     var BirimFiyat = parseFloat($("#BirimFiyat").val().replace(",", "."));
-    var KalipAgirlik = $("#KalipAgirlik").val().replace(",", ".");
+    //var KalipAgirlik = $("#KalipAgirlik").val().replace(",", ".");
+    var Katsayi = parseFloat($("#KoliKatsayi").val().replace(",", "."));
     var Kapasite = $("#Kapasite").val();
-    var sonuc = (BirimFiyat / Kapasite);
+    var sonuc = (BirimFiyat * Katsayi) / Kapasite;
     var target = $(".Fiyat");
-    target.val(sonuc.toFixed(2));
+    target.val(sonuc.toFixed(4));
 }
 
 function HesapFunctionPoset() {
@@ -43,7 +44,7 @@ function HesapFunctionYaldiz() {
     var birimFiyat = $("#BirimFiyat").val().replace(",", ".");
     var sonuc = (birimFiyat * katSayi) / 10000;
     var target = $(".Fiyat");
-    target.val(sonuc.toFixed(2));
+    target.val(sonuc.toFixed(4));
 }
 
 function HesapFunctionEnjeksiyon() {

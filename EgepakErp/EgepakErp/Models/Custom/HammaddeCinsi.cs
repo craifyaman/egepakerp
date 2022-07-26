@@ -13,7 +13,7 @@ namespace EgePakErp.Models
         public string Adi { get; set; }
         public string Aciklamasi { get; set; }
 
-        public int BirimId { get; set; }
+        public int? BirimId { get; set; }
 
         public virtual ICollection<Kalip> Kalip { get; set; }
         public virtual ICollection<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }

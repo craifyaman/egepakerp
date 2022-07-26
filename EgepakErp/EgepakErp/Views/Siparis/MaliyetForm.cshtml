@@ -24,6 +24,12 @@
                     }
                 </td>
 
+                if (kalip.Adi == "LİPGLOSS PONPON")
+                {
+                    decimal _PonponSonFiyat = PonponSonFiyat();
+                    birimMaliyet = _PonponSonFiyat + (_PonponSonFiyat / 2);
+                }
+
                 <td hammadde-cikar="@kalip.KalipId">
                     <div class="col-lg-12 mb-2">
                         <label>Birim Fiyat:</label>
@@ -37,6 +43,16 @@
                             </span>
                         </div>
                     </div>
+                    @if (kalip.Adi == "LİPGLOSS PONPON")
+                    {
+                        <div>
+                            @{ 
+                                decimal _PonponSonFiyat = PonponSonFiyat();
+                            }
+                            Ponpon maliyet @_PonponSonFiyat
+                        </div>
+                    }
+
                 </td>
             }
         </tr>
@@ -102,7 +118,7 @@
                     double SicakBaskiTamponSaatMaliyet = 35;
                     double birimSicakBaskiTamponMaliyet = SicakBaskiTamponSaatMaliyet / SicakBaskiTamponSaatAdet;
 
-                    <td sicakBaski-cikar="@kalip.KalipId">
+                    <td sicakBaski-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">
                         <div class="col-lg-12 mb-2">
                             <label>birim sıcak baskı tampon maliyet:</label>
                             <div class="input-group mb-5">
@@ -131,12 +147,12 @@
             @foreach (var kalip in Model)
             {
 
-                List<HammaddeHareket> Malzemeler = ViewBag.BaskiMalzemeler;
+                List<HammaddeHareket> Malzemeler = BaskiMalzemeListe();
                 double BirimFiyat = Convert.ToDouble(Malzemeler.FirstOrDefault().BirimFiyat);
                 double Maliyet = (BirimFiyat * 40) / 10000;
 
 
-                <td yaldiz-cikar="@kalip.KalipId">
+                <td yaldiz-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">
                     <div class="col-lg-12 mb-2">
                         <label>Intercom varak Yaldız:</label>
                         <div class="input-group mb-5">
@@ -173,7 +189,7 @@
             <td>Sprey Boya</td>
             @foreach (var kalip in Model)
             {
-                <td sprey-cikar="@kalip.KalipId">
+                <td sprey-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">
                     <div class="col-lg-12 mb-2">
                         <label>Maliyet:</label>
                         <div class="input-group mb-5">
@@ -190,7 +206,7 @@
             <td>Metalize Kaplama</td>
             @foreach (var kalip in Model)
             {
-                <td metalize-cikar="@kalip.KalipId">
+                <td metalize-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">
                     <div class="col-lg-12 mb-2">
                         <label>Maliyet:</label>
                         <div class="input-group mb-5">
@@ -228,18 +244,18 @@
             {
                 HammaddeHareket sonHareket = ViewBag.KoliSonHareket;
                 var birimFiyat = sonHareket?.BirimFiyat;
+                decimal sabit = 0.04M;
+                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat * sabit) / 1500 : 0;
 
-                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1500) : 0;
-
-                <input id="PosetParametre_@kalip.KalipId" type="hidden" value="0"/>
-                <td koli-cikar="@kalip.KalipId">
+                <input id="PosetParametre_@kalip.KalipId" type="hidden" value="0" />
+                <td koli-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">
                     <div class="col-lg-12 mb-2">
                         <label>Birim Fiyat:</label>
                         <div class="input-group mb-5">
                             <span class="input-group-text" event="MaliyetDetay" maliyetType="koli" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
-                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N2")" />
+                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N5")" />
                             <span koli-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="koli" event="FaturadanCikar">
                                 -
                             </span>
@@ -255,8 +271,8 @@
             {
                 var birimFiyat = ViewBag.PosetSonBirimFiyat;
                 decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1500) * kalip.ParcaAgirlik : 0;
-                
-                <td poset-cikar="@kalip.KalipId">
+
+                <td poset-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">
                     <div class="col-lg-12 mb-2">
                         <label>Birim Fiyat:</label>
                         <div class="input-group mb-5">
@@ -274,7 +290,6 @@
         </tr>
     </tbody>
 </table>
-
 
 <table class="table table-bordered table-hover table-sm mt-8">
     <thead>
@@ -295,7 +310,7 @@
                 {
                     double enjeksiyonSaatMaliyet = 100;
                     double birAdetUrunUretimMaliyeti = (3600 / (int)kalip.UretimZamani) * (int)kalip.KalipGozSayisi / enjeksiyonSaatMaliyet;
-                    <td enjeksiyon-cikar="@kalip.KalipId">
+                    <td enjeksiyon-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">
                         <div class="col-lg-12 mb-2">
                             <label>bir adet için üretim maliyeti:</label>
                             <div class="input-group mb-5">
@@ -317,7 +332,7 @@
                                 <span class="input-group-text" event="MaliyetDetay" maliyetType="enjeksiyon" kalipId="@kalip.KalipId">
                                     <i class="flaticon-mark"></i>
                                 </span>
-                                <input kalipId="@kalip.KalipId" type="text" class="form-control" value="" />
+                                <input kalipId="@kalip.KalipId" type="text" class="form-control" value="0" />
                             </div>
                         </div>
                     </td>
@@ -331,7 +346,7 @@
             <td>Baskı Makina saati</td>
             @foreach (var kalip in Model)
             {
-                <td baskiMakina-cikar="@kalip.KalipId">
+                <td baskiMakina-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">
                     <div class="col-lg-12 mb-2">
                         <label>aded maliyeti:</label>
                         <div class="input-group mb-5">
@@ -382,7 +397,7 @@
             <td>Boya Kaplama saati</td>
             @foreach (var kalip in Model)
             {
-                <td boyaKaplama-cikar="@kalip.KalipId">
+                <td boyaKaplama-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">
                     <div class="col-lg-12 mb-2">
                         <label>aded maliyeti:</label>
                         <div class="input-group mb-5">
