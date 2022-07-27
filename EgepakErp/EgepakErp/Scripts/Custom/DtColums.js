@@ -601,7 +601,7 @@
                     str += 'formUrl = "/Kalip/Form"';
                     str += 'submitUrl = "/Kalip/Kaydet"';
                     str += 'event="kalipFormPopup" href = "#" id = "' + row.KalipId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
-                    //str += ' <a class="btn btn-icon btn-primary mr-1" href = "/kisi/detay/' + row.KisiId + '" title = "Kişi Detay" data - toggle="tooltip" data - placement="top" > <i class="flaticon-search" ></i></a>'
+                    str += ' <a class="btn btn-icon btn-danger mr-1" href = "#" title = "Kalıp Sil" data - toggle="tooltip" data - placement="top" event="KalipSil" KalipId="' + row.KalipId + '"> <i class="flaticon-search" ></i></a>'
                     //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
 
                     return str;

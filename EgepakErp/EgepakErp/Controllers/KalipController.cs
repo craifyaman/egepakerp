@@ -195,12 +195,12 @@ namespace EgePakErp.Controllers
             if (!string.IsNullOrEmpty(q))
             {
                 var searchQuery = q;
-                model = model.Where(i =>
-                string.Concat(i.KalipNo+ i.KalipNo).Contains(searchQuery.ToLower()) ||
-                i.Adi.ToLower().Contains(searchQuery.ToLower())
-                );
+                model = model.Where(
+                    x => x.KalipNo.Contains(q) ||
+                    x.Adi.Contains(q) ||
+                    x.Aciklama.Contains(q)
+                    );
             }
-
             model = model.OrderBy("KalipId Asc");
 
             //sayfala
@@ -213,7 +213,7 @@ namespace EgePakErp.Controllers
                 items = model.Select(i => new
                 {
                     id = i.KalipId,
-                    text = string.Concat(i.KalipNo + i.KalipNo+" "+i.Adi),
+                    text = string.Concat(i.KalipNo +" "+i.Adi),
                     markup = "urun"
 
                 }),
@@ -223,6 +223,26 @@ namespace EgePakErp.Controllers
 
         }
 
+        public JsonResult Sil(int KalipId)
+        {
+            Response response = new Response();
+            var kalip = Db.Kalip.Find(KalipId);
+            try
+            {
+                Db.Kalip.Remove(kalip);
+                Db.SaveChanges();
+                response.Success = true;
+                response.Description = "kalıp silindi";
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+
+        }
         public void KalipAgirlikDuzelt()
         {
             var list = Db.Kalip.ToList();

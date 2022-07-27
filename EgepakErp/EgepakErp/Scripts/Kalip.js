@@ -96,6 +96,53 @@
                 },
                 "html");
         });
+
+        
+        $(document).on("click", "[event='KalipSil']", function (e) {
+            e.preventDefault();
+            debugger;
+            var KalipId = $(this).attr("KalipId");
+            bootbox.confirm({
+                title: "Kalıp Silinsin mi?",
+                message: Global.cardTemplate("Kalıbı silmek istediğine emin misin, bu işlemin geri dönüşü yok"),
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> İptal'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Sil'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        Post("/kalip/sil",
+                            { KalipId: KalipId },
+                            function (response) {
+                                if (response.Success == true) {
+                                    toastr.success("kalıp silindi");
+                                }
+                                else {
+                                    toastr.error(response.Description);
+                                }
+                            },
+                            function (x, y, z) {
+                                toastr.error("kalıp silinemedi");
+                            },
+                            function () {
+                                //BeforeSend
+                            },
+                            function () {
+                                Global.init();
+                                setTimeout(function () {
+                                    bootbox.hideAll();
+                                    $('#kt_datatable').KTDatatable('reload');
+                                }, 3000)
+                            },
+                            "json");
+                    }
+                }
+            });            
+        });
     }
 
     var DtInit = function (domId, url, columns, params) {

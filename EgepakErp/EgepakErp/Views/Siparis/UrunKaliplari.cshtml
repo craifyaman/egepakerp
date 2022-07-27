@@ -1,7 +1,7 @@
 ﻿@model List<Kalip>
 
 <input type="hidden" id="kalipIdList" value="@Model.Select(s=>s.KalipId.ToString()).Aggregate((a,b)=>a+","+b)" />
-<input type="hidden" name="exclude" id="exclude"/>
+
 
 <table class="table table-bordered table-hover table-sm mt-8" id="KalipListeTable">
     <thead>

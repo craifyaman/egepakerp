@@ -86,7 +86,11 @@
 
 <tr class="sum">
     <th>Teklif Tutar Tl</th>
-    <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">@ToplamTutar.ToString("n2") ₺</th>
+    <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">
+        <span id="TeklifTutari">
+            @ToplamTutar.ToString("n2")
+        </span>
+    ₺</th>
 </tr>
 
 @if (DolarKur != 0 || EuroKur != 0)
@@ -96,7 +100,7 @@
         @{
             var DolarFiyat = (decimal)ToplamTutar / DolarKur;
         }
-        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">@DolarFiyat.ToString("n2") $ <span style="font-size: 13px;"> (USD/TL @DolarKur) </span></th>
+        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;"> <span id="usdKurSonuc">@DolarFiyat.ToString("n2") </span> $ <span style="font-size: 13px;"> (USD/TL @DolarKur) </span></th>
     </tr>
 
     <tr class="sum">
@@ -104,7 +108,7 @@
         @{
             var EuroFiyat = (decimal)ToplamTutar / EuroKur;
         }
-        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">@EuroFiyat.ToString("n2") € <span style="font-size: 13px;">(EUR/TL @EuroKur)</span></th>
+        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;"><span id="eurKurSonuc">@EuroFiyat.ToString("n2")</span>€ <span style="font-size: 13px;">(EUR/TL @EuroKur)</span></th>
     </tr>
 }
 

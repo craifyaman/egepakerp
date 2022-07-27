@@ -69,13 +69,20 @@
     }
 
     function UrunKaliplariGetir() {
+        debugger;
         var urunId = $("#UrunId").val();
         var excludes = ",";
+        var includes = ",";
+
+        if ($("#include").val() != undefined) {
+            includes = $("#include").val().slice(0, -1);
+            includes = includes.split(",");
+        }
         if ($("#exclude").val() != undefined) {
             excludes = $("#exclude").val().slice(0, -1);
         }
         Post("/siparis/UrunKaliplari",
-            { urunid: urunId, exclude: excludes },
+            { urunid: urunId, exclude: excludes, includes: includes },
             function (response) {
                 $("#UrunKaliplari").empty().html(response);
             },
@@ -99,6 +106,7 @@
             this.Tutar;
             this.Status;
         }
+        var teklifTutar = 0;
         var array = $(".birimFiyat").sort();
         array.each(function (index, value) {
             var input = value;
@@ -108,10 +116,10 @@
 
             if ($(input).prop('disabled') == false) {
                 maliyet.Status = true;
+                teklifTutar += parseFloat($(input).val().replace(",", "."));
             } else {
                 maliyet.Status = false;
             }
-
             liste.push(maliyet);
         });
 
@@ -122,7 +130,18 @@
                     $(this).remove();
                 });
                 $("#MaliyetTablo").append(response);
+
+                $("#TeklifTutari").html(teklifTutar.toFixed(2));
+
+                var malzemeMaliyet = ToplamMalzemeMaliyet();
+                $("#ToplamMalzemeMaliyet").html(malzemeMaliyet);
+
+                var urunMaliyet = ToplamUretimMaliyet();
+                $("#ToplamUretimMaliyet").html(urunMaliyet);
+
+                ToplamMaliyetHesapla(teklifTutar.toFixed(2));
                 toastr.success("Maliyet hesplandı.");
+
             },
             function (x, y, z) {
                 toastr.error("bir hata oluştu");
@@ -137,7 +156,7 @@
     }
 
     function maliyetTablosuGetir() {
-
+        debugger;
         var idList = $("#kalipIdList").val().split(",");
         var excludes = $("#exclude").val().slice(0, -1).split(",");
         var FixedIdList = [];
@@ -169,7 +188,7 @@
         $.each(arr, function (index, val) {
             if ($(val).attr("KalipAd") == "LİPGLOSS PONPON") {
                 $(val).find(".birimFiyat").val("0");
-                
+
             }
         });
     }
@@ -179,7 +198,7 @@
         Input.val(Value);
     }
 
-    
+
     function maliyetDetayGetir(maliyetType, kalipId, PosetParametre) {
         Post("/siparis/MaliyetDetay",
             { MaliyetType: maliyetType, KalipId: kalipId, PosetParametre: PosetParametre },
@@ -204,7 +223,7 @@
                                 if ($(".parentDiv").attr("uruntype") == "koli") {
                                     var posetKatsayi = $("#posetParametre").val();
                                     var targetId = $("#posetParametre").attr("targetInputId");
-                                    $("#"+targetId).val(posetKatsayi);
+                                    $("#" + targetId).val(posetKatsayi);
                                 }
                                 maliyetHesapla();
                                 bootbox.hideAll();
@@ -237,6 +256,73 @@
             }
         }
         return status;
+    }
+
+    function ToplamMalzemeMaliyet() {
+        var toplam = 0;
+        var array = $("input.birimFiyat[HesplamaType=malzeme]").sort();
+        array.each(function (index, value) {
+            var input = value;
+            if ($(input).prop('disabled') == false) {
+                toplam += parseFloat($(input).val().replace(",", "."));
+            }
+        });
+        console.log("toplam malzeme maliyeti : " + toplam);
+        return toplam.toFixed(2);
+    }
+
+    function ToplamUretimMaliyet() {
+        var toplam = 0;
+        var array = $("input.birimFiyat[HesplamaType=uretim]").sort();
+        array.each(function (index, value) {
+            var input = value;
+            if ($(input).prop('disabled') == false) {
+                toplam += parseFloat($(input).val().replace(",", "."));
+            }
+        });
+        console.log("toplam uretim maliyeti : " + toplam);
+        return toplam.toFixed(2);
+    }
+
+    function ToplamMaliyetHesapla(tutar) {
+        debugger;
+        console.log(tutar);
+        $.ajax({
+            type: "GET",
+            url: "/siparis/UsdKurHesapla?tutar=" + tutar,
+            dataType: "json",
+            success: function (response) {
+                if (response.Success == true) {
+                    var sonuc = response.Data;
+                    console.log("usd kur hesaplama sonuç :" + sonuc);
+                    $("#usdKurSonuc").html(sonuc.toFixed(2));
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            error: function () {
+                toastr.error("bir hata oluştu");
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "/siparis/EurKurHesapla?tutar=" + tutar,
+            dataType: "json",
+            success: function (response) {
+                if (response.Success == true) {
+                    var sonuc = response.Data;
+                    console.log("euro kur hesaplama sonuç :" + sonuc);
+                    $("#eurKurSonuc").html(sonuc.toFixed(2));
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            error: function () {
+                toastr.error("bir hata oluştu");
+            }
+        });
+
     }
 
     var handleEvent = function () {
@@ -298,6 +384,17 @@
             var id = tr.attr("KalipId");
             $("#exclude").val($("#exclude").val() + id + ",");
             tr.remove();
+            var includeList = $("#include").val().slice(0, -1).split(",");
+            debugger;
+            $.each(includeList, function (i, v) {
+                if (id == v) {
+                    includeList = $.grep(includeList, function (n) {
+                        return n != v;
+                    });
+                }
+            });
+            console.log(includeList);
+            $("#include").val(includeList.toString());
             setTimeout(function () {
                 maliyetTablosuGetir();
             }, 1000)
@@ -335,7 +432,7 @@
             target.val(birimFiyat);
             $(document.getElementById("BirimFiyat")).trigger("change");
         });
-        
+
 
         $(document).on("change", "#KoliBirimFiyat", function (event) {
             event.preventDefault();
@@ -402,6 +499,15 @@
             target.val(birimFiyat);
             $(document.getElementById("BirimFiyat")).trigger("change");
         });
+
+        $(document).on("change", "#SiparisKalipSelect", function (event) {
+            event.preventDefault();
+            debugger;
+            var kalipId = $(this).val();
+            $("#include").val($("#include").val() + kalipId + ",");
+            UrunKaliplariGetir();
+        });
+
 
     }
 

@@ -4,6 +4,7 @@ using EgepakErp.Helper;
 using EgePakErp.Custom;
 using EgePakErp.Models;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -21,17 +22,31 @@ namespace EgePakErp.Controllers
             return View();
         }
 
-        public PartialViewResult UrunKaliplari(int urunId, List<int> exclude)
+        public PartialViewResult UrunKaliplari(int urunId, List<int> exclude, List<int> includes)
         {
             //exclude = çıkarılan kalıpların id listesi.
             var model = new List<Kalip>();
+            if (includes.Count() > 0)
+            {
+                foreach (var item in includes)
+                {
+                    var kalip = Db.Kalip.FirstOrDefault(x => x.KalipId == item);
+                    if (kalip != null)
+                    {
+                        model.Add(kalip);
+                    }
+                }
+            }
             if (exclude == null)
             {
-                model = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId).Select(x => x.Kalip).ToList();
+                var list = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId).Select(x => x.Kalip).ToList();
+                model.AddRange(list);
+
             }
             else
             {
-                model = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId && !exclude.Contains(x.KalipId)).Select(x => x.Kalip).ToList();
+                var list = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId && !exclude.Contains(x.KalipId)).Select(x => x.Kalip).ToList();
+                model.AddRange(list);
             }
             return PartialView(model);
         }
@@ -58,6 +73,47 @@ namespace EgePakErp.Controllers
             return PartialView(liste);
         }
 
+        [HttpGet]
+        public JsonResult UsdKurHesapla(double tutar)
+        {
+            Response<decimal> response = new Response<decimal>();
+            try
+            {
+                var date = System.DateTime.Now;
+                var usdKur = DovizHelper.DovizKuruGetir("USD", date);
+                var sonuc = (decimal)tutar / usdKur;
+                response.Success = true;
+                response.Data = sonuc;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpGet]
+        public JsonResult EurKurHesapla(double tutar)
+        {
+            Response<decimal> response = new Response<decimal>();
+            try
+            {
+                var date = System.DateTime.Now;
+                var eurKur = DovizHelper.DovizKuruGetir("EUR", date);
+                var sonuc = (decimal)tutar / eurKur;
+                response.Success = true;
+                response.Description = "başarılı";
+                response.Data = sonuc;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+        }
         public PartialViewResult MaliyetDetay(string MaliyetType, int KalipId, string PosetParametre = "0.060")
         {
             var Kalip = Db.Kalip
