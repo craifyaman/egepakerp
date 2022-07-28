@@ -166,9 +166,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IRepository.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Concrete\HammaddeCinsiRepository.cs" />
+    <Compile Include="Concrete\KalipRepository.cs" />
+    <Compile Include="Concrete\UrunRepository.cs" />
+    <Compile Include="Concrete\_GenericRepository.cs" />
+    <Compile Include="Custom\BaseMethods.cs" />
     <Compile Include="Db\Configuration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CariController.cs" />
@@ -183,6 +189,22 @@
     <Compile Include="Migrations\202207250933240_HamUrunGrup_tablo_duzenleme.cs" />
     <Compile Include="Migrations\202207250933240_HamUrunGrup_tablo_duzenleme.designer.cs">
       <DependentUpon>202207250933240_HamUrunGrup_tablo_duzenleme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207281107073_ekle_isAktif_urun_tablo.cs" />
+    <Compile Include="Migrations\202207281107073_ekle_isAktif_urun_tablo.designer.cs">
+      <DependentUpon>202207281107073_ekle_isAktif_urun_tablo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207281447020_ekle_kalip_isAktive.cs" />
+    <Compile Include="Migrations\202207281447020_ekle_kalip_isAktive.designer.cs">
+      <DependentUpon>202207281447020_ekle_kalip_isAktive.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207281449268_1.cs" />
+    <Compile Include="Migrations\202207281449268_1.designer.cs">
+      <DependentUpon>202207281449268_1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.cs" />
+    <Compile Include="Migrations\202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.designer.cs">
+      <DependentUpon>202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Custom\HammaddeBirimi.cs" />
     <Compile Include="Models\Custom\HammaddeHareket.cs" />
@@ -2578,6 +2600,18 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202207250933240_HamUrunGrup_tablo_duzenleme.resx">
       <DependentUpon>202207250933240_HamUrunGrup_tablo_duzenleme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207281107073_ekle_isAktif_urun_tablo.resx">
+      <DependentUpon>202207281107073_ekle_isAktif_urun_tablo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207281447020_ekle_kalip_isAktive.resx">
+      <DependentUpon>202207281447020_ekle_kalip_isAktive.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207281449268_1.resx">
+      <DependentUpon>202207281449268_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.resx">
+      <DependentUpon>202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

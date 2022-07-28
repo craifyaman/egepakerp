@@ -124,22 +124,12 @@
 
     function hammaddeFormFields() {
         var fields = {
-            HammaddeCinsiId: {
-                validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
-                }
-            },
             Adi: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
             Kisaltmasi: {
-                validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
-                }
-            },
-            Aciklamasi: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }

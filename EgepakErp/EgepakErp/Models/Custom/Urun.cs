@@ -14,6 +14,8 @@ namespace EgePakErp.Models
         public int UrunCinsiId { get; set; }
         public UrunCinsi UrunCinsi { get; set; }
         public string UrunNo { get; set; }
+        public bool isAktif { get; set; }
+
 
         [NotMapped]
         public string UrunKodu { get; set; }

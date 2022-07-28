@@ -5,12 +5,18 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Linq.Dynamic;
 using EgePakErp.Models;
+using EgepakErp.Concrete;
 
 namespace EgePakErp.Controllers
 {
     public class HammaddeCinsiController : BaseController
     {
-        // GET: Cari
+        public HammaddeCinsiRepository repo { get; set; }
+        public HammaddeCinsiController()
+        {
+            repo = new HammaddeCinsiRepository();
+        }
+
         [Menu("Hammadde Cinsi", "flaticon-customer icon-xl", "Üretim", 1,2)]
         public ActionResult Index()
         {
@@ -20,24 +26,17 @@ namespace EgePakErp.Controllers
         [Yetki("Hammadde Cinsi", "Üretim")]
         public JsonResult Liste()
         {
-            
+            //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
 
             dtMeta.field = Request.Form["sort[field]"] == null ? "hammaddeCinsiId" : Request.Form["sort[field]"];
-            dtMeta.sort = Request.Form["sort[sort]"] == null ? "Adi" : Request.Form["sort[sort]"];
+            dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
 
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
             dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
 
-            var model = Db.HammaddeCinsi
-                .Include("Kalip")                
-                .AsQueryable();
-
-
-            var count = model.Count();
-            dtMeta.total = count;
-            dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
+            var model = repo.GetAll();
 
             //Filtre
             if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
@@ -55,31 +54,40 @@ namespace EgePakErp.Controllers
                 model = model.Where(i => i.HammaddeCinsiId == uretimTeminSekliId);
             }
 
+
             try
             {
                 model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
             }
+
             catch (Exception)
             {
-                model = model.OrderBy("HammaddeCinsiId");
-                dtMeta.field = "HammaddeCinsiId";
-                dtMeta.sort = "Adi";
+                model = model.OrderBy("hammaddeCinsiId Desc");
+                dtMeta.field = "hammaddeCinsiId";
+                dtMeta.sort = "Desc";
             }
-            
+
+            var count = model.Count();
+
+            dtMeta.total = count;
+            dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
+            //sayfala
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
-                        
+
+            //dto yap burda
             var dto = model.AsEnumerable().Select(i => new
             {
                 HammaddeCinsiId = i.HammaddeCinsiId,
-                Adi = i.Adi,                
+                Adi = i.Adi,
                 Aciklamasi = i.Aciklamasi,
                 BirimId = i.BirimId,/*Daaha Sonra değişcek*/
-                Kodu= i.Kisaltmasi,
+                Kodu = i.Kisaltmasi,
                 //UretimZamani = i.UretimZamani,
                 //Kaliplar = i.Kalip.Select(s => s.Adi),
                 //KalipKodu = i.Kalip.Select(s => s.Adi+ "-"+s.KalipOzellik)             
 
             }).ToList<dynamic>();
+
 
             dtModel.meta = dtMeta;
             dtModel.data = dto;
@@ -91,13 +99,9 @@ namespace EgePakErp.Controllers
             id = id == null ? 0 : id.Value;
             if (id!=0)
             {
-                var model = Db.HammaddeCinsi
-                    
-                    .FirstOrDefault(i => i.HammaddeCinsiId == id);
-
+                var model = repo.Get((int)id);
                 return PartialView(model);
             }
-
             return PartialView(new HammaddeCinsi());
         }
 
@@ -110,14 +114,11 @@ namespace EgePakErp.Controllers
             {
                 if (form.HammaddeCinsiId == 0)
                 {
-                    
-                    Db.HammaddeCinsi.Add(form);
+                    repo.Insert(form);
                 }
                 else
                 {
-                    var entity = Db.HammaddeCinsi
-                        .FirstOrDefault(i => i.HammaddeCinsiId== form.HammaddeCinsiId);
-
+                    var entity = repo.Get(form.HammaddeCinsiId);
                     if (entity != null)
                     {
                         //alanları güncelle
@@ -129,10 +130,9 @@ namespace EgePakErp.Controllers
                                 prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
                             }
                         }
+                        repo.Update(entity);
                     }
                 }
-
-                Db.SaveChanges(CurrentUser.PersonelId);
                 response.Success = true;
                 response.Description = "İşlem Başarılı";
             }

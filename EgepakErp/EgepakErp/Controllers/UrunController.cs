@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web.Mvc;
+using EgepakErp.Concrete;
 using EgePakErp.Custom;
 using EgePakErp.Models;
 
@@ -11,6 +12,11 @@ namespace EgePakErp.Controllers
 
     public class UrunController : BaseController
     {
+        public UrunRepository repo { get; set; }
+        public UrunController()
+        {
+            repo = new UrunRepository();
+        }
         // GET: Cari
         [Menu("Ürünler", "flaticon2-list-2 icon-xl", "Üretim", 0, 4)]
         public ActionResult Index()
@@ -31,26 +37,14 @@ namespace EgePakErp.Controllers
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
             dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
 
-            var model = Db.Urun
-                .Include("UrunCinsi")
-                .Include("KalipUrunRelation")
-                .Include("KalipUrunRelation.Kalip")
-                .AsQueryable();
-
-
-            var count = model.Count();
-            dtMeta.total = count;
-            dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
+            var model = repo.GetAll();
 
             //Filtre
             if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
             {
                 var searchQuery = Request.Form["query[searchQuery]"].ToString();
-                model = model.Where(i =>
-                i.UrunCinsi.Aciklamasi.ToLower().Contains(searchQuery.ToLower()) ||
-                i.UrunCinsi.Kisaltmasi.ToLower().Contains(searchQuery.ToLower()) ||
-                i.UrunCinsi.Aciklamasi.ToLower().Contains(searchQuery.ToLower()) ||
-                string.Concat(i.UrunCinsi.Kisaltmasi.ToLower() + i.UrunNo).Contains(searchQuery.ToLower())
+                model = model.Where(i => (i.UrunCinsi.Kisaltmasi + i.UrunNo).Contains(searchQuery) ||
+                i.UrunNo.ToLower().Contains(searchQuery.ToLower())
                 );
             }
 
@@ -64,12 +58,18 @@ namespace EgePakErp.Controllers
             {
                 model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
             }
+
             catch (Exception)
             {
                 model = model.OrderBy("UrunId Desc");
                 dtMeta.field = "UrunId";
                 dtMeta.sort = "Desc";
             }
+
+            var count = model.Count();
+
+            dtMeta.total = count;
+            dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
             //sayfala
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
 
@@ -78,10 +78,11 @@ namespace EgePakErp.Controllers
             {
                 UrunId = i.UrunId,
                 UrunKodu = string.Concat(i.UrunCinsi.Kisaltmasi + i.UrunNo),
-                UrunCinsi = i.UrunCinsi.Adi,
+                UrunCinsi = i.UrunCinsi.Aciklamasi,
                 Kalip = i.KalipUrunRelation.Select(s => s.Kalip).Select(s => s.KalipNo + " " + s.KalipOzellik)
 
             }).ToList<dynamic>();
+
 
             dtModel.meta = dtMeta;
             dtModel.data = dto;
@@ -91,9 +92,7 @@ namespace EgePakErp.Controllers
         public PartialViewResult Form(int? id)
         {
             id = id == null ? 0 : id.Value;
-            var model = Db.Urun
-                .Include("UrunCinsi")
-                .FirstOrDefault(i => i.UrunId == id);
+            var model = repo.Get((int)id);
 
             return PartialView(model);
         }
@@ -112,11 +111,11 @@ namespace EgePakErp.Controllers
                 if (form.UrunId == 0)
                 {
                     form.KalipUrunRelation = form.KalipList.Select(s => new KalipUrunRelation { KalipId = s }).ToList();
-                    Db.Urun.Add(form);
+                    repo.Insert(form);
                 }
                 else
                 {
-                    var entity = Db.Urun.Find(form.UrunId);
+                    var entity = repo.Get(form.UrunId);
                     if (entity != null)
                     {
                         var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
@@ -134,8 +133,6 @@ namespace EgePakErp.Controllers
                         {
                             Db.KalipUrunRelation.AddRange(form.KalipList.Select(s => new KalipUrunRelation { KalipId = s, UrunId = entity.UrunId }));
                         }
-
-
                     }
                 }
                 Db.SaveChanges(CurrentUser.PersonelId);
@@ -157,9 +154,7 @@ namespace EgePakErp.Controllers
         public JsonResult ListeSelect2(string q)
         {
             //kabasını aldır
-            var model = Db.Urun
-                .Include("UrunCinsi")
-                .AsQueryable();
+            var model = repo.GetAll();
             var count = model.Count();
             //Filtre
             if (!string.IsNullOrEmpty(q))
@@ -191,6 +186,28 @@ namespace EgePakErp.Controllers
             };
             return Json(dto, JsonRequestBehavior.AllowGet);
 
+        }
+
+        public JsonResult AktifPasif(int id)
+        {
+            Response response = new Response();
+            var urun = repo.Get(id);
+            bool statu = urun.isAktif == true ? false : true;
+            try
+            {
+                urun.isAktif = statu;
+                repo.Update(urun);
+                response.Success = true;
+                response.Description = "ürün silindi";
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response, JsonRequestBehavior.AllowGet);
+
+            }
         }
 
     }

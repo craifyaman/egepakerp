@@ -11,21 +11,24 @@ namespace EgePakErp.Models
         public int KalipId { get; set; }
         public string KalipNo { get; set; }
         public string KalipOzellik { get; set; }
-        
+
         /// <summary>
         /// siparis oluştururken urun cinsi seçerken otomatik oluşacak.
         /// RJ 01 00 00 01 13
         /// </summary>
-        
+
         [NotMapped]
         public string ParcaKodu { get; set; }
         public string Adi { get; set; }
         public int? UretimTeminSekliId { get; set; }
         public UretimTeminSekli UretimTeminSekli { get; set; }
         public decimal ParcaAgirlik { get; set; }
-        public int KalipGozSayisi{ get; set; }
+        public int KalipGozSayisi { get; set; }
         public int UretimZamani { get; set; }
         public string Aciklama { get; set; }
+        public string YollukTipi { get; set; }
+        public string YollukAgirlik { get; set; }
+        public bool isAktive { get; set; }
         public virtual ICollection<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }
         public virtual ICollection<KalipUrunRelation> KalipUrunRelation { get; set; }
         public virtual ICollection<SepetIcerik> SepetIcerik { get; set; }

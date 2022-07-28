@@ -1,49 +1,47 @@
 ﻿var Hammadde = function () {
-
     function Kaydet() {
         debugger;
-        try {
-            var valFields = ValidationFields.HammaddeFormFields();
-            var validation = ValidateForm.IsValid("hammaddeForm",valFields );
-            validation.validate().then(function (status) {
-                if (status == 'Valid') {
-                    var Hammadde = $("#hammaddeForm").serializeObject();
+        var valFields = ValidationFields.HammaddeFormFields();
+        var validation = ValidateForm.IsValid("hammaddeForm", valFields)
+        validation.validate().then(function (status) {
+            if (status == 'Valid') {
+                var form = $("#hammaddeForm").serializeJSON();
+                var keys = Object.keys(form);
+                var include = keys.slice(1, keys.length);
+                form.Include = include;
+                Post("/hammaddecinsi/kaydet",
+                    { form: form },
+                    function (response) {
+                        if (response.Success) {
+                            toastr.success(response.Description);
+                        } else {
+                            toastr.error(response.Description);
+                        }
+                    },
+                    function (x, y, z) {
+                        //Error
+                    },
+                    function () {
+                        //BeforeSend
+                    },
+                    function (r) {
+                        //Complete
+                        if (r.responseJSON.Success) {
+                            setTimeout(function () {
+                                bootbox.hideAll();
+                                $('#kt_datatable').KTDatatable('reload');
+                            }, 3000)
 
-                    var keys = Object.keys(Hammadde);
-                    var include = keys.slice(1, Hammadde.length);
-                    Hammadde.Include = include;
-
-                    console.log("Hammadde", Hammadde);
-
-                    Post('/HammaddeCinsi/Kaydet',
-                        { Hammadde: Hammadde },
-                        function (response) {
-                            if (response.Success) {
-                                toastr.success(response.Description);
-                            } else {
-                                toastr.error(response.Description);
-                            }
-                        },
-                        function (x, y, z) {
-                            //Error
-                        },
-                        function () {
-                            //BeforeSend
-                        },
-                        function () {
-                            //Complete
+                        } else {
                             bootbox.hideAll();
-                            setTimeout(function () { $('#kt_datatable').KTDatatable('reload'); }, 3000)
-                        },
-                        "json");
+                        }
 
-                } else {
-                    return false;
-                }
-            });
-        } catch (e) {
-            console.log(e);
-        } 
+                    },
+                    "json");
+            } else {
+                return false;
+            }
+        });
     }
 
     function DurumGuncelle(id) {

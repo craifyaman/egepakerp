@@ -1,18 +1,41 @@
 ﻿var Urun = function () {
-    
+
+    function UrunAktifPasif(id) {
+        Post("/urun/aktifpasif",
+            { id: id },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+                Global.init();
+                setTimeout(function () {
+                    bootbox.hideAll();
+                    $('#kt_datatable').KTDatatable('reload');
+                }, 3000)
+            },
+            "json");
+    }
     function Kaydet(formId,submitUrl) {
-
+        debugger;
         var validation = ValidateForm.IsValid(formId, ValidationFields.UrunFormFields())
-
         validation.validate().then(function (status) {
             if (status == 'Valid') {
                 var form = $("#"+formId).serializeJSON();
-
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
-                form.Include = include;
-                
-                
+                form.Include = include;               
+                console.log("include");
+                console.log(include);
                 Post(submitUrl,
                     { form: form },
                     function (response) {
@@ -93,6 +116,34 @@
                     Global.init();
                 },
                 "html");
+        });
+        
+        $(document).on("click", "[event='UrunAktifPasif']", function (e) {
+            e.preventDefault();
+            debugger;
+            var urunId = $(this).attr("UrunId");
+            bootbox.dialog({
+                title: "ürün silinecek",
+                message: Global.cardTemplate("Ürün silinsin mi?"),
+                size: 'large',
+                buttons: {
+                    cancel: {
+                        label: "Kapat",
+                        className: 'btn-danger',
+                        callback: function () { }
+                    },
+                    ok: {
+                        label: "Kaydet",
+                        className: 'btn-info',
+                        callback: function () {
+                            UrunAktifPasif(urunId);
+                            return false;
+                        }
+                    }
+                }
+            });
+            
+            
         });
     }
 
