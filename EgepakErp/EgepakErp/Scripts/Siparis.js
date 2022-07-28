@@ -449,6 +449,11 @@
             $(document.getElementById("BirimFiyat")).trigger("change");
         });
 
+        $(document).on("change", "#BantSelect", function (event) {
+            event.preventDefault();            
+            $(document.getElementById("BirimFiyat")).trigger("change");
+        });
+        
         $(document).on("change", "#PosetBirimFiyat", function (event) {
             event.preventDefault();
             var target = $("#BirimFiyat");

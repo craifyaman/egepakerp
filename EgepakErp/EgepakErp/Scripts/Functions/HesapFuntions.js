@@ -24,7 +24,8 @@ function HesapFunctionKoli() {
     //var KalipAgirlik = $("#KalipAgirlik").val().replace(",", ".");
     var Katsayi = parseFloat($("#KoliKatsayi").val().replace(",", "."));
     var Kapasite = $("#Kapasite").val();
-    var sonuc = (BirimFiyat * Katsayi) / Kapasite;
+    var BanFiyat = parseFloat($("#BantSelect").val().replace(",", "."));
+    var sonuc = (BanFiyat * Katsayi + BirimFiyat) / Kapasite;
     var target = $(".Fiyat");
     target.val(sonuc.toFixed(4));
 }

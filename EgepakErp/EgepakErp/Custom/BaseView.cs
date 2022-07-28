@@ -389,7 +389,11 @@ namespace EgePakErp.Custom
             }
             return fiyat;
         }
-
+        public List<HammaddeHareket> BaseHammaddeHareketler(string urunAdi)
+        {
+            var list = db.HammaddeHareket.Include("Doviz").Where(x => x.UrunAdi.Contains(urunAdi)).ToList();
+            return list;
+        }
         public HammaddeHareket KoliSohHareket()
         {
             var liste = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
@@ -403,6 +407,7 @@ namespace EgePakErp.Custom
               .Include("Tedarikci")
               .Where(i => i.HammaddeCinsiId == id).ToList();
         }
+
 
 
         public List<BaseMenu> baseMenu(string pre = "Menu", string nameSpace = "EgePakErp.Controllers")

@@ -250,9 +250,10 @@
             @foreach (var kalip in Model)
             {
                 HammaddeHareket sonHareket = ViewBag.KoliSonHareket;
+                decimal BantSonFiyat = BaseHammaddeHareketler("bant").OrderByDescending(x=>x.HammaddeGirisTarihi).FirstOrDefault().BirimFiyat;
                 var birimFiyat = sonHareket?.BirimFiyat;
                 decimal sabit = 0.04M;
-                decimal? birimMaliyet = birimFiyat != null ? (birimFiyat * sabit) / 1500 : 0;
+                decimal? birimMaliyet = birimFiyat != null ? (BantSonFiyat * sabit + birimFiyat) / 1500 : 0;
 
                 <input id="PosetParametre_@kalip.KalipId" type="hidden" value="0" />
                 <td koli-cikar="@kalip.KalipId" KalipAd="@kalip.Adi">

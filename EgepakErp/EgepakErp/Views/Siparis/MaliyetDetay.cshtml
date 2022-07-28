@@ -198,6 +198,15 @@
         <td koli-cikar="@kalip.KalipId">
             <div class="form-group row parentDiv" UrunType="koli">
                 <div class="col-lg-12 mb-2">
+                    <label>Bant :</label>
+                    <select class="form-control" id="BantSelect">
+                        @foreach (var bant in BaseHammaddeHareketler("bant"))
+                        {
+                            <option value="@bant.BirimFiyat">@bant.UrunAdi - (@bant.BirimFiyat @bant.Doviz.Kisaltma)</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-lg-12 mb-2">
                     <label>Koli Türü:</label>
                     <select class="form-control" id="KoliBirimFiyat">
                         @{
@@ -249,10 +258,10 @@
                     <input type="text" class="form-control hesaplama" id="KoliKatsayi" value="@Katsayi" />
                 </div>
 
-                <div class="col-lg-12 mb-2">
+                @*<div class="col-lg-12 mb-2">
                     <label>Mamül Ağırlık:</label>
                     <input type="text" class="form-control" id="KalipAgirlik" value="@kalip.ParcaAgirlik" disabled />
-                </div>
+                </div>*@
                 <div class="col-lg-12 mb-2">
                     <label>Koli Kapasitesi:</label>
                     <input type="text" class="form-control hesaplama" id="Kapasite" value="1500" />
@@ -260,7 +269,7 @@
                 <div class="col-lg-12 mb-2">
                     <label>Birim Maliyet:</label>
                     <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N4")" />
-                    <span class="form-text text-muted">(Birim Fiyat * Katsayı) / Kapasite</span>
+                    <span class="form-text text-muted">(BantFiyat * Katsayi + BirimFiyat) / Kapasite</span>
                 </div>
             </div>
         </td>
