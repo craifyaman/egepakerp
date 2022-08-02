@@ -1,0 +1,12 @@
+﻿@model Kalip
+@{ 
+    var liste = Model.KalipUrunRelation.Select(s => s.Urun).Select(s => s.UrunCinsi.Kisaltmasi + s.UrunNo);
+}
+<h4 class="text-left">Ürün Listesi (@liste.Count()) </h4>
+<ul>
+    
+    @foreach (var urun in liste)
+    {
+        <li>@urun</li>
+    }
+</ul>

@@ -34,7 +34,7 @@ namespace EgePakErp.Controllers
             var model = Db.HammaddeHareket
                 .Include("Doviz")
                 .Include("HammaddeCinsi")
-                .Include("HammaddeBirimi")
+                .Include("TableHammaddeBirim")
                 .AsQueryable();
 
 
@@ -89,7 +89,7 @@ namespace EgePakErp.Controllers
                 Miktar = i.Miktar,
                 DolarKuru = i.DolarKuru,
                 EuroKuru = i.EuroKuru,
-                HammaddeBirimi = i.HammaddeBirimi.Birimi
+                HammaddeBirimi = i.TableHammaddeBirim.Birimi
             }).ToList<dynamic>();
 
             dtModel.meta = dtMeta;
@@ -103,7 +103,7 @@ namespace EgePakErp.Controllers
             var model = Db.HammaddeHareket
                 .Include("Doviz")
                 .Include("HammaddeCinsi")
-                .Include("HammaddeBirimi")
+                .Include("TableHammaddeBirim")
                 .FirstOrDefault(i => i.HammaddeHareketId == id);
             return PartialView(model);
         }

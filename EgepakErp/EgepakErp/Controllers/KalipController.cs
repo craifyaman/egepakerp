@@ -17,7 +17,7 @@ namespace EgePakErp.Controllers
 
     public class KalipController : BaseController
     {
-        public KalipRepository repo{ get; set; }
+        public KalipRepository repo { get; set; }
         public KalipController()
         {
             repo = new KalipRepository();
@@ -86,7 +86,7 @@ namespace EgePakErp.Controllers
             var dto = model.AsEnumerable().Select(i => new
             {
                 KalipId = i.KalipId,
-                KalipKodu = string.Concat(i.KalipNo + "-" + i.KalipOzellik),
+                KalipKodu = i.ParcaKodu,
                 Adi = i.Adi,
                 UretimTeminSekli = i.UretimTeminSekli?.Adi,
                 Agirlik = i.ParcaAgirlik,
@@ -124,8 +124,8 @@ namespace EgePakErp.Controllers
                 if (form.KalipId == 0)
                 {
 
-                    form.KalipHammaddeRelation= form.HammaddeList.Select(s => new KalipHammaddeRelation { HammaddeCinsiId = s }).ToList();
-                    form.KalipUrunRelation=form.UrunList.Select(s => new KalipUrunRelation { UrunId = s }).ToList();
+                    form.KalipHammaddeRelation = form.HammaddeList.Select(s => new KalipHammaddeRelation { HammaddeCinsiId = s }).ToList();
+                    form.KalipUrunRelation = form.UrunList.Select(s => new KalipUrunRelation { UrunId = s }).ToList();
                     repo.Insert(form);
                 }
                 else
@@ -143,21 +143,22 @@ namespace EgePakErp.Controllers
                             }
                         }
 
+                        repo.Update(entity);
                         //relationları güncelle
-                        Db.KalipHammaddeRelation.RemoveRange(Db.KalipHammaddeRelation.Where(i=>i.KalipId==form.KalipId));
+                        Db.KalipHammaddeRelation.RemoveRange(Db.KalipHammaddeRelation.Where(i => i.KalipId == form.KalipId));
                         Db.KalipUrunRelation.RemoveRange(Db.KalipUrunRelation.Where(i => i.KalipId == form.KalipId));
-                        if (form.HammaddeList!=null)
+                        if (form.HammaddeList != null)
                         {
                             Db.KalipHammaddeRelation.AddRange(form.HammaddeList.Select(s => new KalipHammaddeRelation { KalipId = entity.KalipId, HammaddeCinsiId = s }));
                         }
-                        if (form.UrunList!=null)
+                        if (form.UrunList != null)
                         {
                             Db.KalipUrunRelation.AddRange(form.UrunList.Select(s => new KalipUrunRelation { KalipId = entity.KalipId, UrunId = s }));
-                        }                       
-                        
+                        }
+
                     }
 
-                    
+
                 }
                 Db.SaveChanges(CurrentUser.PersonelId);
                 response.Success = true;
@@ -200,7 +201,7 @@ namespace EgePakErp.Controllers
                 items = model.Select(i => new
                 {
                     id = i.KalipId,
-                    text = string.Concat(i.KalipNo +" "+i.Adi),
+                    text = string.Concat(i.KalipNo + " " + i.Adi),
                     markup = "urun"
 
                 }),
@@ -222,7 +223,7 @@ namespace EgePakErp.Controllers
                 response.Description = "kalıp silindi";
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Success = false;
                 response.Description = ex.Message;
@@ -230,10 +231,20 @@ namespace EgePakErp.Controllers
             }
 
         }
+
+        public PartialViewResult KalipDetay(int KalipId)
+        {
+            var Kalip = repo.Get(KalipId);
+            if (Kalip != null)
+            {
+                return PartialView(Kalip);
+            }
+            return PartialView();
+        }
         public void KalipAgirlikDuzelt()
         {
             var list = Db.Kalip.ToList();
-            foreach(var kalip in list)
+            foreach (var kalip in list)
             {
                 kalip.ParcaAgirlik *= 10;
             }

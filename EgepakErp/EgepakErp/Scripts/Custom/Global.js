@@ -28,6 +28,13 @@
         return html;
     }
 
+    var parseFloatFix = function (inputId,tofix) {
+        debugger;
+        var sonuc = parseFloat($(inputId).val().replace(",", "."));
+        return sonuc.toFixed(tofix);
+        
+    }
+
     return {
         // public functions
         init: function () {
@@ -35,6 +42,9 @@
         },
         cardTemplate: function (str) {
             return cardTemplate(str);
+        },
+        parseFloatFix: function (inputId,tofix) {
+            return parseFloatFix(inputId, tofix);
         }
     };
 }();

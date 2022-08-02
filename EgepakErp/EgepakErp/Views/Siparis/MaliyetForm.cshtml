@@ -24,11 +24,13 @@
                         var hammaddeCinsi = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault();
                         var sonHammaddeHareket = hammaddeCinsi?.HammaddeHareket.OrderByDescending(i => i.HammaddeHareketId).FirstOrDefault();
                         var birimFiyat = sonHammaddeHareket?.BirimFiyat;
-                        decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1000) * kalip.ParcaAgirlik : 0;
+                        var FireOran = hammaddeCinsi?.HammaddeFire != null ? hammaddeCinsi.HammaddeFire.Oran : 1;
+                        int bolum = 1000;
+                        decimal? birimMaliyet = birimFiyat != null ? ((birimFiyat * (decimal)FireOran) / bolum) * kalip.ParcaAgirlik : 0;
                     }
                 </td>
 
-                if (kalip.Adi == "LİPGLOSS PONPON")
+                if (kalip.Adi == "PONPON")
                 {
                     decimal _PonponSonFiyat = PonponSonFiyat();
                     birimMaliyet = _PonponSonFiyat;
@@ -48,7 +50,7 @@
                         </div>
                     </div>
 
-                    @if (kalip.Adi == "LİPGLOSS PONPON")
+                    @if (kalip.Adi == "PONPON")
                     {
                         <div>
                             @{
@@ -99,11 +101,7 @@
         </tr>
     </tbody>
 </table>
-<hr />
-<div class="p-2">
-    <b>Toplam Malzeme Maliyeti : <span id="ToplamMalzemeMaliyet">@malzemeToplamMaliyet.ToString("n4")</span>₺</b>
-</div>
-<hr />
+
 <table class="table table-bordered table-hover table-sm mt-8">
     <thead>
         <tr>
@@ -132,13 +130,14 @@
                                 <span class="input-group-text" event="MaliyetDetay" maliyetType="sicakbaski" kalipId="@kalip.KalipId">
                                     <i class="flaticon-mark"></i>
                                 </span>
-                                <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimSicakBaskiTamponMaliyet.ToString("N2")" />
+                                <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@birimSicakBaskiTamponMaliyet.ToString("N2")" />
                                 <span sicakBaski-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="sicakBaski" event="FaturadanCikar">
                                     -
                                 </span>
                             </div>
                         </div>
                     </td>
+                    malzemeToplamMaliyet += (decimal)birimSicakBaskiTamponMaliyet;
                 }
                 catch (Exception ex)
                 {
@@ -155,7 +154,7 @@
             {
 
                 List<HammaddeHareket> Malzemeler = BaskiMalzemeListe();
-                double BirimFiyat = Convert.ToDouble(Malzemeler.FirstOrDefault().BirimFiyat);
+                double BirimFiyat = Malzemeler.Count() != 0 ? Convert.ToDouble(Malzemeler.FirstOrDefault().BirimFiyat) : 0;
                 double Maliyet = (BirimFiyat * 40) / 10000;
 
 
@@ -166,14 +165,14 @@
                             <span class="input-group-text" event="MaliyetDetay" maliyetType="yaldiz" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
-                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
+                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
                             <span yaldiz-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="yaldiz" event="FaturadanCikar">
                                 -
                             </span>
                         </div>
                     </div>
                 </td>
-
+                malzemeToplamMaliyet += (decimal)Maliyet;
             }
 
 
@@ -200,7 +199,7 @@
                     <div class="col-lg-12 mb-2">
                         <label>Maliyet:</label>
                         <div class="input-group mb-5">
-                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="0" />
+                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="0" />
                             <span sprey-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="sprey" event="FaturadanCikar">
                                 -
                             </span>
@@ -217,7 +216,7 @@
                     <div class="col-lg-12 mb-2">
                         <label>Maliyet:</label>
                         <div class="input-group mb-5">
-                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="0" />
+                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="0" />
                             <span metalize-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="metalize" event="FaturadanCikar">
                                 -
                             </span>
@@ -250,7 +249,7 @@
             @foreach (var kalip in Model)
             {
                 HammaddeHareket sonHareket = ViewBag.KoliSonHareket;
-                decimal BantSonFiyat = BaseHammaddeHareketler("bant").OrderByDescending(x=>x.HammaddeGirisTarihi).FirstOrDefault().BirimFiyat;
+                decimal BantSonFiyat = BaseHammaddeHareketler("bant").OrderByDescending(x => x.HammaddeGirisTarihi).FirstOrDefault().BirimFiyat;
                 var birimFiyat = sonHareket?.BirimFiyat;
                 decimal sabit = 0.04M;
                 decimal? birimMaliyet = birimFiyat != null ? (BantSonFiyat * sabit + birimFiyat) / 1500 : 0;
@@ -263,14 +262,14 @@
                             <span class="input-group-text" event="MaliyetDetay" maliyetType="koli" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
-                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N5")" />
+                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N5")" />
                             <span koli-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="koli" event="FaturadanCikar">
                                 -
                             </span>
                         </div>
                     </div>
                 </td>
-
+                malzemeToplamMaliyet += (decimal)birimMaliyet;
             }
         </tr>
         <tr>
@@ -287,17 +286,24 @@
                             <span class="input-group-text" event="MaliyetDetay" maliyetType="poset" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
-                            <input kalipId="@kalip.KalipId" mamulType="poset" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N4")" />
+                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" mamulType="poset" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N4")" />
                             <span poset-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="poset" event="FaturadanCikar">
                                 -
                             </span>
                         </div>
                     </div>
                 </td>
+                malzemeToplamMaliyet += (decimal)birimMaliyet;
             }
         </tr>
     </tbody>
 </table>
+
+<hr />
+<div class="p-2">
+    <b>Toplam Malzeme Maliyeti : <span id="ToplamMalzemeMaliyet">@malzemeToplamMaliyet.ToString("n4")</span>₺</b>
+</div>
+<hr />
 
 <table class="table table-bordered table-hover table-sm mt-8">
     <thead>

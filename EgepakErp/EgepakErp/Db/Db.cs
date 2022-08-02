@@ -19,7 +19,7 @@ namespace EgePakErp
     using System.ComponentModel.DataAnnotations;
     using EgePakErp.Models.Audit;
     using Newtonsoft.Json;
-
+    using EgepakErp.Models.Custom;
 
     public partial class Db : DbContext
     {
@@ -48,17 +48,19 @@ namespace EgePakErp
         #region Custom
         public virtual DbSet<HammaddeCinsi> HammaddeCinsi { get; set; }
         public virtual DbSet<HammaddeTipi> HammaddeTipi { get; set; }
-        public virtual DbSet<HammaddeBirimi> HammaddeBirimi { get; set; }
+        //public virtual DbSet<HammaddeBirimi> HammaddeBirimi { get; set; }
         public virtual DbSet<Marka> Marka { get; set; }
         public virtual DbSet<HammaddeHareket> HammaddeHareket { get; set; }
-        public virtual DbSet<Doviz> Doviz{ get; set; }
+        public virtual DbSet<Doviz> Doviz { get; set; }
         public virtual DbSet<Urun> Urun { get; set; }
-        public virtual DbSet<UrunCinsi> UrunCinsi{ get; set; }
-        public virtual DbSet<Kalip> Kalip{ get; set; }
+        public virtual DbSet<UrunCinsi> UrunCinsi { get; set; }
+        public virtual DbSet<Kalip> Kalip { get; set; }
         public virtual DbSet<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }
         public virtual DbSet<KalipUrunRelation> KalipUrunRelation { get; set; }
         public virtual DbSet<UretimTeminSekli> UretimTeminSekli { get; set; }
-        
+        public virtual DbSet<TableHammaddeBirim> TableHammaddeBirim { get; set; }
+        public virtual DbSet<HammaddeFire> HammaddeFire { get; set; }
+
 
         #endregion
 
@@ -87,7 +89,7 @@ namespace EgePakErp
                 }
             }
         }
-        public void Update<T>(T entity, List<string> include ) where T : class
+        public void Update<T>(T entity, List<string> include) where T : class
         {
 
 
@@ -109,7 +111,7 @@ namespace EgePakErp
                 }
             }
         }
-        public void Update<T>(T entity, List<string> include,string key) where T : class
+        public void Update<T>(T entity, List<string> include, string key) where T : class
         {
 
             //context.Blogs.Attach(existingBlog);
@@ -237,7 +239,7 @@ namespace EgePakErp
                         TableName = tableName,
                         RecordID = dbEntry.OriginalValues.GetValue<int>(keyName),
                         ColumnName = "*ALL",
-                        NewJson ="", //JsonConvert.SerializeObject(dbEntry.CurrentValues.ToObject()),
+                        NewJson = "", //JsonConvert.SerializeObject(dbEntry.CurrentValues.ToObject()),
                         OriginalJson = JsonConvert.SerializeObject(dbEntry.OriginalValues.ToObject())
                     }
                     );
@@ -247,13 +249,13 @@ namespace EgePakErp
                 var columnNames = new List<string>();
                 foreach (string propertyName in dbEntry.OriginalValues.PropertyNames)
                 {
-                   
+
                     // For updates, we only want to capture the columns that actually changed
                     if (!object.Equals(dbEntry.OriginalValues.GetValue<object>(propertyName), dbEntry.CurrentValues.GetValue<object>(propertyName)))
                     {
                         columnNames.Add(propertyName);
                     }
-                    
+
 
                 }
                 result.Add(new AuditLog()

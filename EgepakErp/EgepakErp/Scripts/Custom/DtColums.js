@@ -76,15 +76,15 @@
     function hammaddeColumns() {
         var clm = [
             {
-                field: 'HammaddeId',
-                title: 'ID',
-                width: 50
-            },
-            {
                 field: 'Adi',
                 title: 'Adı'
             },
+            {
+                field: 'Birim',
+                title: 'Birimi',
+                sortable: false,
 
+            },
             {
                 field: 'Aciklamasi',
                 title: 'Açıklama',
@@ -92,15 +92,8 @@
                 width: 200
             },
             {
-                field: 'BirimId',
-                title: 'Birimi',
-                sortable: false,
-                
-            },
-            {
-                field: 'Kodu',
-                title: 'Kodu',
-                sortable: false,
+                field: 'Durum',
+                title: 'Durum'
             },
             //{
             //    field: 'Kaliplar',
@@ -118,19 +111,19 @@
                 overflow: 'visible',
                 autoHide: false,
                 template: function (row) {
-                    var cls = row.Durum == "Aktif" ? "danger" : "success";
-                    var durum = row.Durum == "Aktif" ? "Pasif" : "Aktif";
-                    return '\
-	                       <a class="btn btn-icon btn-info" event="hammaddeFormPopup" formTitle="'+ row.Adi + ' Düzenle" href="#" id="' + row.HammaddeCinsiId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top">\
+                    var cls = row.Durum == true ? "warning" : "success";
+                    var durum = row.Durum == true ? "Pasif" : "Aktif";
+                    var str = '<a class="btn btn-icon btn-info mr-1" event="hammaddeFormPopup" formTitle="' + row.Adi + ' Düzenle" href="#" id="' + row.HammaddeCinsiId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top">\
                                 <i class="flaticon-edit" ></i>\
-                           </a>\
-                             <a class="btn btn-icon btn-primary" href="/hammadde/detay/'+ row.HammaddeCinsiId + '" title="Hammadde Detay Sayfası" data-toggle="tooltip" data-placement="top">\
-                                <i class="flaticon-search" ></i>\
-                           </a>\
-                            <a class="btn btn-icon btn-'+ cls + '" event="durum" href="#" id="' + row.HammaddeCinsiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top">\
+                           </a>'
+
+                    str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="durum" href="#" id="' + row.HammaddeCinsiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top">\
                                 <i class="flaticon-user" ></i>\
-                           </a>\
-	                    ';
+                           </a>';
+                    str += '<a class="btn btn-icon btn-danger" event="HammaddeCinsiSil" id="' + row.HammaddeCinsiId + '" href="#" title="Sil" data-toggle="tooltip" data-placement="top">\
+                                <i class="flaticon-cancel" ></i>\
+                           </a>';
+                    return str;
                 },
             }]
 
@@ -160,12 +153,8 @@
                 format: 'YYYY/MM/DD'
             },
             {
-                field: 'TedarikciId',
-                title: 'Tedarikci Id'
-            },
-            {
                 field: 'HammaddeCinsi.Adi',
-                title: 'Hammadde',
+                title: 'Sektör',
                 template: function (row) {
                     return row.HammaddeCinsi
                 }
@@ -214,7 +203,7 @@
                 template: function (row) {
                     var cls = row.Aktif == "Aktif" ? "danger" : "success";
                     var durum = row.Aktif == "Aktif" ? "Pasif" : "Aktif";
-                    var str = '<a href="#" id="' + row.HammaddeHareketId +'" class="btn btn-success font-weight-bolder font-size-sm " event = "hammaddeHareketFormPopup" formTitle = "Düzenle" formId = "hammaddeHareketForm" formUrl = "/HammaddeHareket/Form" submitUrl = "/HammaddeHareket/Kaydet" aria - haspopup="true" aria - expanded="false" > <i class="flaticon-edit"></i> </a >';
+                    var str = '<a href="#" id="' + row.HammaddeHareketId + '" class="btn btn-success font-weight-bolder font-size-sm " event = "hammaddeHareketFormPopup" formTitle = "Düzenle" formId = "hammaddeHareketForm" formUrl = "/HammaddeHareket/Form" submitUrl = "/HammaddeHareket/Kaydet" aria - haspopup="true" aria - expanded="false" > <i class="flaticon-edit"></i> </a >';
                     //str += ' <a class="btn btn-icon btn-primary mr-1" href = "/kisi/detay/' + row.KisiId + '" title = "Kişi Detay" data - toggle="tooltip" data - placement="top" > <i class="flaticon-search" ></i></a>'
                     //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
 
@@ -506,7 +495,7 @@
                     str += 'formUrl = "/Urun/Form"';
                     str += 'submitUrl = "/Urun/Kaydet"';
                     str += 'event="urunFormPopup" href = "#" id = "' + row.UrunId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
-                    str += ' <a class="btn btn-icon btn-danger mr-1" UrunId="' + row.UrunId+'" event="UrunAktifPasif" title = "Ürün sil" data-toggle="tooltip" data-placement="top" > <i class="flaticon-cancel" ></i></a>'
+                    str += ' <a class="btn btn-icon btn-danger mr-1" UrunId="' + row.UrunId + '" event="UrunAktifPasif" title = "Ürün sil" data-toggle="tooltip" data-placement="top" > <i class="flaticon-cancel" ></i></a>'
                     //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
 
                     return str;
@@ -542,6 +531,10 @@
                     var html = "";
                     $.each(list, function (i, v) {
                         html += "<br/>" + v;
+                        if (i == 2) {
+                            html += "...";
+                            return false;
+                        }
                     })
                     return html;
                 }
@@ -566,7 +559,7 @@
                 field: 'ParcaAgirlik',
                 title: 'Agırlık',
                 template: function (row) {
-                   
+
                     return row.Agirlik
                 }
             },
@@ -587,11 +580,11 @@
             {
                 field: 'Hammadde',
                 title: 'Hammadde',
-                sortable:false,
+                sortable: false,
                 template: function (row) {
                     return row.Hammadde
                 }
-            },            
+            },
             {
                 field: 'İşlem',
                 title: 'İşlem',
@@ -602,13 +595,13 @@
                 template: function (row) {
 
                     var str = '<a class="btn btn-icon btn-info mr-1"';
-                    str += 'formTitle = "' + row.KalipKodu +' '+row.Adi + ' Ürün Düzenle"';
+                    str += 'formTitle = "' + row.KalipKodu + ' ' + row.Adi + ' Ürün Düzenle"';
                     str += 'formId = "kalipForm"';
                     str += 'formUrl = "/Kalip/Form"';
                     str += 'submitUrl = "/Kalip/Kaydet"';
                     str += 'event="kalipFormPopup" href = "#" id = "' + row.KalipId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
                     str += ' <a class="btn btn-icon btn-danger mr-1" href = "#" title = "Kalıp Sil" data - toggle="tooltip" data - placement="top" event="KalipSil" KalipId="' + row.KalipId + '"> <i class="flaticon-cancel" ></i></a>'
-                    //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
+                    str += '<a class="btn btn-icon mr-1 btn-info" event="KalipDetay" href="#" id="' + row.KalipId + '" title="Kalıp Detay" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
 
                     return str;
 

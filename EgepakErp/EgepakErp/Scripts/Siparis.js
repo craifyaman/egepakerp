@@ -186,7 +186,7 @@
     function DisMalzemelerSifirla() {
         var arr = $("td");
         $.each(arr, function (index, val) {
-            if ($(val).attr("KalipAd") == "LİPGLOSS PONPON") {
+            if ($(val).attr("KalipAd") == "PONPON") {
                 $(val).find(".birimFiyat").val("0");
 
             }

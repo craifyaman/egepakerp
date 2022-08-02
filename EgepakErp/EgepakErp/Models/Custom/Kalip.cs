@@ -17,7 +17,6 @@ namespace EgePakErp.Models
         /// RJ 01 00 00 01 13
         /// </summary>
 
-        [NotMapped]
         public string ParcaKodu { get; set; }
         public string Adi { get; set; }
         public int? UretimTeminSekliId { get; set; }
@@ -29,6 +28,9 @@ namespace EgePakErp.Models
         public string YollukTipi { get; set; }
         public string YollukAgirlik { get; set; }
         public bool isAktive { get; set; }
+        public string KalipEtiket { get; set; }
+        public string HammaddeFormul { get; set; }
+
         public virtual ICollection<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }
         public virtual ICollection<KalipUrunRelation> KalipUrunRelation { get; set; }
         public virtual ICollection<SepetIcerik> SepetIcerik { get; set; }

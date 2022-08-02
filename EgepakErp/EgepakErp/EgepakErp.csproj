@@ -186,27 +186,23 @@
     <Compile Include="Enums\FaturaOrtalama.cs" />
     <Compile Include="Helper\DovizHelper.cs" />
     <Compile Include="Helper\SonAylarFaturaHelper.cs" />
-    <Compile Include="Migrations\202207250933240_HamUrunGrup_tablo_duzenleme.cs" />
-    <Compile Include="Migrations\202207250933240_HamUrunGrup_tablo_duzenleme.designer.cs">
-      <DependentUpon>202207250933240_HamUrunGrup_tablo_duzenleme.cs</DependentUpon>
+    <Compile Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.cs" />
+    <Compile Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.designer.cs">
+      <DependentUpon>202208020842230_delete_birimId_from_hammaddeCinsi.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202207281107073_ekle_isAktif_urun_tablo.cs" />
-    <Compile Include="Migrations\202207281107073_ekle_isAktif_urun_tablo.designer.cs">
-      <DependentUpon>202207281107073_ekle_isAktif_urun_tablo.cs</DependentUpon>
+    <Compile Include="Migrations\202208021124373_add_yolluk_tip_and_agirlik_to_hamurungroup_and_kalip.cs" />
+    <Compile Include="Migrations\202208021124373_add_yolluk_tip_and_agirlik_to_hamurungroup_and_kalip.designer.cs">
+      <DependentUpon>202208021124373_add_yolluk_tip_and_agirlik_to_hamurungroup_and_kalip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202207281447020_ekle_kalip_isAktive.cs" />
-    <Compile Include="Migrations\202207281447020_ekle_kalip_isAktive.designer.cs">
-      <DependentUpon>202207281447020_ekle_kalip_isAktive.cs</DependentUpon>
+    <Compile Include="Migrations\202208021139126_add_parcaKodu_to_kalip_table.cs" />
+    <Compile Include="Migrations\202208021139126_add_parcaKodu_to_kalip_table.designer.cs">
+      <DependentUpon>202208021139126_add_parcaKodu_to_kalip_table.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202207281449268_1.cs" />
-    <Compile Include="Migrations\202207281449268_1.designer.cs">
-      <DependentUpon>202207281449268_1.cs</DependentUpon>
+    <Compile Include="Migrations\202208021445295_add_hammaddeFire_tablo.cs" />
+    <Compile Include="Migrations\202208021445295_add_hammaddeFire_tablo.designer.cs">
+      <DependentUpon>202208021445295_add_hammaddeFire_tablo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.cs" />
-    <Compile Include="Migrations\202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.designer.cs">
-      <DependentUpon>202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Custom\HammaddeBirimi.cs" />
+    <Compile Include="Models\Custom\HammaddeFire.cs" />
     <Compile Include="Models\Custom\HammaddeHareket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
     <Compile Include="Controllers\KalipController.cs" />
@@ -254,6 +250,7 @@
     <Compile Include="Models\Custom\SepetIcerik.cs" />
     <Compile Include="Models\Custom\Sepet.cs" />
     <Compile Include="Models\Custom\KalipUrunRelation.cs" />
+    <Compile Include="Models\Custom\TableHammaddeBirim.cs" />
     <Compile Include="Models\Custom\UretimTeminSekli.cs" />
     <Compile Include="Models\Custom\KalipHammaddeRelation.cs" />
     <Compile Include="Models\Custom\Kalip.cs" />
@@ -2596,22 +2593,22 @@
     <Content Include="Views\HammaddeHareket\Index.cshtml" />
     <Content Include="Views\HammaddeHareket\FilterForm.cshtml" />
     <Content Include="Views\HammaddeHareket\Form.cshtml" />
+    <Content Include="Views\HammaddeCinsi\HammaddeBirimForm.cshtml" />
+    <Content Include="Views\HammaddeCinsi\FilterForm.cshtml" />
+    <Content Include="Views\Kalip\KalipDetay.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202207250933240_HamUrunGrup_tablo_duzenleme.resx">
-      <DependentUpon>202207250933240_HamUrunGrup_tablo_duzenleme.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
+      <DependentUpon>202208020842230_delete_birimId_from_hammaddeCinsi.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207281107073_ekle_isAktif_urun_tablo.resx">
-      <DependentUpon>202207281107073_ekle_isAktif_urun_tablo.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202208021124373_add_yolluk_tip_and_agirlik_to_hamurungroup_and_kalip.resx">
+      <DependentUpon>202208021124373_add_yolluk_tip_and_agirlik_to_hamurungroup_and_kalip.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207281447020_ekle_kalip_isAktive.resx">
-      <DependentUpon>202207281447020_ekle_kalip_isAktive.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202208021139126_add_parcaKodu_to_kalip_table.resx">
+      <DependentUpon>202208021139126_add_parcaKodu_to_kalip_table.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207281449268_1.resx">
-      <DependentUpon>202207281449268_1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.resx">
-      <DependentUpon>202207281456159_ekle_kalip_yolluk_tip_yolluk_agirlik.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202208021445295_add_hammaddeFire_tablo.resx">
+      <DependentUpon>202208021445295_add_hammaddeFire_tablo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

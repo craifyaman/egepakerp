@@ -21,7 +21,7 @@ namespace EgepakErp.Concrete
         public void AddRange(List<T> items)
         {
             dbset.AddRange(items);
-            db.SaveChanges();
+            db.SaveChanges(1);
         }
 
         public void Delete(T p)

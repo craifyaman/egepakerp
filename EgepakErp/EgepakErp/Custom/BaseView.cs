@@ -344,11 +344,11 @@ namespace EgePakErp.Custom
         }
 
 
-        public List<HammaddeBirimi> baseHammaddeBirimi
+        public List<TableHammaddeBirim> baseHammaddeBirimi
         {
             get
             {
-                var list = db.HammaddeBirimi.ToList();
+                var list = db.TableHammaddeBirim.ToList();
                 return list;
             }
             set { }
@@ -356,9 +356,14 @@ namespace EgePakErp.Custom
 
         public List<HammaddeHareket> BaskiMalzemeListe()
         {
-            var hammaddeCinsId = db.HammaddeCinsi.FirstOrDefault(x => x.Adi.Contains("BASKI MALZEMELERİ")).HammaddeCinsiId;
+            int hammaddeCinsId = db.HammaddeCinsi.FirstOrDefault(x => x.Adi.Contains("BASKI MALZEMELERİ")).HammaddeCinsiId;
+            if(hammaddeCinsId == 0)
+            {
+                return null;
+            }
             var liste = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.HammaddeCinsiId == hammaddeCinsId).ToList();
             return liste;
+            
         }
 
         public decimal PonponSonFiyat()
@@ -409,7 +414,11 @@ namespace EgePakErp.Custom
         }
 
 
-
+        public List<TableHammaddeBirim> BaseHammaddeBirim()
+        {
+            var list = db.TableHammaddeBirim.ToList();
+            return list;
+        }
         public List<BaseMenu> baseMenu(string pre = "Menu", string nameSpace = "EgePakErp.Controllers")
         {
             Assembly asm = Assembly.GetExecutingAssembly();

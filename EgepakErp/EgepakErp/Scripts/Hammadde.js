@@ -68,6 +68,29 @@
             "json");
     }
 
+    function HammaddeSil(id) {
+        Post('/HammaddeCinsi/Sil',
+            { id: id },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+                //Complete
+                setTimeout(function () { $('#kt_datatable').KTDatatable('reload'); }, 1000)
+            },
+            "json");
+    }
+
     function GetForm(formUrl, id, appendto) {
         Post(formUrl,
             { id: id },
@@ -105,6 +128,33 @@
             "html");
     }
 
+    function HammaddeBirimKaydet() {
+        debugger;
+        var form = $("#hammaddeBirimForm").serializeJSON();
+        Post("/hammaddecinsi/BirimEkle",
+            { form: form },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function (r) {
+                //Complete
+                bootbox.hideAll();
+            },
+            "json");
+    }
+
+    
+
     var handleEvent = function () {
 
         $(document).on("click", "[event='HammaddeKaydet']", function (evet) {
@@ -115,7 +165,6 @@
         $(document).on("click", "[event='durum']", function (evet) {
             event.preventDefault();
             var id = $(this).attr("id");
-
             bootbox.dialog({
                 title: 'Hammadde Durum Güncelle',
                 message: Global.cardTemplate('İşleme Devam Etmek İstiyor musunuz?'),
@@ -131,6 +180,30 @@
                         className: 'btn-info',
                         callback: function () {
                             DurumGuncelle(id);
+                        }
+                    }
+                }
+            });
+        });
+
+        $(document).on("click", "[event='HammaddeCinsiSil']", function (evet) {
+            event.preventDefault();
+            var id = $(this).attr("id");
+            bootbox.dialog({
+                title: 'Hammadde Cins Sil',
+                message: Global.cardTemplate('İşleme Devam Etmek İstiyor musunuz?'),
+                size: 'large',
+                buttons: {
+                    cancel: {
+                        label: "Vazgeç",
+                        className: 'btn-danger',
+                        callback: function () { }
+                    },
+                    ok: {
+                        label: "Devam",
+                        className: 'btn-info',
+                        callback: function () {
+                            HammaddeSil(id);
                         }
                     }
                 }
@@ -179,6 +252,47 @@
         });
 
 
+        $(document).on("click", "[event='hammaddeBirimFormPopup']", function (e) {
+            e.preventDefault();
+            Post('/HammaddeCinsi/HammaddeBirimForm',
+                {},
+                function (response) {
+                    bootbox.dialog({
+                        title: "Hammadde Birim Ekle",
+                        message: Global.cardTemplate(response),
+                        size: 'large',
+                        buttons: {
+                            cancel: {
+                                label: "Kapat",
+                                className: 'btn-danger',
+                                callback: function () { }
+                            },
+                            ok: {
+                                label: "Kaydet",
+                                className: 'btn-info',
+                                callback: function () {
+                                    HammaddeBirimKaydet();
+                                    return false;
+                                }
+                            }
+                        }
+                    });
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+                    Global.init();
+                },
+                "html");
+
+        });
+
+
+
         $(".navi-link").click(function (event) {
             event.preventDefault();
 
@@ -220,6 +334,9 @@
 
         });
 
+        
+
+        
     }
 
     var DtInit = function (domId, url, columns, params) {

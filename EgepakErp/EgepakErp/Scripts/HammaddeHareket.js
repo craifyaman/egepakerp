@@ -48,6 +48,21 @@
         });
     }
 
+    function KdvTutarHesapla() {
+        debugger;
+
+        var birimFiyat = Global.parseFloatFix("#BirimFiyat",2);
+        var KdvOran = Global.parseFloatFix("#KdvOrani",2);
+        var Kur = Global.parseFloatFix("#Kur",2);
+        var Miktar = Global.parseFloatFix("#Miktar",2);
+
+        var KdvTutar = (birimFiyat * (KdvOran / 100)) * (Kur * Miktar);
+        var ToplamTutar = (birimFiyat + KdvTutar) * Miktar * Kur;
+
+        $("#ToplamTutar").val(ToplamTutar.toFixed(2));
+        $("#KdvTutari").val(KdvTutar.toFixed(2));
+
+    }
     var handleEvent = function () {
         $(document).on("click", "[event='hammaddeHareketFormPopup']", function (e) {
             e.preventDefault();
@@ -90,6 +105,17 @@
                     Global.init();
                 },
                 "html");
+        });
+
+        $(document).on("change", ".Kur", function (evet) {
+            event.preventDefault();
+            $("#Kur").val($(this).val());
+            KdvTutarHesapla();
+        });
+
+        $(document).on("change", ".KdvHesap", function (evet) {
+            event.preventDefault();
+            KdvTutarHesapla();
         });
     }
 

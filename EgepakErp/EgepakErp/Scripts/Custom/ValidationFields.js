@@ -223,11 +223,6 @@
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            UretimTeminSekliId: {
-                validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
-                }
-            },
             //ParcaAgirlik: {
             //    validators: {
             //        integer: {

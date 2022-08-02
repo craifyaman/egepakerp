@@ -1,13 +1,13 @@
 ﻿@model HammaddeCinsi
 <!--begin::Form-->
-<form id="hammaddeForm"> 
-    <input type="hidden" name="HammaddeCinsiId" value="@Model.HammaddeCinsiId"/>
+<form id="hammaddeForm">
+    <input type="hidden" name="HammaddeCinsiId" value="@Model.HammaddeCinsiId" />
     <div class="form-group row">
         <div class="col-lg-12">
             <div class="form-group mb-5">
                 <label>Adı:</label>
                 <input type="text" name="Adi" class="form-control" placeholder="Adi" value="@(Model?.Adi)">
-               
+
             </div>
             <div class="form-group mb-5">
                 <label>Kısa Kodu:</label>
@@ -17,11 +17,25 @@
                 <label>Açıklaması:</label>
                 <input type="text" name="Aciklamasi" class="form-control" placeholder="Aciklamasi" value="@(Model?.Aciklamasi)">
             </div>
-            <div class="form-group mb-5">
-                <label>Birimi</label>
+            <label>Birimi</label>
+            <div class="form-group mb-5 row">
+                <div class="col-11">
+                    <select name="TableHammaddeBirimId" id="TableHammaddeBirimIdHammaddeBirimId" class="form-control form-control-solid selectpicker" data-live-search="true">
+                        @foreach (var item in BaseHammaddeBirim())
+                        {
+                            var slc = (Model != null && Model.TableHammaddeBirimId == item.TableHammaddeBirimId) ? "selected" : "";
+                            <option @slc value="@item.TableHammaddeBirimId">@item.Birimi</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-1">
+                    <a href="#" class="btn btn-success" event="hammaddeBirimFormPopup" formTitle="Birim Ekle" title="Hammadde Birim Ekle" data-toggle="tooltip" data-placement="top">
+                        <i class="flaticon2-add"></i>
+                    </a>
+                </div>
 
             </div>
-        </div> 
+        </div>
     </div>
 </form>
 <!--end::Form-->

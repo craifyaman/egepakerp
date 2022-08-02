@@ -37,7 +37,6 @@ namespace EgePakErp.Controllers
             dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
 
             var model = repo.GetAll();
-
             //Filtre
             if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
             {
@@ -68,7 +67,6 @@ namespace EgePakErp.Controllers
             }
 
             var count = model.Count();
-
             dtMeta.total = count;
             dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
             //sayfala
@@ -79,12 +77,9 @@ namespace EgePakErp.Controllers
             {
                 HammaddeCinsiId = i.HammaddeCinsiId,
                 Adi = i.Adi,
+                Birim = i.TableHammaddeBirim.Birimi,
                 Aciklamasi = i.Aciklamasi,
-                BirimId = i.BirimId,/*Daaha Sonra değişcek*/
-                Kodu = i.Kisaltmasi,
-                //UretimZamani = i.UretimZamani,
-                //Kaliplar = i.Kalip.Select(s => s.Adi),
-                //KalipKodu = i.Kalip.Select(s => s.Adi+ "-"+s.KalipOzellik)             
+                Durum = i.isAktive          
 
             }).ToList<dynamic>();
 
@@ -146,6 +141,73 @@ namespace EgePakErp.Controllers
 
         }
 
+        public PartialViewResult HammaddeBirimForm()
+        {
+            return PartialView();
+        }
+        public PartialViewResult FilterForm()
+        {
+            return PartialView();
+        }
+        
+
+        public JsonResult BirimEkle(TableHammaddeBirim form)
+        {
+            Response response = new Response();
+            try
+            {
+                Db.TableHammaddeBirim.Add(form);
+                Db.SaveChanges();
+                response.Success = true;
+                response.Description = "Birim Eklendi";
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult DurumGuncelle(int id)
+        {
+            Response response = new Response();
+            try
+            {
+                var hammadde = repo.Get(id);
+                var statu = hammadde.isAktive == true ? false : true;
+                hammadde.isAktive = statu;
+                repo.Update(hammadde);
+                response.Success = true;
+                response.Description = "güncellendi";
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult Sil(int id)
+        {
+            Response response = new Response();
+            try
+            {
+                repo.Delete(repo.Get(id));
+                response.Success = true;
+                response.Description = "Hammadde Silindi";
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+        }
 
     }
 }

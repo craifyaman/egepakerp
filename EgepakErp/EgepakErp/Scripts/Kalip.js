@@ -143,6 +143,39 @@
                 }
             });            
         });
+
+        
+        $(document).on("click", "[event='KalipDetay']", function (e) {
+            e.preventDefault();
+            debugger;
+            var KalipId = $(this).attr("Id");
+            Post("/kalip/KalipDetay",
+                { KalipId: KalipId },
+                function (response) {
+                    bootbox.dialog({
+                        title: "Kalıp Detay",
+                        message: Global.cardTemplate(response),
+                        size: 'large',
+                        buttons: {
+                            cancel: {
+                                label: "Kapat",
+                                className: 'btn-danger',
+                                callback: function () { }
+                            }
+                        }
+                    });
+                },
+                function (x, y, z) {
+                    toastr.error("Bir Hata Oluştu");
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+                    Global.init();
+                },
+                "html");
+        });
     }
 
     var DtInit = function (domId, url, columns, params) {

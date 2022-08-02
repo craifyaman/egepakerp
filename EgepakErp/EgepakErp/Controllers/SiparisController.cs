@@ -61,6 +61,7 @@ namespace EgePakErp.Controllers
                 .Include("KalipHammaddeRelation")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
                 .Where(i => idList.Contains(i.KalipId)).ToList();
             return PartialView(kaliplar);
         }
@@ -120,6 +121,7 @@ namespace EgePakErp.Controllers
                 .Include("KalipHammaddeRelation")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
                 .FirstOrDefault(x => x.KalipId == KalipId);
 
             ViewBag.MaliyetType = MaliyetType;

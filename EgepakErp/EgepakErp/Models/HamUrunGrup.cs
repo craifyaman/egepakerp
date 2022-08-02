@@ -22,6 +22,10 @@ namespace EgePakErp.Models
         public string KalipSayisi { get; set; }
         public string UretimZamani { get; set; }
         public string Aciklama { get; set; }
+        public string KalipEtiket { get; set; }
+        public string HammaddeFormul { get; set; }
+        public string YollukTip { get; set; }
+        public string YollukAgirlik { get; set; }
 
     }
 }

@@ -14,18 +14,24 @@ namespace EgepakErp.Concrete
         {
             return dbset
                 .Include("Kalip")
+                .Include("TableHammaddeBirim")
+                .Include("HammaddeFire")
                .FirstOrDefault(x => x.HammaddeCinsiId== id);
         }
         public override HammaddeCinsi Get(Expression<Func<HammaddeCinsi, bool>> filter)
         {
             return dbset
                 .Include("Kalip")
+                .Include("TableHammaddeBirim")
+                .Include("HammaddeFire")
                 .FirstOrDefault(filter);
         }
         public override IQueryable<HammaddeCinsi> GetAll()
         {
             return dbset
                 .Include("Kalip")
+                .Include("TableHammaddeBirim")
+                .Include("HammaddeFire")
                .AsQueryable();
         }
 
@@ -33,6 +39,8 @@ namespace EgepakErp.Concrete
         {
             return dbset
                 .Include("Kalip")
+                .Include("TableHammaddeBirim")
+                .Include("HammaddeFire")
                 .Where(filter)
                .AsQueryable();
         }
