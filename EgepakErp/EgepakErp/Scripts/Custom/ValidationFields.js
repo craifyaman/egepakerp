@@ -250,6 +250,27 @@
         return fields;
     }
 
+    function pompaFiyatFormFields() {
+        var fields = {
+            Adi: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            PompaKod: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Tutar: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
+
     return {
         // public functions
         GorusmeFormFields: function () {
@@ -278,6 +299,9 @@
         },
         HammaddeHareketFormFields: function () {
             return hammaddeHareketFormFields();
+        },
+        PompaFiyatFormFields: function () {
+            return pompaFiyatFormFields();
         }
     };
 }();

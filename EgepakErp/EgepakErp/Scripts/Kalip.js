@@ -1,20 +1,25 @@
 ﻿var Kalip = function () {
-    
-    function Kaydet(formId,submitUrl) {
+
+    function Kaydet(formId, submitUrl) {
 
         var validation = ValidateForm.IsValid(formId, ValidationFields.KalipFormFields())
 
         validation.validate().then(function (status) {
             if (status == 'Valid') {
-                var form = $("#"+formId).serializeJSON();
-
                 debugger;
-
+                var form = $("#" + formId).serializeJSON();
+                $("#" + formId+' input[type=checkbox]').map(function () {
+                    if (!this.checked) {
+                        fields.push({
+                            name: this.name, value: "off"
+                        });
+                    }
+                });
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;
-                
-                
+
+
                 Post(submitUrl,
                     { form: form },
                     function (response) {
@@ -37,7 +42,7 @@
                                 bootbox.hideAll();
                                 $('#kt_datatable').KTDatatable('reload');
                             }, 3000)
-                            
+
                         } else {
                             bootbox.hideAll();
                         }
@@ -49,7 +54,7 @@
             }
         });
     }
-    
+
 
     var handleEvent = function () {
 
@@ -97,7 +102,7 @@
                 "html");
         });
 
-        
+
         $(document).on("click", "[event='KalipSil']", function (e) {
             e.preventDefault();
             debugger;
@@ -141,10 +146,10 @@
                             "json");
                     }
                 }
-            });            
+            });
         });
 
-        
+
         $(document).on("click", "[event='KalipDetay']", function (e) {
             e.preventDefault();
             debugger;
@@ -225,10 +230,9 @@
             handleEvent();
         },
 
-        DtInit: function (domId, url, columns,params) {
-            DtInit(domId, url, columns,params);
+        DtInit: function (domId, url, columns, params) {
+            DtInit(domId, url, columns, params);
         }
     };
 }();
 
- 

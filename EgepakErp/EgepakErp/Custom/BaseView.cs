@@ -5,8 +5,12 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using EgepakErp.Enums;
+using EgepakErp.Helper;
 using EgePakErp.Controllers;
 using EgePakErp.Models;
+using System.Data.Entity;
+
 
 namespace EgePakErp.Custom
 {
@@ -354,17 +358,23 @@ namespace EgePakErp.Custom
             set { }
         }
 
-        public List<HammaddeHareket> BaskiMalzemeListe()
+        public List<HammaddeHareket> YaldizMalzemeListe()
         {
-            int hammaddeCinsId = db.HammaddeCinsi.FirstOrDefault(x => x.Adi.Contains("BASKI MALZEMELERİ")).HammaddeCinsiId;
-            if(hammaddeCinsId == 0)
+            var Kategori = db.Kategori.FirstOrDefault(x => x.Adi.Contains("yaldız"));
+            if(Kategori == null)
             {
                 return null;
             }
-            var liste = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.HammaddeCinsiId == hammaddeCinsId).ToList();
+            var liste = db.HammaddeHareket
+                .OrderByDescending(x => x.KayitTarihi)
+                .Where(x => x.KategoriId == Kategori.KategoriId)
+                .Include(x=>x.TableHammaddeBirim)
+                .ToList();
             return liste;
             
         }
+
+
 
         public decimal PonponSonFiyat()
         {
@@ -377,12 +387,6 @@ namespace EgePakErp.Custom
             return fiyat;
         }
 
-        public List<HammaddeHareket> BaskiMalzemeler()
-        {
-            var baskiMalzemeCinsId = db.HammaddeCinsi.FirstOrDefault(x => x.Adi == "BASKI MALZEMELERİ").HammaddeCinsiId;
-            var liste = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.HammaddeCinsiId == baskiMalzemeCinsId).ToList();
-            return liste;
-        }
         public decimal TozBoyaSonBirimFiyat()
         {
             decimal fiyat = 0;
@@ -397,6 +401,14 @@ namespace EgePakErp.Custom
         public List<HammaddeHareket> BaseHammaddeHareketler(string urunAdi)
         {
             var list = db.HammaddeHareket.Include("Doviz").Where(x => x.UrunAdi.Contains(urunAdi)).ToList();
+            return list;
+        }
+        public List<HammaddeHareket> BaseHammaddeHareketler()
+        {
+            var list = db.HammaddeHareket
+                .Include("Doviz")
+                .Include(x=>x.HammaddeCinsi)
+                .ToList();
             return list;
         }
         public HammaddeHareket KoliSohHareket()
@@ -419,12 +431,47 @@ namespace EgePakErp.Custom
             var list = db.TableHammaddeBirim.ToList();
             return list;
         }
+        public List<HazirMalzemeFiyat> BaseHazirMalzeme()
+        {
+            var list = db.HazirMalzemeFiyat.ToList();
+            return list;
+        }
+        public List<Fiyat> BaseFiyat()
+        {
+            var list = db.Fiyat
+                .Include(x=>x.Doviz)
+                .ToList();
+            return list;
+        }
+
+        public decimal BaseKur(string kurType, DateTime date)
+        {
+            if(date == null)
+            {
+                date = DateTime.Now;
+            }
+            if(kurType == EDoviz.USD.ToString())
+            {
+                var usdKur = DovizHelper.DovizKuruGetir("USD", date);
+                return usdKur;
+            }
+
+            if(kurType == EDoviz.EUR.ToString())
+            {
+                var eurKur = DovizHelper.DovizKuruGetir("EUR", date);
+                return eurKur;
+            }
+
+            return 0;
+        }
+
         public List<BaseMenu> baseMenu(string pre = "Menu", string nameSpace = "EgePakErp.Controllers")
         {
             Assembly asm = Assembly.GetExecutingAssembly();
             var controlleractionlist = asm.GetTypes()
-                    .Where(type => typeof(Controller).IsAssignableFrom(type) && type.Namespace == nameSpace)
-                    .SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
+                    .Where(type => typeof(Controller).IsAssignableFrom(type) && type.Namespace == nameSpace).ToList();
+
+                    var cList= controlleractionlist.SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
                     .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
                     .Select(x => new
                     {
@@ -434,8 +481,9 @@ namespace EgePakErp.Custom
                         Attributes = String.Join(",", x.GetCustomAttributes().Select(a => a.GetType().Name.Replace("Attribute", ""))),
                         Attribute = x.GetCustomAttributes().FirstOrDefault(f => f.GetType().Name == pre + "Attribute"),
                         NameSpace = nameSpace
-                    })
-                    .Where(x => x.Attributes.Contains(pre))
+                    });
+                     
+                    var list= cList.Where(x => x.Attributes.Contains(pre))
                     .Select(x => new BaseMenu
                     {
                         Parent = x.Attribute.GetType().GetProperty("Parent").GetValue(x.Attribute, null).ToString(),
@@ -449,7 +497,7 @@ namespace EgePakErp.Custom
                     .OrderBy(x => x.ParentOrder)
                     .ThenBy(x => x.Order)
                     .ToList();
-            return controlleractionlist;
+            return list;
 
 
         }

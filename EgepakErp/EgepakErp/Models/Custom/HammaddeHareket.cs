@@ -29,10 +29,11 @@ namespace EgePakErp.Models
         public decimal? EuroKuru { get; set; }
         public decimal? PoundKuru { get; set; }
 
-        //public int HammaddeBirimiId { get; set; }
-        //public HammaddeBirimi HammaddeBirimi { get; set; }
         public int? TableHammaddeBirimId { get; set; }
         public TableHammaddeBirim TableHammaddeBirim { get; set; }
+
+        public int? KategoriId { get; set; }
+        public Kategori Kategori { get; set; }
 
         public int? HammaddetipiId { get; set; }
         public virtual HammaddeTipi HammaddeTipi { get; set; }

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Dynamic;
-using System.Linq;
-using System.Linq.Dynamic;
-using System.Reflection;
-using System.Web;
-using System.Web.Mvc;
-using EgepakErp.Concrete;
+﻿using EgepakErp.Concrete;
 using EgePakErp.Custom;
 using EgePakErp.Models;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Linq.Dynamic;
+using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace EgePakErp.Controllers
 {
@@ -32,6 +28,8 @@ namespace EgePakErp.Controllers
         [Yetki("Kalıp Listesi", "Üretim")]
         public JsonResult Liste()
         {
+            var model2 = Db.Kalip.ToList();
+
             //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
@@ -93,7 +91,7 @@ namespace EgePakErp.Controllers
                 GozSayisi = i.KalipGozSayisi,
                 UretimZamani = i.UretimZamani,
                 Hammadde = i.KalipHammaddeRelation.Select(s => s.HammaddeCinsi).Select(s => s.Adi),
-                Urun = i.KalipUrunRelation.Select(s => s.Urun).Select(s => s.UrunCinsi.Kisaltmasi + s.UrunNo)
+                Urun = i.KalipUrunRelation?.Select(s => s.Urun).Select(s => s.UrunCinsi.Kisaltmasi + s.UrunNo)
 
             }).ToList<dynamic>();
 
@@ -126,6 +124,7 @@ namespace EgePakErp.Controllers
 
                     form.KalipHammaddeRelation = form.HammaddeList.Select(s => new KalipHammaddeRelation { HammaddeCinsiId = s }).ToList();
                     form.KalipUrunRelation = form.UrunList.Select(s => new KalipUrunRelation { UrunId = s }).ToList();
+                    form.isAktive = true;
                     repo.Insert(form);
                 }
                 else

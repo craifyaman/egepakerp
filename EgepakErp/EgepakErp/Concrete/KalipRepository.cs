@@ -1,10 +1,7 @@
 ﻿using EgePakErp.Models;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 
 namespace EgepakErp.Concrete
 {
@@ -18,7 +15,10 @@ namespace EgepakErp.Concrete
                 .Include("KalipUrunRelation.Urun")
                 .Include("KalipUrunRelation.Urun.UrunCinsi")
                 .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.Kalip")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
                .FirstOrDefault(x => x.KalipId == id && x.isAktive == true);
         }
         public override Kalip Get(Expression<Func<Kalip, bool>> filter)
@@ -29,7 +29,10 @@ namespace EgepakErp.Concrete
                 .Include("KalipUrunRelation.Urun")
                 .Include("KalipUrunRelation.Urun.UrunCinsi")
                 .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.Kalip")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
                .FirstOrDefault(filter);
         }
         public override IQueryable<Kalip> GetAll()
@@ -40,7 +43,10 @@ namespace EgepakErp.Concrete
                 .Include("KalipUrunRelation.Urun")
                 .Include("KalipUrunRelation.Urun.UrunCinsi")
                 .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.Kalip")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
                 .Where(x => x.isAktive == true)
                .AsQueryable();
         }
@@ -53,7 +59,10 @@ namespace EgepakErp.Concrete
                 .Include("KalipUrunRelation.Urun")
                 .Include("KalipUrunRelation.Urun.UrunCinsi")
                 .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.Kalip")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
                 .Where(filter)
                .AsQueryable();
         }

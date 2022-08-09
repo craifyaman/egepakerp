@@ -170,10 +170,14 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Concrete\HammaddeHareketRepository.cs" />
     <Compile Include="Concrete\HammaddeCinsiRepository.cs" />
+    <Compile Include="Concrete\PompaFiyatRepository.cs" />
     <Compile Include="Concrete\KalipRepository.cs" />
     <Compile Include="Concrete\UrunRepository.cs" />
     <Compile Include="Concrete\_GenericRepository.cs" />
+    <Compile Include="Controllers\FiyatController.cs" />
+    <Compile Include="Controllers\GenericBaseController.cs" />
     <Compile Include="Custom\BaseMethods.cs" />
     <Compile Include="Db\Configuration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -183,6 +187,7 @@
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
     <Compile Include="DtModels\MaliyetDto.cs" />
+    <Compile Include="Enums\EDoviz.cs" />
     <Compile Include="Enums\FaturaOrtalama.cs" />
     <Compile Include="Helper\DovizHelper.cs" />
     <Compile Include="Helper\SonAylarFaturaHelper.cs" />
@@ -202,7 +207,76 @@
     <Compile Include="Migrations\202208021445295_add_hammaddeFire_tablo.designer.cs">
       <DependentUpon>202208021445295_add_hammaddeFire_tablo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208031501181_add_HazirMalzemeFiyat_table.cs" />
+    <Compile Include="Migrations\202208031501181_add_HazirMalzemeFiyat_table.designer.cs">
+      <DependentUpon>202208031501181_add_HazirMalzemeFiyat_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208031509586_add_kod_to_hazirMalzemeFiyat_table.cs" />
+    <Compile Include="Migrations\202208031509586_add_kod_to_hazirMalzemeFiyat_table.designer.cs">
+      <DependentUpon>202208031509586_add_kod_to_hazirMalzemeFiyat_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208040716049_add_koli_ici_adet_and_yaldiz_to_hammaddehareket_and_kalip_table.cs" />
+    <Compile Include="Migrations\202208040716049_add_koli_ici_adet_and_yaldiz_to_hammaddehareket_and_kalip_table.designer.cs">
+      <DependentUpon>202208040716049_add_koli_ici_adet_and_yaldiz_to_hammaddehareket_and_kalip_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208040749159_add_isHazirMalzeme_to_Kalip.cs" />
+    <Compile Include="Migrations\202208040749159_add_isHazirMalzeme_to_Kalip.designer.cs">
+      <DependentUpon>202208040749159_add_isHazirMalzeme_to_Kalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208050735144_create_YanSanayiStok_table.cs" />
+    <Compile Include="Migrations\202208050735144_create_YanSanayiStok_table.designer.cs">
+      <DependentUpon>202208050735144_create_YanSanayiStok_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208050748104_add_urun_isPimUsed.cs" />
+    <Compile Include="Migrations\202208050748104_add_urun_isPimUsed.designer.cs">
+      <DependentUpon>202208050748104_add_urun_isPimUsed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208051223557_create_pompaFiyat_table.cs" />
+    <Compile Include="Migrations\202208051223557_create_pompaFiyat_table.designer.cs">
+      <DependentUpon>202208051223557_create_pompaFiyat_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208060855275_create_Kategori_table.cs" />
+    <Compile Include="Migrations\202208060855275_create_Kategori_table.designer.cs">
+      <DependentUpon>202208060855275_create_Kategori_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208060919417_add_kategoriId_to_hammaddeHareket.cs" />
+    <Compile Include="Migrations\202208060919417_add_kategoriId_to_hammaddeHareket.designer.cs">
+      <DependentUpon>202208060919417_add_kategoriId_to_hammaddeHareket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208061110544_change_pompaFiyat_to_fiyat.cs" />
+    <Compile Include="Migrations\202208061110544_change_pompaFiyat_to_fiyat.designer.cs">
+      <DependentUpon>202208061110544_change_pompaFiyat_to_fiyat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208080801235_update_stok_yan_sanayi_table.cs" />
+    <Compile Include="Migrations\202208080801235_update_stok_yan_sanayi_table.designer.cs">
+      <DependentUpon>202208080801235_update_stok_yan_sanayi_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208080811504_mig1.cs" />
+    <Compile Include="Migrations\202208080811504_mig1.designer.cs">
+      <DependentUpon>202208080811504_mig1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208080830093_add_doviz_and_hammaddebirim_to_hazirmalzeme.cs" />
+    <Compile Include="Migrations\202208080830093_add_doviz_and_hammaddebirim_to_hazirmalzeme.designer.cs">
+      <DependentUpon>202208080830093_add_doviz_and_hammaddebirim_to_hazirmalzeme.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208080858206_add_toplamTutar_to_Fiyat_table.cs" />
+    <Compile Include="Migrations\202208080858206_add_toplamTutar_to_Fiyat_table.designer.cs">
+      <DependentUpon>202208080858206_add_toplamTutar_to_Fiyat_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208080937244_add_isTutkalUsed_to_urun.cs" />
+    <Compile Include="Migrations\202208080937244_add_isTutkalUsed_to_urun.designer.cs">
+      <DependentUpon>202208080937244_add_isTutkalUsed_to_urun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208090735240_add_sicakBaski_egepakMontajMaliyet_and_EvMontajMaliyet_to_hamurungroup_and_kalip.cs" />
+    <Compile Include="Migrations\202208090735240_add_sicakBaski_egepakMontajMaliyet_and_EvMontajMaliyet_to_hamurungroup_and_kalip.designer.cs">
+      <DependentUpon>202208090735240_add_sicakBaski_egepakMontajMaliyet_and_EvMontajMaliyet_to_hamurungroup_and_kalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208090842228_add_rujSilikonYagiTiner_to_urun.cs" />
+    <Compile Include="Migrations\202208090842228_add_rujSilikonYagiTiner_to_urun.designer.cs">
+      <DependentUpon>202208090842228_add_rujSilikonYagiTiner_to_urun.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\HammaddeFire.cs" />
+    <Compile Include="Models\Custom\HazirMalzemeFiyat.cs" />
     <Compile Include="Models\Custom\HammaddeHareket.cs" />
     <Compile Include="Controllers\SiparisController.cs" />
     <Compile Include="Controllers\KalipController.cs" />
@@ -254,9 +328,12 @@
     <Compile Include="Models\Custom\UretimTeminSekli.cs" />
     <Compile Include="Models\Custom\KalipHammaddeRelation.cs" />
     <Compile Include="Models\Custom\Kalip.cs" />
+    <Compile Include="Models\Custom\Fiyat.cs" />
+    <Compile Include="Models\Custom\Kategori.cs" />
     <Compile Include="Models\Custom\Urun.cs" />
     <Compile Include="Models\Custom\HammaddeCinsi.cs" />
     <Compile Include="Models\Custom\UrunCinsi.cs" />
+    <Compile Include="Models\YanSanayiStok.cs" />
     <Compile Include="Models\Micro\BaglantiTipi.cs" />
     <Compile Include="Models\Micro\Cari.cs" />
     <Compile Include="Models\Base\Cari.cs" />
@@ -2512,6 +2589,7 @@
     <Content Include="Scripts\Gorusme.js" />
     <Content Include="Scripts\HammaddeHareket.js" />
     <Content Include="Scripts\Hammadde.js" />
+    <Content Include="Scripts\Fiyat.js" />
     <Content Include="Scripts\Siparis.js" />
     <Content Include="Scripts\Kalip.js" />
     <Content Include="Scripts\Urun.js" />
@@ -2596,6 +2674,10 @@
     <Content Include="Views\HammaddeCinsi\HammaddeBirimForm.cshtml" />
     <Content Include="Views\HammaddeCinsi\FilterForm.cshtml" />
     <Content Include="Views\Kalip\KalipDetay.cshtml" />
+    <Content Include="Views\Fiyat\FilterForm.cshtml" />
+    <Content Include="Views\Fiyat\Form.cshtml" />
+    <Content Include="Views\Fiyat\Index.cshtml" />
+    <Content Include="Views\Entegrasyon\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -2609,6 +2691,57 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208021445295_add_hammaddeFire_tablo.resx">
       <DependentUpon>202208021445295_add_hammaddeFire_tablo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208031501181_add_HazirMalzemeFiyat_table.resx">
+      <DependentUpon>202208031501181_add_HazirMalzemeFiyat_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208031509586_add_kod_to_hazirMalzemeFiyat_table.resx">
+      <DependentUpon>202208031509586_add_kod_to_hazirMalzemeFiyat_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208040716049_add_koli_ici_adet_and_yaldiz_to_hammaddehareket_and_kalip_table.resx">
+      <DependentUpon>202208040716049_add_koli_ici_adet_and_yaldiz_to_hammaddehareket_and_kalip_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208040749159_add_isHazirMalzeme_to_Kalip.resx">
+      <DependentUpon>202208040749159_add_isHazirMalzeme_to_Kalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208050735144_create_YanSanayiStok_table.resx">
+      <DependentUpon>202208050735144_create_YanSanayiStok_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208050748104_add_urun_isPimUsed.resx">
+      <DependentUpon>202208050748104_add_urun_isPimUsed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208051223557_create_pompaFiyat_table.resx">
+      <DependentUpon>202208051223557_create_pompaFiyat_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208060855275_create_Kategori_table.resx">
+      <DependentUpon>202208060855275_create_Kategori_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208060919417_add_kategoriId_to_hammaddeHareket.resx">
+      <DependentUpon>202208060919417_add_kategoriId_to_hammaddeHareket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208061110544_change_pompaFiyat_to_fiyat.resx">
+      <DependentUpon>202208061110544_change_pompaFiyat_to_fiyat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208080801235_update_stok_yan_sanayi_table.resx">
+      <DependentUpon>202208080801235_update_stok_yan_sanayi_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208080811504_mig1.resx">
+      <DependentUpon>202208080811504_mig1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208080830093_add_doviz_and_hammaddebirim_to_hazirmalzeme.resx">
+      <DependentUpon>202208080830093_add_doviz_and_hammaddebirim_to_hazirmalzeme.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208080858206_add_toplamTutar_to_Fiyat_table.resx">
+      <DependentUpon>202208080858206_add_toplamTutar_to_Fiyat_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208080937244_add_isTutkalUsed_to_urun.resx">
+      <DependentUpon>202208080937244_add_isTutkalUsed_to_urun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208090735240_add_sicakBaski_egepakMontajMaliyet_and_EvMontajMaliyet_to_hamurungroup_and_kalip.resx">
+      <DependentUpon>202208090735240_add_sicakBaski_egepakMontajMaliyet_and_EvMontajMaliyet_to_hamurungroup_and_kalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208090842228_add_rujSilikonYagiTiner_to_urun.resx">
+      <DependentUpon>202208090842228_add_rujSilikonYagiTiner_to_urun.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

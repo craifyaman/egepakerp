@@ -30,6 +30,9 @@ namespace EgePakErp.Models
         public List<string> Include { get; set; }
 
         public virtual ICollection<HammaddeHareket> HammaddeHareket { get; set; }
+        public virtual ICollection<YanSanayiStok> YanSanayiStokListesi { get; set; }
+        public virtual ICollection<HazirMalzemeFiyat> HazirMalzemeFiyatListesi { get; set; }
+        public virtual ICollection<Fiyat> FiyatListesi { get; set; }
     }
 
 }

@@ -158,6 +158,7 @@
     function maliyetTablosuGetir() {
         debugger;
         var idList = $("#kalipIdList").val().split(",");
+        var urunId = $("#UrunId").val();
         var excludes = $("#exclude").val().slice(0, -1).split(",");
         var FixedIdList = [];
         for (var i = 0; i < idList.length; i++) {
@@ -165,8 +166,9 @@
                 FixedIdList.push(idList[i])
             }
         }
+
         Post("/siparis/maliyetForm",
-            { idList: FixedIdList },
+            { idList: FixedIdList, urunId: urunId },
             function (response) {
                 $("#maliyetTablosu").empty().html(response);
                 maliyetHesapla();
@@ -186,11 +188,11 @@
     function DisMalzemelerSifirla() {
         var arr = $("td");
         $.each(arr, function (index, val) {
-            if ($(val).attr("KalipAd") == "PONPON") {
+            if ($(val).attr("HazirMalzemeMi") == "True") {
                 $(val).find(".birimFiyat").val("0");
-
             }
         });
+        maliyetHesapla();
     }
 
     function InputBulEkle(MaliyetType, KalipId, Value) {

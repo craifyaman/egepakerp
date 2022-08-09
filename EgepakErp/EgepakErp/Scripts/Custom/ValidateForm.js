@@ -1,7 +1,6 @@
 ﻿var ValidateForm = function () {
 
     function isValid(formId,fields) {
-        debugger;
         var validation = FormValidation.formValidation(
             KTUtil.getById(formId),
             {
@@ -14,7 +13,6 @@
                 }
             }
         );
-        debugger;
         return validation;
          
     }

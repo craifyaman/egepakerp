@@ -109,6 +109,7 @@ namespace EgePakErp.Controllers
             {
                 if (form.HammaddeCinsiId == 0)
                 {
+                    form.isAktive = true;
                     repo.Insert(form);
                 }
                 else

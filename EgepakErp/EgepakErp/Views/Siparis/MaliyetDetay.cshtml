@@ -113,13 +113,18 @@
 
 
     var birimFiyat = sonHammaddeHareket?.BirimFiyat;
-    var FireOran = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault().HammaddeFire.Oran;
+    var FireOran = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault().HammaddeFire?.Oran;
     decimal? birimMaliyet = birimFiyat != null ? ((birimFiyat * (decimal)FireOran) / 1000) * kalip.ParcaAgirlik : 0;
-
+    decimal evMontajMaliyet = 0;
+    if (kalip.EvMontajMaliyet != null && kalip.EvMontajMaliyet != "")
+    {
+        evMontajMaliyet += Convert.ToDecimal(kalip.EvMontajMaliyet);
+    }
+    birimMaliyet += evMontajMaliyet;
     <div class="form-group row parentDiv" UrunType="hammadde">
         <div class="col-lg-12 mb-2">
             <label>Hammadde Cinsi:</label>
-            <select class="form-control">
+            <select class="form-control" id="HammaddeSelect">
                 @foreach (var item in kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi))
                 {
                     <option id="@item.HammaddeCinsiId" FireOran="@item.HammaddeFire.Oran">@item.Adi</option>
@@ -146,6 +151,11 @@
                 <input type="text" class="form-control hesaplama" id="kalipAgirlik" value="@kalip.ParcaAgirlik" />
             </div>
             <div class="form-group">
+                <label>Ev Montaj Maliyet:</label>
+                <input type="text" class="form-control hesaplama" id="evMontaj" value="@evMontajMaliyet" />
+            </div>
+
+            <div class="form-group">
                 <label>Birim Maliyet:</label>
                 <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N2")" />
                 <span class="form-text text-muted">( (Birim Fiyat * Fire Oranı) / 1000) * Mamül Ağırlık</span>
@@ -158,31 +168,31 @@
 {
     try
     {
-        double sabit = 12.0 / 1000.0;
+        decimal sabit = 12 / 1000;
         decimal KalipAgirlik = (decimal)Model.ParcaAgirlik;
-        decimal KullanilanBoyaMiktar = Convert.ToDecimal(sabit) * KalipAgirlik;
+        //decimal KullanilanBoyaMiktar = Convert.ToDecimal(sabit) * KalipAgirlik;
         decimal BoyaBirimFiyat = TozBoyaSonBirimFiyat() / 1000;
-        decimal Maliyet = KalipAgirlik * KullanilanBoyaMiktar * BoyaBirimFiyat;
+        decimal Maliyet = sabit * KalipAgirlik * (BoyaBirimFiyat / 1000);
         <td tozBoya-cikar="@Model.KalipId">
             <div class="form-group row parentDiv" UrunType="tozBoya">
                 <div class="col-lg-12 mb-2">
                     <label>Mamül Ağırlık</label>
-                    <input type="text" class="form-control" id="KalipAgirlik" value="@KalipAgirlik.ToString("n2")" disabled />
+                    <input type="text" class="form-control hesaplama" id="KalipAgirlik" value="@KalipAgirlik.ToString("n2")" />
                 </div>
-                <div class="col-lg-12 mb-2">
-                    <label>Kullanılan Boya Miktarı</label>
-                    <input type="text" class="form-control hesaplama" id="BoyaMiktar" value="@KullanilanBoyaMiktar.ToString("n2")" />
-                    <span class="form-text text-muted">( 12 / 1000 ) * Mamül Ağırlık</span>
-                </div>
+                @*<div class="col-lg-12 mb-2">
+                        <label>Kullanılan Boya Miktarı</label>
+                        <input type="text" class="form-control hesaplama" id="BoyaMiktar" value="@KullanilanBoyaMiktar.ToString("n2")" />
+                        <span class="form-text text-muted">( 12 / 1000 ) * Mamül Ağırlık</span>
+                    </div>*@
                 <div class="col-lg-12 mb-2">
                     <label>Boya Birim Fiyat</label>
-                    <input type="text" class="form-control" id="BirimFiyat" value="@BoyaBirimFiyat.ToString("n2")" disabled />
+                    <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@BoyaBirimFiyat.ToString("n2")" />
                 </div>
 
                 <div class="col-lg-12 mb-2">
                     <label>bir adet için üretim maliyeti:</label>
                     <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n2")" />
-                    <span class="form-text text-muted">Mamül Ağırlık * Boya Miktarı * Birim Fiyat</span>
+                    <span class="form-text text-muted">0,0012 * Mamül Ağırlık * (Birim Fiyat / 1000)</span>
                 </div>
             </div>
         </td>
@@ -211,16 +221,28 @@
                     <label>Koli Türü:</label>
                     <select class="form-control" id="KoliBirimFiyat">
                         @{
-                            HammaddeHareket KoliSonHareket = KoliSohHareket();
-                            var KoliBirimFiyat = KoliSonHareket?.BirimFiyat;
 
-                            decimal? KoliBirimMaliyet = KoliBirimFiyat != null ? (KoliBirimFiyat / 1500) : 0;
+                            HammaddeHareket sonHareket = KoliSohHareket();
+                            decimal BantSonFiyat = BaseHammaddeHareketler("bant").OrderByDescending(x => x.HammaddeGirisTarihi).FirstOrDefault().BirimFiyat;
+                            var birimFiyat = sonHareket?.BirimFiyat;
+                            decimal sabit = 0.04M;
+                            var Kapasite = !string.IsNullOrEmpty(kalip.KoliIciAdet) ? Convert.ToInt32(kalip.KoliIciAdet) : 0;
+                            decimal? birimMaliyet;
+                            if (Kapasite != 0)
+                            {
+                                birimMaliyet = birimFiyat != null ? (BantSonFiyat * sabit + birimFiyat) / Kapasite : 0;
+                            }
+                            else
+                            {
+                                birimMaliyet = 0;
+                            }
+
                             string PosetParametre = ViewBag.PosetParametre;
                             var _list = BaseSarfMalzeme().Where(x => x.UrunAdi.ToLower().Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")).ToList();
                             decimal Katsayi = 0;
                             try
                             {
-                                Katsayi = KoliSonHareket.UrunAdi.Contains("43*34*30") ? 0.03M : 0.04M;
+                                Katsayi = sonHareket.UrunAdi.Contains("43*34*30") ? 0.03M : 0.04M;
                             }
                             catch { }
 
@@ -243,12 +265,6 @@
                     </select>
                 </div>
                 <div class="col-lg-12 mb-2">
-
-                    @{
-                        var birimFiyat = ViewBag.KoliSonBirimFiyat;
-                        //decimal koliBandiEkMaliyet = 0.001M;
-                        decimal? birimMaliyet = birimFiyat != null ? (birimFiyat * Katsayi) / 1500 : 0;
-                    }
                     <label>Birim Fiyat:</label>
                     <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@birimFiyat" disabled />
                 </div>
@@ -265,11 +281,11 @@
                     </div>*@
                 <div class="col-lg-12 mb-2">
                     <label>Koli Kapasitesi:</label>
-                    <input type="text" class="form-control hesaplama" id="Kapasite" value="1500" />
+                    <input type="text" class="form-control hesaplama" id="Kapasite" value="@kalip.KoliIciAdet" />
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Birim Maliyet:</label>
-                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N4")" />
+                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N5")" />
                     <span class="form-text text-muted">(BantFiyat * Katsayi + BirimFiyat) / Kapasite</span>
                 </div>
             </div>
@@ -327,10 +343,24 @@
 {
     <tr>
         @{
-            List<HammaddeHareket> Malzemeler = BaskiMalzemeler();
+            List<HammaddeHareket> Malzemeler = YaldizMalzemeListe();
 
             double BirimFiyat = Convert.ToDouble(Malzemeler.FirstOrDefault()?.BirimFiyat);
-            double Maliyet = (BirimFiyat * 40) / 10000;
+            var birim = Malzemeler.FirstOrDefault()?.TableHammaddeBirim?.Birimi;
+            var Bolum = 10000;
+            if (birim.ToLower() == "rulo")
+            {
+                Bolum = 744200;
+            }
+
+            var yaldiz = kalip.Yaldiz;
+            int sabit = 0;
+            if (yaldiz != null && yaldiz != "")
+            {
+                sabit = Convert.ToInt32(yaldiz);
+            }
+
+            double Maliyet = (BirimFiyat * Convert.ToInt32(sabit)) / Bolum;
         }
         <td yaldiz-cikar="@kalip.KalipId">
             <div class="parentDiv" UrunType="yaldiz">
@@ -339,7 +369,7 @@
                     <select class="form-control" id="yaldizSelect">
                         @foreach (var item in Malzemeler)
                         {
-                            <option value="@item.BirimFiyat">@item.UrunAdi ( @item.BirimFiyat TL )</option>
+                            <option birim="@item.TableHammaddeBirim.Birimi" value="@item.BirimFiyat">@item.UrunAdi ( @item.BirimFiyat TL )</option>
                         }
                     </select>
 
@@ -350,12 +380,12 @@
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Kat Sayı:</label>
-                    <input type="text" class="form-control hesaplama" id="KatSayi" value="40" />
+                    <input type="text" class="form-control hesaplama" id="KatSayi" value="@sabit" />
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Birim Maliyet:</label>
                     <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n2")" />
-                    <span class="form-text text-muted">(BirimFiyat * Kat Sayı) / 10000</span>
+                    <span class="form-text text-muted">(BirimFiyat * Kat Sayı) / <span id="yaldizSabit">@Bolum</span></span>
                 </div>
             </div>
 
@@ -424,14 +454,21 @@
     <tr>
         @try
         {
-            double SicakBaskiTamponSaatAdet = 300;
+            var SicakBaskiTamponSaatAdet = kalip.SicakBaskiAdet;
+            int adet = 0;
+            double birimSicakBaskiTamponMaliyet = 0;
             double SicakBaskiTamponSaatMaliyet = 35;
-            double birimSicakBaskiTamponMaliyet = SicakBaskiTamponSaatMaliyet / SicakBaskiTamponSaatAdet;
+            if (SicakBaskiTamponSaatAdet != null && SicakBaskiTamponSaatAdet != "")
+            {
+                adet = Convert.ToInt32(SicakBaskiTamponSaatAdet);
+                birimSicakBaskiTamponMaliyet = SicakBaskiTamponSaatMaliyet / adet;
+            }
+
             <td sicakBaski-cikar="@kalip.KalipId">
                 <div class="form-group row parentDiv" UrunType="sicakbaski">
                     <div class="col-lg-12 mb-2">
                         <label>sıcak baskı tampon saat adet</label>
-                        <input type="text" class="form-control hesaplama" id="SaatAdet" value="@SicakBaskiTamponSaatAdet" />
+                        <input type="text" class="form-control hesaplama" id="SaatAdet" value="@adet" />
                     </div>
                     <div class="col-lg-12 mb-2">
                         <label>sıcak baskı tampon saat maliyet</label>
@@ -459,13 +496,19 @@
         @try
         {
             double PersonelSaatMaliyet = 35;
-            double SaatlikUretimAdet = 300;
-            double Maliyet = PersonelSaatMaliyet / SaatlikUretimAdet;
+            var adet = !string.IsNullOrEmpty(kalip.EgePakMontajAdet) ? Convert.ToInt32(kalip.EgePakMontajAdet) : 0;
+            double Maliyet = 0;
+            if (adet != 0)
+            {
+                Maliyet = PersonelSaatMaliyet / adet;
+            }
+
+
             <td montaj-cikar="@kalip.KalipId">
                 <div class="form-group row parentDiv" UrunType="montaj">
                     <div class="col-lg-12 mb-2">
                         <label>saatlik üretim adedi</label>
-                        <input type="text" class="form-control hesaplama" id="SaatAdet" value="@SaatlikUretimAdet" />
+                        <input type="text" class="form-control hesaplama" id="SaatAdet" value="@adet" />
                     </div>
                     <div class="col-lg-12 mb-2">
                         <label>Personel Saat Maliyet</label>

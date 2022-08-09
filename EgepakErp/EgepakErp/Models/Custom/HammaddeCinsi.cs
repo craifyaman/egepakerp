@@ -27,10 +27,10 @@ namespace EgePakErp.Models
         public string Adi { get; set; }
         public string Aciklamasi { get; set; }
         public bool isAktive { get; set; }
-        //public int? BirimId { get; set; }
 
-        //public int HammaddeBirimiId { get; set; }
-        //public HammaddeBirimi HammaddeBirimi { get; set; }
+        public int? KategoriId { get; set; }
+        public Kategori Kategori { get; set; }
+
 
         public int? TableHammaddeBirimId { get; set; }
         public TableHammaddeBirim TableHammaddeBirim { get; set; }

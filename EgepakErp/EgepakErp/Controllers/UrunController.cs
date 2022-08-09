@@ -111,6 +111,7 @@ namespace EgePakErp.Controllers
                 if (form.UrunId == 0)
                 {
                     form.KalipUrunRelation = form.KalipList.Select(s => new KalipUrunRelation { KalipId = s }).ToList();
+                    form.isAktif = true;
                     repo.Insert(form);
                 }
                 else
@@ -126,13 +127,14 @@ namespace EgePakErp.Controllers
                                 prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
                             }
                         }
-
+                        repo.Update(entity);
 
                         Db.KalipUrunRelation.RemoveRange(Db.KalipUrunRelation.Where(i => i.UrunId == form.UrunId));
                         if (form.KalipList != null)
                         {
                             Db.KalipUrunRelation.AddRange(form.KalipList.Select(s => new KalipUrunRelation { KalipId = s, UrunId = entity.UrunId }));
                         }
+                        
                     }
                 }
                 Db.SaveChanges(CurrentUser.PersonelId);

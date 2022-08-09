@@ -26,6 +26,14 @@ namespace EgePakErp.Models
         public string HammaddeFormul { get; set; }
         public string YollukTip { get; set; }
         public string YollukAgirlik { get; set; }
+        public string Yaldiz { get; set; }
+        public string KoliIciAdet { get; set; }
+
+        public string SicakBaskiAdet { get; set; }
+        public string EgePakMontajAdet { get; set; }
+        public string EvMontajMaliyet { get; set; }
+
+
 
     }
 }

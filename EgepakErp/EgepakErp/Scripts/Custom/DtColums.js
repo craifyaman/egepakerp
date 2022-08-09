@@ -466,12 +466,6 @@
 
             },
             {
-                field: 'UrunCinsi',
-                title: 'UrunCinsi',
-                sortable: false
-
-            },
-            {
                 field: 'Kalip',
                 title: 'Kalıp',
                 ortable: false,
@@ -611,6 +605,51 @@
         return columns;
     }
 
+    function fiyatColumns() {
+        var columns = [
+            {
+                field: 'FiyatId',
+                title: '#',
+                width: 50
+            },
+            {
+                field: 'Aciklama',
+                title: 'Açıklama'
+            },
+            {
+                field: 'Kod',
+                title: 'Kod'
+            },
+            {
+                field: 'Tutar',
+                title: 'Tutar'
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'formTitle = "' + row.FiyatId + ' ' + row.FiyatId + ' Ürün Düzenle"';
+                    str += 'formId = "kalipForm"';
+                    str += 'formUrl = "/Kalip/Form"';
+                    str += 'submitUrl = "/Kalip/Kaydet"';
+                    str += 'event="FiyatFormPopup" href = "#" id = "' + row.FiyatId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    str += ' <a class="btn btn-icon btn-danger mr-1" href = "#" title = "Kalıp Sil" data - toggle="tooltip" data - placement="top" event="KalipSil" KalipId="' + row.FiyatId + '"> <i class="flaticon-cancel" ></i></a>'
+                    str += '<a class="btn btn-icon mr-1 btn-info" event="KalipDetay" href="#" id="' + row.FiyatId + '" title="Kalıp Detay" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
+
+                    return str;
+
+                    return str;
+                },
+            }];
+        return columns;
+    }
+
     return {
         // public functions
         CariColumns: function () {
@@ -639,6 +678,9 @@
         },
         KalipColumns: function () {
             return kalipColumns();
+        },
+        FiyatColumns: function () {
+            return fiyatColumns();
         },
         GetColoums: function (name) {
             if (name == "cari") {

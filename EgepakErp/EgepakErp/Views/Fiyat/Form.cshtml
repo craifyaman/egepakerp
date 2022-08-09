@@ -1,0 +1,43 @@
+﻿@model Fiyat
+<!--begin::Form-->
+<form id="FiyatForm">
+    <input type="hidden" name="FiyatId" value="@(Model?.FiyatId)" />
+
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>Fiyat açıklaması:</label>
+            <input class="form-control" name="Aciklama" type="text" value="@(Model?.Aciklama)">
+        </div>
+
+        <div class="col-lg-12">
+            <label>Tutar:</label>
+            <input class="form-control" name="Tutar" type="text" value="@(Model?.Tutar)">
+        </div>
+
+        <div class="col-lg-12">
+            <label>Kod:</label>
+            <input class="form-control" name="Kod" type="text" value="@(Model?.Kod)">
+        </div>
+
+        <div class="col-lg-12 mt-2">
+            <select name="DovizId" class="form-control">
+                @foreach (var item in baseDoviz)
+                {
+                    string sel = Model?.DovizId == item.DovizId ? "selected" : "";
+                    <option value="@item.DovizId" @sel>@item.Adi</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-lg-12 mt-2">
+            <select name="TableHammaddeBirimId" class="form-control">
+                @foreach (var item in BaseHammaddeBirim())
+                {
+                    string sel = Model?.TableHammaddeBirimId == item.TableHammaddeBirimId? "selected" : "";
+                    <option value="@item.TableHammaddeBirimId" @sel>@item.Birimi</option>
+                }
+            </select>
+        </div>
+    </div>
+</form>
+<!--end::Form-->

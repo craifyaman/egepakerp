@@ -30,6 +30,13 @@ namespace EgePakErp.Models
         public bool isAktive { get; set; }
         public string KalipEtiket { get; set; }
         public string HammaddeFormul { get; set; }
+        public string Yaldiz { get; set; }
+        public string KoliIciAdet { get; set; }
+        public bool isHazirMalzeme { get; set; } = false;
+        public string SicakBaskiAdet { get; set; }
+        public string EgePakMontajAdet { get; set; }
+        public string EvMontajMaliyet { get; set; }
+
 
         public virtual ICollection<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }
         public virtual ICollection<KalipUrunRelation> KalipUrunRelation { get; set; }

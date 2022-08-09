@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web.Mvc;
+using System.Data.Entity;
+
 
 namespace EgePakErp.Controllers
 {
@@ -48,20 +50,23 @@ namespace EgePakErp.Controllers
                 var list = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId && !exclude.Contains(x.KalipId)).Select(x => x.Kalip).ToList();
                 model.AddRange(list);
             }
+            var urun = Db.Urun.Include(x => x.UrunCinsi).FirstOrDefault(x => x.UrunId == urunId);
             return PartialView(model);
         }
 
-        public PartialViewResult MaliyetForm(List<int> idList)
+        public PartialViewResult MaliyetForm(List<int> idList, int urunId)
         {
             ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("toz")).BirimFiyat;
-            //ViewBag.BaskiMalzemeler = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.HammaddeCinsiId == 6632).ToList();
             ViewBag.PosetSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("poşet")).BirimFiyat;
             ViewBag.KoliSonHareket = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
+            ViewBag.urunId = urunId;
             var kaliplar = Db.Kalip
                 .Include("KalipHammaddeRelation")
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
+                .Include("KalipUrunRelation.Urun")
+                .Include("KalipUrunRelation.Urun.UrunCinsi")
                 .Where(i => idList.Contains(i.KalipId)).ToList();
             return PartialView(kaliplar);
         }
