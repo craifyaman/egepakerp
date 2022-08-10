@@ -17,7 +17,8 @@ namespace EgePakErp.Models
         public bool isAktif { get; set; }
         public bool isPimUsed { get; set; }
         public bool isTutkalUsed { get; set; } = false;
-        public bool isSilikonYagiTinerUsed { get; set; }
+        public bool isSilikonYagiUsed { get; set; }
+        public bool isTinerUsed { get; set; }
 
         [NotMapped]
         public string UrunKodu { get; set; }

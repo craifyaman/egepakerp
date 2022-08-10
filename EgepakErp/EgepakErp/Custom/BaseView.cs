@@ -419,10 +419,10 @@ namespace EgePakErp.Custom
 
         public List<HammaddeHareket> BaseSarfMalzeme()
         {
-            var id = db.HammaddeCinsi.FirstOrDefault(x => x.Adi == "SARF MALZEME").HammaddeCinsiId;
+            var katId = db.Kategori.FirstOrDefault(x => x.Adi == "sarf malzeme").KategoriId;
             return db.HammaddeHareket
               .Include("Tedarikci")
-              .Where(i => i.HammaddeCinsiId == id).ToList();
+              .Where(i => i.KategoriId == katId).ToList();
         }
 
 

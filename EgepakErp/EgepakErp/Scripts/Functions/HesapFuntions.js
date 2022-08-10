@@ -3,12 +3,10 @@
     var kalipAgirlik = parseFloat($("#kalipAgirlik").val().replace(",", "."));
     var BirimFiyatInput = $("#BirimFiyat");
     var birimFiyat = BirimFiyatInput.val().replace(",", ".");
-    var fireOran = $("#HammaddeSelect option:selected").attr("FireOran");
-    var evMontaj = parseFloat($("#evMontaj").val().replace(",", "."));
+    var fireOran = parseFloat($("#HammaddeSelect option:selected").attr("FireOran"));
+    fireOran = (100 + fireOran) / 100;
     var sonuc = ((birimFiyat * fireOran) / 1000) * kalipAgirlik;
-    sonuc += evMontaj;
     var target = $(".Fiyat");
-
     BirimFiyatInput.val(birimFiyat)
     target.val(sonuc.toFixed(2));
 }
@@ -66,7 +64,8 @@ function HesapFunctionEnjeksiyon() {
     var SaatMaliyet = $("#SaatMaliyet").val().replace(",", ".");
     var UretimZamani = $("#UretimZamani").val().replace(",", ".");
     var GozSayisi = $("#GozSayisi").val().replace(",", ".");
-    var sonuc = ((3600 / UretimZamani) * GozSayisi) / (SaatMaliyet);
+
+    var sonuc = SaatMaliyet / ((3600 / UretimZamani) * GozSayisi);
     var target = $(".Fiyat");
     target.val(sonuc.toFixed(2));
 }

@@ -114,13 +114,9 @@
 
     var birimFiyat = sonHammaddeHareket?.BirimFiyat;
     var FireOran = kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi).FirstOrDefault().HammaddeFire?.Oran;
+    FireOran = (100 + FireOran) / 100;
     decimal? birimMaliyet = birimFiyat != null ? ((birimFiyat * (decimal)FireOran) / 1000) * kalip.ParcaAgirlik : 0;
-    decimal evMontajMaliyet = 0;
-    if (kalip.EvMontajMaliyet != null && kalip.EvMontajMaliyet != "")
-    {
-        evMontajMaliyet += Convert.ToDecimal(kalip.EvMontajMaliyet);
-    }
-    birimMaliyet += evMontajMaliyet;
+
     <div class="form-group row parentDiv" UrunType="hammadde">
         <div class="col-lg-12 mb-2">
             <label>Hammadde Cinsi:</label>
@@ -150,10 +146,6 @@
                 <label>Mamül Ağırlık:</label>
                 <input type="text" class="form-control hesaplama" id="kalipAgirlik" value="@kalip.ParcaAgirlik" />
             </div>
-            <div class="form-group">
-                <label>Ev Montaj Maliyet:</label>
-                <input type="text" class="form-control hesaplama" id="evMontaj" value="@evMontajMaliyet" />
-            </div>
 
             <div class="form-group">
                 <label>Birim Maliyet:</label>
@@ -168,11 +160,11 @@
 {
     try
     {
-        decimal sabit = 12 / 1000;
-        decimal KalipAgirlik = (decimal)Model.ParcaAgirlik;
-        //decimal KullanilanBoyaMiktar = Convert.ToDecimal(sabit) * KalipAgirlik;
+        var sabit = 0.0012;
+        decimal KalipAgirlik = (decimal)kalip.ParcaAgirlik;
         decimal BoyaBirimFiyat = TozBoyaSonBirimFiyat() / 1000;
-        decimal Maliyet = sabit * KalipAgirlik * (BoyaBirimFiyat / 1000);
+        decimal Maliyet = (decimal)sabit * KalipAgirlik * (BoyaBirimFiyat / 1000);
+
         <td tozBoya-cikar="@Model.KalipId">
             <div class="form-group row parentDiv" UrunType="tozBoya">
                 <div class="col-lg-12 mb-2">
@@ -191,7 +183,7 @@
 
                 <div class="col-lg-12 mb-2">
                     <label>bir adet için üretim maliyeti:</label>
-                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n2")" />
+                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet" />
                     <span class="form-text text-muted">0,0012 * Mamül Ağırlık * (Birim Fiyat / 1000)</span>
                 </div>
             </div>
@@ -398,7 +390,7 @@
     try
     {
         double enjeksiyonSaatMaliyet = 100;
-        double birAdetUrunUretimMaliyeti = ((3600 / (int)kalip.UretimZamani) * (int)kalip.KalipGozSayisi) / enjeksiyonSaatMaliyet;
+        double birAdetUrunUretimMaliyeti = enjeksiyonSaatMaliyet / ((3600 / (int)kalip.UretimZamani) * (int)kalip.KalipGozSayisi);
 
         <div class="form-group row parentDiv" UrunType="enjeksiyon">
             <div class="col-lg-12 mb-2">
@@ -417,7 +409,7 @@
             <div class="col-lg-12 mb-2">
                 <label>bir adet için üretim maliyeti</label>
                 <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birAdetUrunUretimMaliyeti.ToString("N2")" placeholder="(3600/üretim zamanı)*(göz sayısı/enjeksiyon saat maliyet)" />
-                <span class="form-text text-muted">( (3600/üretim zamanı) * göz sayısı ) / ( enjeksiyon saat maliyet )</span>
+                <span class="form-text text-muted">( enjeksiyon saat maliyet ) / ( (3600/üretim zamanı) * göz sayısı )</span>
             </div>
         </div>
 

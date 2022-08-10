@@ -32,7 +32,7 @@ namespace EgePakErp.Controllers
         /// <returns></returns>
         /// 
 
-       // [Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
+       //[Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
         public ActionResult Index()
         {
             return View();
@@ -198,7 +198,7 @@ namespace EgePakErp.Controllers
         public void YanSanayiStok()
         {
             var dataset = new DataSet();
-            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Yan_Sanayi_Stok_Aktarim_08_08_2022_1.xlsx", FileMode.Open, FileAccess.Read))
+            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Yan_Sanayi_Stok_Aktarim_10_08_2022_1.xlsx", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
@@ -290,7 +290,7 @@ namespace EgePakErp.Controllers
             var YanSanayiStok = Db.YanSanayiStok.FirstOrDefault(x => x.YanMamul == "PİM");
             var PimUrunListe = YanSanayiStok.UrunAdi.Split(',');
 
-            var YanSanayiTutkal = Db.YanSanayiStok.FirstOrDefault(x => x.YanMamul == "TUTKAL+TİNER");
+            var YanSanayiTutkal = Db.YanSanayiStok.FirstOrDefault(x => x.YanMamul == "TUTKAL");
             var TutkalUrunListe = YanSanayiTutkal.UrunAdi.Split(',');
 
 
@@ -931,7 +931,7 @@ namespace EgePakErp.Controllers
             Db.Fiyat.AddRange(fiyatList);
             Db.BulkSaveChanges();
         }
-
+      
         public void HammaddeCinsiKategori()
         {
             var KategoriListe = Db.Kategori.ToList();
@@ -1003,9 +1003,10 @@ namespace EgePakErp.Controllers
 
                 foreach (var item in urunList)
                 {
-                    if(item.UrunNo != "43")
-                    {
-                        item.isSilikonYagiTinerUsed = true;
+                    item.isSilikonYagiUsed = true;
+                    if (item.UrunNo != "43")
+                    {                        
+                        item.isTinerUsed = true;
                     }
                 }
                 Db.BulkSaveChanges();
@@ -1065,6 +1066,7 @@ namespace EgePakErp.Controllers
             HammaddeCinsiKategori();
             FiyatListe("ayna");
             FiyatListe("POMPA");
+            FiyatListe("ponpon");
             TumUrun("TÜM MASKARA (MS)", "MS");
             TumUrun("TÜM DIPLINER (DL)", "DL");
             TumUrun("TÜM EYELINER (EL)", "EL");

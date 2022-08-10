@@ -275,6 +275,10 @@
     <Compile Include="Migrations\202208090842228_add_rujSilikonYagiTiner_to_urun.designer.cs">
       <DependentUpon>202208090842228_add_rujSilikonYagiTiner_to_urun.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208101148263_tiner_silikonyagi_ayirma.cs" />
+    <Compile Include="Migrations\202208101148263_tiner_silikonyagi_ayirma.designer.cs">
+      <DependentUpon>202208101148263_tiner_silikonyagi_ayirma.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\HammaddeFire.cs" />
     <Compile Include="Models\Custom\HazirMalzemeFiyat.cs" />
     <Compile Include="Models\Custom\HammaddeHareket.cs" />
@@ -2742,6 +2746,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208090842228_add_rujSilikonYagiTiner_to_urun.resx">
       <DependentUpon>202208090842228_add_rujSilikonYagiTiner_to_urun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208101148263_tiner_silikonyagi_ayirma.resx">
+      <DependentUpon>202208101148263_tiner_silikonyagi_ayirma.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
