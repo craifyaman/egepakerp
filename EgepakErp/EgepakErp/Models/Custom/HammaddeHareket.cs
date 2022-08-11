@@ -42,6 +42,8 @@ namespace EgePakErp.Models
         public virtual Marka Marka { get; set; }
 
         public decimal? KdvTutarı { get; set; }
+        public string ExtraData { get; set; }
+
 
         public int? KdvOranı { get; set; }
         [NotMapped]

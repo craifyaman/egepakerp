@@ -36,6 +36,7 @@ namespace EgePakErp.Models
         public string SicakBaskiAdet { get; set; }
         public string EgePakMontajAdet { get; set; }
         public string EvMontajMaliyet { get; set; }
+        public string KromPlastMetalizeBrFiyat { get; set; }
 
 
         public virtual ICollection<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }

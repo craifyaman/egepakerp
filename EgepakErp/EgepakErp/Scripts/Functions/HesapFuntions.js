@@ -3,12 +3,12 @@
     var kalipAgirlik = parseFloat($("#kalipAgirlik").val().replace(",", "."));
     var BirimFiyatInput = $("#BirimFiyat");
     var birimFiyat = BirimFiyatInput.val().replace(",", ".");
-    var fireOran = parseFloat($("#HammaddeSelect option:selected").attr("FireOran"));
+    var fireOran = parseFloat($("#fireOran").val().replace(",", "."));
     fireOran = (100 + fireOran) / 100;
     var sonuc = ((birimFiyat * fireOran) / 1000) * kalipAgirlik;
     var target = $(".Fiyat");
     BirimFiyatInput.val(birimFiyat)
-    target.val(sonuc.toFixed(2));
+    target.val(sonuc.toFixed(3));
 }
 
 function HesapFunctionTozBoya() {
@@ -51,7 +51,7 @@ function HesapFunctionYaldiz() {
     var birimFiyat = $("#BirimFiyat").val().replace(",", ".");
     var birim = $("#yaldizSelect option:selected").attr("birim");
     var Bolum = 10000;
-    if (birim.toLowerCase() == "RULO") {
+    if (birim.toLowerCase() == "rulo") {
         Bolum = 744200;
     }
     var sonuc = (birimFiyat * katSayi) / Bolum;

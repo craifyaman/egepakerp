@@ -133,7 +133,11 @@ namespace EgePakErp.Custom
                 .Include("Tedarikci")
                 .Where(i => i.HammaddeCinsiId == id).ToList();
         }
-
+        public List<HammaddeHareket> baseHammaddeHareket()
+        {
+            return db.HammaddeHareket
+                .Include("Tedarikci").ToList();
+        }
         public List<Cari> baseCari
         {
             get
@@ -306,16 +310,8 @@ namespace EgePakErp.Custom
         {
             get
             {
-                if (Session["Urun"] == null)
-                {
-                    var list = db.Urun.Include("UrunCinsi").ToList();
-                    Session["Urun"] = list;
-                    return list;
-                }
-                else
-                {
-                    return (List<Urun>)Session["Urun"];
-                }
+                var list = db.Urun.Include("UrunCinsi").ToList();
+                return list;
             }
             set { }
         }
@@ -361,17 +357,17 @@ namespace EgePakErp.Custom
         public List<HammaddeHareket> YaldizMalzemeListe()
         {
             var Kategori = db.Kategori.FirstOrDefault(x => x.Adi.Contains("yaldız"));
-            if(Kategori == null)
+            if (Kategori == null)
             {
                 return null;
             }
             var liste = db.HammaddeHareket
                 .OrderByDescending(x => x.KayitTarihi)
                 .Where(x => x.KategoriId == Kategori.KategoriId)
-                .Include(x=>x.TableHammaddeBirim)
+                .Include(x => x.TableHammaddeBirim)
                 .ToList();
             return liste;
-            
+
         }
 
 
@@ -407,7 +403,7 @@ namespace EgePakErp.Custom
         {
             var list = db.HammaddeHareket
                 .Include("Doviz")
-                .Include(x=>x.HammaddeCinsi)
+                .Include(x => x.HammaddeCinsi)
                 .ToList();
             return list;
         }
@@ -416,7 +412,16 @@ namespace EgePakErp.Custom
             var liste = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
             return liste;
         }
-
+        public List<HammaddeHareket> KoliHareketler()
+        {
+            var liste = db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).Where(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı")).ToList();
+            return liste;
+        }
+        public List<KoliTur> BaseKoliTur()
+        {
+            var liste = db.KoliTur.ToList();
+            return liste;
+        }
         public List<HammaddeHareket> BaseSarfMalzeme()
         {
             var katId = db.Kategori.FirstOrDefault(x => x.Adi == "sarf malzeme").KategoriId;
@@ -439,24 +444,24 @@ namespace EgePakErp.Custom
         public List<Fiyat> BaseFiyat()
         {
             var list = db.Fiyat
-                .Include(x=>x.Doviz)
+                .Include(x => x.Doviz)
                 .ToList();
             return list;
         }
 
         public decimal BaseKur(string kurType, DateTime date)
         {
-            if(date == null)
+            if (date == null)
             {
                 date = DateTime.Now;
             }
-            if(kurType == EDoviz.USD.ToString())
+            if (kurType == EDoviz.USD.ToString())
             {
                 var usdKur = DovizHelper.DovizKuruGetir("USD", date);
                 return usdKur;
             }
 
-            if(kurType == EDoviz.EUR.ToString())
+            if (kurType == EDoviz.EUR.ToString())
             {
                 var eurKur = DovizHelper.DovizKuruGetir("EUR", date);
                 return eurKur;
@@ -471,32 +476,32 @@ namespace EgePakErp.Custom
             var controlleractionlist = asm.GetTypes()
                     .Where(type => typeof(Controller).IsAssignableFrom(type) && type.Namespace == nameSpace).ToList();
 
-                    var cList= controlleractionlist.SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
-                    .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
-                    .Select(x => new
-                    {
-                        Controller = x.DeclaringType.Name,
-                        Action = x.Name,
-                        ReturnType = x.ReturnType.Name,
-                        Attributes = String.Join(",", x.GetCustomAttributes().Select(a => a.GetType().Name.Replace("Attribute", ""))),
-                        Attribute = x.GetCustomAttributes().FirstOrDefault(f => f.GetType().Name == pre + "Attribute"),
-                        NameSpace = nameSpace
-                    });
-                     
-                    var list= cList.Where(x => x.Attributes.Contains(pre))
-                    .Select(x => new BaseMenu
-                    {
-                        Parent = x.Attribute.GetType().GetProperty("Parent").GetValue(x.Attribute, null).ToString(),
-                        Title = x.Attribute.GetType().GetProperty("Title").GetValue(x.Attribute, null).ToString(),
-                        Icon = x.Attribute.GetType().GetProperty("Icon").GetValue(x.Attribute, null).ToString(),
-                        Order = Convert.ToInt32(x.Attribute.GetType().GetProperty("Order").GetValue(x.Attribute, null).ToString()),
-                        ParentOrder = Convert.ToInt32(x.Attribute.GetType().GetProperty("ParentOrder").GetValue(x.Attribute, null).ToString()),
-                        Url = "/" + x.Controller.Replace("Controller", "") + "/" + x.Action,
+            var cList = controlleractionlist.SelectMany(type => type.GetMethods(BindingFlags.Instance | BindingFlags.DeclaredOnly | BindingFlags.Public))
+            .Where(m => !m.GetCustomAttributes(typeof(System.Runtime.CompilerServices.CompilerGeneratedAttribute), true).Any())
+            .Select(x => new
+            {
+                Controller = x.DeclaringType.Name,
+                Action = x.Name,
+                ReturnType = x.ReturnType.Name,
+                Attributes = String.Join(",", x.GetCustomAttributes().Select(a => a.GetType().Name.Replace("Attribute", ""))),
+                Attribute = x.GetCustomAttributes().FirstOrDefault(f => f.GetType().Name == pre + "Attribute"),
+                NameSpace = nameSpace
+            });
 
-                    })
-                    .OrderBy(x => x.ParentOrder)
-                    .ThenBy(x => x.Order)
-                    .ToList();
+            var list = cList.Where(x => x.Attributes.Contains(pre))
+            .Select(x => new BaseMenu
+            {
+                Parent = x.Attribute.GetType().GetProperty("Parent").GetValue(x.Attribute, null).ToString(),
+                Title = x.Attribute.GetType().GetProperty("Title").GetValue(x.Attribute, null).ToString(),
+                Icon = x.Attribute.GetType().GetProperty("Icon").GetValue(x.Attribute, null).ToString(),
+                Order = Convert.ToInt32(x.Attribute.GetType().GetProperty("Order").GetValue(x.Attribute, null).ToString()),
+                ParentOrder = Convert.ToInt32(x.Attribute.GetType().GetProperty("ParentOrder").GetValue(x.Attribute, null).ToString()),
+                Url = "/" + x.Controller.Replace("Controller", "") + "/" + x.Action,
+
+            })
+            .OrderBy(x => x.ParentOrder)
+            .ThenBy(x => x.Order)
+            .ToList();
             return list;
 
 

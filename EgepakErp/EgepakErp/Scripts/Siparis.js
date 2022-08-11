@@ -201,9 +201,9 @@
     }
 
 
-    function maliyetDetayGetir(maliyetType, kalipId, PosetParametre) {
+    function maliyetDetayGetir(maliyetType, kalipId, PosetParametre, urunId) {
         Post("/siparis/MaliyetDetay",
-            { MaliyetType: maliyetType, KalipId: kalipId, PosetParametre: PosetParametre },
+            { MaliyetType: maliyetType, KalipId: kalipId, PosetParametre: PosetParametre, urunId: urunId },
             function (response) {
                 bootbox.dialog({
                     title: maliyetType.toUpperCase() + " DETAY",
@@ -417,7 +417,8 @@
             var MaliyetType = $(this).attr("maliyetType");
             var KalipId = $(this).attr("kalipId");
             var PosetParametre = $("#PosetParametre_" + KalipId).val();
-            maliyetDetayGetir(MaliyetType, KalipId, PosetParametre);
+            var urunId = $("#UrunId").val();
+            maliyetDetayGetir(MaliyetType, KalipId, PosetParametre, urunId);
         });
 
         $(document).on("click", "[event='FaturadanCikar']", function (event) {

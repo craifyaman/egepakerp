@@ -32,7 +32,7 @@ namespace EgePakErp.Controllers
         /// <returns></returns>
         /// 
 
-       //[Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
+        [Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
         public ActionResult Index()
         {
             return View();
@@ -145,7 +145,7 @@ namespace EgePakErp.Controllers
         public void HamUrunGroup()
         {
             var dataset = new DataSet();
-            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Ham_Urun_Group_Aktarim_09_08_2022_1.xlsx", FileMode.Open, FileAccess.Read))
+            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Ham_Urun_Group_Aktarim_11_08_2022_3.xlsx", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
@@ -182,6 +182,7 @@ namespace EgePakErp.Controllers
                     UrunGroup.SicakBaskiAdet = currentRow.ItemArray[17]?.ToString();
                     UrunGroup.EgePakMontajAdet = currentRow.ItemArray[18]?.ToString();
                     UrunGroup.EvMontajMaliyet = currentRow.ItemArray[19]?.ToString();
+                    UrunGroup.KromPlastMetalizeBrFiyat = currentRow.ItemArray[20]?.ToString();
 
                     list.Add(UrunGroup);
                 }
@@ -445,7 +446,8 @@ namespace EgePakErp.Controllers
                         KoliIciAdet = x.FirstOrDefault().KoliIciAdet,
                         SicakBaskiAdet = x.FirstOrDefault().SicakBaskiAdet,
                         EgePakMontajAdet = x.FirstOrDefault().EgePakMontajAdet,
-                        EvMontajMaliyet = x.FirstOrDefault().EvMontajMaliyet
+                        EvMontajMaliyet = x.FirstOrDefault().EvMontajMaliyet,
+                        KromPlastMetalizeBrFiyat = x.FirstOrDefault().KromPlastMetalizeBrFiyat
 
                     })
                     .ToList();
@@ -611,6 +613,14 @@ namespace EgePakErp.Controllers
                     catch
                     {
                     }
+                    //KromPlastMetalizeBrFiyat eşleştirme
+                    try
+                    {
+                        kalip.KromPlastMetalizeBrFiyat = item.KromPlastMetalizeBrFiyat;
+                    }
+                    catch
+                    {
+                    }
                     list.Add(kalip);
                 }
 
@@ -683,7 +693,7 @@ namespace EgePakErp.Controllers
             var Kategoriler = Db.Kategori.ToList();
 
             var dataset = new DataSet();
-            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Hammadde_Hareket_Aktarim_06_08_2022_1.xlsx", FileMode.Open, FileAccess.Read))
+            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Hammadde_Hareket_Aktarim_11_08_2022_2.xlsx", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
@@ -705,7 +715,7 @@ namespace EgePakErp.Controllers
                     hareket.UrunAdi = currentRow.ItemArray[5].ToString();
 
                     //tedarikci eşleştirmesi
-                    string cariUnvan = currentRow.ItemArray[4].ToString().ToLower();
+                   string cariUnvan = currentRow.ItemArray[4].ToString().ToLower();
                     try
                     {
                         hareket.TedarikciId = Cariler.Where(x => x.Unvan.ToLower().Contains(cariUnvan)).FirstOrDefault().CariId;
@@ -849,7 +859,16 @@ namespace EgePakErp.Controllers
 
                     // doviz eşleştirmesi son
 
-
+                    //Extra data ekleme
+                    try
+                    {
+                        var extraData = currentRow.ItemArray[12].ToString();
+                        hareket.ExtraData = extraData;
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                    //Extra data ekleme son
 
 
                     list.Add(hareket);
@@ -926,12 +945,13 @@ namespace EgePakErp.Controllers
                     }
                 }
                 catch { }
+
             }
 
             Db.Fiyat.AddRange(fiyatList);
             Db.BulkSaveChanges();
         }
-      
+
         public void HammaddeCinsiKategori()
         {
             var KategoriListe = Db.Kategori.ToList();
@@ -1005,7 +1025,7 @@ namespace EgePakErp.Controllers
                 {
                     item.isSilikonYagiUsed = true;
                     if (item.UrunNo != "43")
-                    {                        
+                    {
                         item.isTinerUsed = true;
                     }
                 }
@@ -1067,6 +1087,7 @@ namespace EgePakErp.Controllers
             FiyatListe("ayna");
             FiyatListe("POMPA");
             FiyatListe("ponpon");
+            FiyatListe("PİM");
             TumUrun("TÜM MASKARA (MS)", "MS");
             TumUrun("TÜM DIPLINER (DL)", "DL");
             TumUrun("TÜM EYELINER (EL)", "EL");

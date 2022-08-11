@@ -56,9 +56,9 @@ namespace EgePakErp.Controllers
 
         public PartialViewResult MaliyetForm(List<int> idList, int urunId)
         {
-            ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("toz")).BirimFiyat;
-            ViewBag.PosetSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("poşet")).BirimFiyat;
-            ViewBag.KoliSonHareket = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
+            ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.ToLower().Contains("toz")).BirimFiyat;
+            ViewBag.PosetSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.ToLower().Contains("poşet")).BirimFiyat;
+            ViewBag.KoliSonHareket = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.ToLower().Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
             ViewBag.urunId = urunId;
             var kaliplar = Db.Kalip
                 .Include("KalipHammaddeRelation")
@@ -120,7 +120,7 @@ namespace EgePakErp.Controllers
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
         }
-        public PartialViewResult MaliyetDetay(string MaliyetType, int KalipId, string PosetParametre = "0.060")
+        public PartialViewResult MaliyetDetay(string MaliyetType, int KalipId, int urunId, string PosetParametre = "0.060")
         {
             var Kalip = Db.Kalip
                 .Include("KalipHammaddeRelation")
@@ -137,6 +137,7 @@ namespace EgePakErp.Controllers
             ViewBag.HamMaddeHareket = Db.HammaddeHareket.ToList();
             ViewBag.KoliSonHareket = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
             ViewBag.PosetParametre = PosetParametre;
+            ViewBag.urunId = urunId;
             return PartialView(Kalip);
 
         }

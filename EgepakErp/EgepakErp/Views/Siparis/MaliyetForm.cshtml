@@ -4,6 +4,8 @@
 @{
     decimal malzemeToplamMaliyet = 0;
     decimal uretimToplamMaliyet = 0;
+    var urnId = ViewBag.urunId;
+    Urun UretimUrun = baseUrun.FirstOrDefault(x => x.UrunId == urnId);
 }
 
 <table class="table table-bordered table-hover table-sm mt-8">
@@ -60,7 +62,7 @@
                                 </span>
                             }
 
-                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" HesplamaType="malzeme" value="@birimMaliyet.Value.ToString("N2")" />
+                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" HesplamaType="malzeme" value="@birimMaliyet.Value.ToString("N3")" />
                             <span hammadde-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="hammadde" event="FaturadanCikar">
                                 -
                             </span>
@@ -131,8 +133,10 @@
             }
         </tr>
     </thead>
+
     <tbody>
-        <tr>
+        @*
+            <tr>
             <td>Sıcak Baskı Yaldız <br />Tampon Baskı Boya</td>
             @foreach (var kalip in Model)
             {
@@ -177,7 +181,9 @@
             }
 
 
-        </tr>
+        </tr>*@
+
+
         <tr>
             <td>Intercom varak Yaldız</td>
             @foreach (var kalip in Model)
@@ -225,6 +231,7 @@
 
         </tr>
     </tbody>
+
 </table>
 
 <table class="table table-bordered table-hover table-sm mt-8">
@@ -263,17 +270,23 @@
             <td>Metalize Kaplama</td>
             @foreach (var kalip in Model)
             {
-                if (!kalip.isHazirMalzeme)
+                if (!kalip.isHazirMalzeme && !string.IsNullOrEmpty(kalip.KromPlastMetalizeBrFiyat))
                 {
+                    var fiyat = Convert.ToDecimal(kalip.KromPlastMetalizeBrFiyat);
+                    var KarliFiyat = fiyat + (fiyat * 50 / 100);
+
                     <td metalize-cikar="@kalip.KalipId" HazirMalzemeMi="@kalip.isHazirMalzeme.ToString()">
                         <div class="col-lg-12 mb-2">
                             <label>Maliyet:</label>
                             <div class="input-group mb-5">
-                                <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="0" />
+                                <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@KarliFiyat" />
                                 <span metalize-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="metalize" event="FaturadanCikar">
                                     -
                                 </span>
                             </div>
+                        </div>
+                        <div>
+                            Alış Fiyatı @fiyat
                         </div>
                     </td>
                 }
@@ -303,10 +316,15 @@
             <td>Koli + Koli Bandı</td>
             @foreach (var kalip in Model)
             {
+                var urunCins = UretimUrun.UrunCinsi.Kisaltmasi;
                 HammaddeHareket sonHareket = ViewBag.KoliSonHareket;
                 decimal BantSonFiyat = BaseHammaddeHareketler("bant").OrderByDescending(x => x.HammaddeGirisTarihi).FirstOrDefault().BirimFiyat;
                 var birimFiyat = sonHareket?.BirimFiyat;
                 decimal sabit = 0.04M;
+                if (urunCins.ToLower() != "kv")
+                {
+                    sabit = 0.03M;//kavanoz kolisi olmayanlar - 0.03
+                }
                 var Kapasite = !string.IsNullOrEmpty(kalip.KoliIciAdet) ? Convert.ToInt32(kalip.KoliIciAdet) : 0;
                 decimal? birimMaliyet;
                 if (Kapasite != 0)
@@ -317,9 +335,6 @@
                 {
                     birimMaliyet = 0;
                 }
-
-
-
                 <input id="PosetParametre_@kalip.KalipId" type="hidden" value="0" />
                 <td koli-cikar="@kalip.KalipId" HazirMalzemeMi="@kalip.isHazirMalzeme.ToString()">
                     <div class="col-lg-12 mb-2">
@@ -345,6 +360,10 @@
                 var birimFiyat = ViewBag.PosetSonBirimFiyat;
                 decimal? birimMaliyet = birimFiyat != null ? (birimFiyat / 1500) * kalip.ParcaAgirlik : 0;
 
+                if (string.IsNullOrEmpty(kalip.KoliIciAdet))
+                {
+                    birimMaliyet = 0;
+                }
                 <td poset-cikar="@kalip.KalipId" HazirMalzemeMi="@kalip.isHazirMalzeme.ToString()">
                     <div class="col-lg-12 mb-2">
                         <label>Birim Fiyat:</label>
@@ -376,13 +395,19 @@
     <tbody>
         @if (Model.FirstOrDefault().KalipUrunRelation.FirstOrDefault().Urun.isPimUsed)
         {
-            var pim = BaseHammaddeHareketler("pim").FirstOrDefault();
+            var pim = BaseFiyat().FirstOrDefault(x => x.Kod == "452"); //452 pim fiyat tablosundaki kod, yan sanayi stok dosyasından geliyor, kalıp gibi eklenmiştir.
             decimal pimFiyat = 0;
             if (pim != null)
             {
-                pimFiyat = pim.ToplamTutar;
+                pimFiyat = pim.Tutar;
+            }
+            if (pim != null && pim.DovizId != null && pim.DovizId != 1)
+            {
+                var kur = BaseKur(pim.Doviz.Kisaltma, DateTime.Now);
+                pimFiyat *= kur;
             }
             var Maliyet = (pimFiyat / 1000) * (decimal)0.3;
+
             <tr>
                 <td>Pim Maliyeti</td>
                 <td yanMalzeme-cikar="pim">
@@ -392,7 +417,7 @@
                             @*<span class="input-group-text" event="MaliyetDetay" maliyetType="koli" kalipId="">
                                     <i class="flaticon-mark"></i>
                                 </span>*@
-                            <input HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet" />
+                            <input HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n3")" />
                         </div>
                     </div>
                 </td>

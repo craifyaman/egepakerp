@@ -187,6 +187,7 @@
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
     <Compile Include="DtModels\MaliyetDto.cs" />
+    <Compile Include="Enums\EKoliTur.cs" />
     <Compile Include="Enums\EDoviz.cs" />
     <Compile Include="Enums\FaturaOrtalama.cs" />
     <Compile Include="Helper\DovizHelper.cs" />
@@ -279,6 +280,19 @@
     <Compile Include="Migrations\202208101148263_tiner_silikonyagi_ayirma.designer.cs">
       <DependentUpon>202208101148263_tiner_silikonyagi_ayirma.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208111244555_add_KromPlastMetalizeFiyat_to_Hamurungroup_and_kalip.cs" />
+    <Compile Include="Migrations\202208111244555_add_KromPlastMetalizeFiyat_to_Hamurungroup_and_kalip.designer.cs">
+      <DependentUpon>202208111244555_add_KromPlastMetalizeFiyat_to_Hamurungroup_and_kalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208111417455_ekle_hammaddehareket_extraData.cs" />
+    <Compile Include="Migrations\202208111417455_ekle_hammaddehareket_extraData.designer.cs">
+      <DependentUpon>202208111417455_ekle_hammaddehareket_extraData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208111453286_create_koliTur_Table.cs" />
+    <Compile Include="Migrations\202208111453286_create_koliTur_Table.designer.cs">
+      <DependentUpon>202208111453286_create_koliTur_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\KoliTur.cs" />
     <Compile Include="Models\Custom\HammaddeFire.cs" />
     <Compile Include="Models\Custom\HazirMalzemeFiyat.cs" />
     <Compile Include="Models\Custom\HammaddeHareket.cs" />
@@ -2749,6 +2763,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208101148263_tiner_silikonyagi_ayirma.resx">
       <DependentUpon>202208101148263_tiner_silikonyagi_ayirma.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208111244555_add_KromPlastMetalizeFiyat_to_Hamurungroup_and_kalip.resx">
+      <DependentUpon>202208111244555_add_KromPlastMetalizeFiyat_to_Hamurungroup_and_kalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208111417455_ekle_hammaddehareket_extraData.resx">
+      <DependentUpon>202208111417455_ekle_hammaddehareket_extraData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208111453286_create_koliTur_Table.resx">
+      <DependentUpon>202208111453286_create_koliTur_Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

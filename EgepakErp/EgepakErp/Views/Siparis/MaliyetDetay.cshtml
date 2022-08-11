@@ -1,10 +1,14 @@
-﻿@model Kalip
+﻿@using EgepakErp.Enums;
+
+@model Kalip
 @{
     string type = ViewBag.MaliyetType;
     Kalip kalip = Model;
     List<HammaddeHareket> hareketler = ViewBag.HamMaddeHareket;
     var hammaddeCinsleri = Model.KalipHammaddeRelation.Select(i => i.HammaddeCinsi);
+    int _uretimUrunID = ViewBag.urunId;
 
+    Urun UretimUrun = baseUrun.FirstOrDefault(x => x.UrunId == _uretimUrunID);
 }
 
 @if (type == "hammadde")
@@ -121,6 +125,7 @@
         <div class="col-lg-12 mb-2">
             <label>Hammadde Cinsi:</label>
             <select class="form-control" id="HammaddeSelect">
+
                 @foreach (var item in kalip.KalipHammaddeRelation.Select(i => i.HammaddeCinsi))
                 {
                     <option id="@item.HammaddeCinsiId" FireOran="@item.HammaddeFire.Oran">@item.Adi</option>
@@ -140,7 +145,7 @@
         <div class="col-lg-12 mb-2">
             <label>Birim Fiyat:</label>
             <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@birimFiyat" />
-            <span class="form-text text-muted">kg/tl</span>
+            <span class="form-text text-muted">TL/KG</span>
 
             <div class="form-group">
                 <label>Mamül Ağırlık:</label>
@@ -148,8 +153,21 @@
             </div>
 
             <div class="form-group">
+                <label>Fire Oranı:</label>
+                @{
+                    double fireOran = 0;
+                    var fire = kalip.KalipHammaddeRelation?.Select(i => i.HammaddeCinsi).FirstOrDefault()?.HammaddeFire;
+                    if (fire != null)
+                    {
+                        fireOran = fire.Oran;
+                    }
+                }
+                <input type="text" class="form-control hesaplama" id="fireOran" value="@fireOran" />
+            </div>
+
+            <div class="form-group">
                 <label>Birim Maliyet:</label>
-                <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N2")" />
+                <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N3")" />
                 <span class="form-text text-muted">( (Birim Fiyat * Fire Oranı) / 1000) * Mamül Ağırlık</span>
             </div>
         </div>
@@ -213,11 +231,23 @@
                     <label>Koli Türü:</label>
                     <select class="form-control" id="KoliBirimFiyat">
                         @{
+                            var KoliTurler = BaseKoliTur();
+                            var koliTur = "2"; //genel koli
+                            decimal sabit = KoliTurler.FirstOrDefault(x => x.Kod == koliTur).KatSayi;
 
-                            HammaddeHareket sonHareket = KoliSohHareket();
+                            if (UretimUrun.UrunCinsi.Kisaltmasi.ToLower() == "kv")
+                            {
+                                sabit = KoliTurler.FirstOrDefault(x => x.Kod == "1").KatSayi;
+                                koliTur = "1";
+
+                            }
+
+                            HammaddeHareket sonHareket = KoliHareketler().FirstOrDefault(x => x.ExtraData == koliTur);
+
                             decimal BantSonFiyat = BaseHammaddeHareketler("bant").OrderByDescending(x => x.HammaddeGirisTarihi).FirstOrDefault().BirimFiyat;
                             var birimFiyat = sonHareket?.BirimFiyat;
-                            decimal sabit = 0.04M;
+
+
                             var Kapasite = !string.IsNullOrEmpty(kalip.KoliIciAdet) ? Convert.ToInt32(kalip.KoliIciAdet) : 0;
                             decimal? birimMaliyet;
                             if (Kapasite != 0)
@@ -361,7 +391,7 @@
                     <select class="form-control" id="yaldizSelect">
                         @foreach (var item in Malzemeler)
                         {
-                            <option birim="@item.TableHammaddeBirim.Birimi" value="@item.BirimFiyat">@item.UrunAdi ( @item.BirimFiyat TL )</option>
+                            <option birim="@item.TableHammaddeBirim.Birimi" value="@item.BirimFiyat">@item.UrunAdi ( @item.BirimFiyat TL - @item.TableHammaddeBirim.Birimi)</option>
                         }
                     </select>
 
