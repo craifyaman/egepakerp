@@ -45,6 +45,7 @@ namespace EgePakErp
         public virtual DbSet<AuditLog> AuditLog { get; set; }
         public virtual DbSet<HamUrunGrup> HamUrunGrup { get; set; }
         public virtual DbSet<KoliTur> KoliTur { get; set; }
+        public virtual DbSet<UretimSabitler> UretimSabitler { get; set; }
 
         #region Custom
         public virtual DbSet<HammaddeCinsi> HammaddeCinsi { get; set; }

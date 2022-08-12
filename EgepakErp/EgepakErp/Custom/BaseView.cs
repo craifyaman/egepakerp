@@ -422,6 +422,11 @@ namespace EgePakErp.Custom
             var liste = db.KoliTur.ToList();
             return liste;
         }
+        public List<KoliTur> BaseKoliTur(string Kod)
+        {
+            var liste = db.KoliTur.Where(x => x.Kod == Kod).ToList();
+            return liste;
+        }
         public List<HammaddeHareket> BaseSarfMalzeme()
         {
             var katId = db.Kategori.FirstOrDefault(x => x.Adi == "sarf malzeme").KategoriId;
@@ -448,7 +453,11 @@ namespace EgePakErp.Custom
                 .ToList();
             return list;
         }
-
+        public List<UretimSabitler> BaseUretimSabitler()
+        {
+            var list = db.UretimSabitler.ToList();
+            return list;
+        }
         public decimal BaseKur(string kurType, DateTime date)
         {
             if (date == null)

@@ -131,13 +131,13 @@
                 });
                 $("#MaliyetTablo").append(response);
 
-                $("#TeklifTutari").html(teklifTutar.toFixed(2));
+                $("#TeklifTutari").html(teklifTutar.toFixed(3));
 
                 var malzemeMaliyet = ToplamMalzemeMaliyet();
                 $("#ToplamMalzemeMaliyet").html(malzemeMaliyet);
 
                 var urunMaliyet = ToplamUretimMaliyet();
-                $("#ToplamUretimMaliyet").html(urunMaliyet);
+                $("#ToplamUretimMaliyet").val(urunMaliyet);
 
                 ToplamMaliyetHesapla(teklifTutar.toFixed(2));
                 toastr.success("Maliyet hesplandı.");
@@ -200,6 +200,14 @@
         Input.val(Value);
     }
 
+    function CheckString(str) {
+        if (typeof str === "string") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     function maliyetDetayGetir(maliyetType, kalipId, PosetParametre, urunId) {
         Post("/siparis/MaliyetDetay",
@@ -260,31 +268,66 @@
         return status;
     }
 
+    //function ToplamMalzemeMaliyet() {
+    //    var toplam = 0;
+    //    var array = $("input.birimFiyat[HesplamaType=malzeme]").sort();
+    //    array.each(function (index, value) {
+    //        var input = value;
+    //        if ($(input).prop('disabled') == false) {
+    //            var maliyet = parseFloat($(input).val().replace(",", "."));
+    //            toplam += maliyet;
+    //            var kalipId = $(input).attr("kalipId");
+    //            var mamulInput = $("input.MamulMalzemeMaliyet[kalipId='" + kalipId + "']");
+    //            var fiyat = mamulInput.val();
+    //            console.log(fiyat + toplam);
+
+    //        }
+    //    });
+    //    console.log("toplam malzeme maliyeti : " + toplam);
+    //    return toplam.toFixed(3);
+    //}
+
     function ToplamMalzemeMaliyet() {
         var toplam = 0;
         var array = $("input.birimFiyat[HesplamaType=malzeme]").sort();
+        $("input.MamulMalzemeMaliyet").val("0");
+
         array.each(function (index, value) {
             var input = value;
             if ($(input).prop('disabled') == false) {
+                var kalipId = $(input).attr("kalipId");
+                var mamulInput = $("input.MamulMalzemeMaliyet[kalipId='" + kalipId + "']");
+                fiyatTofixed = parseFloat(mamulInput.val().replace(",", ".")) + parseFloat($(input).val().replace(",", "."));
+                mamulInput.val(fiyatTofixed.toFixed(3))
                 toplam += parseFloat($(input).val().replace(",", "."));
             }
         });
         console.log("toplam malzeme maliyeti : " + toplam);
-        return toplam.toFixed(2);
+        return toplam.toFixed(3);
     }
 
+
+    
     function ToplamUretimMaliyet() {
         var toplam = 0;
         var array = $("input.birimFiyat[HesplamaType=uretim]").sort();
+        $("input.MamulUretimMaliyet").val("0");
         array.each(function (index, value) {
             var input = value;
             if ($(input).prop('disabled') == false) {
+                var kalipId = $(input).attr("kalipId");
+                var mamulInput = $("input.MamulUretimMaliyet[kalipId='" + kalipId + "']");
+                var fiyat = mamulInput.val();
+                fiyatTofixed = parseFloat(fiyat.replace(",", ".")) + parseFloat($(input).val().replace(",", "."));
+                mamulInput.val(fiyatTofixed.toFixed(3))
                 toplam += parseFloat($(input).val().replace(",", "."));
             }
         });
         console.log("toplam uretim maliyeti : " + toplam);
-        return toplam.toFixed(2);
+        return toplam.toFixed(3);
     }
+
+    
 
     function ToplamMaliyetHesapla(tutar) {
         debugger;
@@ -453,10 +496,10 @@
         });
 
         $(document).on("change", "#BantSelect", function (event) {
-            event.preventDefault();            
+            event.preventDefault();
             $(document.getElementById("BirimFiyat")).trigger("change");
         });
-        
+
         $(document).on("change", "#PosetBirimFiyat", function (event) {
             event.preventDefault();
             var target = $("#BirimFiyat");
@@ -496,6 +539,10 @@
             if (type == "montaj") {
                 HesapFunctionMontaj();
             }
+            if (type == "baskiMakina") {
+                HesapFunctionBaskiMakina();
+            }
+            
 
         });
 

@@ -39,7 +39,7 @@
         <table>
             <tr>
                 <td width="75%" style="border:none;">
-                    Nakit Satış Fiyatıs
+                    Nakit Satış Fiyatı
                     <input type="text" class="form-control" value="1,25" disabled />
                 </td>
             </tr>
@@ -75,7 +75,7 @@
         <td>
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
-                    @{ var VadeliFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.4);}
+                    @{ var VadeliFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25*1.4);}
                     @VadeliFiyat.ToString("n2") ₺
                 </div>
             </div>

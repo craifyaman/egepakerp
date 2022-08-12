@@ -85,5 +85,14 @@ function HesapFunctionMontaj() {
     var SaatMaliyet = $("#SaatMaliyet").val().replace(",", ".");
     var sonuc = SaatMaliyet / SaatAdet;
     var target = $(".Fiyat");
+    target.val(sonuc.toFixed(3));
+}
+
+function HesapFunctionBaskiMakina() {
+    debugger
+    var SaatAdet = $("#SaatAdet").val().replace(",", ".");
+    var SaatMaliyet = $("#SaatMaliyet").val().replace(",", ".");
+    var sonuc = SaatMaliyet / SaatAdet;
+    var target = $(".Fiyat");
     target.val(sonuc.toFixed(2));
 }

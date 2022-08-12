@@ -32,7 +32,7 @@ namespace EgePakErp.Controllers
         /// <returns></returns>
         /// 
 
-        [Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
+        //[Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
         public ActionResult Index()
         {
             return View();
@@ -715,7 +715,7 @@ namespace EgePakErp.Controllers
                     hareket.UrunAdi = currentRow.ItemArray[5].ToString();
 
                     //tedarikci eşleştirmesi
-                   string cariUnvan = currentRow.ItemArray[4].ToString().ToLower();
+                    string cariUnvan = currentRow.ItemArray[4].ToString().ToLower();
                     try
                     {
                         hareket.TedarikciId = Cariler.Where(x => x.Unvan.ToLower().Contains(cariUnvan)).FirstOrDefault().CariId;
@@ -1034,6 +1034,64 @@ namespace EgePakErp.Controllers
             catch { }
         }
 
+        public void UretimSabitlerEkle()
+        {
+            List<UretimSabitler> list = new List<UretimSabitler>()
+            {
+                new UretimSabitler()
+                {
+                    Aciklama = "ENJ. MAKİNA PERSONEL SAAT MALİYETİ",
+                    Maliyet="240",
+                    Birim = "TL/SAAT",
+                    Kod=1
+                },
+                new UretimSabitler()
+                {
+                    Aciklama = "SICAK BASKI + TAMPON PERSONEL SAAT MALİYETİ",
+                    Maliyet="80",
+                    Birim = "TL/SAAT",
+                    Kod=2
+                },
+                new UretimSabitler()
+                {
+                    Aciklama = "MONTAJ PERSONEL SAAT MALİYETİ",
+                    Maliyet="80",
+                    Birim = "TL/SAAT",
+                    Kod=3
+                },
+                new UretimSabitler()
+                {
+                    Aciklama = "SPREY BOYA KAPLAMA PERSONEL SAAT MALİYETİ",
+                    Maliyet="80",
+                    Birim = "TL/SAAT",
+                    Kod=4
+                },
+
+            };
+            Db.UretimSabitler.AddRange(list);
+            Db.BulkSaveChanges();
+        }
+        public void KoliTurEkle()
+        {
+            List<KoliTur> list = new List<KoliTur>()
+            {
+                new KoliTur()
+                {
+                    Tur = "60*40*40",
+                    Kod="1",
+                    KatSayi=0.04M
+                },
+                new KoliTur()
+                {
+                    Tur = "43*34*30",
+                    Kod="2",
+                    KatSayi=0.03M
+                }
+
+            };
+            Db.KoliTur.AddRange(list);
+            Db.BulkSaveChanges();
+        }
         public void UretimBilgiTemizle()
         {
             var urunler = Db.Urun.ToList();
@@ -1047,6 +1105,8 @@ namespace EgePakErp.Controllers
             var hammaddeCinsFire = Db.HammaddeFire.ToList();
             var kategori = Db.Kategori.ToList();
             var fiyatListe = Db.Fiyat.ToList();
+            var uretimSabitler = Db.UretimSabitler.ToList();
+            var koliTurler = Db.KoliTur.ToList();
 
 
             Db.Urun.RemoveRange(urunler);
@@ -1060,6 +1120,8 @@ namespace EgePakErp.Controllers
             Db.HammaddeFire.RemoveRange(hammaddeCinsFire);
             Db.Kategori.RemoveRange(kategori);
             Db.Fiyat.RemoveRange(fiyatListe);
+            Db.UretimSabitler.RemoveRange(uretimSabitler);
+            Db.KoliTur.RemoveRange(koliTurler);
             Db.BulkSaveChanges();
 
             while (Db.HamUrunGrup.ToList().Count() > 0)
@@ -1093,6 +1155,8 @@ namespace EgePakErp.Controllers
             TumUrun("TÜM EYELINER (EL)", "EL");
             TumUrun("TÜM LIPGLOSS (LG)", "LG");
             RujSilikonYagiTiner();
+            KoliTurEkle();
+            UretimSabitlerEkle();
         }
 
     }
