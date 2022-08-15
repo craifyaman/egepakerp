@@ -105,7 +105,6 @@ namespace EgePakErp.Controllers
                         kalip.isHazirMalzeme = true;
                         Db.SaveChanges();
 
-
                     }
                     catch { }
                     form.KayitTarih = DateTime.Now;

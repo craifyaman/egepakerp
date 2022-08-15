@@ -19,6 +19,8 @@ namespace EgepakErp.Concrete
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.TableHammaddeBirim")
+                .Where(x => x.isAktive == true)
                .FirstOrDefault(x => x.KalipId == id && x.isAktive == true);
         }
         public override Kalip Get(Expression<Func<Kalip, bool>> filter)
@@ -33,6 +35,8 @@ namespace EgepakErp.Concrete
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.TableHammaddeBirim")
+                .Where(x => x.isAktive == true)
                .FirstOrDefault(filter);
         }
         public override IQueryable<Kalip> GetAll()
@@ -47,6 +51,7 @@ namespace EgepakErp.Concrete
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.TableHammaddeBirim")
                 .Where(x => x.isAktive == true)
                .AsQueryable();
         }
@@ -63,6 +68,8 @@ namespace EgepakErp.Concrete
                 .Include("KalipHammaddeRelation.HammaddeCinsi")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
                 .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.TableHammaddeBirim")
+                .Where(x=>x.isAktive == true)
                 .Where(filter)
                .AsQueryable();
         }

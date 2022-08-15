@@ -100,7 +100,7 @@
     <script src="~/Scripts/Kalip.js?v=@ScriptVersion"></script>
     <script>
         $(document).ready(function () {
-            Kalip.DtInit("kt_datatable", "/Kalip/Liste", DtColums.KalipColumns(), {});
+            Dt.DtInit("kt_datatable", "/Kalip/Liste", DtColums.KalipColumns(), {}, {});
             Kalip.EventInit();
         })
 

@@ -79,6 +79,19 @@
                                     <select id="SiparisKalipSelect" name="KalipId" class="form-control select2" url="/Kalip/ListeSelect2" markup="Kalip" placeHolder="Kalıp Seçiniz">
                                     </select>
                                 </div>
+
+                                <div class="form-group row" style="display:none;" id="fircaDiv">
+                                    <label>Fırça Seçimi:</label>
+                                    <select id="SiparisFircaSelect" name="FircaId" class="form-control" markup="Fırça" placeHolder="Fırça Seçiniz">
+                                        <option value="0">Fırça Seçiniz</option>    
+                                        @foreach (var item in BaseFircaListe())
+                                        {
+                                            
+                                            <option value="@item.KalipId">@item.Adi</option>
+                                        }
+                                    </select>
+                                </div>
+
                             </div>
 
                             <input type="hidden" name="exclude" id="exclude" />

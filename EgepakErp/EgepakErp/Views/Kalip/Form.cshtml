@@ -17,22 +17,23 @@
             <input class="form-control" name="Adi" type="text" value="@(Model?.Adi)">
         </div>
     </div>
-    <div class="form-group row">
-        <label class="col-3 col-form-label">Hazır Malzeme</label>
+    @*<div class="form-group row">
+        <label class="col-3 col-form-label"></label>
         <div class="col-9 col-form-label">
-            <div class="checkbox-inline">
-                <label class="checkbox checkbox-primary">
-                    @{ 
-                        var chc = Model.isHazirMalzeme == true ? "checked=\"checked\"" : "";
-                    }
-                    <input type="checkbox" name="isHazirMalzeme" @chc />
-                    
-                    <span></span>
-                   
-                </label>
+            <div class="col-lg-4">
+                <label>Hazır Malzeme</label>
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        @{
+                            var durumChk = Model == null || Model.isHazirMalzeme ? "checked" : "";
+                        }
+                        <input class="globalSwitch" @durumChk type="checkbox" name="isHazirMalzeme" id="isHazirMalzeme" value="@(durumChk=="checked"?true:false)">
+                        <span></span>
+                    </label>
+                </span>
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="form-group row">
         <div class="col-lg-4">
             <label>Parça Ağırlık(gr):</label>

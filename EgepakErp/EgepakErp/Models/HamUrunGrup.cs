@@ -14,7 +14,7 @@ namespace EgePakErp.Models
         public string UrunKodu { get { return UrunCinsi + UrunNo; } set { } }
         public string KalipNo { get; set; }
         public string KalipOzellik { get; set; }
-        public string KalipKodu { get { return KalipNo + KalipOzellik; } set { } }
+        public string KalipKodu { get; set; }
         public string ParcaAdi { get; set; }
         public string Hammadde { get; set; }
         public string Agirlik { get; set; }

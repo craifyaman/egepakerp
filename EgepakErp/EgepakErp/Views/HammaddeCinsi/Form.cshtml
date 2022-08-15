@@ -20,7 +20,7 @@
             <label>Birimi</label>
             <div class="form-group mb-5 row">
                 <div class="col-11">
-                    <select name="TableHammaddeBirimId" id="TableHammaddeBirimIdHammaddeBirimId" class="form-control form-control-solid selectpicker" data-live-search="true">
+                    <select name="TableHammaddeBirimId" id="TableHammaddeBirimId" class="form-control form-control-solid" data-live-search="true">
                         @foreach (var item in BaseHammaddeBirim())
                         {
                             var slc = (Model != null && Model.TableHammaddeBirimId == item.TableHammaddeBirimId) ? "selected" : "";

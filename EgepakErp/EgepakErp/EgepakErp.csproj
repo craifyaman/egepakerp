@@ -297,6 +297,15 @@
     <Compile Include="Migrations\202208121301173_create_uretimSabitler_table.designer.cs">
       <DependentUpon>202208121301173_create_uretimSabitler_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208150857446_update_fiyat_tutar_decimal_to_double.cs" />
+    <Compile Include="Migrations\202208150857446_update_fiyat_tutar_decimal_to_double.designer.cs">
+      <DependentUpon>202208150857446_update_fiyat_tutar_decimal_to_double.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208150959098_create_dovizKur_table.cs" />
+    <Compile Include="Migrations\202208150959098_create_dovizKur_table.designer.cs">
+      <DependentUpon>202208150959098_create_dovizKur_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\DovizKur.cs" />
     <Compile Include="Models\Custom\UretimSabitler.cs" />
     <Compile Include="Models\Custom\KoliTur.cs" />
     <Compile Include="Models\Custom\HammaddeFire.cs" />
@@ -2602,6 +2611,7 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.ttf" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
+    <Content Include="Scripts\Custom\Dt.js" />
     <Content Include="Scripts\Functions\HesapFuntions.js" />
     <Content Include="Scripts\Cari.js" />
     <Content Include="Scripts\Custom\DtColums.js" />
@@ -2781,6 +2791,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208121301173_create_uretimSabitler_table.resx">
       <DependentUpon>202208121301173_create_uretimSabitler_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208150857446_update_fiyat_tutar_decimal_to_double.resx">
+      <DependentUpon>202208150857446_update_fiyat_tutar_decimal_to_double.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208150959098_create_dovizKur_table.resx">
+      <DependentUpon>202208150959098_create_dovizKur_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

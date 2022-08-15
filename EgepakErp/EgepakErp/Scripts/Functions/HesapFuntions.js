@@ -19,7 +19,7 @@ function HesapFunctionTozBoya() {
     var sabit = 12 / 1000;
     var sonuc = sabit * kalipAgirlik * (birimFiyat / 1000);
     var target = $(".Fiyat");
-    target.val(sonuc);
+    target.val(sonuc.toFixed(4));
 }
 
 

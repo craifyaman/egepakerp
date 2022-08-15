@@ -508,11 +508,8 @@
                 width: 50
             },
             {
-                field: 'KalipNo',
-                title: 'Kalıp Kodu',
-                template: function (row) {
-                    return row.KalipKodu
-                }
+                field: 'KalipKodu',
+                title: 'Kalıp Kodu'
 
             },
             {
@@ -542,6 +539,11 @@
 
             },
             {
+                field: 'Birim',
+                title: 'Birim'
+            },
+            
+            {
                 field: 'UretimTeminSekli.Adi',
                 title: 'Üretim Şekli',
                 template: function (row) {
@@ -551,7 +553,7 @@
             },
             {
                 field: 'ParcaAgirlik',
-                title: 'Agırlık',
+                title: 'Agırlık(gr)',
                 template: function (row) {
 
                     return row.Agirlik
@@ -566,7 +568,7 @@
             },
             {
                 field: 'UretimZamani',
-                title: 'Üretim Zamanı',
+                title: 'Çevrim Süresi(sn)',
                 template: function (row) {
                     return row.UretimZamani
                 }

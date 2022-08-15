@@ -178,10 +178,10 @@
 {
     try
     {
-        var sabit = 0.0012;
+        var sabit = 0.0012M;
         decimal KalipAgirlik = (decimal)kalip.ParcaAgirlik;
-        decimal BoyaBirimFiyat = TozBoyaSonBirimFiyat() / 1000;
-        decimal Maliyet = (decimal)sabit * KalipAgirlik * (BoyaBirimFiyat / 1000);
+        decimal BoyaBirimFiyat = TozBoyaSonBirimFiyat();
+        decimal Maliyet = sabit * KalipAgirlik * (BoyaBirimFiyat / 1000);
 
         <td tozBoya-cikar="@Model.KalipId">
             <div class="form-group row parentDiv" UrunType="tozBoya">
@@ -196,12 +196,12 @@
                     </div>*@
                 <div class="col-lg-12 mb-2">
                     <label>Boya Birim Fiyat</label>
-                    <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@BoyaBirimFiyat.ToString("n2")" />
+                    <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@BoyaBirimFiyat" />
                 </div>
 
                 <div class="col-lg-12 mb-2">
                     <label>bir adet için üretim maliyeti:</label>
-                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet" />
+                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n4")" />
                     <span class="form-text text-muted">0,0012 * Mamül Ağırlık * (Birim Fiyat / 1000)</span>
                 </div>
             </div>
@@ -539,7 +539,7 @@
                     <div class="col-lg-12 mb-2">
                         <label>saatlik üretim adedi</label>
                         <input type="text" class="form-control hesaplama" id="SaatAdet" value="@adet" />
-                    </div>                    
+                    </div>
                     <div class="col-lg-12 mb-2">
                         <label>aded maliyeti</label>
                         <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("N3")" />
@@ -559,42 +559,42 @@
 
 @if (type == "baskiMakina")
 {
-<tr>
-    @try
-    {
-        int adet = 0;
-        double SaatMaliyet = 0;
-        double sonuc = 0;
-
-        if (!string.IsNullOrEmpty(kalip.SicakBaskiAdet))
+    <tr>
+        @try
         {
-            adet = Convert.ToInt32(kalip.SicakBaskiAdet);
-            var uretimSabit = BaseUretimSabitler().FirstOrDefault(x => x.Kod == (int)EUretimSabitler.SicakBaskiTamponPersonelSaatMaliyet).Maliyet;
-            SaatMaliyet = Convert.ToDouble(uretimSabit);
-            sonuc = SaatMaliyet / adet;
+            int adet = 0;
+            double SaatMaliyet = 0;
+            double sonuc = 0;
+
+            if (!string.IsNullOrEmpty(kalip.SicakBaskiAdet))
+            {
+                adet = Convert.ToInt32(kalip.SicakBaskiAdet);
+                var uretimSabit = BaseUretimSabitler().FirstOrDefault(x => x.Kod == (int)EUretimSabitler.SicakBaskiTamponPersonelSaatMaliyet).Maliyet;
+                SaatMaliyet = Convert.ToDouble(uretimSabit);
+                sonuc = SaatMaliyet / adet;
+            }
+
+            <div class="form-group row parentDiv" UrunType="baskiMakina">
+                <div class="col-lg-12 mb-2">
+                    <label>adet</label>
+                    <input type="text" class="form-control hesaplama" id="SaatAdet" value="@adet" />
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Personel Saat Maliyet</label>
+                    <input type="text" class="form-control hesaplama" id="SaatMaliyet" value="@SaatMaliyet" />
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>aded maliyeti</label>
+                    <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@sonuc.ToString("N2")" />
+                    <span class="form-text text-muted">Personel Saat Maliyet / Saatlik Üretim Adedi</span>
+                </div>
+            </div>
         }
+        catch (Exception ex)
+        {
 
-        <div class="form-group row parentDiv" UrunType="baskiMakina">
-            <div class="col-lg-12 mb-2">
-                <label>adet</label>
-                <input type="text" class="form-control hesaplama" id="SaatAdet" value="@adet" />
-            </div>
-            <div class="col-lg-12 mb-2">
-                <label>Personel Saat Maliyet</label>
-                <input type="text" class="form-control hesaplama" id="SaatMaliyet" value="@SaatMaliyet" />
-            </div>
-            <div class="col-lg-12 mb-2">
-                <label>aded maliyeti</label>
-                <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@sonuc.ToString("N2")" />
-                <span class="form-text text-muted">Personel Saat Maliyet / Saatlik Üretim Adedi</span>
-            </div>
-        </div>
-    }
-    catch (Exception ex)
-    {
-
-    }
-</tr>
+        }
+    </tr>
 }
 
 

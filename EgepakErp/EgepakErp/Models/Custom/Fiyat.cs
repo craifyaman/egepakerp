@@ -14,7 +14,7 @@ namespace EgePakErp.Models
         public int FiyatId { get; set; }
         public string Aciklama { get; set; }
         public string Kod { get; set; }
-        public decimal Tutar { get; set; }
+        public double Tutar { get; set; }
         public decimal ToplamTutar { get; set; }
         public DateTime KayitTarih { get; set; }
         public int? DovizId { get; set; }

@@ -1,16 +1,15 @@
 ﻿var Fiyat = function () {
     
     function Kaydet() {
-
+        debugger;
         var validation = ValidateForm.IsValid("FiyatForm", ValidationFields.PompaFiyatFormFields())
-
         validation.validate().then(function (status) {
             if (status == 'Valid') {
                 var form = $("#FiyatForm").serializeJSON();
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;               
-                
+                console.log(form);
                 Post("/fiyat/kaydet",
                     { form: form },
                     function (response) {

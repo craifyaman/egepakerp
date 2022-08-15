@@ -47,11 +47,11 @@ namespace EgePakErp.Controllers
             }
             else
             {
-                var list = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId && !exclude.Contains(x.KalipId)).Select(x => x.Kalip).ToList();
+                var list = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId && x.Kalip.isAktive == true && !exclude.Contains(x.KalipId)).Select(x => x.Kalip).ToList();
                 model.AddRange(list);
             }
-            var urun = Db.Urun.Include(x => x.UrunCinsi).FirstOrDefault(x => x.UrunId == urunId);
-            return PartialView(model);
+            ViewBag.urun = Db.Urun.Include(x => x.UrunCinsi).FirstOrDefault(x => x.UrunId == urunId);
+            return PartialView(model.OrderBy(x => x.ParcaKodu).ToList());
         }
 
         public PartialViewResult MaliyetForm(List<int> idList, int urunId)
@@ -68,7 +68,7 @@ namespace EgePakErp.Controllers
                 .Include("KalipUrunRelation.Urun")
                 .Include("KalipUrunRelation.Urun.UrunCinsi")
                 .Where(i => idList.Contains(i.KalipId)).ToList();
-            return PartialView(kaliplar);
+            return PartialView(kaliplar.OrderBy(x => x.ParcaKodu).ToList());
         }
 
         public PartialViewResult MaliyetHesap(List<MaliyetDto> liste)

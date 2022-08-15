@@ -1,16 +1,18 @@
 ﻿@model List<Kalip>
-
+@{ 
+    Urun urun = ViewBag.urun;
+}
 <input type="hidden" id="kalipIdList" value="@Model.Select(s=>s.KalipId.ToString()).Aggregate((a,b)=>a+","+b)" />
-
+<input type="hidden" id="UrunKisaltma" value="@urun.UrunCinsi.Kisaltmasi.ToLower()"/>
 
 <table class="table table-bordered table-hover table-sm mt-8" id="KalipListeTable">
     <thead>
         <tr>
+            <th>Parça Kodu</th>
             <th>Adı</th>
-            <th>Özellik</th>
-            <th>Ağırlık</th>
+            <th>Ağırlık(gr)</th>
             <th>Göz Sayısı</th>
-            <th>Üretim Zamanı</th>
+            <th>Çevrim Süresi(sn)</th>
             <th>İşlem</th>
         </tr>
     </thead>
@@ -19,11 +21,8 @@
         {
 
             <tr KalipId="@item.KalipId">
-                <td>
-
-                    @item.Adi
-                </td>
-                <td>@item.KalipOzellik</td>
+                <td>@item.ParcaKodu</td>
+                <td>@item.Adi</td>
                 <td>@item.ParcaAgirlik</td>
                 <td>@item.KalipGozSayisi</td>
                 <td>@item.UretimZamani</td>

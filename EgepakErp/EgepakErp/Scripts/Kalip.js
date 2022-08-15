@@ -204,8 +204,12 @@
 
             //layout definition
             layout: {
-                scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
+                theme: 'default',
+                class: 'datatable-brand',
+                height: 600,
+                scroll: true, // enable/disable datatable scroll both horizontal and vertical when needed.
                 footer: false, // display/hide footer
+                customScrollbar: true,
             },
 
             //column sorting
@@ -215,7 +219,7 @@
             pagination: true,
 
             //columns definition
-            columns: columns
+            columns: columns,
 
         });
 

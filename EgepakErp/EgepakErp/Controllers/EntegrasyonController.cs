@@ -32,10 +32,35 @@ namespace EgePakErp.Controllers
         /// <returns></returns>
         /// 
 
-        //[Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
+        [Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
         public ActionResult Index()
         {
             return View();
+        }
+        public void KurGuncelle()
+        {
+            var dovizKur = Db.DovizKur.FirstOrDefault();
+            var usdKur = DovizHelper.DovizKuruGetir("USD", DateTime.Now);
+            var eurKur = DovizHelper.DovizKuruGetir("EUR", DateTime.Now);
+
+
+            if (dovizKur != null)
+            {
+                dovizKur.UsdKur = usdKur;
+                dovizKur.EurKur = eurKur;
+            }
+
+            else
+            {
+                dovizKur = new DovizKur
+                {
+                    UsdKur = usdKur,
+                    EurKur = eurKur
+                };
+                Db.DovizKur.Add(dovizKur);
+            }           
+
+            Db.BulkSaveChanges();
         }
         public void Cari()
         {
@@ -145,7 +170,7 @@ namespace EgePakErp.Controllers
         public void HamUrunGroup()
         {
             var dataset = new DataSet();
-            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Ham_Urun_Group_Aktarim_11_08_2022_3.xlsx", FileMode.Open, FileAccess.Read))
+            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Ham_Urun_Group_Aktarim_11_08_2022_4.xlsx", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
@@ -162,7 +187,7 @@ namespace EgePakErp.Controllers
                 {
                     var UrunGroup = new HamUrunGrup();
                     UrunGroup.UrunCinsi = currentRow.ItemArray[0]?.ToString();
-                    UrunGroup.UrunNo = currentRow.ItemArray[1]?.ToString();
+                    UrunGroup.UrunNo = currentRow.ItemArray[1].ToString().PadLeft(2, '0');
                     UrunGroup.UrunKodu = UrunGroup.UrunCinsi + UrunGroup.UrunNo;
                     UrunGroup.KalipNo = currentRow.ItemArray[2]?.ToString();
                     UrunGroup.KalipOzellik = currentRow.ItemArray[3]?.ToString();
@@ -898,7 +923,7 @@ namespace EgePakErp.Controllers
                 Fiyat _fiyat = new Fiyat();
                 _fiyat.Aciklama = item.YanMamul;
                 _fiyat.KayitTarih = DateTime.Now;
-                _fiyat.Tutar = item.BirimFiyat;
+                _fiyat.Tutar = (double)item.BirimFiyat;
                 _fiyat.ToplamTutar = item.BirimFiyat;
                 _fiyat.Kod = item.Kod;
                 _fiyat.DovizId = item.DovizId;
@@ -911,7 +936,7 @@ namespace EgePakErp.Controllers
                         try
                         {
                             var kur = DovizHelper.DovizKuruGetir("USD", _fiyat.KayitTarih);
-                            _fiyat.ToplamTutar = kur * _fiyat.Tutar;
+                            _fiyat.ToplamTutar = kur * (decimal)_fiyat.Tutar;
                         }
                         catch (Exception ex)
                         {
@@ -925,7 +950,7 @@ namespace EgePakErp.Controllers
                         try
                         {
                             var kur = DovizHelper.DovizKuruGetir("EUR", _fiyat.KayitTarih);
-                            _fiyat.ToplamTutar = kur * _fiyat.Tutar;
+                            _fiyat.ToplamTutar = kur * (decimal)_fiyat.Tutar;
                         }
                         catch (Exception ex)
                         {
@@ -938,7 +963,7 @@ namespace EgePakErp.Controllers
 
                 try
                 {
-                    var kalip = kalipListe.FirstOrDefault(x => x.ParcaKodu == _fiyat.Kod);
+                    var kalip = Db.Kalip.FirstOrDefault(x => x.ParcaKodu == _fiyat.Kod);
                     if (kalip != null)
                     {
                         kalip.isHazirMalzeme = true;
@@ -1136,6 +1161,7 @@ namespace EgePakErp.Controllers
 
         public void UretimBilgiKaydet()
         {
+            KurGuncelle();
             HamUrunGroup();
             YanSanayiStok();
             UrunCinsi();
@@ -1150,6 +1176,8 @@ namespace EgePakErp.Controllers
             FiyatListe("POMPA");
             FiyatListe("ponpon");
             FiyatListe("PİM");
+            FiyatListe("fırça");
+            FiyatListe("dipliner uç");
             TumUrun("TÜM MASKARA (MS)", "MS");
             TumUrun("TÜM DIPLINER (DL)", "DL");
             TumUrun("TÜM EYELINER (EL)", "EL");

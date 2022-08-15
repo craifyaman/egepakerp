@@ -68,8 +68,14 @@
         maliyetHesapla();
     }
 
-    function UrunKaliplariGetir() {
+    function FircaSecim() {
         debugger;
+        var urunCins = $("#UrunKisaltma").val();
+        if (urunCins == "ms") {
+            $("#fircaDiv").show();
+        }
+    }
+    function UrunKaliplariGetir() {
         var urunId = $("#UrunId").val();
         var excludes = ",";
         var includes = ",";
@@ -94,12 +100,13 @@
             },
             function () {
                 maliyetTablosuGetir();
+                FircaSecim();
             },
             "html");
     }
 
     function maliyetHesapla() {
-        debugger
+        
         var liste = [];
         var Maliyet = function () {
             this.KalipId;
@@ -131,6 +138,7 @@
                 });
                 $("#MaliyetTablo").append(response);
 
+                teklifTutar = teklifTutar * 1.25 * 1.4;
                 $("#TeklifTutari").html(teklifTutar.toFixed(3));
 
                 var malzemeMaliyet = ToplamMalzemeMaliyet();
@@ -156,7 +164,7 @@
     }
 
     function maliyetTablosuGetir() {
-        debugger;
+        
         var idList = $("#kalipIdList").val().split(",");
         var urunId = $("#UrunId").val();
         var excludes = $("#exclude").val().slice(0, -1).split(",");
@@ -229,7 +237,7 @@
                             callback: function () {
                                 var value = $(".Fiyat").val();
                                 InputBulEkle(maliyetType, kalipId, value);
-                                debugger;
+                                
                                 if ($(".parentDiv").attr("uruntype") == "koli") {
                                     var posetKatsayi = $("#posetParametre").val();
                                     var targetId = $("#posetParametre").attr("targetInputId");
@@ -288,6 +296,7 @@
     //}
 
     function ToplamMalzemeMaliyet() {
+        
         var toplam = 0;
         var array = $("input.birimFiyat[HesplamaType=malzeme]").sort();
         $("input.MamulMalzemeMaliyet").val("0");
@@ -297,9 +306,23 @@
             if ($(input).prop('disabled') == false) {
                 var kalipId = $(input).attr("kalipId");
                 var mamulInput = $("input.MamulMalzemeMaliyet[kalipId='" + kalipId + "']");
-                fiyatTofixed = parseFloat(mamulInput.val().replace(",", ".")) + parseFloat($(input).val().replace(",", "."));
+                var f1 = 0;
+                var f2 = 0;
+                try {
+                    f1 = mamulInput.val().replace(",", ".");
+                }
+                catch (err) {
+                    f1 = mamulInput.val();
+                }
+                try {
+                    f2 = $(input).val().replace(",", ".");
+                }
+                catch (err) {
+                    f2 = $(input).val();
+                }
+                fiyatTofixed = parseFloat(f1) + parseFloat(f2);
                 mamulInput.val(fiyatTofixed.toFixed(3))
-                toplam += parseFloat($(input).val().replace(",", "."));
+                toplam += parseFloat(f2);
             }
         });
         console.log("toplam malzeme maliyeti : " + toplam);
@@ -307,8 +330,9 @@
     }
 
 
-    
+
     function ToplamUretimMaliyet() {
+        
         var toplam = 0;
         var array = $("input.birimFiyat[HesplamaType=uretim]").sort();
         $("input.MamulUretimMaliyet").val("0");
@@ -317,20 +341,35 @@
             if ($(input).prop('disabled') == false) {
                 var kalipId = $(input).attr("kalipId");
                 var mamulInput = $("input.MamulUretimMaliyet[kalipId='" + kalipId + "']");
-                var fiyat = mamulInput.val();
-                fiyatTofixed = parseFloat(fiyat.replace(",", ".")) + parseFloat($(input).val().replace(",", "."));
+
+                var f1 = 0;
+                var f2 = 0;
+                try {
+                    f1 = mamulInput.val().replace(",", ".");
+                }
+                catch (err) {
+                    f1 = mamulInput.val();
+                }
+                try {
+                    f2 = $(input).val().replace(",", ".");
+                }
+                catch (err) {
+                    f2 = $(input).val();
+                }
+
+                fiyatTofixed = parseFloat(f1) + parseFloat(f2);
                 mamulInput.val(fiyatTofixed.toFixed(3))
-                toplam += parseFloat($(input).val().replace(",", "."));
+                toplam += parseFloat(f2);
             }
         });
         console.log("toplam uretim maliyeti : " + toplam);
         return toplam.toFixed(3);
     }
 
-    
+
 
     function ToplamMaliyetHesapla(tutar) {
-        debugger;
+        
         console.log(tutar);
         $.ajax({
             type: "GET",
@@ -430,7 +469,7 @@
             $("#exclude").val($("#exclude").val() + id + ",");
             tr.remove();
             var includeList = $("#include").val().slice(0, -1).split(",");
-            debugger;
+            
             $.each(includeList, function (i, v) {
                 if (id == v) {
                     includeList = $.grep(includeList, function (n) {
@@ -456,7 +495,7 @@
 
         $(document).on("click", "[event='MaliyetDetay']", function (event) {
             event.preventDefault();
-            debugger;
+       
             var MaliyetType = $(this).attr("maliyetType");
             var KalipId = $(this).attr("kalipId");
             var PosetParametre = $("#PosetParametre_" + KalipId).val();
@@ -482,7 +521,7 @@
 
         $(document).on("change", "#KoliBirimFiyat", function (event) {
             event.preventDefault();
-            debugger;
+        
             var target = $("#BirimFiyat");
             var birimFiyat = parseFloat($(this).val().replace(",", "."));
             var posetParametre = $("#KoliBirimFiyat option:selected").attr("posetParametre");
@@ -511,7 +550,7 @@
 
         $(document).on("change", ".hesaplama", function (event) {
             event.preventDefault();
-            debugger
+       
             var Parent = $(this).parents(".parentDiv");
             var type = Parent.attr("UrunType");
 
@@ -542,13 +581,13 @@
             if (type == "baskiMakina") {
                 HesapFunctionBaskiMakina();
             }
-            
+
 
         });
 
         $(document).on("change", "#yaldizSelect", function (event) {
             event.preventDefault();
-            debugger;
+        
             var target = $("#BirimFiyat");
             var birimFiyat = parseFloat($(this).val().replace(",", "."));
             target.val(birimFiyat);
@@ -557,12 +596,16 @@
 
         $(document).on("change", "#SiparisKalipSelect", function (event) {
             event.preventDefault();
-            debugger;
             var kalipId = $(this).val();
             $("#include").val($("#include").val() + kalipId + ",");
             UrunKaliplariGetir();
         });
-
+        $(document).on("change", "#SiparisFircaSelect", function (event) {
+            event.preventDefault();
+            var kalipId = $(this).val();
+            $("#include").val($("#include").val() + kalipId + ",");
+            UrunKaliplariGetir();
+        });
 
     }
 

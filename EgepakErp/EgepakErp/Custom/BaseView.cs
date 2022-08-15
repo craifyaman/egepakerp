@@ -65,16 +65,8 @@ namespace EgePakErp.Custom
         {
             get
             {
-                if (Session["UretimTeminSekli"] == null)
-                {
-                    var list = db.UretimTeminSekli.ToList();
-                    Session["UretimTeminSekli"] = list;
-                    return list;
-                }
-                else
-                {
-                    return (List<UretimTeminSekli>)Session["UretimTeminSekli"];
-                }
+                var list = db.UretimTeminSekli.ToList();
+                return list;
             }
             set { }
         }
@@ -111,17 +103,6 @@ namespace EgePakErp.Custom
             return db.Il.Where(i => i.UlkeId == ulkeId).ToList();
         }
 
-        //public IEnumerable<SelectListItem> BaseBirimSelectList(int? birimId)
-        //{
-        //    var result = db.HammaddeBirimi.Select(x => new SelectListItem()
-        //    {
-        //        Value = x.Id.ToString(),
-        //        Text = x.Birimi,
-        //        Selected = x.Id == birimId
-        //    }).ToList();
-
-        //    return result;
-        //}
         public List<Ilce> baseIlce(int ilId)
         {
             return db.Ilce.Where(i => i.IlId == ilId).ToList();
@@ -142,16 +123,8 @@ namespace EgePakErp.Custom
         {
             get
             {
-                if (Session["Cari"] == null)
-                {
-                    var list = db.Cari.Include("BaglantiTipi").ToList();
-                    Session["Cari"] = list;
-                    return list;
-                }
-                else
-                {
-                    return (List<Cari>)Session["Cari"];
-                }
+                var list = db.Cari.Include("BaglantiTipi").ToList();
+                return list;
             }
             set { }
         }
@@ -159,16 +132,8 @@ namespace EgePakErp.Custom
         {
             get
             {
-                if (Session["GorusmeTip"] == null)
-                {
-                    var list = db.GorusmeTip.ToList();
-                    Session["GorusmeTip"] = list;
-                    return list;
-                }
-                else
-                {
-                    return (List<GorusmeTip>)Session["GorusmeTip"];
-                }
+                var list = db.GorusmeTip.ToList();
+                return list;
             }
             set { }
         }
@@ -187,16 +152,8 @@ namespace EgePakErp.Custom
         {
             get
             {
-                if (Session["CariGrup"] == null)
-                {
-                    var list = db.CariGrup.ToList();
-                    Session["CariGrup"] = list;
-                    return list;
-                }
-                else
-                {
-                    return (List<CariGrup>)Session["CariGrup"];
-                }
+                var list = db.CariGrup.ToList();
+                return list;
             }
             set { }
         }
@@ -256,16 +213,8 @@ namespace EgePakErp.Custom
         {
             get
             {
-                if (Session["UrunCinsi"] == null)
-                {
-                    var list = db.UrunCinsi.ToList();
-                    Session["UrunCinsi"] = list;
-                    return list;
-                }
-                else
-                {
-                    return (List<UrunCinsi>)Session["UrunCinsi"];
-                }
+                var list = db.UrunCinsi.ToList();
+                return list;
             }
             set { }
         }
@@ -274,16 +223,8 @@ namespace EgePakErp.Custom
         {
             get
             {
-                if (Session["UretimTeminSekli"] == null)
-                {
-                    var list = db.UretimTeminSekli.ToList();
-                    Session["UretimTeminSekli"] = list;
-                    return list;
-                }
-                else
-                {
-                    return (List<UretimTeminSekli>)Session["UretimTeminSekli"];
-                }
+                var list = db.UretimTeminSekli.ToList();
+                return list;
             }
             set { }
         }
@@ -292,16 +233,9 @@ namespace EgePakErp.Custom
         {
             get
             {
-                if (Session["HammaddeCinsi"] == null)
-                {
-                    var list = db.HammaddeCinsi.ToList();
-                    Session["HammaddeCinsi"] = list;
-                    return list;
-                }
-                else
-                {
-                    return (List<HammaddeCinsi>)Session["HammaddeCinsi"];
-                }
+                var list = db.HammaddeCinsi.ToList();
+                return list;
+
             }
             set { }
         }
@@ -319,16 +253,8 @@ namespace EgePakErp.Custom
         {
             get
             {
-                if (Session["Kalip"] == null)
-                {
-                    var list = db.Kalip.ToList();
-                    Session["Kalip"] = list;
-                    return list;
-                }
-                else
-                {
-                    return (List<Kalip>)Session["Kalip"];
-                }
+                var list = db.Kalip.ToList();
+                return list;
             }
             set { }
         }
@@ -458,25 +384,41 @@ namespace EgePakErp.Custom
             var list = db.UretimSabitler.ToList();
             return list;
         }
+        public List<Kalip> BaseFircaListe()
+        {
+            var list = db.Kalip
+                .Where(x=>x.Adi.ToLower().Contains("fırça"))
+                .ToList();
+            return list;
+        }
         public decimal BaseKur(string kurType, DateTime date)
         {
+            var dovizKur = db.DovizKur.FirstOrDefault();
             if (date == null)
             {
                 date = DateTime.Now;
             }
             if (kurType == EDoviz.USD.ToString())
             {
-                var usdKur = DovizHelper.DovizKuruGetir("USD", date);
+                //var usdKur = DovizHelper.DovizKuruGetir("USD", date);
+                var usdKur = dovizKur.UsdKur;
                 return usdKur;
             }
 
             if (kurType == EDoviz.EUR.ToString())
             {
-                var eurKur = DovizHelper.DovizKuruGetir("EUR", date);
+                //var eurKur = DovizHelper.DovizKuruGetir("EUR", date);
+                var eurKur = dovizKur.EurKur;
                 return eurKur;
             }
 
             return 0;
+        }
+
+        public DovizKur BaseDovizKur()
+        {
+            var kur = db.DovizKur.FirstOrDefault();
+            return kur;
         }
 
         public List<BaseMenu> baseMenu(string pre = "Menu", string nameSpace = "EgePakErp.Controllers")

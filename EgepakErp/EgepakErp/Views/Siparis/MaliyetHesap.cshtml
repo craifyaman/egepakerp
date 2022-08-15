@@ -4,6 +4,7 @@
 @{
     var liste = Model.GroupBy(x => x.KalipId);
     double ToplamTutar = 0;
+    double VadeliFiyat = 0;
     decimal DolarKur = ViewBag.dolarKur;
     decimal EuroKur = ViewBag.euroKur;
 }
@@ -75,7 +76,7 @@
         <td>
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
-                    @{ var VadeliFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25*1.4);}
+                    @{ VadeliFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25*1.4);}
                     @VadeliFiyat.ToString("n2") ₺
                 </div>
             </div>
@@ -88,7 +89,7 @@
     <th>Teklif Tutar Tl</th>
     <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">
         <span id="TeklifTutari">
-            @ToplamTutar.ToString("n2")
+            @VadeliFiyat.ToString("n2")
         </span>
     ₺</th>
 </tr>

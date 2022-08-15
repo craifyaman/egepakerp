@@ -40,7 +40,7 @@
                 if (kalip.isHazirMalzeme)
                 {
                     var fiyat = BaseFiyat().FirstOrDefault(x => x.Kod == kalip.ParcaKodu);
-                    decimal toplamTutar = fiyat.Tutar;
+                    decimal toplamTutar = (decimal)fiyat?.Tutar;
                     if (fiyat.DovizId != null && fiyat.DovizId != 1)
                     {
                         var kur = BaseKur(fiyat.Doviz.Kisaltma, DateTime.Now);
@@ -48,8 +48,6 @@
                     }
                     birimMaliyet = toplamTutar;
                 }
-
-
 
                 <td hammadde-cikar="@kalip.KalipId">
                     <div class="col-lg-12 mb-2">
@@ -94,7 +92,7 @@
 
                         var sabit = 0.0012;
                         decimal KalipAgirlik = (decimal)kalip.ParcaAgirlik;
-                        decimal BoyaBirimFiyat = TozBoyaSonBirimFiyat() / 1000;
+                        decimal BoyaBirimFiyat = TozBoyaSonBirimFiyat();
                         Maliyet = (decimal)sabit * KalipAgirlik * (BoyaBirimFiyat / 1000);
                         malzemeToplamMaliyet += Maliyet;
 
@@ -106,7 +104,7 @@
                                 <span class="input-group-text" event="MaliyetDetay" maliyetType="tozBoya" kalipId="@kalip.KalipId">
                                     <i class="flaticon-mark"></i>
                                 </span>
-                                <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" HesplamaType="malzeme" value="@Maliyet" />
+                                <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" HesplamaType="malzeme" value="@Maliyet.ToString("n4")" />
                                 <span tozBoya-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="tozBoya" event="FaturadanCikar">
                                     -
                                 </span>
@@ -446,7 +444,7 @@
         @if (Model.FirstOrDefault().KalipUrunRelation.FirstOrDefault().Urun.isPimUsed)
         {
             var pim = BaseFiyat().FirstOrDefault(x => x.Kod == "452"); //452 pim fiyat tablosundaki kod, yan sanayi stok dosyasından geliyor, kalıp gibi eklenmiştir.
-            decimal pimFiyat = 0;
+            double pimFiyat = 0;
             if (pim != null)
             {
                 pimFiyat = pim.Tutar;
@@ -454,9 +452,9 @@
             if (pim != null && pim.DovizId != null && pim.DovizId != 1)
             {
                 var kur = BaseKur(pim.Doviz.Kisaltma, DateTime.Now);
-                pimFiyat *= kur;
+                pimFiyat *= (double)kur;
             }
-            var Maliyet = (pimFiyat / 1000) * (decimal)0.3;
+            var Maliyet = (pimFiyat / 1000) * 0.3;
 
             <tr>
                 <td>Pim Maliyeti</td>
