@@ -68,13 +68,33 @@
         maliyetHesapla();
     }
 
-    function FircaSecim() {
+    function OzelSecim() {
         debugger;
-        var urunCins = $("#UrunKisaltma").val();
+        var urunCins = $("#UrunKisaltma").val().toLowerCase();
+
         if (urunCins == "ms") {
             $("#fircaDiv").show();
         }
+        if (urunCins == "rj") {
+            $("#asansorDiv").show();
+            $("#rujTupDiv").show();
+            $("#helezonDiv").show();
+        }
     }
+
+    // Read a page's GET URL variables and return them as an associative array.
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        console.log(vars)
+        return vars;
+    }
+
     function UrunKaliplariGetir() {
         var urunId = $("#UrunId").val();
         var excludes = ",";
@@ -87,26 +107,52 @@
         if ($("#exclude").val() != undefined) {
             excludes = $("#exclude").val().slice(0, -1);
         }
-        Post("/siparis/UrunKaliplari",
-            { urunid: urunId, exclude: excludes, includes: includes },
-            function (response) {
-                $("#UrunKaliplari").empty().html(response);
-            },
-            function (x, y, z) {
-                //Error
-            },
-            function () {
-                //BeforeSend
-            },
-            function () {
-                maliyetTablosuGetir();
-                FircaSecim();
-            },
-            "html");
+
+        debugger;
+        if (window.location.href.search("siparisId") != -1) {
+            var siparisId = getUrlVars()["siparisId"];
+
+            $.ajax({
+                type: "GET",
+                url: "/siparis/UrunKaliplari?siparisId=" + siparisId,
+                dataType: "html",
+                success: function (response) {
+                    $("#UrunKaliplari").empty().html(response);
+                },
+                error: function () {
+
+                },
+                complete: function () {
+                    maliyetTablosuGetir();
+                    OzelSecim();
+                }
+            })
+        }
+
+        else {
+            Post("/siparis/UrunKaliplari",
+                { urunid: urunId, exclude: excludes, includes: includes },
+                function (response) {
+                    $("#UrunKaliplari").empty().html(response);
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+                    maliyetTablosuGetir();
+                    OzelSecim();
+                },
+                "html");
+        }
+
+
     }
 
     function maliyetHesapla() {
-        
+
         var liste = [];
         var Maliyet = function () {
             this.KalipId;
@@ -139,13 +185,13 @@
                 $("#MaliyetTablo").append(response);
 
                 teklifTutar = teklifTutar * 1.25 * 1.4;
-                $("#TeklifTutari").html(teklifTutar.toFixed(3));
+                $("#TeklifTutari").html(teklifTutar.toFixed(3).replace(".", ","));
 
                 var malzemeMaliyet = ToplamMalzemeMaliyet();
-                $("#ToplamMalzemeMaliyet").html(malzemeMaliyet);
+                $("#ToplamMalzemeMaliyet").html(malzemeMaliyet.replace(".", ","));
 
                 var urunMaliyet = ToplamUretimMaliyet();
-                $("#ToplamUretimMaliyet").val(urunMaliyet);
+                $("#ToplamUretimMaliyet").val(urunMaliyet.replace(".", ","));
 
                 ToplamMaliyetHesapla(teklifTutar.toFixed(2));
                 toastr.success("Maliyet hesplandı.");
@@ -164,7 +210,7 @@
     }
 
     function maliyetTablosuGetir() {
-        
+
         var idList = $("#kalipIdList").val().split(",");
         var urunId = $("#UrunId").val();
         var excludes = $("#exclude").val().slice(0, -1).split(",");
@@ -174,23 +220,46 @@
                 FixedIdList.push(idList[i])
             }
         }
+        debugger;
+        if (window.location.href.search("siparisId") != -1) {
+            var siparisId = getUrlVars()["siparisId"];
 
-        Post("/siparis/maliyetForm",
-            { idList: FixedIdList, urunId: urunId },
-            function (response) {
-                $("#maliyetTablosu").empty().html(response);
-                maliyetHesapla();
-            },
-            function (x, y, z) {
-                //Error
-            },
-            function () {
-                //BeforeSend
-            },
-            function () {
-                DisMalzemelerSifirla();
-            },
-            "html");
+            $.ajax({
+                type: "GET",
+                url: "/siparis/MaliyetFormSiparis?siparisId=" + siparisId,
+                dataType: "html",
+                success: function (response) {
+                    $("#maliyetTablosu").empty().html(response);
+                    maliyetHesapla();
+                },
+                error: function () {
+
+                },
+                complete: function () {
+                    DisMalzemelerSifirla();
+                }
+            })
+        }
+        else {
+            Post("/siparis/maliyetForm",
+                { idList: FixedIdList, urunId: urunId },
+                function (response) {
+                    $("#maliyetTablosu").empty().html(response);
+                    maliyetHesapla();
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+                    DisMalzemelerSifirla();
+                },
+                "html");
+        }
+
+
     }
 
     function DisMalzemelerSifirla() {
@@ -237,7 +306,7 @@
                             callback: function () {
                                 var value = $(".Fiyat").val();
                                 InputBulEkle(maliyetType, kalipId, value);
-                                
+
                                 if ($(".parentDiv").attr("uruntype") == "koli") {
                                     var posetKatsayi = $("#posetParametre").val();
                                     var targetId = $("#posetParametre").attr("targetInputId");
@@ -296,7 +365,7 @@
     //}
 
     function ToplamMalzemeMaliyet() {
-        
+
         var toplam = 0;
         var array = $("input.birimFiyat[HesplamaType=malzeme]").sort();
         $("input.MamulMalzemeMaliyet").val("0");
@@ -321,7 +390,7 @@
                     f2 = $(input).val();
                 }
                 fiyatTofixed = parseFloat(f1) + parseFloat(f2);
-                mamulInput.val(fiyatTofixed.toFixed(3))
+                mamulInput.val(fiyatTofixed.toFixed(3).replace(".", ","))
                 toplam += parseFloat(f2);
             }
         });
@@ -332,7 +401,7 @@
 
 
     function ToplamUretimMaliyet() {
-        
+
         var toplam = 0;
         var array = $("input.birimFiyat[HesplamaType=uretim]").sort();
         $("input.MamulUretimMaliyet").val("0");
@@ -358,7 +427,7 @@
                 }
 
                 fiyatTofixed = parseFloat(f1) + parseFloat(f2);
-                mamulInput.val(fiyatTofixed.toFixed(3))
+                mamulInput.val(fiyatTofixed.toFixed(3).replace(".", ","))
                 toplam += parseFloat(f2);
             }
         });
@@ -369,7 +438,7 @@
 
 
     function ToplamMaliyetHesapla(tutar) {
-        
+
         console.log(tutar);
         $.ajax({
             type: "GET",
@@ -379,7 +448,7 @@
                 if (response.Success == true) {
                     var sonuc = response.Data;
                     console.log("usd kur hesaplama sonuç :" + sonuc);
-                    $("#usdKurSonuc").html(sonuc.toFixed(2));
+                    $("#usdKurSonuc").html(sonuc.toFixed(3).replace(".", ","));
                 } else {
                     toastr.error(response.Description);
                 }
@@ -397,7 +466,7 @@
                 if (response.Success == true) {
                     var sonuc = response.Data;
                     console.log("euro kur hesaplama sonuç :" + sonuc);
-                    $("#eurKurSonuc").html(sonuc.toFixed(2));
+                    $("#eurKurSonuc").html(sonuc.toFixed(3).replace(".", ","));
                 } else {
                     toastr.error(response.Description);
                 }
@@ -408,6 +477,93 @@
         });
 
     }
+
+    function SiparisKaydet() {
+        debugger;
+
+        var liste = [];
+        var SiparisKalipDto = function () {
+            this.Maliyet;//decimal
+            this.KalipKod;//string
+            this.Status;//bool
+            this.MaliyetType;//string
+        }
+
+        var SiparisDto = function () {
+            this.CariId;
+            this.UrunId;
+            this.SiparisKalip;
+
+        }
+
+        var array = $(".birimFiyat").sort();
+        array.each(function (index, value) {
+            var input = value;
+            var dto = new SiparisKalipDto();
+            dto.KalipKod = input.getAttribute("KalipKod");
+            dto.Maliyet = input.value;
+            dto.MaliyetType = input.getAttribute("MaliyetType");
+
+            if ($(input).prop('disabled') == false) {
+                dto.Status = true;
+            } else {
+                dto.Status = false;
+            }
+            liste.push(dto);
+        });
+
+        console.log(liste);
+
+        var siparisDto = new SiparisDto();
+        siparisDto.CariId = $("#CariId").val();
+        siparisDto.UrunId = $("#UrunId").val();
+        siparisDto.SiparisKalip = liste;
+        siparisDto.ToplamMaliyet = $("#ToplamMaliyet").val();
+        siparisDto.ToplamMaliyetUsd = $("#ToplamMaliyetUsd").val();
+        siparisDto.ToplamMaliyetEur = $("#ToplamMaliyetEur").val();
+        console.log(siparisDto);
+
+        Post("/siparis/kaydet",
+            { siparis: siparisDto },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+            },
+            "json");
+    }
+
+    function SiparisKalipGuncelle(siparisKalipId, maliyet) {
+        Post("/siparis/SiparisKalipGuncelle",
+            { siparisKalipId: siparisKalipId, maliyet: maliyet },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+            },
+            "json");
+    }
+
 
     var handleEvent = function () {
 
@@ -469,7 +625,7 @@
             $("#exclude").val($("#exclude").val() + id + ",");
             tr.remove();
             var includeList = $("#include").val().slice(0, -1).split(",");
-            
+
             $.each(includeList, function (i, v) {
                 if (id == v) {
                     includeList = $.grep(includeList, function (n) {
@@ -486,6 +642,8 @@
 
         $(document).on("change", "#UrunId", function (event) {
             event.preventDefault();
+            debugger;
+            $(".OzelSecim").hide();
             UrunKaliplariGetir();
         });
 
@@ -495,11 +653,15 @@
 
         $(document).on("click", "[event='MaliyetDetay']", function (event) {
             event.preventDefault();
-       
+
             var MaliyetType = $(this).attr("maliyetType");
             var KalipId = $(this).attr("kalipId");
             var PosetParametre = $("#PosetParametre_" + KalipId).val();
             var urunId = $("#UrunId").val();
+            debugger;
+            if (window.location.href.search("siparisId") != -1) {
+                urunId = getUrlVars()["urunId"];
+            }
             maliyetDetayGetir(MaliyetType, KalipId, PosetParametre, urunId);
         });
 
@@ -521,7 +683,7 @@
 
         $(document).on("change", "#KoliBirimFiyat", function (event) {
             event.preventDefault();
-        
+
             var target = $("#BirimFiyat");
             var birimFiyat = parseFloat($(this).val().replace(",", "."));
             var posetParametre = $("#KoliBirimFiyat option:selected").attr("posetParametre");
@@ -550,7 +712,7 @@
 
         $(document).on("change", ".hesaplama", function (event) {
             event.preventDefault();
-       
+
             var Parent = $(this).parents(".parentDiv");
             var type = Parent.attr("UrunType");
 
@@ -587,7 +749,7 @@
 
         $(document).on("change", "#yaldizSelect", function (event) {
             event.preventDefault();
-        
+
             var target = $("#BirimFiyat");
             var birimFiyat = parseFloat($(this).val().replace(",", "."));
             target.val(birimFiyat);
@@ -600,54 +762,31 @@
             $("#include").val($("#include").val() + kalipId + ",");
             UrunKaliplariGetir();
         });
-        $(document).on("change", "#SiparisFircaSelect", function (event) {
+
+
+        $(document).on("change", ".OzelSecimSelect", function (event) {
             event.preventDefault();
+            debugger;
             var kalipId = $(this).val();
             $("#include").val($("#include").val() + kalipId + ",");
             UrunKaliplariGetir();
         });
 
-    }
-
-    var DtInit = function (domId, url, columns, params) {
-
-        var datatable = $('#' + domId).KTDatatable({
-            // datasource definition
-            data: {
-                type: 'remote',
-                source: {
-                    read: {
-                        //url: HOST_URL + '/api/datatables/demos/default.php',
-                        url: url,
-                        params: params
-                    },
-                },
-                pageSize: 20, // display 20 records per page
-                serverPaging: true,
-                serverFiltering: true,
-                serverSorting: true,
-            },
-
-            //layout definition
-            layout: {
-                scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
-                footer: false, // display/hide footer
-            },
-
-            //column sorting
-            sortable: true,
-
-            //enable pagination
-            pagination: true,
-
-            //columns definition
-            columns: columns
+        $(document).on("click", "[event='siparisKaydet']", function (event) {
+            event.preventDefault();
+            debugger;
+            SiparisKaydet();
 
         });
 
-        $('.form-control').on('change', function (e) {
-            datatable.search($(this).val().toLowerCase(), $(this).attr("id"));
+        $(document).on("change", ".siparisFiyat", function (event) {
+            event.preventDefault();
+            var siparisKalipId = $(this).attr("SiparisKalipId");
+            var maliyet = $(this).val();
+            SiparisKalipGuncelle(siparisKalipId, maliyet);
         });
+        
+
     }
 
 
@@ -656,9 +795,8 @@
         EventInit: function () {
             handleEvent();
         },
-
-        DtInit: function (domId, url, columns, params) {
-            DtInit(domId, url, columns, params);
+        GetUrlVars: function () {
+            getUrlVars();
         }
 
     };

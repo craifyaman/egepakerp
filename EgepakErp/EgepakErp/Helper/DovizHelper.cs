@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Xml.Linq;
 
-namespace EgepakErp.Helper
+namespace EgePakErp.Helper
 {
     public class DovizHelper
     {

@@ -1,21 +1,16 @@
-﻿using EgepakErp.Helper;
-using EgepakErp.Models.Custom;
-using EgePakErp.Custom;
+﻿using EgePakErp.Enums;
 using EgePakErp.Helper;
 using EgePakErp.Models;
-using EgePakErp.Models.Audit;
+using EgePakErp.Models.Custom;
 using ExcelDataReader;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Web.Mvc;
-using System.Data.Entity;
-using EgepakErp.Enums;
 
 namespace EgePakErp.Controllers
 {
@@ -32,7 +27,7 @@ namespace EgePakErp.Controllers
         /// <returns></returns>
         /// 
 
-        [Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
+        //[Menu("Entegrasyon", "flaticon-squares icon-xl", "Entegrasyon", 0, 0)]
         public ActionResult Index()
         {
             return View();
@@ -58,7 +53,7 @@ namespace EgePakErp.Controllers
                     EurKur = eurKur
                 };
                 Db.DovizKur.Add(dovizKur);
-            }           
+            }
 
             Db.BulkSaveChanges();
         }
@@ -170,7 +165,7 @@ namespace EgePakErp.Controllers
         public void HamUrunGroup()
         {
             var dataset = new DataSet();
-            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Ham_Urun_Group_Aktarim_11_08_2022_4.xlsx", FileMode.Open, FileAccess.Read))
+            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Ham_Urun_Group_Aktarim_19_08_2022_1.xlsx", FileMode.Open, FileAccess.Read))
             {
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
@@ -208,6 +203,8 @@ namespace EgePakErp.Controllers
                     UrunGroup.EgePakMontajAdet = currentRow.ItemArray[18]?.ToString();
                     UrunGroup.EvMontajMaliyet = currentRow.ItemArray[19]?.ToString();
                     UrunGroup.KromPlastMetalizeBrFiyat = currentRow.ItemArray[20]?.ToString();
+                    UrunGroup.OncelikMakine = currentRow.ItemArray[21]?.ToString();
+                    UrunGroup.AlternatifMakine = currentRow.ItemArray[22]?.ToString();
 
                     list.Add(UrunGroup);
                 }
@@ -472,7 +469,9 @@ namespace EgePakErp.Controllers
                         SicakBaskiAdet = x.FirstOrDefault().SicakBaskiAdet,
                         EgePakMontajAdet = x.FirstOrDefault().EgePakMontajAdet,
                         EvMontajMaliyet = x.FirstOrDefault().EvMontajMaliyet,
-                        KromPlastMetalizeBrFiyat = x.FirstOrDefault().KromPlastMetalizeBrFiyat
+                        KromPlastMetalizeBrFiyat = x.FirstOrDefault().KromPlastMetalizeBrFiyat,
+                        OncelikMakine = x.FirstOrDefault().OncelikMakine,
+                        AlternatifMakine = x.FirstOrDefault().AlternatifMakine,
 
                     })
                     .ToList();
@@ -642,6 +641,22 @@ namespace EgePakErp.Controllers
                     try
                     {
                         kalip.KromPlastMetalizeBrFiyat = item.KromPlastMetalizeBrFiyat;
+                    }
+                    catch
+                    {
+                    }
+                    //Öncelik Makine eşleştirme
+                    try
+                    {
+                        kalip.OncelikMakine = item.OncelikMakine;
+                    }
+                    catch
+                    {
+                    }
+                    //Alternatif Makine eşleştirme
+                    try
+                    {
+                        kalip.AlternatifMakine = item.AlternatifMakine;
                     }
                     catch
                     {
@@ -1042,16 +1057,17 @@ namespace EgePakErp.Controllers
         {
             try
             {
-                var urunCinsId = Db.UrunCinsi.FirstOrDefault(x => x.Kisaltmasi == "RJ").UrunCinsiId;
+                var urunCinsId = Db.UrunCinsi.FirstOrDefault(x => x.Kisaltmasi.ToLower() == "rj").UrunCinsiId;
                 var urunList = Db.Urun.Where(x => x.UrunCinsiId == urunCinsId).ToList();
                 List<KalipUrunRelation> kalipUrunRelList = new List<KalipUrunRelation>();
 
                 foreach (var item in urunList)
                 {
                     item.isSilikonYagiUsed = true;
-                    if (item.UrunNo != "43")
+                    item.isTinerUsed = true;
+                    if (item.UrunNo == "43")
                     {
-                        item.isTinerUsed = true;
+                        item.isTinerUsed = false;
                     }
                 }
                 Db.BulkSaveChanges();
@@ -1116,6 +1132,98 @@ namespace EgePakErp.Controllers
             };
             Db.KoliTur.AddRange(list);
             Db.BulkSaveChanges();
+        }
+
+        //public void EvMontaj()
+        //{
+        //    var urunler = Db.Urun.ToList();
+        //    var urunCinsler = Db.UrunCinsi.ToList();
+        //    var dataset = new DataSet();
+        //    using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Ev_Montaj_Aktarim_18_08_2022_1.xlsx", FileMode.Open, FileAccess.Read))
+        //    {
+        //        using (var reader = ExcelReaderFactory.CreateReader(stream))
+        //        {
+        //            dataset = reader.AsDataSet();
+        //        }
+        //    }
+        //    var dataTable = dataset.Tables[0];
+        //    var list = new List<EvMontaj>();
+
+        //    for (int i = 0; i < dataTable.Rows.Count; i++)
+        //    {
+        //        var currentRow = dataTable.Rows[i];
+        //        try
+        //        {
+        //            var evMontaj = new EvMontaj();
+        //            evMontaj.UrunCins = currentRow.ItemArray[0]?.ToString();
+        //            evMontaj.UrunNo = currentRow.ItemArray[1].ToString().PadLeft(2, '0');
+        //            evMontaj.Aciklama = currentRow.ItemArray[2].ToString();
+        //            var maliyet = currentRow.ItemArray[3].ToString();
+        //            evMontaj.Maliyet = Convert.ToDecimal(maliyet);
+
+        //            list.Add(evMontaj);
+        //        }
+        //        catch (Exception ex)
+        //        {
+
+        //        }
+
+        //    }
+        //    Db.EvMontaj.AddRange(list);
+
+        //    foreach(var item in list)
+        //    {
+        //        try
+        //        {
+        //            var urunCinsId = urunCinsler.FirstOrDefault(x => x.Kisaltmasi.ToLower() == item.UrunCins.ToLower()).UrunCinsiId;
+        //            var urunNo = item.UrunNo;
+        //            var urun = urunler.FirstOrDefault(x => x.UrunCinsiId == urunCinsId && x.UrunNo == urunNo);
+        //            if (urun != null)
+        //            {
+        //                urun.EvMaliyet = item.Maliyet;
+        //            }
+        //        }
+        //        catch { }
+
+        //    }
+        //    Db.BulkSaveChanges();
+
+        //}
+
+        public void MsFircaTemizle()
+        {
+            var idList = "370,372,373,374,375,376,377,378,447,448,449,451";
+            var liste = idList.Split(',');
+            var kaliplar = Db.Kalip.Where(x => liste.Contains(x.ParcaKodu)).ToList();
+
+            foreach (var kalip in kaliplar)
+            {
+                var relations = Db.KalipUrunRelation
+                    .Include(x => x.Urun)
+                    .Include(x => x.Urun.UrunCinsi)
+                    .Where(x => x.KalipId == kalip.KalipId && x.Urun.UrunCinsi.Kisaltmasi.ToLower() == "ms")
+                    .ToList();
+                Db.KalipUrunRelation.RemoveRange(relations);
+                Db.BulkSaveChanges();
+            }
+        }
+
+        public void RujHelezonAsansorTemizle()
+        {
+            var idList = "001-12,001-13KD,001-13UD,003-KK,003-KKE,003-UK,003-UKE,2,5,6";
+            var liste = idList.Split(',');
+            var kaliplar = Db.Kalip.Where(x => liste.Contains(x.ParcaKodu)).ToList();
+
+            foreach (var kalip in kaliplar)
+            {
+                var relations = Db.KalipUrunRelation
+                    .Include(x => x.Urun)
+                    .Include(x => x.Urun.UrunCinsi)
+                    .Where(x => x.KalipId == kalip.KalipId && x.Urun.UrunCinsi.Kisaltmasi.ToLower() == "rj")
+                    .ToList();
+                Db.KalipUrunRelation.RemoveRange(relations);
+                Db.BulkSaveChanges();
+            }
         }
         public void UretimBilgiTemizle()
         {
@@ -1185,6 +1293,8 @@ namespace EgePakErp.Controllers
             RujSilikonYagiTiner();
             KoliTurEkle();
             UretimSabitlerEkle();
+            MsFircaTemizle();
+            RujHelezonAsansorTemizle();
         }
 
     }

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
-using EgepakErp.Enums;
-using EgepakErp.Helper;
+using EgePakErp.Enums;
+using EgePakErp.Helper;
 using EgePakErp.Controllers;
 using EgePakErp.Models;
 using System.Data.Entity;
@@ -325,6 +325,13 @@ namespace EgePakErp.Custom
             var list = db.HammaddeHareket.Include("Doviz").Where(x => x.UrunAdi.Contains(urunAdi)).ToList();
             return list;
         }
+        public List<HammaddeHareket> BaseTutkal()
+        {
+            var tutkalId = db.HammaddeCinsi.FirstOrDefault(x => x.Adi.ToLower().Contains("tutkal")).HammaddeCinsiId;
+            var list = db.HammaddeHareket.Include("Doviz").Where(x => x.HammaddeCinsiId == tutkalId).ToList();
+            return list;
+        }
+
         public List<HammaddeHareket> BaseHammaddeHareketler()
         {
             var list = db.HammaddeHareket
@@ -387,7 +394,21 @@ namespace EgePakErp.Custom
         public List<Kalip> BaseFircaListe()
         {
             var list = db.Kalip
-                .Where(x=>x.Adi.ToLower().Contains("fırça"))
+                .Where(x => x.Adi.ToLower().Contains("fırça"))
+                .ToList();
+            return list;
+        }
+        public List<Kalip> BaseKalipListe(string urunAdi)
+        {
+            var list = db.Kalip
+                .Where(x => x.Adi.ToLower().Contains(urunAdi))
+                .ToList();
+            return list;
+        }
+
+        public List<SiparisKalip> BaseSiparisKalipListe()
+        {
+            var list = db.SiparisKalip
                 .ToList();
             return list;
         }
@@ -420,6 +441,12 @@ namespace EgePakErp.Custom
             var kur = db.DovizKur.FirstOrDefault();
             return kur;
         }
+
+        //public List<EvMontaj> BaseEvMontaj()
+        //{
+        //    var liste = db.EvMontaj.ToList();
+        //    return liste;
+        //}
 
         public List<BaseMenu> baseMenu(string pre = "Menu", string nameSpace = "EgePakErp.Controllers")
         {

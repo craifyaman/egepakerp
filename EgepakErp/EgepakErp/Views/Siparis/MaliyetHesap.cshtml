@@ -1,8 +1,14 @@
-﻿@using EgepakErp.DtModels;
+﻿@using EgePakErp.DtModels;
 
 @model List<MaliyetDto>
 @{
     var liste = Model.GroupBy(x => x.KalipId);
+    var liste2 = Model.GroupBy(x => x.KalipId).ToList();
+    foreach(var item in liste2)
+    {
+        var a = item;
+    }
+
     double ToplamTutar = 0;
     double VadeliFiyat = 0;
     decimal DolarKur = ViewBag.dolarKur;
@@ -26,7 +32,17 @@
         <td>
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
-                    @item.Where(x => x.Status == true).Sum(x => x.Tutar).ToString("n2") ₺
+                    @{
+                        var tlToplam = item.Where(x => x.Status == true).Sum(x => x.Tutar);
+                        var dolarToplam = (decimal)tlToplam / DolarKur;
+                        var euroToplam = (decimal)tlToplam / EuroKur;
+                    }
+                    @tlToplam.ToString("n3")<b>₺</b>
+                    <br />
+                    @dolarToplam.ToString("n3")<b>$</b>
+                    <br />
+                    @euroToplam.ToString("n3")<b>€</b>
+
                     @{ ToplamTutar += item.Sum(x => x.Tutar);}
                 </div>
             </div>
@@ -52,7 +68,18 @@
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
                     @{ var NakitFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25);}
-                    @NakitFiyat.ToString("n2") ₺
+                    
+                    @{
+                        var dolarToplam = (decimal)NakitFiyat / DolarKur;
+                        var euroToplam = (decimal)NakitFiyat / EuroKur;
+                    }
+                    
+                    @NakitFiyat.ToString("n3")<b>₺</b>
+                    <br />
+                    @dolarToplam.ToString("n3")<b>$</b>
+                    <br />
+                    @euroToplam.ToString("n3")<b>€</b>
+
                 </div>
             </div>
         </td>
@@ -76,8 +103,18 @@
         <td>
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
-                    @{ VadeliFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25*1.4);}
-                    @VadeliFiyat.ToString("n2") ₺
+                    @{ VadeliFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25 * 1.4);}
+                    
+                    @{
+                        var dolarToplam = (decimal)VadeliFiyat / DolarKur;
+                        var euroToplam = (decimal)VadeliFiyat / EuroKur;
+                    }
+
+                    @VadeliFiyat.ToString("n3")<b>₺</b>
+                    <br />
+                    @dolarToplam.ToString("n3")<b>$</b>
+                    <br />
+                    @euroToplam.ToString("n3")<b>€</b>
                 </div>
             </div>
         </td>
@@ -89,11 +126,11 @@
     <th>Teklif Tutar Tl</th>
     <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">
         <span id="TeklifTutari">
-            @VadeliFiyat.ToString("n2")
+            @VadeliFiyat.ToString("n3")
         </span>
     ₺</th>
 </tr>
-
+<input type="hidden" id="ToplamMaliyet" value="@VadeliFiyat.ToString("n3")" />
 @if (DolarKur != 0 || EuroKur != 0)
 {
     <tr class="sum">
@@ -101,7 +138,7 @@
         @{
             var DolarFiyat = (decimal)ToplamTutar / DolarKur;
         }
-        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;"> <span id="usdKurSonuc">@DolarFiyat.ToString("n2") </span> $ <span style="font-size: 13px;"> (USD/TL @DolarKur) </span></th>
+        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;"> <span id="usdKurSonuc">@DolarFiyat.ToString("n3") </span> $ <span style="font-size: 13px;"> (USD/TL @DolarKur) </span></th>
     </tr>
 
     <tr class="sum">
@@ -109,7 +146,12 @@
         @{
             var EuroFiyat = (decimal)ToplamTutar / EuroKur;
         }
-        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;"><span id="eurKurSonuc">@EuroFiyat.ToString("n2")</span>€ <span style="font-size: 13px;">(EUR/TL @EuroKur)</span></th>
+        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;"><span id="eurKurSonuc">@EuroFiyat.ToString("n3")</span>€ <span style="font-size: 13px;">(EUR/TL @EuroKur)</span></th>
     </tr>
+
+    
+    <input type="hidden" id="ToplamMaliyetUsd" value="@DolarFiyat.ToString("n3")"/>
+    <input type="hidden" id="ToplamMaliyetEur" value="@EuroFiyat.ToString("n3")"/>
+
 }
 

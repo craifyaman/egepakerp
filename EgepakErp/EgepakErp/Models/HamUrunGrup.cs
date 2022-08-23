@@ -33,6 +33,8 @@ namespace EgePakErp.Models
         public string EgePakMontajAdet { get; set; }
         public string EvMontajMaliyet { get; set; }
         public string KromPlastMetalizeBrFiyat { get; set; }
+        public string OncelikMakine { get; set; }
+        public string AlternatifMakine { get; set; }
 
 
 

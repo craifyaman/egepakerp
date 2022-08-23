@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace EgepakErp.Abstract
+namespace EgePakErp.Abstract
 {
     public interface IRepository<T> where T : class
     {

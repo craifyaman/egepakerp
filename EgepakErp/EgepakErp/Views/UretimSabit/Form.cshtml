@@ -1,0 +1,25 @@
+﻿@model UretimSabitler
+<!--begin::Form-->
+<form id="UretimSabitForm">
+    @Html.HiddenFor(x => x.UretimSabitlerId)
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label>Aciklama:</label>
+            @Html.TextBoxFor(x => x.Aciklama, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-6">
+            <label>Maliyet</label>
+            @Html.TextBoxFor(x => x.Maliyet, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-6">
+            <label>Birim</label>
+            @Html.TextBoxFor(x => x.Birim, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-6">
+            <label>Kod</label>
+            @Html.TextBoxFor(x => x.Kod, new { @class = "form-control" })
+        </div>
+    </div>
+</form>
+<!--end::Form-->

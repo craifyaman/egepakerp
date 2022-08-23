@@ -4,10 +4,10 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
-using EgepakErp.Abstract;
+using EgePakErp.Abstract;
 using EgePakErp;
 
-namespace EgepakErp.Concrete
+namespace EgePakErp.Concrete
 {
     public class _GenericRepository<T> : IRepository<T> where T : class
     {

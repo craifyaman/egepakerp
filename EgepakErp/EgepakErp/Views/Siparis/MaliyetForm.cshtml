@@ -1,4 +1,4 @@
-﻿@using EgepakErp.Enums;
+﻿@using EgePakErp.Enums;
 
 @model List<Kalip>
 @{
@@ -48,7 +48,6 @@
                     }
                     birimMaliyet = toplamTutar;
                 }
-
                 <td hammadde-cikar="@kalip.KalipId">
                     <div class="col-lg-12 mb-2">
                         <label>Birim Fiyat:</label>
@@ -60,7 +59,7 @@
                                 </span>
                             }
 
-                            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" HesplamaType="malzeme" value="@birimMaliyet.Value.ToString("N3")" />
+                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="hammadde" type="text" class="form-control birimFiyat" HesplamaType="malzeme" value="@birimMaliyet.Value.ToString("N3")" />
                             <span hammadde-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="hammadde" event="FaturadanCikar">
                                 -
                             </span>
@@ -97,6 +96,7 @@
                         malzemeToplamMaliyet += Maliyet;
 
                     }
+
                     <td tozBoya-cikar="@kalip.KalipId" HazirMalzemeMi="@kalip.isHazirMalzeme.ToString()">
                         <div class="col-lg-12 mb-2">
                             <label>bir adet için üretim maliyeti</label>
@@ -104,7 +104,7 @@
                                 <span class="input-group-text" event="MaliyetDetay" maliyetType="tozBoya" kalipId="@kalip.KalipId">
                                     <i class="flaticon-mark"></i>
                                 </span>
-                                <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" HesplamaType="malzeme" value="@Maliyet.ToString("n4")" />
+                                <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="tozBoya" type="text" class="form-control birimFiyat" HesplamaType="malzeme" value="@Maliyet.ToString("n4")" />
                                 <span tozBoya-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="tozBoya" event="FaturadanCikar">
                                     -
                                 </span>
@@ -224,7 +224,7 @@
                                 </span>
                             }
 
-                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
+                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="yaldiz" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
                             <span yaldiz-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="yaldiz" event="FaturadanCikar">
                                 -
                             </span>
@@ -259,7 +259,7 @@
                     <div class="col-lg-12 mb-2">
                         <label>Maliyet:</label>
                         <div class="input-group mb-5">
-                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="0" />
+                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="sprey" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="0" />
                             <span sprey-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="sprey" event="FaturadanCikar">
                                 -
                             </span>
@@ -284,7 +284,7 @@
                     <div class="col-lg-12 mb-2">
                         <label>Maliyet:</label>
                         <div class="input-group mb-5">
-                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@KarliFiyat" />
+                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="metalize" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@KarliFiyat" />
                             <span metalize-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="metalize" event="FaturadanCikar">
                                 -
                             </span>
@@ -362,7 +362,7 @@
                             <span class="input-group-text" event="MaliyetDetay" maliyetType="koli" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
-                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N5")" />
+                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="koli" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N5")" />
                             <span koli-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="koli" event="FaturadanCikar">
                                 -
                             </span>
@@ -396,7 +396,7 @@
                             <span class="input-group-text" event="MaliyetDetay" maliyetType="poset" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
-                            <input kalipId="@kalip.KalipId" HesplamaType="malzeme" mamulType="poset" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N4")" />
+                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="poset" HesplamaType="malzeme" mamulType="poset" type="text" class="form-control birimFiyat" value="@birimMaliyet.Value.ToString("N4")" />
                             <span poset-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="poset" event="FaturadanCikar">
                                 -
                             </span>
@@ -425,7 +425,7 @@
                     <div class="col-lg-12 mb-2">
                         <label>@kalip.Adi Maliyeti:</label>
                         <div class="input-group mb-5">
-                            <input kalipId="@kalip.KalipId" type="text" class="form-control MamulMalzemeMaliyet" disabled value="0" />
+                            <input kalipId="@kalip.KalipId"  type="text" class="form-control MamulMalzemeMaliyet" disabled value="0" />
                         </div>
                     </div>
                 </td>
@@ -441,7 +441,7 @@
         </tr>
     </thead>
     <tbody>
-        @if (Model.FirstOrDefault().KalipUrunRelation.FirstOrDefault().Urun.isPimUsed)
+        @if (UretimUrun.isPimUsed)
         {
             var pim = BaseFiyat().FirstOrDefault(x => x.Kod == "452"); //452 pim fiyat tablosundaki kod, yan sanayi stok dosyasından geliyor, kalıp gibi eklenmiştir.
             double pimFiyat = 0;
@@ -465,20 +465,20 @@
                             @*<span class="input-group-text" event="MaliyetDetay" maliyetType="koli" kalipId="">
                                     <i class="flaticon-mark"></i>
                                 </span>*@
-                            <input HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n3")" />
+                            <input HesplamaType="malzeme" KalipKod="pim" MaliyetType="yanMalzeme" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n3")" />
                         </div>
                     </div>
                 </td>
             </tr>
         }
 
-        @if (Model.FirstOrDefault().KalipUrunRelation.FirstOrDefault().Urun.isTutkalUsed)
+        @if (UretimUrun.isTutkalUsed)
         {
-            var tutkal = BaseHammaddeHareketler("tutkal").FirstOrDefault();
+            var tutkal = BaseTutkal().FirstOrDefault();
             decimal tutkalFiyat = 0;
             if (tutkal != null)
             {
-                tutkalFiyat = tutkal.ToplamTutar;
+                tutkalFiyat = tutkal.BirimFiyat;
             }
             var Maliyet = (tutkalFiyat * (decimal)0.5) / 280;
 
@@ -488,19 +488,24 @@
                     <div class="col-lg-12 mb-2">
                         <label>Birim Fiyat:</label>
                         <div class="input-group mb-5">
-                            <input HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet" />
+                            <input HesplamaType="malzeme" KalipKod="tutkal" MaliyetType="tutkal" type="text" class="form-control birimFiyat" value="@Maliyet" />
                         </div>
                     </div>
                 </td>
             </tr>
 
-            var urun = Model.FirstOrDefault().KalipUrunRelation.FirstOrDefault().Urun;
-            if (urun.UrunCinsi.Kisaltmasi == "RJ")
+        }
+
+        @*@if (UretimUrun.isSilikonYagiUsed)
             {
                 var silikonYagi = BaseHammaddeHareketler().FirstOrDefault(x => x.HammaddeCinsi.Kisaltmasi == "SİLİKON YAĞI");
                 var tiner = BaseHammaddeHareketler().FirstOrDefault(x => x.HammaddeCinsi.Kisaltmasi == "TİNER");
                 var yagFiyat = silikonYagi != null ? silikonYagi.BirimFiyat : 0;
                 var tinerFiyat = tiner != null ? tiner.BirimFiyat : 0;
+                if(UretimUrun.isTinerUsed == false)
+                {
+                    tinerFiyat = 0;
+                }
                 var sonuc = (yagFiyat + tinerFiyat) / 1000;
                 <tr>
                     <td>Tiner + Silikon Yağı</td>
@@ -514,49 +519,42 @@
                     </td>
                 </tr>
 
-            }
-        }
-
+            }*@
 
         @{
-            var urunId = ViewBag.urunId;
-            var silikonYagUrunList = Model.FirstOrDefault().KalipUrunRelation.Where(x => x.Urun.UrunCinsi.Kisaltmasi == "RJ").Select(x => x.Urun);
-            foreach (var item in silikonYagUrunList)
+            if (UretimUrun.isSilikonYagiUsed)
             {
-                if (item.UrunId == urunId && item.isSilikonYagiUsed)
+                var silikonYagi = BaseHammaddeHareketler("SİLİKON YAĞI").FirstOrDefault();
+                var tiner = BaseHammaddeHareketler("tiner").FirstOrDefault();
+
+                decimal silikonYagiFiyat = 0;
+                decimal tinerFiyat = 0;
+                if (silikonYagi != null && tiner != null)
                 {
-                    var silikonYagi = BaseHammaddeHareketler("SİLİKON YAĞI").FirstOrDefault();
-                    var tiner = BaseHammaddeHareketler("tiner").FirstOrDefault();
-
-                    decimal silikonYagiFiyat = 0;
-                    decimal tinerFiyat = 0;
-                    if (silikonYagi != null && tiner != null)
-                    {
-                        silikonYagiFiyat = silikonYagi.BirimFiyat;
-                        tinerFiyat = tiner.BirimFiyat;
-                    }
-
-
-                    if (item.UrunId == urunId && item.isTinerUsed == false)
-                    {
-                        tinerFiyat = 0;
-                    }
-                    var Maliyet = ((silikonYagiFiyat + tinerFiyat) / 1000) * (decimal)0.5;
-                    <tr>
-                        <td>
-                            Silikon Yağı (@silikonYagiFiyat) + Tiner Maliyet (@tinerFiyat)
-                        </td>
-                        <td yanMalzeme-cikar="pim">
-                            <div class="col-lg-12 mb-2">
-                                <label>Birim Fiyat:</label>
-                                <div class="input-group mb-5">
-                                    <input HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet" />
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                    silikonYagiFiyat = silikonYagi.BirimFiyat;
+                    tinerFiyat = tiner.BirimFiyat;
                 }
 
+
+                if (UretimUrun.isTinerUsed == false)
+                {
+                    tinerFiyat = 0;
+                }
+
+                var Maliyet = ((silikonYagiFiyat + tinerFiyat) / 1000) * (decimal)0.5;
+                <tr>
+                    <td>
+                        Silikon Yağı (@silikonYagiFiyat) + Tiner Fiyat (@tinerFiyat)
+                    </td>
+                    <td yanMalzeme-cikar="silikonTiner">
+                        <div class="col-lg-12 mb-2">
+                            <label>Birim Fiyat:</label>
+                            <div class="input-group mb-5">
+                                <input HesplamaType="malzeme" KalipKod="silikonTiner" MaliyetType="yanMalzeme" type="text" class="form-control birimFiyat" value="@Maliyet" />
+                            </div>
+                        </div>
+                    </td>
+                </tr>
             }
 
         }
@@ -598,7 +596,7 @@
                                 <span class="input-group-text" event="MaliyetDetay" maliyetType="enjeksiyon" kalipId="@kalip.KalipId">
                                     <i class="flaticon-mark"></i>
                                 </span>
-                                <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" HesplamaType="uretim" value="@birAdetUrunUretimMaliyeti.ToString("N2")" />
+                                <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="enjeksiyon" type="text" class="form-control birimFiyat" HesplamaType="uretim" value="@birAdetUrunUretimMaliyeti.ToString("N3")" />
 
                             </div>
                         </div>
@@ -614,7 +612,7 @@
                                 <span class="input-group-text" event="MaliyetDetay" maliyetType="enjeksiyon" kalipId="@kalip.KalipId">
                                     <i class="flaticon-mark"></i>
                                 </span>
-                                <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" HesplamaType="uretim" value="0" />
+                                <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="enjeksiyon" type="text" class="form-control birimFiyat" HesplamaType="uretim" value="0" />
                             </div>
                         </div>
                     </td>
@@ -642,12 +640,12 @@
 
                 <td baskiMakina-cikar="@kalip.KalipId" HazirMalzemeMi="@kalip.isHazirMalzeme.ToString()">
                     <div class="col-lg-12 mb-2">
-                        <label>aded maliyeti:</label>
+                        <label>adet maliyeti:</label>
                         <div class="input-group mb-5">
                             <span class="input-group-text" event="MaliyetDetay" maliyetType="baskiMakina" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
-                            <input kalipId="@kalip.KalipId" type="text" HesplamaType="uretim" class="form-control birimFiyat" value="@sonuc.ToString("n2")" />
+                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="baskiMakina" type="text" HesplamaType="uretim" class="form-control birimFiyat" value="@sonuc.ToString("n3")" />
                             <span baskiMakina-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="baskiMakina" event="FaturadanCikar">
                                 -
                             </span>
@@ -674,12 +672,12 @@
 
                     <td montaj-cikar="@kalip.KalipId">
                         <div class="col-lg-12 mb-2">
-                            <label>aded maliyeti:</label>
+                            <label>adet maliyeti:</label>
                             <div class="input-group mb-5">
                                 <span class="input-group-text" event="MaliyetDetay" maliyetType="montaj" kalipId="@kalip.KalipId">
                                     <i class="flaticon-mark"></i>
                                 </span>
-                                <input kalipId="@kalip.KalipId" type="text" HesplamaType="uretim" class="form-control birimFiyat" value="@Maliyet.ToString("N3")" />
+                                <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="montaj" type="text" HesplamaType="uretim" class="form-control birimFiyat" value="@Maliyet.ToString("N3")" />
                                 <span montaj-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="montaj" event="FaturadanCikar">
                                     -
                                 </span>
@@ -698,18 +696,24 @@
         <tr>
             <td>Ev Montaj</td>
 
+            @{
+                //var evMontajMaliyet = UretimUrun.EvMaliyet;
+                //var aciklama = BaseEvMontaj().FirstOrDefault(x => x.UrunCins.ToLower() == UretimUrun.UrunCinsi.Kisaltmasi.ToLower() && x.UrunNo == UretimUrun.UrunNo).Aciklama;
+
+            }
             @foreach (var kalip in Model)
             {
-                string evMontajMaliyet = "0";
+                decimal Maliyet = 0;
                 if (!string.IsNullOrEmpty(kalip.EvMontajMaliyet))
                 {
-                    evMontajMaliyet = kalip.EvMontajMaliyet;
+                    Maliyet = Convert.ToDecimal(kalip.EvMontajMaliyet);
                 }
-                <td evmontaj-cikar="@kalip.KalipId" HazirMalzemeMi="@kalip.isHazirMalzeme.ToString()">
+
+                <td evmontaj-cikar="@kalip.KalipId">
                     <div class="col-lg-12 mb-2">
                         <label>maliyet:</label>
                         <div class="input-group mb-5">
-                            <input kalipId="@kalip.KalipId" type="text" HesplamaType="uretim" class="form-control birimFiyat" value="@evMontajMaliyet" />
+                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="evmontaj" type="text" HesplamaType="uretim" class="form-control birimFiyat" value="@Maliyet.ToString("N3")" />
                             <span evmontaj-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="evmontaj" event="FaturadanCikar">
                                 -
                             </span>
@@ -724,12 +728,12 @@
             {
                 <td boyaKaplama-cikar="@kalip.KalipId" HazirMalzemeMi="@kalip.isHazirMalzeme.ToString()">
                     <div class="col-lg-12 mb-2">
-                        <label>aded maliyeti:</label>
+                        <label>adet maliyeti:</label>
                         <div class="input-group mb-5">
                             <span class="input-group-text" event="MaliyetDetay" maliyetType="boyaKaplama" kalipId="@kalip.KalipId">
                                 <i class="flaticon-mark"></i>
                             </span>
-                            <input kalipId="@kalip.KalipId" type="text" HesplamaType="uretim" class="form-control birimFiyat" value="0" />
+                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="boyaKaplama" type="text" HesplamaType="uretim" class="form-control birimFiyat" value="0" />
                             <span boyaKaplama-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="boyaKaplama" event="FaturadanCikar">
                                 -
                             </span>

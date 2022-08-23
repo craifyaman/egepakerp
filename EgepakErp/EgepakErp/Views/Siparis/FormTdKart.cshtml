@@ -1,0 +1,46 @@
+﻿@using EgePakErp.Models;
+@model dynamic
+@{
+    Kalip kalip = (Kalip)Model.Kalip;
+    decimal Maliyet = Model.Maliyet != null ? Model.Maliyet : 0;
+    string Cikartype = Model.Cikartype;
+    string HesaplamaType = Model.HesaplamaType;
+    string MaliyetType = Model.MaliyetType;
+    string LabelName = Model.LabelName;
+    bool isFiyat = Model.isFiyat;
+    bool HazirMalzemeMi = Model.HazirMalzemeMi;
+
+}
+
+@{
+    var kalipId = kalip.KalipId;
+    string attr = $"{Cikartype}-cikar=";
+    attr += $"{kalipId}";
+}
+
+<td @attr @HazirMalzemeMi.ToString()>
+    <div class="col-lg-12 mb-2">
+        <label>@LabelName:</label>
+        <div class="input-group mb-5">
+            @if (!kalip.isHazirMalzeme)
+            {
+                <span class="input-group-text" event="MaliyetDetay" maliyetType="@MaliyetType" kalipId="@kalip.KalipId">
+                    <i class="flaticon-mark"></i>
+                </span>
+            }
+            <input kalipId="@kalip.KalipId" type="text" class="form-control birimFiyat" HesplamaType="@HesaplamaType" value="@Maliyet.ToString("N3")" />
+            <span @attr class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="@Cikartype" event="FaturadanCikar">
+                -
+            </span>
+        </div>
+    </div>
+
+    @if (kalip.isHazirMalzeme && isFiyat)
+    {
+        var fiyat = BaseFiyat().FirstOrDefault(x => x.Kod == kalip.ParcaKodu);
+
+        <div>
+            Fiyat = @fiyat.Tutar @fiyat.Doviz.Kisaltma
+        </div>
+    }
+</td>

@@ -19,6 +19,7 @@ namespace EgePakErp.Models
         public bool isTutkalUsed { get; set; } = false;
         public bool isSilikonYagiUsed { get; set; }
         public bool isTinerUsed { get; set; }
+        //public decimal EvMaliyet { get; set; }
 
         [NotMapped]
         public string UrunKodu { get; set; }

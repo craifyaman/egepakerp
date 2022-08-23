@@ -1,6 +1,6 @@
-﻿using EgepakErp.DtModels;
-using EgepakErp.Enums;
-using EgepakErp.Helper;
+﻿using EgePakErp.DtModels;
+using EgePakErp.Enums;
+using EgePakErp.Helper;
 using EgePakErp.Custom;
 using EgePakErp.Models;
 using Newtonsoft.Json;
@@ -10,13 +10,30 @@ using System.Linq;
 using System.Linq.Dynamic;
 using System.Web.Mvc;
 using System.Data.Entity;
-
+using EgePakErp.Concrete;
+using System.Collections;
 
 namespace EgePakErp.Controllers
 {
     public class SiparisController : BaseController
     {
         //public List<Kalip> Kaliplar { get; set; }
+        public KalipRepository kalipRepo { get; set; }
+        public SiparisRepository siparisRepo { get; set; }
+        public SiparisKalipRepository siparisKalipRepo { get; set; }
+
+        public SiparisController()
+        {
+            kalipRepo = new KalipRepository();
+            siparisRepo = new SiparisRepository();
+            siparisKalipRepo = new SiparisKalipRepository();
+        }
+
+        [Menu("Sipariş Listesi", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
+        public ActionResult Index()
+        {
+            return View();
+        }
 
         [Menu("Sipariş Formu", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
         public ActionResult SiparisFormu()
@@ -24,41 +41,183 @@ namespace EgePakErp.Controllers
             return View();
         }
 
+        [Yetki("Sipariş Listesi", "Sipariş")]
+        public JsonResult Liste()
+        {
+            //kabasını aldır
+            var dtModel = new DataTableModel<dynamic>();
+            var dtMeta = new DataTableMeta();
+
+            dtMeta.field = Request.Form["sort[field]"] == null ? "SiparisId" : Request.Form["sort[field]"];
+            dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
+
+            dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
+            dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
+
+            var model = siparisRepo.GetAll();
+
+            try
+            {
+                model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
+            }
+
+            catch (Exception)
+            {
+                model = model.OrderBy("SiparisId Desc");
+                dtMeta.field = "SiparisId";
+                dtMeta.sort = "Desc";
+            }
+
+            var count = model.Count();
+
+            dtMeta.total = count;
+            dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
+            //sayfala
+            model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
+
+            //dto yap burda
+            var dto = model.AsEnumerable().Select(i => new
+            {
+                SiparisId = i.SiparisId,
+                Cari = i.Cari.Unvan,
+                Urun = i.Urun.UrunCinsi.Kisaltmasi + i.Urun.UrunNo,
+                UrunId = i.UrunId
+            }).ToList<dynamic>();
+
+
+            dtModel.meta = dtMeta;
+            dtModel.data = dto;
+            return Json(dtModel);
+
+        }
+
+        public JsonResult Kaydet(Siparis siparis)
+        {
+            Response response = new Response();
+            try
+            {
+                siparisRepo.Insert(siparis);
+                response.Success = true;
+                response.Description = "Sipariş başarı ile kaydedildi";
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response);
+            }
+        }
+        public JsonResult SiparisKalipGuncelle(int siparisKalipId, float maliyet)
+        {
+            Response response = new Response();
+            try
+            {
+                var siparisKalip = siparisKalipRepo.Get(siparisKalipId);
+                siparisKalip.Maliyet = maliyet;
+                siparisKalipRepo.Update(siparisKalip);
+
+                response.Success = true;
+                response.Description = "Sipariş başarı ile güncellendi";
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response);
+            }
+        }
+
+        [HttpPost]
         public PartialViewResult UrunKaliplari(int urunId, List<int> exclude, List<int> includes)
         {
+            var KalipListe = Db.Kalip
+                .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.HammaddeCinsi")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
+                .ToList();
+
             //exclude = çıkarılan kalıpların id listesi.
             var model = new List<Kalip>();
             if (includes.Count() > 0)
             {
                 foreach (var item in includes)
                 {
-                    var kalip = Db.Kalip.FirstOrDefault(x => x.KalipId == item);
+                    //var kalip = Db.Kalip.FirstOrDefault(x => x.KalipId == item);
+                    var kalip = kalipRepo.Get(item);
                     if (kalip != null)
                     {
                         model.Add(kalip);
                     }
                 }
             }
+
             if (exclude == null)
             {
                 var list = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId).Select(x => x.Kalip).ToList();
                 model.AddRange(list);
 
             }
+
             else
             {
-                var list = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId && x.Kalip.isAktive == true && !exclude.Contains(x.KalipId)).Select(x => x.Kalip).ToList();
-                model.AddRange(list);
+
+                var _list = Db.KalipUrunRelation
+                    .Include("Kalip")
+                    .Where(x => x.UrunId == urunId && x.Kalip.isAktive == true && !exclude.Contains(x.KalipId)).Select(x => x.Kalip.KalipId)
+                    .ToList();
+                foreach (var kId in _list)
+                {
+                    var kalip = KalipListe.FirstOrDefault(x => x.KalipId == kId);
+                    model.Add(kalip);
+                }
             }
+
             ViewBag.urun = Db.Urun.Include(x => x.UrunCinsi).FirstOrDefault(x => x.UrunId == urunId);
             return PartialView(model.OrderBy(x => x.ParcaKodu).ToList());
         }
 
+        [HttpGet]
+        public PartialViewResult UrunKaliplari(int siparisId)
+        {
+            var KalipListe = Db.Kalip
+                .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.HammaddeCinsi")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
+                .ToList();
+            var siparis = siparisRepo.Get(siparisId);
+
+            var model = new List<Kalip>();
+            var kalipKodList = siparis.SiparisKalip.GroupBy(x => new { x.KalipKod }, (key, group) => new
+            {
+                Kod = key.KalipKod,
+            }).Select(x => x.Kod).ToList();
+
+            foreach (var _kod in kalipKodList)
+            {
+                try
+                {
+                    var kalip = kalipRepo.Get(x => x.ParcaKodu == _kod);
+                    if (kalip != null)
+                    {
+                        model.Add(kalip);
+                    }
+
+                }
+                catch { }
+            }
+
+            ViewBag.urun = Db.Urun.Include(x => x.UrunCinsi).FirstOrDefault(x => x.UrunId == siparis.UrunId);
+            return PartialView(model.OrderBy(x => x.ParcaKodu).ToList());
+        }
+
+        [HttpPost]
         public PartialViewResult MaliyetForm(List<int> idList, int urunId)
         {
-            ViewBag.TozBoyaSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.ToLower().Contains("toz")).BirimFiyat;
             ViewBag.PosetSonBirimFiyat = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.ToLower().Contains("poşet")).BirimFiyat;
-            ViewBag.KoliSonHareket = Db.HammaddeHareket.OrderByDescending(x => x.KayitTarihi).FirstOrDefault(x => x.UrunAdi.ToLower().Contains("koli") && !x.UrunAdi.ToLower().Contains("bantı"));
             ViewBag.urunId = urunId;
             var kaliplar = Db.Kalip
                 .Include("KalipHammaddeRelation")
@@ -71,12 +230,49 @@ namespace EgePakErp.Controllers
             return PartialView(kaliplar.OrderBy(x => x.ParcaKodu).ToList());
         }
 
+        public PartialViewResult MaliyetFormSiparis(int siparisId)
+        {
+            var siparis = siparisRepo.Get(siparisId);
+            ViewBag.siparisId = siparisId;
+            ViewBag.urunId = siparis.UrunId;
+
+            var kaliplar = Db.Kalip
+                .Include("KalipHammaddeRelation")
+                .Include("KalipHammaddeRelation.HammaddeCinsi")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeHareket")
+                .Include("KalipHammaddeRelation.HammaddeCinsi.HammaddeFire")
+                .Include("KalipUrunRelation.Urun")
+                .Include("KalipUrunRelation.Urun.UrunCinsi")
+                .ToList();
+            List<Kalip> fixKalipList = new List<Kalip>();
+            var idList = new List<int>();
+
+            var kalipKodList = siparis.SiparisKalip.GroupBy(x => new { x.KalipKod }, (key, group) => new
+            {
+                Kod = key.KalipKod,
+            }).Select(x => x.Kod).ToList();
+
+            foreach (var _kod in kalipKodList)
+            {
+                try
+                {
+                    var kalip = kalipRepo.Get(x => x.ParcaKodu == _kod);
+                    fixKalipList.Add(kalip);
+                }
+                catch { }
+            }
+
+            return PartialView(fixKalipList.OrderBy(x => x.ParcaKodu).ToList());
+        }
+
+
         public PartialViewResult MaliyetHesap(List<MaliyetDto> liste)
         {
             var date = System.DateTime.Now;
             ViewBag.dolarKur = DovizHelper.DovizKuruGetir("USD", date);
             ViewBag.euroKur = DovizHelper.DovizKuruGetir("EUR", date);
-            return PartialView(liste);
+            var FixListe = liste.Where(x => x.KalipId != 0).ToList();
+            return PartialView(FixListe);
         }
 
         [HttpGet]
@@ -142,5 +338,9 @@ namespace EgePakErp.Controllers
 
         }
 
+        public PartialViewResult FormTdKart(dynamic ModelItem)
+        {
+            return PartialView(ModelItem);
+        }
     }
 }

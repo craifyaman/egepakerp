@@ -19,7 +19,7 @@ namespace EgePakErp
     using System.ComponentModel.DataAnnotations;
     using EgePakErp.Models.Audit;
     using Newtonsoft.Json;
-    using EgepakErp.Models.Custom;
+    using EgePakErp.Models.Custom;
 
     public partial class Db : DbContext
     {
@@ -66,6 +66,9 @@ namespace EgePakErp
         public virtual DbSet<YanSanayiStok> YanSanayiStok { get; set; }
         public virtual DbSet<Fiyat> Fiyat { get; set; }
         public virtual DbSet<Kategori> Kategori { get; set; }
+        public virtual DbSet<Siparis> Siparis { get; set; }
+        public virtual DbSet<SiparisKalip> SiparisKalip { get; set; }
+        //public virtual DbSet<EvMontaj> EvMontaj { get; set; }
 
 
         #endregion

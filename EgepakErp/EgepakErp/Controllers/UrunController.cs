@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Dynamic;
 using System.Web.Mvc;
-using EgepakErp.Concrete;
+using EgePakErp.Concrete;
 using EgePakErp.Custom;
 using EgePakErp.Models;
 

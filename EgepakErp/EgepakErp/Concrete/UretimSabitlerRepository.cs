@@ -5,25 +5,25 @@ using System.Linq.Expressions;
 
 namespace EgePakErp.Concrete
 {
-    public class FiyatRepository : _GenericRepository<Fiyat>
+    public class UretimSabitlerRepository : _GenericRepository<UretimSabitler>
     {
-        public override Fiyat Get(int id)
+        public override UretimSabitler Get(int id)
         {
             return dbset
-               .FirstOrDefault(x => x.FiyatId == id);
+               .FirstOrDefault(x => x.UretimSabitlerId == id);
         }
-        public override Fiyat Get(Expression<Func<Fiyat, bool>> filter)
+        public override UretimSabitler Get(Expression<Func<UretimSabitler, bool>> filter)
         {
             return dbset
                .FirstOrDefault(filter);
         }
-        public override IQueryable<Fiyat> GetAll()
+        public override IQueryable<UretimSabitler> GetAll()
         {
             return dbset
                .AsQueryable();
         }
 
-        public override IQueryable<Fiyat> GetAll(Expression<Func<Fiyat, bool>> filter)
+        public override IQueryable<UretimSabitler> GetAll(Expression<Func<UretimSabitler, bool>> filter)
         {
             return dbset
                 .Where(filter)

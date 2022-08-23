@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Linq.Dynamic;
 using EgePakErp.Models;
-using EgepakErp.Concrete;
+using EgePakErp.Concrete;
 
 namespace EgePakErp.Controllers
 {

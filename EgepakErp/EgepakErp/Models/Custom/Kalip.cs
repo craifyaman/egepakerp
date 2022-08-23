@@ -37,7 +37,8 @@ namespace EgePakErp.Models
         public string EgePakMontajAdet { get; set; }
         public string EvMontajMaliyet { get; set; }
         public string KromPlastMetalizeBrFiyat { get; set; }
-
+        public string OncelikMakine { get; set; }
+        public string AlternatifMakine { get; set; }
 
         public virtual ICollection<KalipHammaddeRelation> KalipHammaddeRelation { get; set; }
         public virtual ICollection<KalipUrunRelation> KalipUrunRelation { get; set; }
@@ -51,6 +52,10 @@ namespace EgePakErp.Models
 
         [NotMapped]
         public List<int> HammaddeList { get; set; }
+
+        [NotMapped]
+        public float SiparisMaliyet { get; set; }
+
 
     }
 }

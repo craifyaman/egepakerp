@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EgepakErp.Models.Custom
+namespace EgePakErp.Models.Custom
 {
     [Table("HammaddeFire")]
     public class HammaddeFire

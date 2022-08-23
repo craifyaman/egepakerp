@@ -542,7 +542,7 @@
                 field: 'Birim',
                 title: 'Birim'
             },
-            
+
             {
                 field: 'UretimTeminSekli.Adi',
                 title: 'Üretim Şekli',
@@ -652,6 +652,87 @@
         return columns;
     }
 
+    function uretimSabitColumns() {
+        var clm = [
+            {
+                field: 'UretimSabitlerId',
+                title: '#'
+            },
+            {
+                field: 'Aciklama',
+                title: 'Açıklama'
+            },
+            {
+                field: 'Maliyet',
+                title: 'Maliyet'
+            },
+            {
+                field: 'Birim',
+                title: 'Birim'
+            },
+            {
+                field: 'Kod',
+                title: 'Kod'
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var str = '<a class="btn btn-icon btn-info mr-1" event="UretimSabitFormPopup"  href="#" id="' + row.UretimSabitlerId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top">\
+                                <i class="flaticon-edit" ></i>\
+                           </a>';
+
+                    return str;
+                },
+            }]
+
+        return clm;
+    }
+
+    function siparisColumns() {
+        var clm = [
+            {
+                field: 'SiparisId',
+                title: '#'
+            },
+            {
+                field: 'Cari',
+                title: 'Cari'
+            },
+            {
+                field: 'Urun',
+                title: 'Urun'
+            },
+            {
+                field: 'UrunId',
+                title: 'Ürün Id'
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+
+                    var str = '<a class="btn btn-icon btn-info mr-1" href="siparis/siparisformu?siparisId=' + row.SiparisId + '&urunId=' + row.UrunId + '" target="_blank" title="Düzenle" data-toggle="tooltip" data-placement="top"><i class="flaticon-edit" ></i> </a>'
+                    //str += ' <a class="btn btn-icon btn-primary mr-1" href = "/kisi/detay/' + row.KisiId + '" title = "Kişi Detay" data - toggle="tooltip" data - placement="top" > <i class="flaticon-search" ></i></a>'
+                    //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
+
+                    return str;
+                },
+            }
+        ];
+        return clm;
+    }
+
+
+
     return {
         // public functions
         CariColumns: function () {
@@ -684,6 +765,12 @@
         FiyatColumns: function () {
             return fiyatColumns();
         },
+        UretimSabitColumns: function () {
+            return uretimSabitColumns();
+        },
+        SiparisColumns: function () {
+            return siparisColumns();
+        },
         GetColoums: function (name) {
             if (name == "cari") {
                 return cariColumns();
@@ -709,6 +796,13 @@
             else if (name == "hammaddehareket") {
                 return hammaddeHareketColumns();
             }
+            else if (name == "uretimsabit") {
+                return uretimSabitColumns();
+            }
+            else if (name == "siparis") {
+                return siparisColumns();
+            }
+
         }
     };
 }();

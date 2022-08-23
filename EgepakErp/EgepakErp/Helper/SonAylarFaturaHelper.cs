@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace EgepakErp.Helper
+namespace EgePakErp.Helper
 {
     public class SonAylarFaturaHelper
     {

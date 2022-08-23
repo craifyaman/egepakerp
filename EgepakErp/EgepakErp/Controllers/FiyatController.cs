@@ -1,4 +1,4 @@
-﻿using EgepakErp.Concrete;
+﻿using EgePakErp.Concrete;
 using EgePakErp.Controllers;
 using EgePakErp.Custom;
 using EgePakErp.Models;
@@ -18,7 +18,7 @@ namespace EgePakErp.Controllers
             repo = new FiyatRepository();
         }
         // GET: Fiyat
-        [Menu("Fiyatlar", "flaticon2-download icon-xl", "Fiyatlar", 0, 0)]
+        [Menu("Fiyatlar", "flaticon2-download icon-xl", "Fiyatlar", 0, 1)]
         public ActionResult Index()
         {
             return View();

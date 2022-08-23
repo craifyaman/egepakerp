@@ -1,4 +1,4 @@
-﻿@using EgepakErp.Enums;
+﻿@using EgePakErp.Enums;
 
 @model Kalip
 @{
@@ -153,7 +153,7 @@
             </div>
 
             <div class="form-group">
-                <label>Fire Oranı:</label>
+                <label>Fire Oranı(%):</label>
                 @{
                     double fireOran = 0;
                     var fire = kalip.KalipHammaddeRelation?.Select(i => i.HammaddeCinsi).FirstOrDefault()?.HammaddeFire;
@@ -431,7 +431,7 @@
                 <input type="text" class="form-control hesaplama" id="SaatMaliyet" value="@enjeksiyonSaatMaliyet" />
             </div>
             <div class="col-lg-12 mb-2">
-                <label>Üretim Zamanı:</label>
+                <label>Üretim Süresi(sn):</label>
                 <input type="text" class="form-control hesaplama" id="UretimZamani" value="@kalip.UretimZamani" disabled />
             </div>
 
@@ -440,9 +440,9 @@
                 <input type="text" class="form-control hesaplama" id="GozSayisi" value="@kalip.KalipGozSayisi" disabled />
             </div>
             <div class="col-lg-12 mb-2">
-                <label>bir adet için üretim maliyeti</label>
-                <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birAdetUrunUretimMaliyeti.ToString("N2")" placeholder="(3600/üretim zamanı)*(göz sayısı/enjeksiyon saat maliyet)" />
-                <span class="form-text text-muted">( enjeksiyon saat maliyet ) / ( (3600/üretim zamanı) * göz sayısı )</span>
+                <label>üretim maliyeti</label>
+                <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birAdetUrunUretimMaliyeti.ToString("N3")" />
+                <span class="form-text text-muted">( enjeksiyon saat maliyet ) / ( (3600/üretim süresi(sn)) * göz sayısı )</span>
             </div>
         </div>
 
@@ -456,7 +456,7 @@
                 <input type="text" class="form-control hesaplama" id="SaatMaliyet" value="" />
             </div>
             <div class="col-lg-12 mb-2">
-                <label>Üretim Zamanı:</label>
+                <label>Üretim Süresi(sn):</label>
                 <input type="text" class="form-control hesaplama" id="UretimZamani" value="@kalip.UretimZamani" disabled />
             </div>
 
@@ -465,9 +465,9 @@
                 <input type="text" class="form-control hesaplama" id="GozSayisi" value="@kalip.KalipGozSayisi" disabled />
             </div>
             <div class="col-lg-12 mb-2">
-                <label>bir adet için üretim maliyeti</label>
-                <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="" placeholder="(3600/üretim zamanı)*(göz sayısı/enjeksiyon saat maliyet)" />
-                <span class="form-text text-muted">( (3600/üretim zamanı) * göz sayısı ) / ( enjeksiyon saat maliyet )</span>
+                <label>üretim maliyeti</label>
+                <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="0" />
+                <span class="form-text text-muted">( enjeksiyon saat maliyet ) / ( (3600/üretim süresi(sn)) * göz sayısı )</span>
             </div>
         </div>
 
@@ -501,7 +501,7 @@
                     </div>
                     <div class="col-lg-12 mb-2">
                         <label>birim sıcak baskı tampon maliyet</label>
-                        <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimSicakBaskiTamponMaliyet.ToString("N2")" placeholder="saat maliyet/adet" />
+                        <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimSicakBaskiTamponMaliyet.ToString("N3")" placeholder="saat maliyet/adet" />
                         <span class="form-text text-muted">saat maliyet/adet</span>
                     </div>
                 </div>
@@ -541,7 +541,7 @@
                         <input type="text" class="form-control hesaplama" id="SaatAdet" value="@adet" />
                     </div>
                     <div class="col-lg-12 mb-2">
-                        <label>aded maliyeti</label>
+                        <label>adet maliyeti</label>
                         <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("N3")" />
                         <span class="form-text text-muted">Personel Saat Maliyet / Saatlik Üretim Adedi</span>
                     </div>
@@ -584,8 +584,8 @@
                     <input type="text" class="form-control hesaplama" id="SaatMaliyet" value="@SaatMaliyet" />
                 </div>
                 <div class="col-lg-12 mb-2">
-                    <label>aded maliyeti</label>
-                    <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@sonuc.ToString("N2")" />
+                    <label>adet maliyeti</label>
+                    <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@sonuc.ToString("N3")" />
                     <span class="form-text text-muted">Personel Saat Maliyet / Saatlik Üretim Adedi</span>
                 </div>
             </div>

@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EgepakErp</RootNamespace>
-    <AssemblyName>EgepakErp</AssemblyName>
+    <RootNamespace>EgePakErp</RootNamespace>
+    <AssemblyName>EgePakErp</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -44,6 +44,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -172,12 +173,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Concrete\HammaddeHareketRepository.cs" />
     <Compile Include="Concrete\HammaddeCinsiRepository.cs" />
+    <Compile Include="Concrete\SiparisKalipRepository.cs" />
+    <Compile Include="Concrete\UretimSabitlerRepository.cs" />
     <Compile Include="Concrete\PompaFiyatRepository.cs" />
     <Compile Include="Concrete\KalipRepository.cs" />
+    <Compile Include="Concrete\SiparisRepository.cs" />
     <Compile Include="Concrete\UrunRepository.cs" />
     <Compile Include="Concrete\_GenericRepository.cs" />
     <Compile Include="Controllers\FiyatController.cs" />
     <Compile Include="Controllers\GenericBaseController.cs" />
+    <Compile Include="Controllers\UretimSabitController.cs" />
     <Compile Include="Custom\BaseMethods.cs" />
     <Compile Include="Db\Configuration.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -305,7 +310,29 @@
     <Compile Include="Migrations\202208150959098_create_dovizKur_table.designer.cs">
       <DependentUpon>202208150959098_create_dovizKur_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208181159434_ekle_oncelikMakine_ve_alternatifMakine.cs" />
+    <Compile Include="Migrations\202208181159434_ekle_oncelikMakine_ve_alternatifMakine.designer.cs">
+      <DependentUpon>202208181159434_ekle_oncelikMakine_ve_alternatifMakine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208190856136_mig11.cs" />
+    <Compile Include="Migrations\202208190856136_mig11.designer.cs">
+      <DependentUpon>202208190856136_mig11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208221512559_create_Siparis_and_SiparisKalip_table.cs" />
+    <Compile Include="Migrations\202208221512559_create_Siparis_and_SiparisKalip_table.designer.cs">
+      <DependentUpon>202208221512559_create_Siparis_and_SiparisKalip_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208230913455_add_toplamMaliyet_to_siparis.cs" />
+    <Compile Include="Migrations\202208230913455_add_toplamMaliyet_to_siparis.designer.cs">
+      <DependentUpon>202208230913455_add_toplamMaliyet_to_siparis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208230953392_edit_Maliyet_to_float_siparisKalip_table.cs" />
+    <Compile Include="Migrations\202208230953392_edit_Maliyet_to_float_siparisKalip_table.designer.cs">
+      <DependentUpon>202208230953392_edit_Maliyet_to_float_siparisKalip_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\DovizKur.cs" />
+    <Compile Include="Models\Custom\SiparisKalip.cs" />
+    <Compile Include="Models\Custom\Siparis.cs" />
     <Compile Include="Models\Custom\UretimSabitler.cs" />
     <Compile Include="Models\Custom\KoliTur.cs" />
     <Compile Include="Models\Custom\HammaddeFire.cs" />
@@ -366,6 +393,7 @@
     <Compile Include="Models\Custom\Urun.cs" />
     <Compile Include="Models\Custom\HammaddeCinsi.cs" />
     <Compile Include="Models\Custom\UrunCinsi.cs" />
+    <Compile Include="Models\EvMontaj.cs" />
     <Compile Include="Models\YanSanayiStok.cs" />
     <Compile Include="Models\Micro\BaglantiTipi.cs" />
     <Compile Include="Models\Micro\Cari.cs" />
@@ -2612,6 +2640,7 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
     <Content Include="Scripts\Custom\Dt.js" />
+    <Content Include="Scripts\UretimSabit.js" />
     <Content Include="Scripts\Functions\HesapFuntions.js" />
     <Content Include="Scripts\Cari.js" />
     <Content Include="Scripts\Custom\DtColums.js" />
@@ -2712,6 +2741,11 @@
     <Content Include="Views\Fiyat\Form.cshtml" />
     <Content Include="Views\Fiyat\Index.cshtml" />
     <Content Include="Views\Entegrasyon\Index.cshtml" />
+    <Content Include="Views\Siparis\FormTdKart.cshtml" />
+    <Content Include="Views\UretimSabit\Form.cshtml" />
+    <Content Include="Views\UretimSabit\Index.cshtml" />
+    <Content Include="Views\Siparis\Index.cshtml" />
+    <Content Include="Views\Siparis\MaliyetFormSiparis.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -2797,6 +2831,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208150959098_create_dovizKur_table.resx">
       <DependentUpon>202208150959098_create_dovizKur_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208181159434_ekle_oncelikMakine_ve_alternatifMakine.resx">
+      <DependentUpon>202208181159434_ekle_oncelikMakine_ve_alternatifMakine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208190856136_mig11.resx">
+      <DependentUpon>202208190856136_mig11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208221512559_create_Siparis_and_SiparisKalip_table.resx">
+      <DependentUpon>202208221512559_create_Siparis_and_SiparisKalip_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208230913455_add_toplamMaliyet_to_siparis.resx">
+      <DependentUpon>202208230913455_add_toplamMaliyet_to_siparis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208230953392_edit_Maliyet_to_float_siparisKalip_table.resx">
+      <DependentUpon>202208230953392_edit_Maliyet_to_float_siparisKalip_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

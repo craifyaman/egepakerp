@@ -1,4 +1,4 @@
-﻿namespace EgepakErp.Enums
+﻿namespace EgePakErp.Enums
 {
     public enum EUretimSabitler
     {

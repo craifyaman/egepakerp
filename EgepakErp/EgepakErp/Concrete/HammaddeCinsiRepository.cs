@@ -6,7 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 
-namespace EgepakErp.Concrete
+namespace EgePakErp.Concrete
 {
     public class HammaddeCinsiRepository : _GenericRepository<HammaddeCinsi>
     {

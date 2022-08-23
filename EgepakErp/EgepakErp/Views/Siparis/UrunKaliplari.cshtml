@@ -10,6 +10,7 @@
         <tr>
             <th>Parça Kodu</th>
             <th>Adı</th>
+            <th>Hammadde</th>
             <th>Ağırlık(gr)</th>
             <th>Göz Sayısı</th>
             <th>Çevrim Süresi(sn)</th>
@@ -23,6 +24,7 @@
             <tr KalipId="@item.KalipId">
                 <td>@item.ParcaKodu</td>
                 <td>@item.Adi</td>
+                <td>@(item.KalipHammaddeRelation.FirstOrDefault()?.HammaddeCinsi?.Kisaltmasi)</td>
                 <td>@item.ParcaAgirlik</td>
                 <td>@item.KalipGozSayisi</td>
                 <td>@item.UretimZamani</td>

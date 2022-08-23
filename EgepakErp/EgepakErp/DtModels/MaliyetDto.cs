@@ -1,4 +1,4 @@
-﻿namespace EgepakErp.DtModels
+﻿namespace EgePakErp.DtModels
 {
     public class MaliyetDto
     {

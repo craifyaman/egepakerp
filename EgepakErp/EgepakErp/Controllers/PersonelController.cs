@@ -14,7 +14,7 @@ namespace EgePakErp.Controllers
     public class PersonelController : BaseController
     {
         //GET : Cari
-        [Menu("Personel Listesi", "flaticon-users icon-xl", "Personel",0,1)]
+        [Menu("Personel Listesi", "flaticon-users icon-xl", "Personel",0,2)]
         public ActionResult Index()
         {
             return View();
