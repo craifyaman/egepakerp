@@ -700,6 +700,10 @@
                 title: '#'
             },
             {
+                field: 'SiparisAdi',
+                title: 'Sipariş numarası'
+            },
+            {
                 field: 'Cari',
                 title: 'Cari'
             },

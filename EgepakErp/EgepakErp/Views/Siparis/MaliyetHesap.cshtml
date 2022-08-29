@@ -4,7 +4,7 @@
 @{
     var liste = Model.GroupBy(x => x.KalipId);
     var liste2 = Model.GroupBy(x => x.KalipId).ToList();
-    foreach(var item in liste2)
+    foreach (var item in liste2)
     {
         var a = item;
     }
@@ -68,12 +68,12 @@
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
                     @{ var NakitFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25);}
-                    
+
                     @{
                         var dolarToplam = (decimal)NakitFiyat / DolarKur;
                         var euroToplam = (decimal)NakitFiyat / EuroKur;
                     }
-                    
+
                     @NakitFiyat.ToString("n3")<b>₺</b>
                     <br />
                     @dolarToplam.ToString("n3")<b>$</b>
@@ -104,7 +104,7 @@
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
                     @{ VadeliFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25 * 1.4);}
-                    
+
                     @{
                         var dolarToplam = (decimal)VadeliFiyat / DolarKur;
                         var euroToplam = (decimal)VadeliFiyat / EuroKur;
@@ -128,9 +128,12 @@
         <span id="TeklifTutari">
             @VadeliFiyat.ToString("n3")
         </span>
-    ₺</th>
+        ₺
+    </th>
 </tr>
-<input type="hidden" id="ToplamMaliyet" value="@VadeliFiyat.ToString("n3")" />
+<input type="hidden" id="ToplamMaliyet" value="" />
+<input type="hidden" id="ToplamMaliyetUsd" value="" />
+<input type="hidden" id="ToplamMaliyetEur" value="" />
 @if (DolarKur != 0 || EuroKur != 0)
 {
     <tr class="sum">
@@ -148,10 +151,6 @@
         }
         <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;"><span id="eurKurSonuc">@EuroFiyat.ToString("n3")</span>€ <span style="font-size: 13px;">(EUR/TL @EuroKur)</span></th>
     </tr>
-
-    
-    <input type="hidden" id="ToplamMaliyetUsd" value="@DolarFiyat.ToString("n3")"/>
-    <input type="hidden" id="ToplamMaliyetEur" value="@EuroFiyat.ToString("n3")"/>
 
 }
 

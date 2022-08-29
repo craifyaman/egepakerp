@@ -7,6 +7,7 @@ using System.Linq.Dynamic;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using EgePakErp.Concrete;
 using EgePakErp.Custom;
 using EgePakErp.Models;
 
@@ -15,6 +16,11 @@ namespace EgePakErp.Controllers
 
     public class CariController : BaseController
     {
+        public CariRepository repo { get; set; }
+        public CariController()
+        {
+            repo = new CariRepository();
+        }
         // GET: Cari
         [Menu("Müşteriler", "flaticon-customer icon-xl", "Müşteri", 1, 2)]
         public ActionResult Index()
@@ -197,6 +203,8 @@ namespace EgePakErp.Controllers
 
             if (cari.CariId==0)
             {
+                var sonCariMusteriNo = repo.GetAll().OrderByDescending(x => x.MusteriNo).FirstOrDefault().MusteriNo;
+                cari.MusteriNo = sonCariMusteriNo + 1;
                 cari.Aktif = true;
                 Db.Cari.Add(cari);
             }

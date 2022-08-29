@@ -40,6 +40,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <link rel="shortcut icon" href="assets/media/logos/favicon.ico" />
     <!--end::Fontawesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!--end::Custom css-->
+    <link href="~/Content/Site.css" rel="stylesheet" />
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -118,7 +120,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav">
-                          
+
                             @foreach (var item in baseMenu().GroupBy(i => i.Parent))
                             {
                                 if (item.ToList().Count == 1)
@@ -3210,8 +3212,10 @@ License: You must have a valid license purchased only from themeforest(the above
     <script src="~/Scripts/Tanim.js?v=@ScriptVersion"></script>
     <script src="~/Scripts/Gorusme.js?v=@ScriptVersion"></script>
     <script src="~/Scripts/Not.js?v=@ScriptVersion"></script>
-
-
+    <script src="~/assets/js/pages/crud/forms/editors/summernote.js"></script>
+    <script src="~/Scripts/Custom/AjaxImageUpload.js"></script>
+    <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script src="~/Scripts/Plugins/webviewer.min.js"></script>
     @RenderSection("scripts", required: false)
     <script>
 
@@ -3239,7 +3243,7 @@ License: You must have a valid license purchased only from themeforest(the above
         });
 
         $(document).ajaxComplete(function (event, jqxhr, settings, thrownError) {
-             
+
             KTApp.unblockPage();
             Global.init();
         });

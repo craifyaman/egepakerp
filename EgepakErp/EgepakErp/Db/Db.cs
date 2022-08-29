@@ -68,6 +68,7 @@ namespace EgePakErp
         public virtual DbSet<Kategori> Kategori { get; set; }
         public virtual DbSet<Siparis> Siparis { get; set; }
         public virtual DbSet<SiparisKalip> SiparisKalip { get; set; }
+        //public virtual DbSet<SiparisKatman> SiparisKatman { get; set; }
         //public virtual DbSet<EvMontaj> EvMontaj { get; set; }
 
 

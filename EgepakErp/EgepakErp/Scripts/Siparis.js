@@ -186,6 +186,7 @@
 
                 teklifTutar = teklifTutar * 1.25 * 1.4;
                 $("#TeklifTutari").html(teklifTutar.toFixed(3).replace(".", ","));
+                $("#ToplamMaliyet").val(teklifTutar.toFixed(3).replace(".", ","));
 
                 var malzemeMaliyet = ToplamMalzemeMaliyet();
                 $("#ToplamMalzemeMaliyet").html(malzemeMaliyet.replace(".", ","));
@@ -272,9 +273,14 @@
         maliyetHesapla();
     }
 
-    function InputBulEkle(MaliyetType, KalipId, Value) {
+    function InputBulEkle(MaliyetType, KalipId, Value, YaldizPdfYol = null) {
+        debugger;
         var Input = $("td[" + MaliyetType + "-cikar='" + KalipId + "'] input");
         Input.val(Value);
+
+        if (Input.attr("yaldizpdf") !== undefined && Input.attr("yaldizpdf") != null) {
+            Input.attr("yaldizpdf", YaldizPdfYol)
+        }
     }
 
     function CheckString(str) {
@@ -304,8 +310,13 @@
                             label: "Kaydet",
                             className: 'btn-info',
                             callback: function () {
+                                debugger;
                                 var value = $(".Fiyat").val();
-                                InputBulEkle(maliyetType, kalipId, value);
+                                var yaldizPdfYol = null;
+                                if ($(".Fiyat").attr("YaldizPdfYol") !== null && $(".Fiyat").attr("YaldizPdfYol") !== undefined) {
+                                    yaldizPdfYol = $(".Fiyat").attr("YaldizPdfYol");
+                                }
+                                InputBulEkle(maliyetType, kalipId, value, yaldizPdfYol);
 
                                 if ($(".parentDiv").attr("uruntype") == "koli") {
                                     var posetKatsayi = $("#posetParametre").val();
@@ -345,24 +356,6 @@
         return status;
     }
 
-    //function ToplamMalzemeMaliyet() {
-    //    var toplam = 0;
-    //    var array = $("input.birimFiyat[HesplamaType=malzeme]").sort();
-    //    array.each(function (index, value) {
-    //        var input = value;
-    //        if ($(input).prop('disabled') == false) {
-    //            var maliyet = parseFloat($(input).val().replace(",", "."));
-    //            toplam += maliyet;
-    //            var kalipId = $(input).attr("kalipId");
-    //            var mamulInput = $("input.MamulMalzemeMaliyet[kalipId='" + kalipId + "']");
-    //            var fiyat = mamulInput.val();
-    //            console.log(fiyat + toplam);
-
-    //        }
-    //    });
-    //    console.log("toplam malzeme maliyeti : " + toplam);
-    //    return toplam.toFixed(3);
-    //}
 
     function ToplamMalzemeMaliyet() {
 
@@ -397,8 +390,6 @@
         console.log("toplam malzeme maliyeti : " + toplam);
         return toplam.toFixed(3);
     }
-
-
 
     function ToplamUretimMaliyet() {
 
@@ -435,8 +426,6 @@
         return toplam.toFixed(3);
     }
 
-
-
     function ToplamMaliyetHesapla(tutar) {
 
         console.log(tutar);
@@ -449,6 +438,7 @@
                     var sonuc = response.Data;
                     console.log("usd kur hesaplama sonuç :" + sonuc);
                     $("#usdKurSonuc").html(sonuc.toFixed(3).replace(".", ","));
+                    $("#ToplamMaliyetUsd").val(sonuc.toFixed(3).replace(".", ","));
                 } else {
                     toastr.error(response.Description);
                 }
@@ -467,6 +457,7 @@
                     var sonuc = response.Data;
                     console.log("euro kur hesaplama sonuç :" + sonuc);
                     $("#eurKurSonuc").html(sonuc.toFixed(3).replace(".", ","));
+                    $("#ToplamMaliyetEur").val(sonuc.toFixed(3).replace(".", ","));
                 } else {
                     toastr.error(response.Description);
                 }
@@ -478,25 +469,32 @@
 
     }
 
-    function SiparisKaydet() {
+    function SiparisKaydet(SiparisId) {
         debugger;
-
         var liste = [];
+
         var SiparisKalipDto = function () {
             this.Maliyet;//decimal
             this.KalipKod;//string
-            this.Status;//bool
             this.MaliyetType;//string
+            this.isEnable;//bool
+            this.YaldizPdf;//string 
         }
 
         var SiparisDto = function () {
-            this.CariId;
-            this.UrunId;
-            this.SiparisKalip;
+            this.SiparisId;//int
+            this.CariId;//int
+            this.UrunId;//int
+            this.SiparisKalip;//object list
+            this.SiparisAdi;//string
+            this.Aciklama;//string
+            this.AciklamaPdf;//string
+            this.Include;//string
 
         }
 
         var array = $(".birimFiyat").sort();
+
         array.each(function (index, value) {
             var input = value;
             var dto = new SiparisKalipDto();
@@ -504,24 +502,38 @@
             dto.Maliyet = input.value;
             dto.MaliyetType = input.getAttribute("MaliyetType");
 
-            if ($(input).prop('disabled') == false) {
-                dto.Status = true;
+            var yaldizPdf = input.getAttribute("YaldizPdf");
+            if (yaldizPdf !== undefined && yaldizPdf != null) {
+                dto.YaldizPdf = yaldizPdf;
             } else {
-                dto.Status = false;
+                dto.YaldizPdf = "";
             }
+
+            if ($(input).prop('disabled') == false) {
+                dto.isEnable = true;
+            } else {
+                dto.isEnable = false;
+            }
+
             liste.push(dto);
         });
-
-        console.log(liste);
+        debugger;
 
         var siparisDto = new SiparisDto();
-        siparisDto.CariId = $("#CariId").val();
+        siparisDto.SiparisId = SiparisId;
+        siparisDto.CariId = $("#SiparisCariId").val();
         siparisDto.UrunId = $("#UrunId").val();
         siparisDto.SiparisKalip = liste;
         siparisDto.ToplamMaliyet = $("#ToplamMaliyet").val();
         siparisDto.ToplamMaliyetUsd = $("#ToplamMaliyetUsd").val();
         siparisDto.ToplamMaliyetEur = $("#ToplamMaliyetEur").val();
-        console.log(siparisDto);
+        siparisDto.SiparisAdi = $("#SiparisAdi").val();
+        siparisDto.Aciklama = $("#Aciklama").val();
+        siparisDto.AciklamaPdf = $("#AciklamaPdf").val();
+
+        var keys = Object.keys(siparisDto);
+        var include = keys.slice(1, keys.length);
+        siparisDto.Include = include;
 
         Post("/siparis/kaydet",
             { siparis: siparisDto },
@@ -544,6 +556,7 @@
     }
 
     function SiparisKalipGuncelle(siparisKalipId, maliyet) {
+
         Post("/siparis/SiparisKalipGuncelle",
             { siparisKalipId: siparisKalipId, maliyet: maliyet },
             function (response) {
@@ -564,6 +577,73 @@
             "json");
     }
 
+    function TopluSiparisKalipGuncelle(toplam, toplamUsd, toplamEur, siparisId) {
+        debugger;
+        var liste = [];
+
+        var Degisen = function () {
+            this.SiparisKalipId;
+            this.Maliyet;
+            this.isEnable;
+        }
+
+        var array = $(".changed").sort();
+        array.each(function (index, value) {
+            var input = value;
+            var degisen = new Degisen();
+            degisen.SiparisKalipId = input.getAttribute("SiparisKalipId");
+            degisen.Maliyet = input.value;
+
+            if ($(input).prop('disabled') == false) {
+                degisen.isEnable = true;
+            } else {
+                degisen.Status = false;
+            }
+            liste.push(degisen);
+        });
+
+        console.log(liste);
+
+        Post("/siparis/TopluSiparisKalipGuncelle",
+            { liste: liste, toplam: toplam, toplamUsd: toplamUsd, toplamEur: toplamEur, siparisId: siparisId },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+            },
+            "json");
+        debugger;
+        var siparis = $("#sipForm").serializeJSON();
+
+        Post("/siparis/guncelle",
+            { siparis: siparis},
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+            },
+            "json");
+    }
 
     var handleEvent = function () {
 
@@ -667,8 +747,15 @@
 
         $(document).on("click", "[event='FaturadanCikar']", function (event) {
             event.preventDefault();
+            debugger;
             var KalipId = $(this).attr("KalipId");
             var cikarType = $(this).attr("cikar-type");
+            var siparisKalipId = $(this).attr("TargetSiparisKalipId");
+            if (siparisKalipId !== undefined) {
+                var inp = $(".birimFiyat[SiparisKalipId=" + siparisKalipId + "]");
+                $(inp).trigger("change");
+                //$(document.getElementById("BirimFiyat")).trigger("change");
+            }
             FaturadanCikar(KalipId, cikarType);
         });
 
@@ -679,7 +766,6 @@
             target.val(birimFiyat);
             $(document.getElementById("BirimFiyat")).trigger("change");
         });
-
 
         $(document).on("change", "#KoliBirimFiyat", function (event) {
             event.preventDefault();
@@ -708,7 +794,6 @@
             target.val(birimFiyat);
             $(document.getElementById("BirimFiyat")).trigger("change");
         });
-
 
         $(document).on("change", ".hesaplama", function (event) {
             event.preventDefault();
@@ -763,7 +848,6 @@
             UrunKaliplariGetir();
         });
 
-
         $(document).on("change", ".OzelSecimSelect", function (event) {
             event.preventDefault();
             debugger;
@@ -775,17 +859,127 @@
         $(document).on("click", "[event='siparisKaydet']", function (event) {
             event.preventDefault();
             debugger;
-            SiparisKaydet();
+            var siparisId = $(this).attr("siparisId");
+            
+            if (siparisId != 0) {
+                debugger;
+                var toplam = $("#ToplamMaliyet").val();
+                var toplamUsd = $("#ToplamMaliyetUsd").val();
+                var toplamEur = $("#ToplamMaliyetEur").val();
+                var siparisId = siparisId;
+                TopluSiparisKalipGuncelle(toplam, toplamUsd, toplamEur, siparisId);
+            }
+            else {
+                SiparisKaydet(siparisId);
+            }
+
 
         });
 
         $(document).on("change", ".siparisFiyat", function (event) {
             event.preventDefault();
-            var siparisKalipId = $(this).attr("SiparisKalipId");
-            var maliyet = $(this).val();
-            SiparisKalipGuncelle(siparisKalipId, maliyet);
+            debugger;
+            $(this).addClass("changed");
         });
-        
+
+        $(document).on("click", ".siparisGuncelle", function (event) {
+            event.preventDefault();
+            debugger;
+            var toplam = $("#ToplamMaliyet").val();
+            var toplamUsd = $("#ToplamMaliyetUsd").val();
+            var toplamEur = $("#ToplamMaliyetEur").val();
+            var siparisId = getUrlVars()["siparisId"];
+            TopluSiparisKalipGuncelle(toplam, toplamUsd, toplamEur, siparisId);
+        });
+
+        $(document).on("change", ".UploadFile", function (event) {
+            event.preventDefault();
+            debugger;
+            var inputId = $(this).attr("id");
+            var siparisNo = $("#SiparisAdi").val();
+            var TargetDirectory = "SiparisPdf/" + siparisNo;
+            var TargetInputId = $(this).attr("TargetInputId");
+            UploadImage(inputId, "/File/DosyaKaydet", TargetDirectory, TargetInputId);
+        });
+
+        $(document).on("change", ".UploadYaldizFile", function (event) {
+            event.preventDefault();
+            debugger;
+            var inputId = "YaldizPdf";
+            var KalipId = $(this).attr("KalipId");
+            var siparisNo = $("#SiparisAdi").val();
+            var TargetDirectory = "SiparisPdf/" + siparisNo + "/Kalip_" + KalipId;
+            UploadImageCustom(
+                inputId,
+                "/File/DosyaKaydet",
+                TargetDirectory,
+                function (res) {
+                    var yol = res.Data;
+                    $(".Fiyat").attr("YaldizPdfYol", yol);
+                    toastr.success(res.Description);
+                },
+                function () {
+                    toastr.error("dosya alınamadı");
+                }
+            );
+        });
+
+        $(document).on("change", "[event='CariId']", function (event) {
+            event.preventDefault();
+            debugger;
+            var id = $(this).val();
+            $("#SiparisCariId").val(id);
+        });
+
+
+
+        $(document).on("click", ".webviewer", function (event) {
+            event.preventDefault();
+            debugger;
+            var url = $(this).attr("pdfurl");
+            bootbox.dialog({
+                title: "pdf okuyucu",
+                message: `<div id='viewer'></div>`,
+                size: 'large',
+                buttons: {
+                    cancel: {
+                        label: "Kapat",
+                        className: 'btn-danger',
+                        callback: function () { }
+                    },
+                    ok: {
+                        label: "Kaydet",
+                        className: 'btn-info',
+                        callback: function () {
+                            bootbox.hideAll();
+                            return false;
+                        }
+                    }
+                }
+            });
+
+            WebViewer({
+                path: 'WebViewer/lib', // path to the PDF.js Express'lib' folder on your server
+                licenseKey: 'Insert commercial license key here after purchase',
+                initialDoc: url,
+                // initialDoc: '/path/to/my/file.pdf',  // You can also use documents on your server
+            }, document.getElementById('viewer'))
+                .then(instance => {
+                    instance.UI.setLanguage('tr');
+                    const docViewer = instance.docViewer;
+                    const annotManager = instance.annotManager;
+                    // call methods from instance, docViewer and annotManager as needed
+
+                    // you can also access major namespaces from the instance as follows:
+                    // const Tools = instance.Tools;
+                    // const Annotations = instance.Annotations;
+
+                    docViewer.on('documentLoaded', () => {
+                        // call methods relating to the loaded document
+                    });
+                });
+
+        });
 
     }
 

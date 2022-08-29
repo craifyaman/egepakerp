@@ -12,6 +12,7 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using EgePakErp.Concrete;
 using System.Collections;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EgePakErp.Controllers
 {
@@ -21,12 +22,14 @@ namespace EgePakErp.Controllers
         public KalipRepository kalipRepo { get; set; }
         public SiparisRepository siparisRepo { get; set; }
         public SiparisKalipRepository siparisKalipRepo { get; set; }
+        public UrunRepository urunRepo { get; set; }
 
         public SiparisController()
         {
             kalipRepo = new KalipRepository();
             siparisRepo = new SiparisRepository();
             siparisKalipRepo = new SiparisKalipRepository();
+            urunRepo = new UrunRepository();
         }
 
         [Menu("Sipariş Listesi", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
@@ -36,9 +39,14 @@ namespace EgePakErp.Controllers
         }
 
         [Menu("Sipariş Formu", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
-        public ActionResult SiparisFormu()
+        public ActionResult SiparisFormu(int siparisId = 0)
         {
-            return View();
+            if (siparisId != 0)
+            {
+                var siparis = siparisRepo.Get(siparisId);
+                return View(siparis);
+            }
+            return View(new Siparis());
         }
 
         [Yetki("Sipariş Listesi", "Sipariş")]
@@ -79,6 +87,7 @@ namespace EgePakErp.Controllers
             var dto = model.AsEnumerable().Select(i => new
             {
                 SiparisId = i.SiparisId,
+                SiparisAdi = i.SiparisAdi,
                 Cari = i.Cari.Unvan,
                 Urun = i.Urun.UrunCinsi.Kisaltmasi + i.Urun.UrunNo,
                 UrunId = i.UrunId
@@ -96,7 +105,16 @@ namespace EgePakErp.Controllers
             Response response = new Response();
             try
             {
+                var urun = urunRepo.Get(siparis.UrunId);
+                var cari = Db.Cari.Include(x => x.BaglantiTipi).FirstOrDefault(x => x.CariId == siparis.CariId);
+                var urunCinsi = urun.UrunCinsi.Kisaltmasi;
+                var urunNo = urun.UrunNo;
+
+                siparis.SiparisAdi = cari.MusteriNo + urunCinsi + urunNo + "00";
+                siparis.TerminTarihi = DateTime.Now;
+                siparis.KayitTarihi = DateTime.Now;
                 siparisRepo.Insert(siparis);
+
                 response.Success = true;
                 response.Description = "Sipariş başarı ile kaydedildi";
                 return Json(response);
@@ -107,7 +125,9 @@ namespace EgePakErp.Controllers
                 response.Description = ex.Message;
                 return Json(response);
             }
+
         }
+
         public JsonResult SiparisKalipGuncelle(int siparisKalipId, float maliyet)
         {
             Response response = new Response();
@@ -119,6 +139,67 @@ namespace EgePakErp.Controllers
 
                 response.Success = true;
                 response.Description = "Sipariş başarı ile güncellendi";
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response);
+            }
+        }
+        public JsonResult TopluSiparisKalipGuncelle(List<SiparisKalip> liste, decimal toplam, decimal toplamUsd, decimal toplamEur, int siparisId)
+        {
+            Response response = new Response();
+            try
+            {
+                foreach (var item in liste)
+                {
+                    var siparisKalip = siparisKalipRepo.Get(item.SiparisKalipId);
+                    if (siparisKalip != null)
+                    {
+                        siparisKalip.Maliyet = item.Maliyet;
+                        siparisKalip.isEnable = item.isEnable;
+                        siparisKalipRepo.Update(siparisKalip);
+                    }
+                }
+                var siparis = siparisRepo.Get(siparisId);
+
+                if (siparis != null)
+                {
+                    siparis.ToplamMaliyet = toplam;
+                    siparis.ToplamMaliyetUsd = toplamUsd;
+                    siparis.ToplamMaliyetEur = toplamEur;
+                    siparisRepo.Update(siparis);
+                    response.Success = true;
+                    response.Description = "Sipariş başarı ile güncellendi";
+                    return Json(response);
+                }
+
+                response.Success = false;
+                response.Description = "sipariş bulunamadı.";
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response);
+            }
+        }
+
+        public JsonResult Guncelle(Siparis siparis)
+        {
+            Response response = new Response();
+            try
+            {
+                var _siparis = siparisRepo.Get(siparis.SiparisId);
+                _siparis.Aciklama = siparis.Aciklama;
+                _siparis.AciklamaPdf = siparis.AciklamaPdf;
+                siparisRepo.Update(_siparis);
+
+                response.Success = true;
+                response.Description = "sipariş güncellendi.";
                 return Json(response);
             }
             catch (Exception ex)
@@ -257,7 +338,11 @@ namespace EgePakErp.Controllers
                 try
                 {
                     var kalip = kalipRepo.Get(x => x.ParcaKodu == _kod);
-                    fixKalipList.Add(kalip);
+                    if (kalip != null)
+                    {
+                        fixKalipList.Add(kalip);
+                    }
+
                 }
                 catch { }
             }
@@ -341,6 +426,30 @@ namespace EgePakErp.Controllers
         public PartialViewResult FormTdKart(dynamic ModelItem)
         {
             return PartialView(ModelItem);
+        }
+        public JsonResult GetById(int siparisId)
+        {
+            var siparis = siparisRepo.Get(siparisId);
+            if (siparis != null)
+            {
+                var json = JsonConvert.SerializeObject(siparis, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+                return Json(json);
+            }
+            return Json(new { Aciklama = "Veriler yüklenemedi!!" });
+        }
+        private List<Kalip> FindKalipInParcaKodList(List<string> liste)
+        {
+            var kaliplar = kalipRepo.GetAll();
+            List<Kalip> KalipList = new List<Kalip>();
+            foreach (var parcaKodu in liste)
+            {
+                var kalip = kaliplar.FirstOrDefault(x => x.ParcaKodu == parcaKodu);
+                if (kalip != null)
+                {
+                    KalipList.Add(kalip);
+                }
+            }
+            return KalipList;
         }
     }
 }

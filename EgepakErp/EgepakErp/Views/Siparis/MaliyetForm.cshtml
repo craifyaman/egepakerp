@@ -224,7 +224,7 @@
                                 </span>
                             }
 
-                            <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="yaldiz" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
+                            <input YaldizPdf="" kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="yaldiz" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n2")" />
                             <span yaldiz-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="yaldiz" event="FaturadanCikar">
                                 -
                             </span>
@@ -458,14 +458,14 @@
 
             <tr>
                 <td>Pim Maliyeti</td>
-                <td yanMalzeme-cikar="pim">
+                <td pim-cikar="pim">
                     <div class="col-lg-12 mb-2">
                         <label>Birim Fiyat:</label>
                         <div class="input-group mb-5">
                             @*<span class="input-group-text" event="MaliyetDetay" maliyetType="koli" kalipId="">
                                     <i class="flaticon-mark"></i>
                                 </span>*@
-                            <input HesplamaType="malzeme" KalipKod="pim" MaliyetType="yanMalzeme" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n3")" />
+                            <input HesplamaType="malzeme" KalipKod="pim" MaliyetType="pim" type="text" class="form-control birimFiyat" value="@Maliyet.ToString("n3")" />
                         </div>
                     </div>
                 </td>
@@ -496,31 +496,6 @@
 
         }
 
-        @*@if (UretimUrun.isSilikonYagiUsed)
-            {
-                var silikonYagi = BaseHammaddeHareketler().FirstOrDefault(x => x.HammaddeCinsi.Kisaltmasi == "SİLİKON YAĞI");
-                var tiner = BaseHammaddeHareketler().FirstOrDefault(x => x.HammaddeCinsi.Kisaltmasi == "TİNER");
-                var yagFiyat = silikonYagi != null ? silikonYagi.BirimFiyat : 0;
-                var tinerFiyat = tiner != null ? tiner.BirimFiyat : 0;
-                if(UretimUrun.isTinerUsed == false)
-                {
-                    tinerFiyat = 0;
-                }
-                var sonuc = (yagFiyat + tinerFiyat) / 1000;
-                <tr>
-                    <td>Tiner + Silikon Yağı</td>
-                    <td tutkal-cikar="tutkal">
-                        <div class="col-lg-12 mb-2">
-                            <label>Maliyet:</label>
-                            <div class="input-group mb-5">
-                                <input HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@sonuc" />
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-            }*@
-
         @{
             if (UretimUrun.isSilikonYagiUsed)
             {
@@ -546,11 +521,11 @@
                     <td>
                         Silikon Yağı (@silikonYagiFiyat) + Tiner Fiyat (@tinerFiyat)
                     </td>
-                    <td yanMalzeme-cikar="silikonTiner">
+                    <td silikonTiner-cikar="silikonTiner">
                         <div class="col-lg-12 mb-2">
                             <label>Birim Fiyat:</label>
                             <div class="input-group mb-5">
-                                <input HesplamaType="malzeme" KalipKod="silikonTiner" MaliyetType="yanMalzeme" type="text" class="form-control birimFiyat" value="@Maliyet" />
+                                <input HesplamaType="malzeme" KalipKod="silikonTiner" MaliyetType="silikonYagiTiner" type="text" class="form-control birimFiyat" value="@Maliyet" />
                             </div>
                         </div>
                     </td>

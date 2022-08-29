@@ -31,6 +31,8 @@ namespace EgePakErp.Models
         public Ilce Ilce { get; set; }
         public bool Aktif { get; set; }
         public bool Efatura { get; set; }
+        public int? MusteriNo { get; set; }
+
         public virtual ICollection<Kisi> Kisi { get; set; }
         public virtual ICollection<Not> Not { get; set; }
         public virtual ICollection<Sepet> Sepet { get; set; }

@@ -1,4 +1,5 @@
-﻿using EgePakErp.Enums;
+﻿using EgePakErp.DtModels;
+using EgePakErp.Enums;
 using EgePakErp.Helper;
 using EgePakErp.Models;
 using EgePakErp.Models.Custom;
@@ -161,6 +162,57 @@ namespace EgePakErp.Controllers
             };
             Db.Cari.AddRange(list);
             Db.SaveChanges(1);
+        }
+        public void CariMusteriNo()
+        {
+            var cariList = Db.Cari
+                .Include("CariGrup")
+                .Include("Kisi")
+                .Include("Il")
+                .Include("Il.Ilce")
+                .Include(x => x.BaglantiTipi)
+                .ToList();
+
+            var dataset = new DataSet();
+            using (var stream = System.IO.File.Open(@"C:\Users\fika yazılım\Downloads\EgepakAktarim\Cari_MusteriNo_Aktarim_26_08_2022.xlsx", FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    dataset = reader.AsDataSet();
+                }
+            }
+
+            var dataTable = dataset.Tables[0];
+            var list = new List<CariMusteriNoDto>();
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                var currentRow = dataTable.Rows[i];
+                try
+                {
+                    var dto = new CariMusteriNoDto();
+
+                    dto.CariId = Convert.ToInt32(currentRow.ItemArray[0].ToString().Trim());
+                    dto.Unvan = currentRow.ItemArray[1].ToString().Trim();
+                    dto.MusteriNo = Convert.ToInt32(currentRow.ItemArray[2].ToString().Trim());
+                    list.Add(dto);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
+            foreach (var item in list)
+            {
+                int cariId = item.CariId;
+                var cari = cariList.FirstOrDefault(x => x.CariId == cariId);
+                if (cari != null)
+                {
+                    cari.MusteriNo = item.MusteriNo;
+                }
+            }
+            Db.BulkSaveChanges();
         }
         public void HamUrunGroup()
         {

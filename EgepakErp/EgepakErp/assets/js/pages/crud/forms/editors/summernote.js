@@ -1,11 +1,8 @@
-"use strict";
-// Class definition
-
 var KTSummernoteDemo = function () {
     // Private functions
     var demos = function () {
         $('.summernote').summernote({
-            height: 400,
+            height: 200,
             tabsize: 2
         });
     }

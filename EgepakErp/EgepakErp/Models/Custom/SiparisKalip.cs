@@ -13,6 +13,8 @@ namespace EgePakErp.Models
         public float Maliyet { get; set; }
         public string KalipKod { get; set; }
         public string MaliyetType { get; set; }
+        public bool isEnable { get; set; }
+        public string YaldizPdf { get; set; }
 
         public int SiparisId { get; set; }
         public Siparis Siparis { get; set; }
