@@ -171,8 +171,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Concrete\YaldizRepository.cs" />
     <Compile Include="Concrete\HammaddeHareketRepository.cs" />
     <Compile Include="Concrete\HammaddeCinsiRepository.cs" />
+    <Compile Include="Concrete\BoyaKodRepository.cs" />
     <Compile Include="Concrete\SiparisKalipRepository.cs" />
     <Compile Include="Concrete\CariRepository.cs" />
     <Compile Include="Concrete\UretimSabitlerRepository.cs" />
@@ -181,7 +183,9 @@
     <Compile Include="Concrete\SiparisRepository.cs" />
     <Compile Include="Concrete\UrunRepository.cs" />
     <Compile Include="Concrete\_GenericRepository.cs" />
+    <Compile Include="Controllers\YaldizController.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\BoyaKodController.cs" />
     <Compile Include="Controllers\FiyatController.cs" />
     <Compile Include="Controllers\GenericBaseController.cs" />
     <Compile Include="Controllers\UretimSabitController.cs" />
@@ -377,7 +381,29 @@
     <Compile Include="Migrations\202208290636058_add_YaldizPdf_to_SiparisKalip.designer.cs">
       <DependentUpon>202208290636058_add_YaldizPdf_to_SiparisKalip.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208310939351_create_BoyaKod_table.cs" />
+    <Compile Include="Migrations\202208310939351_create_BoyaKod_table.designer.cs">
+      <DependentUpon>202208310939351_create_BoyaKod_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208311210054_add_BoyaKodId_to_SiparisKalip.cs" />
+    <Compile Include="Migrations\202208311210054_add_BoyaKodId_to_SiparisKalip.designer.cs">
+      <DependentUpon>202208311210054_add_BoyaKodId_to_SiparisKalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208311344217_change_maliyet_type_to_money_siparisKalip_Table.cs" />
+    <Compile Include="Migrations\202208311344217_change_maliyet_type_to_money_siparisKalip_Table.designer.cs">
+      <DependentUpon>202208311344217_change_maliyet_type_to_money_siparisKalip_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208311417541_create_yaldiz_table.cs" />
+    <Compile Include="Migrations\202208311417541_create_yaldiz_table.designer.cs">
+      <DependentUpon>202208311417541_create_yaldiz_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202208311528118_add_yaldizId_to_siparisKalip.cs" />
+    <Compile Include="Migrations\202208311528118_add_yaldizId_to_siparisKalip.designer.cs">
+      <DependentUpon>202208311528118_add_yaldizId_to_siparisKalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\Yaldiz.cs" />
     <Compile Include="Models\Custom\DovizKur.cs" />
+    <Compile Include="Models\Custom\BoyaKod.cs" />
     <Compile Include="Models\Custom\SiparisKatman.cs" />
     <Compile Include="Models\Custom\SiparisKalip.cs" />
     <Compile Include="Models\Custom\Siparis.cs" />
@@ -2687,6 +2713,8 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.ttf" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
+    <Content Include="Scripts\Yaldiz.js" />
+    <Content Include="Scripts\BoyaKod.js" />
     <Content Include="WebViewer\doc\classes.list.html" />
     <Content Include="WebViewer\doc\Core.Actions.Action.html" />
     <Content Include="WebViewer\doc\Core.Actions.Dest.html" />
@@ -3634,6 +3662,12 @@
     <Content Include="WebViewer\samples\files\text-compare_2.pdf" />
     <Content Include="WebViewer\samples\files\text-compare_long_1.pdf" />
     <Content Include="WebViewer\samples\files\text-compare_long_2.pdf" />
+    <Content Include="Views\BoyaKod\FilterForm.cshtml" />
+    <Content Include="Views\BoyaKod\Form.cshtml" />
+    <Content Include="Views\BoyaKod\Index.cshtml" />
+    <Content Include="Views\Yaldiz\FilterForm.cshtml" />
+    <Content Include="Views\Yaldiz\Form.cshtml" />
+    <Content Include="Views\Yaldiz\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -3767,6 +3801,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208290636058_add_YaldizPdf_to_SiparisKalip.resx">
       <DependentUpon>202208290636058_add_YaldizPdf_to_SiparisKalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208310939351_create_BoyaKod_table.resx">
+      <DependentUpon>202208310939351_create_BoyaKod_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208311210054_add_BoyaKodId_to_SiparisKalip.resx">
+      <DependentUpon>202208311210054_add_BoyaKodId_to_SiparisKalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208311344217_change_maliyet_type_to_money_siparisKalip_Table.resx">
+      <DependentUpon>202208311344217_change_maliyet_type_to_money_siparisKalip_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208311417541_create_yaldiz_table.resx">
+      <DependentUpon>202208311417541_create_yaldiz_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208311528118_add_yaldizId_to_siparisKalip.resx">
+      <DependentUpon>202208311528118_add_yaldizId_to_siparisKalip.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

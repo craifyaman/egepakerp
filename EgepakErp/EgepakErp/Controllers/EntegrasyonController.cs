@@ -36,8 +36,8 @@ namespace EgePakErp.Controllers
         public void KurGuncelle()
         {
             var dovizKur = Db.DovizKur.FirstOrDefault();
-            var usdKur = DovizHelper.DovizKuruGetir("USD", DateTime.Now);
-            var eurKur = DovizHelper.DovizKuruGetir("EUR", DateTime.Now);
+            var usdKur = DovizHelper.BugunDoviz("USD");
+            var eurKur = DovizHelper.BugunDoviz("EUR");
 
 
             if (dovizKur != null)

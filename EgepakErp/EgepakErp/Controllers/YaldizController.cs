@@ -10,27 +10,28 @@ using System.Web.Mvc;
 
 namespace EgePakErp.Controllers
 {
-    public class FiyatController : BaseController
+    public class YaldizController : BaseController
     {
-        public FiyatRepository repo { get; set; }
-        public FiyatController()
+        public YaldizRepository repo { get; set; }
+        public YaldizController()
         {
-            repo = new FiyatRepository();
+            repo = new YaldizRepository();
         }
         // GET: Fiyat
-        [Menu("Fiyatlar", "fas fa-money-bill icon-xl", "Fiyatlar", 0, 1)]
+        [Menu("Yaldız listesi", "fas fa-align-justify icon-xl", "Yaldız", 0, 1)]
         public ActionResult Index()
         {
             return View();
         }
-        [Yetki("Fiyat Listesi", "Fiyatlar")]
+
+        [Yetki("Yaldız Listesi", "Yaldız")]
         public JsonResult Liste()
         {
             //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
 
-            dtMeta.field = Request.Form["sort[field]"] == null ? "FiyatId" : Request.Form["sort[field]"];
+            dtMeta.field = Request.Form["sort[field]"] == null ? "YaldizId" : Request.Form["sort[field]"];
             dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
 
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
@@ -43,17 +44,9 @@ namespace EgePakErp.Controllers
             {
                 var searchQuery = Request.Form["query[searchQuery]"].ToString();
                 model = model.Where(i =>
-                i.Aciklama.ToLower().Contains(searchQuery.ToLower()) ||
-                i.Kod.ToLower().Contains(searchQuery.ToLower())
+                i.Aciklama.ToLower().Contains(searchQuery.ToLower())
                 );
             }
-
-
-            //if (!string.IsNullOrEmpty(Request.Form["query[urunCinsiId]"]))
-            //{
-            //    var urunCinsiId = Convert.ToInt32(Request.Form["query[urunCinsiId]"]);
-            //    model = model.Where(i => i.UrunCinsiId == urunCinsiId);
-            //}
 
             try
             {
@@ -62,8 +55,8 @@ namespace EgePakErp.Controllers
 
             catch (Exception)
             {
-                model = model.OrderBy("FiyatId Desc");
-                dtMeta.field = "FiyatId";
+                model = model.OrderBy("YaldizId Desc");
+                dtMeta.field = "YaldizId";
                 dtMeta.sort = "Desc";
             }
 
@@ -71,11 +64,20 @@ namespace EgePakErp.Controllers
 
             dtMeta.total = count;
             dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
+
             //sayfala
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
-            
+
+            //dto yap burda
+            var dto = model.AsEnumerable().Select(i => new
+            {
+                YaldizId = i.YaldizId,
+                Aciklama = i.Aciklama,
+                Cari = i.Cari.Unvan
+            }).ToList<dynamic>();
+
             dtModel.meta = dtMeta;
-            dtModel.data = model.ToList<dynamic>();
+            dtModel.data = dto;
             return Json(dtModel);
 
         }
@@ -90,31 +92,22 @@ namespace EgePakErp.Controllers
             return PartialView();
         }
 
-        [Yetki("Fiyat Kaydet", "Fiyatlar")]
-        public JsonResult Kaydet(Fiyat form)
+        [Yetki("Yaldız Kaydet", "Yaldız")]
+        public JsonResult Kaydet(Yaldiz form)
         {
             var response = new Response();
 
             try
             {
-                if (form.FiyatId == 0)
+                if (form.YaldizId == 0)
                 {
-                    try
-                    {
-                        var kalip = Db.Kalip.FirstOrDefault(x => x.ParcaKodu == form.Kod);
-                        kalip.isHazirMalzeme = true;
-                        Db.SaveChanges();
-
-                    }
-                    catch { }
-                    form.KayitTarih = DateTime.Now;
                     repo.Insert(form);
                     response.Success = true;
                     response.Description = "Kayıt edildi.";
                 }
                 else
                 {
-                    var entity = repo.Get(form.FiyatId);
+                    var entity = repo.Get(form.YaldizId);
                     if (entity != null)
                     {
                         //alanları güncelle

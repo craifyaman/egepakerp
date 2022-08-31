@@ -735,7 +735,67 @@
         return clm;
     }
 
+    function boyaKodColumns() {
+        var columns = [
+            {
+                field: 'BoyaKodId',
+                title: '#',
+                width: 50
+            },
+            {
+                field: 'Aciklama',
+                title: 'Açıklama'
+            },
+            {
+                field: 'Kod',
+                title: 'Kod'
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
 
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'event="BoyaKodFormPopup" href = "#" id = "' + row.BoyaKodId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >';
+
+                    return str;
+                },
+            }];
+        return columns;
+    }
+
+    function yaldizColumns() {
+        var columns = [
+            {
+                field: 'YaldizId',
+                title: '#',
+                width: 50
+            },
+            {
+                field: 'Aciklama',
+                title: 'Açıklama'
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'event="YaldizFormPopup" href = "#" id = "' + row.YaldizId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >';
+
+                    return str;
+                },
+            }];
+        return columns;
+    }
 
     return {
         // public functions
@@ -775,6 +835,12 @@
         SiparisColumns: function () {
             return siparisColumns();
         },
+        BoyaKodColumns: function () {
+            return boyaKodColumns();
+        },
+        YaldizColumns: function () {
+            return yaldizColumns();
+        },        
         GetColoums: function (name) {
             if (name == "cari") {
                 return cariColumns();
@@ -806,6 +872,13 @@
             else if (name == "siparis") {
                 return siparisColumns();
             }
+            else if (name == "boyakod") {
+                return boyaKodColumns();
+            }
+            else if (name == "yaldiz") {
+                return yaldizColumns();
+            }
+            
 
         }
     };

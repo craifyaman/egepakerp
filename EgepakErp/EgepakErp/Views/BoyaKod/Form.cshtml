@@ -1,0 +1,17 @@
+﻿@model BoyaKod
+<!--begin::Form-->
+<form id="BoyaKodForm">
+    @Html.HiddenFor(x=>x.BoyaKodId)
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>açıklama:</label>
+            @Html.TextBoxFor(x => x.Aciklama, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-12">
+            <label>Kod:</label>
+            @Html.TextBoxFor(x => x.Kod, new { @class = "form-control" })
+        </div>
+    </div>
+</form>
+<!--end::Form-->

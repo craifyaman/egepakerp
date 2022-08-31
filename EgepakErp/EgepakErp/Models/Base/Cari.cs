@@ -34,6 +34,7 @@ namespace EgePakErp.Models
         public int? MusteriNo { get; set; }
 
         public virtual ICollection<Kisi> Kisi { get; set; }
+        public virtual ICollection<Yaldiz> Yaldiz { get; set; }
         public virtual ICollection<Not> Not { get; set; }
         public virtual ICollection<Sepet> Sepet { get; set; }
         [NotMapped]

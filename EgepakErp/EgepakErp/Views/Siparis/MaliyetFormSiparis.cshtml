@@ -48,16 +48,17 @@
                                 @buttonText
                             </span>
                         </div>
+                        @if (kalip.isHazirMalzeme)
+                        {
+                            var fiyat = BaseFiyat().FirstOrDefault(x => x.Kod == kalip.ParcaKodu);
+
+                            <div>
+                                Fiyat = @fiyat.Tutar @fiyat.Doviz.Kisaltma
+                            </div>
+                        }
                     </div>
 
-                    @if (kalip.isHazirMalzeme)
-                    {
-                        var fiyat = BaseFiyat().FirstOrDefault(x => x.Kod == kalip.ParcaKodu);
 
-                        <div>
-                            Fiyat = @fiyat.Tutar @fiyat.Doviz.Kisaltma
-                        </div>
-                    }
                 </td>
                 malzemeToplamMaliyet += (decimal)maliyet;
             }
@@ -92,8 +93,18 @@
                                     @buttonText
                                 </span>
                             </div>
+                            @if (siparisKalip.BoyaKodId != null)
+                            {
+                                <div>
+                                    boya kod = @siparisKalip.BoyaKod.Kod
+                                </div>
+                            }
                         </div>
+
+
                     </td>
+
+
 
                 }
                 catch (Exception ex)
@@ -145,17 +156,17 @@
                                 </span>
                             }
 
-                            <input YaldizPdf="" @attr kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="yaldiz" HesplamaType="malzeme" type="text" class="form-control birimFiyat siparisFiyat" SiparisKalipId="@siparisKalip.SiparisKalipId" value="@maliyet.ToString("n2")" />
+                            <input YaldizId="" @attr kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="yaldiz" HesplamaType="malzeme" type="text" class="form-control birimFiyat siparisFiyat" SiparisKalipId="@siparisKalip.SiparisKalipId" value="@maliyet.ToString("n2")" />
                             <span yaldiz-cikar="@kalip.KalipId" class="btn btn-sm input-group-text @cls" KalipId="@kalip.KalipId" cikar-type="yaldiz" event="FaturadanCikar" TargetSiparisKalipId="@siparisKalip.SiparisKalipId">
                                 @buttonText
                             </span>
                         </div>
-                        @if (!string.IsNullOrEmpty(siparisKalip.YaldizPdf))
+                        @if (siparisKalip.YaldizId != null)
                         {
-                            
+                            var yaldiz = BaseYaldiz().FirstOrDefault(x => x.YaldizId == siparisKalip.YaldizId);
                             <div>
-                                <a href="#" class="btn btn-info webviewer" pdfurl="@siparisKalip.YaldizPdf">dosyayı görüntülemek için tıklayın</a>
-                                <a href="@siparisKalip.YaldizPdf" class="form-control" download>dosyayı indirmek için tıklayın</a>
+                                <a href="#" class="btn btn-info webviewer" pdfurl="@yaldiz.PdfYol">incele</a>
+                                <a href="@yaldiz.PdfYol" class="btn btn-warning" download>indir</a>
                             </div>
                         }
                     </div>

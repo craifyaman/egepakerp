@@ -10,27 +10,28 @@ using System.Web.Mvc;
 
 namespace EgePakErp.Controllers
 {
-    public class FiyatController : BaseController
+    public class BoyaKodController : BaseController
     {
-        public FiyatRepository repo { get; set; }
-        public FiyatController()
+        public BoyaKodRepository repo { get; set; }
+        public BoyaKodController()
         {
-            repo = new FiyatRepository();
+            repo = new BoyaKodRepository();
         }
         // GET: Fiyat
-        [Menu("Fiyatlar", "fas fa-money-bill icon-xl", "Fiyatlar", 0, 1)]
+        [Menu("Boya Kodları", "fas fa-paint-brush icon-xl", "Boya Kodları", 0, 1)]
         public ActionResult Index()
         {
             return View();
         }
-        [Yetki("Fiyat Listesi", "Fiyatlar")]
+
+        [Yetki("Boya Kodları Listesi", "Boya Kodları")]
         public JsonResult Liste()
         {
             //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
 
-            dtMeta.field = Request.Form["sort[field]"] == null ? "FiyatId" : Request.Form["sort[field]"];
+            dtMeta.field = Request.Form["sort[field]"] == null ? "BoyaKodId" : Request.Form["sort[field]"];
             dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
 
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
@@ -48,13 +49,6 @@ namespace EgePakErp.Controllers
                 );
             }
 
-
-            //if (!string.IsNullOrEmpty(Request.Form["query[urunCinsiId]"]))
-            //{
-            //    var urunCinsiId = Convert.ToInt32(Request.Form["query[urunCinsiId]"]);
-            //    model = model.Where(i => i.UrunCinsiId == urunCinsiId);
-            //}
-
             try
             {
                 model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
@@ -62,8 +56,8 @@ namespace EgePakErp.Controllers
 
             catch (Exception)
             {
-                model = model.OrderBy("FiyatId Desc");
-                dtMeta.field = "FiyatId";
+                model = model.OrderBy("BoyaKodId Desc");
+                dtMeta.field = "BoyaKodId";
                 dtMeta.sort = "Desc";
             }
 
@@ -90,31 +84,22 @@ namespace EgePakErp.Controllers
             return PartialView();
         }
 
-        [Yetki("Fiyat Kaydet", "Fiyatlar")]
-        public JsonResult Kaydet(Fiyat form)
+        [Yetki("Boya Kod Kaydet", "Boya Kodları")]
+        public JsonResult Kaydet(BoyaKod form)
         {
             var response = new Response();
 
             try
             {
-                if (form.FiyatId == 0)
+                if (form.BoyaKodId== 0)
                 {
-                    try
-                    {
-                        var kalip = Db.Kalip.FirstOrDefault(x => x.ParcaKodu == form.Kod);
-                        kalip.isHazirMalzeme = true;
-                        Db.SaveChanges();
-
-                    }
-                    catch { }
-                    form.KayitTarih = DateTime.Now;
                     repo.Insert(form);
                     response.Success = true;
                     response.Description = "Kayıt edildi.";
                 }
                 else
                 {
-                    var entity = repo.Get(form.FiyatId);
+                    var entity = repo.Get(form.BoyaKodId);
                     if (entity != null)
                     {
                         //alanları güncelle

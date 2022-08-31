@@ -273,13 +273,19 @@
         maliyetHesapla();
     }
 
-    function InputBulEkle(MaliyetType, KalipId, Value, YaldizPdfYol = null) {
+    function InputBulEkle(MaliyetType, KalipId, Value, YaldizId = null, boyaKod = null) {
         debugger;
         var Input = $("td[" + MaliyetType + "-cikar='" + KalipId + "'] input");
         Input.val(Value);
 
-        if (Input.attr("yaldizpdf") !== undefined && Input.attr("yaldizpdf") != null) {
-            Input.attr("yaldizpdf", YaldizPdfYol)
+        if (YaldizId != null) {
+            Input.attr("YaldizId", YaldizId)
+            Input.addClass("changed");
+        }
+
+        if (boyaKod != null) {
+            Input.attr("boyaKod", boyaKod)
+            Input.addClass("changed");
         }
     }
 
@@ -312,11 +318,18 @@
                             callback: function () {
                                 debugger;
                                 var value = $(".Fiyat").val();
-                                var yaldizPdfYol = null;
-                                if ($(".Fiyat").attr("YaldizPdfYol") !== null && $(".Fiyat").attr("YaldizPdfYol") !== undefined) {
-                                    yaldizPdfYol = $(".Fiyat").attr("YaldizPdfYol");
+                                var YaldizId = null;
+                                var boyaKod = null;
+
+                                if ($(".Fiyat").attr("YaldizId") !== null && $(".Fiyat").attr("YaldizId") !== undefined) {
+                                    YaldizId = $(".Fiyat").attr("YaldizId");
                                 }
-                                InputBulEkle(maliyetType, kalipId, value, yaldizPdfYol);
+
+                                if ($(".Fiyat").attr("boyaKod") !== null && $(".Fiyat").attr("boyaKod") !== undefined) {
+                                    boyaKod = $(".Fiyat").attr("boyaKod");
+                                }
+
+                                InputBulEkle(maliyetType, kalipId, value, YaldizId, boyaKod);
 
                                 if ($(".parentDiv").attr("uruntype") == "koli") {
                                     var posetKatsayi = $("#posetParametre").val();
@@ -478,7 +491,8 @@
             this.KalipKod;//string
             this.MaliyetType;//string
             this.isEnable;//bool
-            this.YaldizPdf;//string 
+            this.YaldizId;//string 
+            this.BoyaKodId;//int 
         }
 
         var SiparisDto = function () {
@@ -502,11 +516,19 @@
             dto.Maliyet = input.value;
             dto.MaliyetType = input.getAttribute("MaliyetType");
 
-            var yaldizPdf = input.getAttribute("YaldizPdf");
-            if (yaldizPdf !== undefined && yaldizPdf != null) {
-                dto.YaldizPdf = yaldizPdf;
+            var YaldizId = input.getAttribute("YaldizId");
+
+            if (YaldizId !== undefined && YaldizId != null) {
+                dto.YaldizId = YaldizId;
             } else {
-                dto.YaldizPdf = "";
+                dto.YaldizId = null;
+            }
+
+            var BoyaKod = input.getAttribute("boyaKod");
+            if (BoyaKod !== undefined && BoyaKod != null) {
+                dto.BoyaKodId = BoyaKod;
+            } else {
+                dto.BoyaKodId = null;
             }
 
             if ($(input).prop('disabled') == false) {
@@ -582,9 +604,11 @@
         var liste = [];
 
         var Degisen = function () {
-            this.SiparisKalipId;
-            this.Maliyet;
-            this.isEnable;
+            this.SiparisKalipId;//int
+            this.Maliyet;//decimal
+            this.isEnable;//bool
+            this.YaldizId;//string
+            this.BoyaKodId;//int
         }
 
         var array = $(".changed").sort();
@@ -593,12 +617,22 @@
             var degisen = new Degisen();
             degisen.SiparisKalipId = input.getAttribute("SiparisKalipId");
             degisen.Maliyet = input.value;
-
+            degisen.YaldizId = null;
+            degisen.BoyaKodId = null;
             if ($(input).prop('disabled') == false) {
                 degisen.isEnable = true;
             } else {
                 degisen.Status = false;
             }
+            var yaldiz = $(input).attr("YaldizId");
+            var boyaKod = $(input).attr("boyaKod");
+            if (yaldiz != null && yaldiz !== undefined) {
+                degisen.YaldizId = yaldiz;
+            }
+            if (boyaKod != null && boyaKod !== undefined) {
+                degisen.BoyaKodId = boyaKod;
+            }
+
             liste.push(degisen);
         });
 
@@ -626,7 +660,7 @@
         var siparis = $("#sipForm").serializeJSON();
 
         Post("/siparis/guncelle",
-            { siparis: siparis},
+            { siparis: siparis },
             function (response) {
                 if (response.Success) {
                     toastr.success(response.Description);
@@ -860,7 +894,7 @@
             event.preventDefault();
             debugger;
             var siparisId = $(this).attr("siparisId");
-            
+
             if (siparisId != 0) {
                 debugger;
                 var toplam = $("#ToplamMaliyet").val();
@@ -902,36 +936,53 @@
             UploadImage(inputId, "/File/DosyaKaydet", TargetDirectory, TargetInputId);
         });
 
-        $(document).on("change", ".UploadYaldizFile", function (event) {
-            event.preventDefault();
-            debugger;
-            var inputId = "YaldizPdf";
-            var KalipId = $(this).attr("KalipId");
-            var siparisNo = $("#SiparisAdi").val();
-            var TargetDirectory = "SiparisPdf/" + siparisNo + "/Kalip_" + KalipId;
-            UploadImageCustom(
-                inputId,
-                "/File/DosyaKaydet",
-                TargetDirectory,
-                function (res) {
-                    var yol = res.Data;
-                    $(".Fiyat").attr("YaldizPdfYol", yol);
-                    toastr.success(res.Description);
-                },
-                function () {
-                    toastr.error("dosya alınamadı");
-                }
-            );
-        });
+        
 
-        $(document).on("change", "[event='CariId']", function (event) {
+        //$(document).on("change", ".UploadYaldizFile", function (event) {
+        //    event.preventDefault();
+        //    debugger;
+        //    var inputId = "YaldizPdf";
+        //    var KalipId = $(this).attr("KalipId");
+        //    var siparisNo = $("#SiparisAdi").val();
+        //    var TargetDirectory = "SiparisPdf/" + siparisNo + "/Kalip_" + KalipId;
+        //    UploadImageCustom(
+        //        inputId,
+        //        "/File/DosyaKaydet",
+        //        TargetDirectory,
+        //        function (res) {
+        //            var yol = res.Data;
+        //            $(".Fiyat").attr("YaldizPdfYol", yol);
+        //            toastr.success(res.Description);
+        //        },
+        //        function () {
+        //            toastr.error("dosya alınamadı");
+        //        }
+        //    );
+        //});
+
+        $(document).on("change", "#CariId", function (event) {
             event.preventDefault();
             debugger;
             var id = $(this).val();
             $("#SiparisCariId").val(id);
         });
 
+        $(document).on("change", "#boyaKodSelect", function (event) {
+            event.preventDefault();
+            debugger;
+            var boyaKod = $(this).val();
+            $(".Fiyat").attr("boyaKod", boyaKod);
 
+        });
+
+        $(document).on("change", "#YaldizId", function (event) {
+            event.preventDefault();
+            debugger;
+            var YaldizId = $(this).val();
+            $(".Fiyat").attr("YaldizId", YaldizId);
+
+        });
+        
 
         $(document).on("click", ".webviewer", function (event) {
             event.preventDefault();

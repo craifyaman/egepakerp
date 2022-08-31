@@ -123,7 +123,13 @@ namespace EgePakErp.Custom
         {
             get
             {
-                var list = db.Cari.Include("BaglantiTipi").ToList();
+                var list = db.Cari
+               .Include(x => x.CariGrup)
+               .Include(x => x.Kisi)
+               .Include(x => x.Il)
+               .Include(x => x.Ilce)
+               .Include(x => x.BaglantiTipi)
+                    .ToList();
                 return list;
             }
             set { }
@@ -295,7 +301,12 @@ namespace EgePakErp.Custom
             return liste;
 
         }
+        public IQueryable<Yaldiz> BaseYaldiz()
+        {
+            var liste = db.Yaldiz.AsQueryable();
+            return liste;
 
+        }
 
 
         public decimal PonponSonFiyat()
@@ -409,6 +420,8 @@ namespace EgePakErp.Custom
         public List<SiparisKalip> BaseSiparisKalipListe()
         {
             var list = db.SiparisKalip
+                .Include(x=>x.BoyaKod)
+                .Include(x=>x.Siparis)
                 .ToList();
             return list;
         }
@@ -441,7 +454,11 @@ namespace EgePakErp.Custom
             var kur = db.DovizKur.FirstOrDefault();
             return kur;
         }
-
+        public IQueryable<BoyaKod> BaseBoyaKod()
+        {
+            var liste = db.BoyaKod.AsQueryable();
+            return liste;
+        }
         //public List<EvMontaj> BaseEvMontaj()
         //{
         //    var liste = db.EvMontaj.ToList();

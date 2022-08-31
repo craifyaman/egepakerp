@@ -204,6 +204,23 @@
                     <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n4")" />
                     <span class="form-text text-muted">0,0012 * Mamül Ağırlık * (Birim Fiyat / 1000)</span>
                 </div>
+
+                <div class="col-lg-12 mb-2">
+                    <label>Boya Kodu:</label>
+                    @{
+                        var kodListe = BaseBoyaKod().ToList();
+                        <select class="form-control" id="boyaKodSelect">
+                            <option>Kod seçin</option>
+                            @foreach (var kod in kodListe)
+                            {
+                                <option value="@kod.BoyaKodId">@kod.Kod</option>
+                            }
+                        </select>
+
+                    }
+                </div>
+
+
             </div>
         </td>
     }
@@ -399,6 +416,21 @@
 
                 </div>
                 <div class="col-lg-12 mb-2">
+                    @{
+                        var yaldizListe = BaseYaldiz().ToList();
+                    }
+
+                    <label>Yaldiz Seç:</label>
+                    <select class="form-control form-control-solid selectpicker" id="YaldizId">
+                        <option>yaldız seç</option>
+                        @foreach (var item in yaldizListe)
+                        {
+                            <option value="@item.YaldizId">@item.Aciklama</option>
+                        }
+                    </select>
+
+                </div>
+                <div class="col-lg-12 mb-2">
                     <label>Birim Fiyat:</label>
                     <input type="text" class="form-control hesaplama" id="BirimFiyat" value="@BirimFiyat.ToString("n2")" disabled />
                 </div>
@@ -408,13 +440,10 @@
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Birim Maliyet:</label>
-                    <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" YaldizPdfYol="" value="@Maliyet.ToString("n2")" />
+                    <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" YaldizId="0" value="@Maliyet.ToString("n2")" />
                     <span class="form-text text-muted">(BirimFiyat * Kat Sayı) / <span id="yaldizSabit">@Bolum</span></span>
                 </div>
-                <div class="col-lg-12 mb-2">
-                    <label>Pdf Seç:</label>
-                    <input type="file" class="form-control UploadYaldizFile" id="YaldizPdf" KalipId="@kalip.KalipId"/>
-                </div>
+
             </div>
 
         </td>

@@ -270,6 +270,7 @@
         };
         return fields;
     }
+
     function uretimSabitFormFields() {
         var fields = {
             Aciklama: {
@@ -295,7 +296,31 @@
         };
         return fields;
     }
-    
+    function boyaKodFormFields() {
+        var fields = {
+            Aciklama: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Kod: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
+    function yaldizFormFields() {
+        var fields = {
+            Aciklama: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
     return {
         // public functions
         GorusmeFormFields: function () {
@@ -331,6 +356,12 @@
         UretimSabitFormFields: function () {
             return uretimSabitFormFields();
         },
+        BoyaKodFormFields: function () {
+            return boyaKodFormFields();
+        },
+        YaldizFormFields: function () {
+            return yaldizFormFields();
+        }
         
     };
 }();

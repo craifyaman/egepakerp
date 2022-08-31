@@ -1,0 +1,35 @@
+﻿@model Yaldiz
+<!--begin::Form-->
+<form id="YaldizForm">
+    @Html.HiddenFor(x => x.YaldizId)
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>açıklama:</label>
+            @Html.TextBoxFor(x => x.Aciklama, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-12">
+            @{
+                var cariId = Model?.CariId != null ? Model?.CariId : 0;
+                var cariList = baseCari;
+            }
+            <label>Cari:</label>
+            <div class="input-group">
+                <select name="CariId" id="CariId" class="form-control form-control-solid selectpicker">
+                    @foreach (var item in cariList)
+                    {
+                        var chk = Model != null && Model.CariId == item.CariId ? "selected" : "";
+                        <option @chk value="@item.CariId">@item.Unvan</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+        <div class="col-lg-12">
+            <label>Pdf:</label>
+        </div>
+        @Html.HiddenFor(x => x.PdfYol)
+        <input type="file" id="yaldizPdf" TargetInputId="PdfYol" class="form-control UploadFile2" TargetDirectory="Yaldiz/" style="border:none;" />
+
+    </div>
+</form>
+<!--end::Form-->

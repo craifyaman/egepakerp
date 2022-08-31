@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace EgePakErp.Helper
@@ -10,7 +11,7 @@ namespace EgePakErp.Helper
     {
         public static decimal DovizKuruGetir(string Kod, DateTime date)
         {
-            decimal deger = 0;          
+            decimal deger = 0;
             DateTime tarih = Convert.ToDateTime(date.ToString("dd/MM/yyyy"));
 
             if (tarih.DayOfWeek == DayOfWeek.Saturday)
@@ -53,13 +54,43 @@ namespace EgePakErp.Helper
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
-            
+
             }
-            
+
             return deger;
+        }
+        public static decimal BugunDoviz(string doviz="usd")
+        {
+            try
+            {
+                XmlDocument xmlVerisi = new XmlDocument();
+                xmlVerisi.Load("http://www.tcmb.gov.tr/kurlar/today.xml");
+
+                if (doviz.ToLower() == "usd")
+                {
+                    decimal dolar = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "USD")).InnerText.Replace('.', ','));
+                    return dolar;
+                }
+                if (doviz.ToLower() == "eur")
+                {
+                    decimal euro = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "EUR")).InnerText.Replace('.', ','));
+                    return euro;
+                }
+                else
+                {
+                    decimal sterlin = Convert.ToDecimal(xmlVerisi.SelectSingleNode(string.Format("Tarih_Date/Currency[@Kod='{0}']/ForexSelling", "GBP")).InnerText.Replace('.', ','));
+                    return sterlin;
+                }
+            }
+            catch (XmlException xml)
+            {
+                var ex = xml.ToString();
+                return 0;
+            }
+
         }
     }
 }

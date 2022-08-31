@@ -110,7 +110,14 @@ namespace EgePakErp.Controllers
                 var urunCinsi = urun.UrunCinsi.Kisaltmasi;
                 var urunNo = urun.UrunNo;
 
-                siparis.SiparisAdi = cari.MusteriNo + urunCinsi + urunNo + "00";
+                var boyaKodlar = siparis.SiparisKalip.Where(x => x.BoyaKodId != null).Select(x => x.BoyaKodId).ToList();
+                var yaldizIdList = siparis.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId).ToList();
+
+                List<string> yaldizlar = yaldizIdList.ConvertAll<string>(x => x.ToString());
+                List<string> boyaKodList = boyaKodlar.ConvertAll<string>(x => x.ToString());
+
+
+                siparis.SiparisAdi = cari.MusteriNo + urunCinsi + urunNo + String.Join(", ", yaldizlar) + String.Join(", ", boyaKodList);
                 siparis.TerminTarihi = DateTime.Now;
                 siparis.KayitTarihi = DateTime.Now;
                 siparisRepo.Insert(siparis);
@@ -128,7 +135,7 @@ namespace EgePakErp.Controllers
 
         }
 
-        public JsonResult SiparisKalipGuncelle(int siparisKalipId, float maliyet)
+        public JsonResult SiparisKalipGuncelle(int siparisKalipId, decimal maliyet)
         {
             Response response = new Response();
             try
@@ -153,16 +160,22 @@ namespace EgePakErp.Controllers
             Response response = new Response();
             try
             {
-                foreach (var item in liste)
+                if (liste != null)
                 {
-                    var siparisKalip = siparisKalipRepo.Get(item.SiparisKalipId);
-                    if (siparisKalip != null)
+                    foreach (var item in liste)
                     {
-                        siparisKalip.Maliyet = item.Maliyet;
-                        siparisKalip.isEnable = item.isEnable;
-                        siparisKalipRepo.Update(siparisKalip);
+                        var siparisKalip = siparisKalipRepo.Get(item.SiparisKalipId);
+                        if (siparisKalip != null)
+                        {
+                            siparisKalip.Maliyet = item.Maliyet;
+                            siparisKalip.isEnable = item.isEnable;
+                            siparisKalip.BoyaKodId = item.BoyaKodId;
+                            siparisKalip.YaldizId = item.YaldizId;
+                            siparisKalipRepo.Update(siparisKalip);
+                        }
                     }
                 }
+
                 var siparis = siparisRepo.Get(siparisId);
 
                 if (siparis != null)
@@ -353,9 +366,10 @@ namespace EgePakErp.Controllers
 
         public PartialViewResult MaliyetHesap(List<MaliyetDto> liste)
         {
-            var date = System.DateTime.Now;
-            ViewBag.dolarKur = DovizHelper.DovizKuruGetir("USD", date);
-            ViewBag.euroKur = DovizHelper.DovizKuruGetir("EUR", date);
+            var doviz = Db.DovizKur.FirstOrDefault();
+            ViewBag.dolarKur = doviz.UsdKur;
+            ViewBag.euroKur = doviz.EurKur;
+
             var FixListe = liste.Where(x => x.KalipId != 0).ToList();
             return PartialView(FixListe);
         }
@@ -366,8 +380,8 @@ namespace EgePakErp.Controllers
             Response<decimal> response = new Response<decimal>();
             try
             {
-                var date = System.DateTime.Now;
-                var usdKur = DovizHelper.DovizKuruGetir("USD", date);
+                var doviz = Db.DovizKur.FirstOrDefault();
+                var usdKur = doviz.UsdKur;
                 var sonuc = (decimal)tutar / usdKur;
                 response.Success = true;
                 response.Data = sonuc;
@@ -386,8 +400,8 @@ namespace EgePakErp.Controllers
             Response<decimal> response = new Response<decimal>();
             try
             {
-                var date = System.DateTime.Now;
-                var eurKur = DovizHelper.DovizKuruGetir("EUR", date);
+                var doviz = Db.DovizKur.FirstOrDefault();
+                var eurKur = doviz.EurKur;
                 var sonuc = (decimal)tutar / eurKur;
                 response.Success = true;
                 response.Description = "başarılı";
