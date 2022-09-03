@@ -3,6 +3,7 @@ using EgePakErp.Controllers;
 using EgePakErp.Custom;
 using EgePakErp.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -10,28 +11,28 @@ using System.Web.Mvc;
 
 namespace EgePakErp.Controllers
 {
-    public class YaldizController : BaseController
+    public class MakineController : BaseController
     {
-        public YaldizRepository repo { get; set; }
-        public YaldizController()
+        public MakineRepository repo { get; set; }
+        public MakineController()
         {
-            repo = new YaldizRepository();
+            repo = new MakineRepository();
         }
 
-        [Menu("Yaldız listesi", "fas fa-align-justify icon-xl", "Yaldız", 0, 1)]
+        [Menu("Makine", "flaticon2-menu-2 icon-xl", "Makine", 5, 1)]
         public ActionResult Index()
         {
             return View();
         }
 
-        [Yetki("Yaldız Listesi", "Yaldız")]
+        [Yetki("Makine Listesi", "Makine")]
         public JsonResult Liste()
         {
             //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
 
-            dtMeta.field = Request.Form["sort[field]"] == null ? "YaldizId" : Request.Form["sort[field]"];
+            dtMeta.field = Request.Form["sort[field]"] == null ? "MakineId" : Request.Form["sort[field]"];
             dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
 
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
@@ -44,10 +45,9 @@ namespace EgePakErp.Controllers
             {
                 var searchQuery = Request.Form["query[searchQuery]"].ToString();
                 model = model.Where(i =>
-                i.Aciklama.ToLower().Contains(searchQuery.ToLower())
+                i.MakineAd.ToLower().Contains(searchQuery.ToLower())
                 );
             }
-
             try
             {
                 model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
@@ -55,8 +55,8 @@ namespace EgePakErp.Controllers
 
             catch (Exception)
             {
-                model = model.OrderBy("YaldizId Desc");
-                dtMeta.field = "YaldizId";
+                model = model.OrderBy("MakineId Desc");
+                dtMeta.field = "MakineId";
                 dtMeta.sort = "Desc";
             }
 
@@ -67,17 +67,15 @@ namespace EgePakErp.Controllers
 
             //sayfala
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
-
-            //dto yap burda
-            var dto = model.AsEnumerable().Select(i => new
+            var dto = model.AsEnumerable().Select(x => new
             {
-                YaldizId = i.YaldizId,
-                Aciklama = i.Aciklama,
-                Cari = i.Cari.Unvan
-            }).ToList<dynamic>();
+                MakineId = x.MakineId,
+                MakineAd = x.MakineAd
+            }).ToList();
+
 
             dtModel.meta = dtMeta;
-            dtModel.data = dto;
+            dtModel.data = dto.ToList<dynamic>();
             return Json(dtModel);
 
         }
@@ -92,14 +90,14 @@ namespace EgePakErp.Controllers
             return PartialView();
         }
 
-        [Yetki("Yaldız Kaydet", "Yaldız")]
-        public JsonResult Kaydet(Yaldiz form)
+        [Yetki("Makine Kaydet", "Makine")]
+        public JsonResult Kaydet(Makine form)
         {
             var response = new Response();
 
             try
             {
-                if (form.YaldizId == 0)
+                if (form.MakineId == 0)
                 {
                     repo.Insert(form);
                     response.Success = true;
@@ -107,7 +105,7 @@ namespace EgePakErp.Controllers
                 }
                 else
                 {
-                    var entity = repo.Get(form.YaldizId);
+                    var entity = repo.Get(form.MakineId);
                     if (entity != null)
                     {
                         //alanları güncelle
@@ -125,7 +123,7 @@ namespace EgePakErp.Controllers
                     }
 
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -136,6 +134,7 @@ namespace EgePakErp.Controllers
             return Json(response);
 
         }
+
 
     }
 }

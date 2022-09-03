@@ -4,6 +4,9 @@ var KTBootstrapTimepicker = function () {
     
     // Private functions
     var demos = function () {
+        // class'a göre
+        $('.kt_timepicker_1').timepicker({ showInputs: false, showMeridian: false });
+
         // minimum setup
         $('#kt_timepicker_1, #kt_timepicker_1_modal').timepicker();
 

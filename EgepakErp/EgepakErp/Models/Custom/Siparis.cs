@@ -14,7 +14,7 @@ namespace EgePakErp.Models
         public string SiparisAdi { get; set; }
         public DateTime TerminTarihi { get; set; }
         public DateTime KayitTarihi { get; set; }
-
+        public int SiparisAdet { get; set; }
         public int CariId { get; set; }
         public Cari Cari { get; set; }
         public int UrunId { get; set; }
@@ -30,12 +30,8 @@ namespace EgePakErp.Models
         public decimal ToplamMaliyetEur { get; set; }
         [AllowHtml]
         public string Aciklama { get; set; }
-        public string AciklamaPdf { get; set; }
-
 
         public ICollection<SiparisKalip> SiparisKalip { get; set; }
-
-        //public ICollection<SiparisKatman> SiparisKatman { get; set; }
 
 
         [NotMapped]

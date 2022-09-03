@@ -1,0 +1,17 @@
+﻿@model List<SiparisKalip>
+@{
+    var liste = Model.GroupBy(x => x.KalipKod).Select(x => new
+    {
+        Kod = x.FirstOrDefault().KalipKod,
+        SiparisKalipId = x.FirstOrDefault().SiparisKalipId
+    }).ToList();
+    var kalipListe = BaseKalip().ToList();
+}
+<label>Siparis Kalıpları:</label>
+<select class="form-control" id="SiparisKalipId" name="SiparisKalipId">
+    @foreach (var item in liste)
+    {
+        var kalip = kalipListe.FirstOrDefault(x => x.ParcaKodu == item.Kod);
+        <option value="@(item.SiparisKalipId)">@(kalip?.Adi)</option>
+    }
+</select>

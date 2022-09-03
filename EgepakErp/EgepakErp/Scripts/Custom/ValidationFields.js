@@ -189,7 +189,7 @@
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
-            }            
+            }
         };
         return fields;
     }
@@ -311,9 +311,60 @@
         };
         return fields;
     }
+
     function yaldizFormFields() {
         var fields = {
             Aciklama: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
+
+    function uretimEmirFormFields() {
+        var fields = {
+            Durum: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Baslangic: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Bitis: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            SiparisAdet: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            UretilenAdet: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            SiparisKalipId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            
+
+        };
+        return fields;
+    }
+
+
+    function makineFormFields() {
+        var fields = {
+            MakineAdi: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
@@ -361,6 +412,12 @@
         },
         YaldizFormFields: function () {
             return yaldizFormFields();
+        },
+        UretimEmirFormFields: function () {
+            return uretimEmirFormFields();
+        },
+        MakineFormFields: function () {
+            return makineFormFields();
         }
         
     };

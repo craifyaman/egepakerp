@@ -1,16 +1,16 @@
-﻿var Yaldiz = function () {
+﻿var UretimEmir = function () {
     
     function Kaydet() {
         debugger;
-        var validation = ValidateForm.IsValid("YaldizForm", ValidationFields.YaldizFormFields())
+        var validation = ValidateForm.IsValid("UretimEmirForm", ValidationFields.UretimEmirFormFields())
         validation.validate().then(function (status) {
             if (status == 'Valid') {
-                var form = $("#YaldizForm").serializeJSON();
+                var form = $("#UretimEmirForm").serializeJSON();
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;               
                 console.log(form);
-                Post("/Yaldiz/kaydet",
+                Post("/UretimEmir/kaydet",
                     { form: form },
                     function (response) {
                         if (response.Success) {
@@ -48,15 +48,15 @@
 
     var handleEvent = function () {
 
-        $(document).on("click", "[event='YaldizFormPopup']", function (e) {
+        $(document).on("click", "[event='UretimEmirFormPopup']", function (e) {
             debugger;
             e.preventDefault();
             var id = $(this).attr("id");            
-            Post("/Yaldiz/form",
+            Post("/UretimEmir/form",
                 { id: id },
                 function (response) {
                     bootbox.dialog({
-                        title: "Yaldız form",
+                        title: "UretimEmir form",
                         message: Global.cardTemplate(response),
                         size: 'large',
                         buttons: {
@@ -84,18 +84,33 @@
                 },
                 function () {
                     Global.init();
+                    KTBootstrapTimepicker.init();
                 },
                 "html");
         });
 
-        $(document).on("change", ".UploadFile2", function (event) {
+        
+        $(document).on("change", "#SiparisId", function (event) {
             event.preventDefault();
-            debugger;
-            var inputId = $(this).attr("id");
-            var TargetDirectory = "SiparisPdf/CariId-" + $("#CariId").val() + "/Yaldiz/";
-            var TargetInputId = $(this).attr("TargetInputId");
-            UploadImage(inputId, "/File/DosyaKaydet", TargetDirectory, TargetInputId);
+            var siparisId = $(this).val();            
+            Post("/uretimemir/SiparisKalipBySiparis",
+                { siparisId: siparisId },
+                function (response) {
+                    $("#SiparisKalipList").empty().html(response);
+                    $("#SiparisKalipList").show();
+
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+                },
+                "html");
         });
+
     }
 
     return {

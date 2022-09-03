@@ -67,7 +67,12 @@
                     <form id="sipForm">
                         <div class="card-body">
                             <div class="form-group row">
-                                <div class="col-lg-4" id="siparisSelectForm">
+                                <input type="hidden" name="exclude" id="exclude" />
+                                <input type="hidden" name="include" id="include" />
+                                <div class="col-lg-12" id="UrunKaliplari">
+                                </div>
+
+                                <div class="col-lg-6" id="siparisSelectForm">
                                     @Html.HiddenFor(x => x.SiparisId)
                                     @if (Model.SiparisId == 0)
                                     {
@@ -81,12 +86,6 @@
                                         <div class="form-group row">
                                             <label>Ürün Seçimi:</label>
                                             <select id="UrunId" name="UrunId" class="form-control select2" url="/Urun/ListeSelect2" markup="Urun" placeHolder="Ürün Seçiniz">
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label>Kalıp Seçimi:</label>
-                                            <select id="SiparisKalipSelect" name="KalipId" class="form-control select2" url="/Kalip/ListeSelect2" markup="Kalip" placeHolder="Kalıp Seçiniz">
                                             </select>
                                         </div>
 
@@ -134,57 +133,66 @@
                                                 }
                                             </select>
                                         </div>
+
+
                                         <div class="form-group row">
-                                            <label>Sipariş numarası:</label>
-                                            <input type="text" id="SiparisAdi" placeholder="Sipariş Numarası" class="form-control" />
+
+                                            <div class="col-6">
+                                                <label>Termin Tarihi:</label>
+                                                <input class="form-control form-control-solid kt_datepicker_1" placeholder="Termin Tarihi" id="TerminTarihi" name="TerminTarihi" />
+                                            </div>
+
+                                            <div class="col-6">
+                                                <label>Sipariş Adet:</label>
+                                                <input type="number" placeholder="Sipariş Adet" id="SiparisAdet" class="form-control" />
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label>Kalıp Seçimi:</label>
+                                            <select id="SiparisKalipSelect" name="KalipId" class="form-control select2" url="/Kalip/ListeSelect2" markup="Kalip" placeHolder="Kalıp Seçiniz">
+                                            </select>
                                         </div>
                                     }
-                                    else
+                                </div>
+
+                                <div class="col-lg-6">
+                                    @if (Model.SiparisId != 0)
                                     {
                                         @Html.HiddenFor(x => x.SiparisAdi);
                                         @Html.HiddenFor(x => x.TerminTarihi)
                                         @Html.HiddenFor(x => x.KayitTarihi)
                                         <input type="hidden" id="SiparisCariId" value="@Model.CariId" />
                                         @Html.HiddenFor(x => x.UrunId)
+                                        <div class="form-group row">
+
+                                            <div class="col-6">
+                                                <label>Termin Tarihi:</label>
+                                                @Html.TextBoxFor(x => x.TerminTarihi, new { @class = "form-control form-control-solid kt_datepicker_1" })
+                                            </div>
+
+                                            <div class="col-6">
+                                                <label>Sipariş Adet:</label>
+                                                @Html.TextBoxFor(x => x.SiparisAdet, new { @class = "form-control" })
+                                            </div>
+
+                                        </div>
                                     }
                                 </div>
 
-                                <input type="hidden" name="exclude" id="exclude" />
-                                <input type="hidden" name="include" id="include" />
-                                <div class="col-lg-8" id="UrunKaliplari">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-lg-12">
-                                        <div class="p-2 text-uppercase">Pdf Seçin</div>
-
-                                        <a href="#" pdfurl="" class="btn btn-info webviewer" id="SiparisPdfView" style="display:none;">
-                                            Görüntüle
-                                        </a>
-
-                                        <a href="#" target="_blank" id="pdfFile" class="btn btn-warning" style="display:none;" download>
-                                            İndir
-                                        </a>
-
-                                    </div>
-                                    <input type="hidden" name="AciklamaPdf" id="AciklamaPdf" value="" />
-                                    <input type="file" id="SiparisPdf" TargetInputId="AciklamaPdf" class="form-control UploadFile" style="border:none;" />
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="p-2">Açıklama</div>
                                 </div>
                                 <div class="col-lg-12">
-                                    @*<textarea class="summernote" name="Aciklama" id="Aciklama"></textarea>*@
-                                    @Html.TextAreaFor(x => x.Aciklama, new {@class= "summernote" })
+                                    @Html.TextAreaFor(x => x.Aciklama, new { @class = "summernote" })
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-lg-12" id="maliyetTablosu">
-
                                 </div>
                             </div>
                         </div>
@@ -207,6 +215,7 @@
 @section Scripts{
     <script src="~/Scripts/Functions/HesapFuntions.js?v=@ScriptVersion"></script>
     <script src="~/Scripts/Siparis.js?v=@ScriptVersion"></script>
+    <script src="~/Scripts/Yaldiz.js"></script>
     <script>
         // Read a page's GET URL variables and return them as an associative array.
         function getUrlVars() {
@@ -259,6 +268,9 @@
         Siparis.EventInit();
         Global.init();
         SelectPickerRemote.init();
+        Yaldiz.EventInit();
+        KTBootstrapDatepicker.init();
+        KTDropzoneDemo.PdfUpload("yaldiz");
     </script>
 
 }

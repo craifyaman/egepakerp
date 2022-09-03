@@ -16,7 +16,7 @@ namespace EgePakErp.Controllers
     public class HatirlaticiController : BaseController
     {
         // GET: Cari
-        [Menu("Hatırlatıcı", "flaticon2-time icon-xl", "Hatırlatıcı", 0, 2)]
+        [Menu("Hatırlatıcı", "flaticon2-time icon-xl", "Hatırlatıcı", 0,1)]
         public ActionResult Index()
         {
             return View();

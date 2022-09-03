@@ -1,3 +1,7 @@
 ﻿#viewer iframe{
     min-height:600px;
 }
+
+.vis-item-overflow{
+    text-align:center;
+}

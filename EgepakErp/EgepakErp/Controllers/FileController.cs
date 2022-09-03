@@ -21,6 +21,7 @@ namespace EgePakErp.Controllers
                     try
                     {
                         var TargetDirectory = Request.Headers.Get("TargetDirectory");
+                        TargetDirectory= HttpUtility.UrlDecode(TargetDirectory);
                         HttpFileCollectionBase files = Request.Files;
                         HttpPostedFileBase dosya = files[0];
                         string fname = dosya.FileName;
@@ -55,7 +56,7 @@ namespace EgePakErp.Controllers
 
                             response.Data = "/File/" + directory + "/" + DateTime.Now.ToString("dd_MM_yyyy") + "/" + strFileName;
                         }
-                        return Json(response);
+                        return Json(response);  
 
                     }
                     catch (Exception ex)

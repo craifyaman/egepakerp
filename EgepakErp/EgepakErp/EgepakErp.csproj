@@ -171,6 +171,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Concrete\MakineRepository.cs" />
+    <Compile Include="Concrete\UretimEmirRepository.cs" />
     <Compile Include="Concrete\YaldizRepository.cs" />
     <Compile Include="Concrete\HammaddeHareketRepository.cs" />
     <Compile Include="Concrete\HammaddeCinsiRepository.cs" />
@@ -183,6 +185,9 @@
     <Compile Include="Concrete\SiparisRepository.cs" />
     <Compile Include="Concrete\UrunRepository.cs" />
     <Compile Include="Concrete\_GenericRepository.cs" />
+    <Compile Include="Controllers\MakineController.cs" />
+    <Compile Include="Controllers\UretimEmirController.cs" />
+    <Compile Include="Controllers\UretimController.cs" />
     <Compile Include="Controllers\YaldizController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\BoyaKodController.cs" />
@@ -401,6 +406,27 @@
     <Compile Include="Migrations\202208311528118_add_yaldizId_to_siparisKalip.designer.cs">
       <DependentUpon>202208311528118_add_yaldizId_to_siparisKalip.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209011302500_add_SiparisAded_to_Siparis.cs" />
+    <Compile Include="Migrations\202209011302500_add_SiparisAded_to_Siparis.designer.cs">
+      <DependentUpon>202209011302500_add_SiparisAded_to_Siparis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209020644594_delete_SiparisPdf_from_siparis.cs" />
+    <Compile Include="Migrations\202209020644594_delete_SiparisPdf_from_siparis.designer.cs">
+      <DependentUpon>202209020644594_delete_SiparisPdf_from_siparis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209021108329_add_SiparisAdet_to_UretimEmir.cs" />
+    <Compile Include="Migrations\202209021108329_add_SiparisAdet_to_UretimEmir.designer.cs">
+      <DependentUpon>202209021108329_add_SiparisAdet_to_UretimEmir.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209021152303_update_baslangic_and_Bitis_to_string_in_UretimEmir_Table.cs" />
+    <Compile Include="Migrations\202209021152303_update_baslangic_and_Bitis_to_string_in_UretimEmir_Table.designer.cs">
+      <DependentUpon>202209021152303_update_baslangic_and_Bitis_to_string_in_UretimEmir_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209030847287_update_baslangic_and_bitis_to_datetime.cs" />
+    <Compile Include="Migrations\202209030847287_update_baslangic_and_bitis_to_datetime.designer.cs">
+      <DependentUpon>202209030847287_update_baslangic_and_bitis_to_datetime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\UretimEmir.cs" />
     <Compile Include="Models\Custom\Yaldiz.cs" />
     <Compile Include="Models\Custom\DovizKur.cs" />
     <Compile Include="Models\Custom\BoyaKod.cs" />
@@ -2646,6 +2672,8 @@
     <Content Include="assets\plugins\custom\uppy\uppy.bundle.css" />
     <Content Include="assets\plugins\custom\uppy\uppy.bundle.js" />
     <Content Include="assets\plugins\custom\uppy\uppy.bundle.rtl.css" />
+    <Content Include="assets\plugins\custom\vis-timeline\vis-timeline.bundle.css" />
+    <Content Include="assets\plugins\custom\vis-timeline\vis-timeline.bundle.js.js" />
     <Content Include="assets\plugins\global\fonts\%40fortawesome\fa-brands-400.svg" />
     <Content Include="assets\plugins\global\fonts\%40fortawesome\fa-regular-400.svg" />
     <Content Include="assets\plugins\global\fonts\%40fortawesome\fa-solid-900.svg" />
@@ -2713,6 +2741,10 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.ttf" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
+    <Content Include="Scripts\Custom\DataPickerTr.js" />
+    <Content Include="Scripts\UretimEmir.js" />
+    <Content Include="Scripts\Makine.js" />
+    <Content Include="Scripts\Uretim.js" />
     <Content Include="Scripts\Yaldiz.js" />
     <Content Include="Scripts\BoyaKod.js" />
     <Content Include="WebViewer\doc\classes.list.html" />
@@ -3668,6 +3700,14 @@
     <Content Include="Views\Yaldiz\FilterForm.cshtml" />
     <Content Include="Views\Yaldiz\Form.cshtml" />
     <Content Include="Views\Yaldiz\Index.cshtml" />
+    <Content Include="Views\Uretim\Index.cshtml" />
+    <Content Include="Views\UretimEmir\FilterForm.cshtml" />
+    <Content Include="Views\UretimEmir\Form.cshtml" />
+    <Content Include="Views\UretimEmir\Index.cshtml" />
+    <Content Include="Views\Makine\FilterForm.cshtml" />
+    <Content Include="Views\Makine\Form.cshtml" />
+    <Content Include="Views\Makine\Index.cshtml" />
+    <Content Include="Views\UretimEmir\SiparisKalipBySiparis.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -3816,6 +3856,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202208311528118_add_yaldizId_to_siparisKalip.resx">
       <DependentUpon>202208311528118_add_yaldizId_to_siparisKalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209011302500_add_SiparisAded_to_Siparis.resx">
+      <DependentUpon>202209011302500_add_SiparisAded_to_Siparis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209020644594_delete_SiparisPdf_from_siparis.resx">
+      <DependentUpon>202209020644594_delete_SiparisPdf_from_siparis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209021108329_add_SiparisAdet_to_UretimEmir.resx">
+      <DependentUpon>202209021108329_add_SiparisAdet_to_UretimEmir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209021152303_update_baslangic_and_Bitis_to_string_in_UretimEmir_Table.resx">
+      <DependentUpon>202209021152303_update_baslangic_and_Bitis_to_string_in_UretimEmir_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209030847287_update_baslangic_and_bitis_to_datetime.resx">
+      <DependentUpon>202209030847287_update_baslangic_and_bitis_to_datetime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -500,9 +500,9 @@
             this.CariId;//int
             this.UrunId;//int
             this.SiparisKalip;//object list
-            this.SiparisAdi;//string
             this.Aciklama;//string
-            this.AciklamaPdf;//string
+            this.TerminTarihi;//string
+            this.SiparisAdet;//string
             this.Include;//string
 
         }
@@ -549,9 +549,9 @@
         siparisDto.ToplamMaliyet = $("#ToplamMaliyet").val();
         siparisDto.ToplamMaliyetUsd = $("#ToplamMaliyetUsd").val();
         siparisDto.ToplamMaliyetEur = $("#ToplamMaliyetEur").val();
-        siparisDto.SiparisAdi = $("#SiparisAdi").val();
         siparisDto.Aciklama = $("#Aciklama").val();
-        siparisDto.AciklamaPdf = $("#AciklamaPdf").val();
+        siparisDto.TerminTarihi = $("#TerminTarihi").val();
+        siparisDto.SiparisAdet = $("#SiparisAdet").val();
 
         var keys = Object.keys(siparisDto);
         var include = keys.slice(1, keys.length);
@@ -930,41 +930,18 @@
             event.preventDefault();
             debugger;
             var inputId = $(this).attr("id");
-            var siparisNo = $("#SiparisAdi").val();
-            var TargetDirectory = "SiparisPdf/" + siparisNo;
+            var TargetDirectory = "SiparisPdf/CariId-" + $("#SiparisCariId").val()+"/";
             var TargetInputId = $(this).attr("TargetInputId");
             UploadImage(inputId, "/File/DosyaKaydet", TargetDirectory, TargetInputId);
         });
 
-        
-
-        //$(document).on("change", ".UploadYaldizFile", function (event) {
-        //    event.preventDefault();
-        //    debugger;
-        //    var inputId = "YaldizPdf";
-        //    var KalipId = $(this).attr("KalipId");
-        //    var siparisNo = $("#SiparisAdi").val();
-        //    var TargetDirectory = "SiparisPdf/" + siparisNo + "/Kalip_" + KalipId;
-        //    UploadImageCustom(
-        //        inputId,
-        //        "/File/DosyaKaydet",
-        //        TargetDirectory,
-        //        function (res) {
-        //            var yol = res.Data;
-        //            $(".Fiyat").attr("YaldizPdfYol", yol);
-        //            toastr.success(res.Description);
-        //        },
-        //        function () {
-        //            toastr.error("dosya alınamadı");
-        //        }
-        //    );
-        //});
 
         $(document).on("change", "#CariId", function (event) {
             event.preventDefault();
             debugger;
             var id = $(this).val();
             $("#SiparisCariId").val(id);
+
         });
 
         $(document).on("change", "#boyaKodSelect", function (event) {
@@ -980,6 +957,47 @@
             debugger;
             var YaldizId = $(this).val();
             $(".Fiyat").attr("YaldizId", YaldizId);
+
+        });
+
+        $(document).on("click", "#YaldizEkle", function (event) {
+            event.preventDefault();
+            debugger;
+            var id = 0;
+            Post("/Yaldiz/form",
+                { id: id },
+                function (response) {
+                    bootbox.dialog({
+                        title: "Yaldız form",
+                        message: Global.cardTemplate(response),
+                        size: 'large',
+                        buttons: {
+                            cancel: {
+                                label: "Kapat",
+                                className: 'btn-danger',
+                                callback: function () { }
+                            },
+                            ok: {
+                                label: "Kaydet",
+                                className: 'btn-info',
+                                callback: function () {
+                                    Yaldiz.Kaydet();
+                                    return false;
+                                }
+                            }
+                        }
+                    });
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+                    Global.init();
+                },
+                "html");
 
         });
         
@@ -1008,6 +1026,8 @@
                     }
                 }
             });
+
+            
 
             WebViewer({
                 path: 'WebViewer/lib', // path to the PDF.js Express'lib' folder on your server

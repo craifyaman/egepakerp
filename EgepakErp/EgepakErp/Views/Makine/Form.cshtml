@@ -1,0 +1,12 @@
+﻿@model Makine
+<!--begin::Form-->
+<form id="MakineForm">
+    @Html.HiddenFor(x => x.MakineId)
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>Ad:</label>
+            @Html.TextBoxFor(x => x.MakineAd, new { @class = "form-control" })
+        </div>
+    </div>
+</form>
+<!--end::Form-->

@@ -1,16 +1,16 @@
-﻿var Yaldiz = function () {
+﻿var Makine = function () {
     
     function Kaydet() {
         debugger;
-        var validation = ValidateForm.IsValid("YaldizForm", ValidationFields.YaldizFormFields())
+        var validation = ValidateForm.IsValid("MakineForm", ValidationFields.MakineFormFields())
         validation.validate().then(function (status) {
             if (status == 'Valid') {
-                var form = $("#YaldizForm").serializeJSON();
+                var form = $("#MakineForm").serializeJSON();
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;               
                 console.log(form);
-                Post("/Yaldiz/kaydet",
+                Post("/Makine/kaydet",
                     { form: form },
                     function (response) {
                         if (response.Success) {
@@ -48,15 +48,15 @@
 
     var handleEvent = function () {
 
-        $(document).on("click", "[event='YaldizFormPopup']", function (e) {
+        $(document).on("click", "[event='MakineFormPopup']", function (e) {
             debugger;
             e.preventDefault();
             var id = $(this).attr("id");            
-            Post("/Yaldiz/form",
+            Post("/Makine/form",
                 { id: id },
                 function (response) {
                     bootbox.dialog({
-                        title: "Yaldız form",
+                        title: "Makine form",
                         message: Global.cardTemplate(response),
                         size: 'large',
                         buttons: {
@@ -88,23 +88,12 @@
                 "html");
         });
 
-        $(document).on("change", ".UploadFile2", function (event) {
-            event.preventDefault();
-            debugger;
-            var inputId = $(this).attr("id");
-            var TargetDirectory = "SiparisPdf/CariId-" + $("#CariId").val() + "/Yaldiz/";
-            var TargetInputId = $(this).attr("TargetInputId");
-            UploadImage(inputId, "/File/DosyaKaydet", TargetDirectory, TargetInputId);
-        });
     }
 
     return {
 
         EventInit: function () {
             handleEvent();
-        },
-        Kaydet: function () {
-            Kaydet();
         }
     };
 }();

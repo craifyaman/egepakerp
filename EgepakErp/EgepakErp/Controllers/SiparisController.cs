@@ -105,20 +105,47 @@ namespace EgePakErp.Controllers
             Response response = new Response();
             try
             {
-                var urun = urunRepo.Get(siparis.UrunId);
-                var cari = Db.Cari.Include(x => x.BaglantiTipi).FirstOrDefault(x => x.CariId == siparis.CariId);
-                var urunCinsi = urun.UrunCinsi.Kisaltmasi;
-                var urunNo = urun.UrunNo;
+                var cariSiparisleri = siparisRepo.GetAll(x => x.CariId == siparis.CariId && x.UrunId == siparis.UrunId).OrderByDescending(x => x.KayitTarihi).ToList();
+                var sipNo = 0;
 
-                var boyaKodlar = siparis.SiparisKalip.Where(x => x.BoyaKodId != null).Select(x => x.BoyaKodId).ToList();
-                var yaldizIdList = siparis.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId).ToList();
+                var boyaKodlar = siparis.SiparisKalip.Where(x => x.BoyaKodId != null).Select(x => x.BoyaKodId + "_" + x.KalipKod).ToList();
+                var yaldizIdList = siparis.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId + "_" + x.KalipKod).ToList();
 
                 List<string> yaldizlar = yaldizIdList.ConvertAll<string>(x => x.ToString());
                 List<string> boyaKodList = boyaKodlar.ConvertAll<string>(x => x.ToString());
+                string yaldizListToString = String.Join(", ", yaldizlar);
+                string boyaKodListToString = String.Join(", ", boyaKodList);
 
 
-                siparis.SiparisAdi = cari.MusteriNo + urunCinsi + urunNo + String.Join(", ", yaldizlar) + String.Join(", ", boyaKodList);
-                siparis.TerminTarihi = DateTime.Now;
+                var urun = urunRepo.Get(siparis.UrunId);
+                var cari = Db.Cari.Include(x => x.BaglantiTipi).FirstOrDefault(x => x.CariId == siparis.CariId);
+                var urunKod = urun.UrunCinsi.Kisaltmasi + urun.UrunNo;
+
+
+
+                foreach (var sip in cariSiparisleri)
+                {
+                    var _boyaKodlar = sip.SiparisKalip.Where(x => x.BoyaKodId != null).Select(x => x.BoyaKodId + "_" + x.KalipKod).ToList();
+                    var _yaldizIdList = sip.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId + "_" + x.KalipKod).ToList();
+
+                    List<string> _yaldizlar = _yaldizIdList.ConvertAll<string>(x => x.ToString());
+                    List<string> _boyaKodList = _boyaKodlar.ConvertAll<string>(x => x.ToString());
+
+                    string _yaldizListToString = String.Join(", ", _yaldizlar);
+                    string _boyaKodListToString = String.Join(", ", _boyaKodList);
+
+                    if (yaldizListToString != _yaldizListToString || boyaKodListToString != _boyaKodListToString)
+                    {
+                        var splitSiparisNo = sip.SiparisAdi.Split('-');
+                        var siparisNo = Convert.ToInt32(splitSiparisNo[2]);
+                        sipNo = siparisNo += 1;
+                        break;
+                    }
+                }
+
+                //siparis.SiparisAdi = cari.MusteriNo + urunCinsi + urunNo + String.Join(", ", yaldizlar) + String.Join(", ", boyaKodList);
+
+                siparis.SiparisAdi = cari.MusteriNo + "-" + urunKod + "-" + sipNo;
                 siparis.KayitTarihi = DateTime.Now;
                 siparisRepo.Insert(siparis);
 
@@ -126,6 +153,7 @@ namespace EgePakErp.Controllers
                 response.Description = "Sipariş başarı ile kaydedildi";
                 return Json(response);
             }
+
             catch (Exception ex)
             {
                 response.Success = false;
@@ -208,7 +236,6 @@ namespace EgePakErp.Controllers
             {
                 var _siparis = siparisRepo.Get(siparis.SiparisId);
                 _siparis.Aciklama = siparis.Aciklama;
-                _siparis.AciklamaPdf = siparis.AciklamaPdf;
                 siparisRepo.Update(_siparis);
 
                 response.Success = true;

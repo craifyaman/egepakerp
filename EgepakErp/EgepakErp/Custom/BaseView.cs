@@ -425,6 +425,19 @@ namespace EgePakErp.Custom
                 .ToList();
             return list;
         }
+        public IQueryable<Siparis> BaseSiparis()
+        {
+            var list = db.Siparis
+                .Include(x=>x.Cari)
+                .AsQueryable();
+            return list;
+        }
+        public IQueryable<Makine> BaseMakine()
+        {
+            var list = db.Makine
+                .AsQueryable();
+            return list;
+        }
         public decimal BaseKur(string kurType, DateTime date)
         {
             var dovizKur = db.DovizKur.FirstOrDefault();
@@ -459,12 +472,17 @@ namespace EgePakErp.Custom
             var liste = db.BoyaKod.AsQueryable();
             return liste;
         }
+        public IQueryable<Kalip> BaseKalip()
+        {
+            var liste = db.Kalip.AsQueryable();
+            return liste;
+        }
         //public List<EvMontaj> BaseEvMontaj()
         //{
         //    var liste = db.EvMontaj.ToList();
         //    return liste;
         //}
-
+        
         public List<BaseMenu> baseMenu(string pre = "Menu", string nameSpace = "EgePakErp.Controllers")
         {
             Assembly asm = Assembly.GetExecutingAssembly();

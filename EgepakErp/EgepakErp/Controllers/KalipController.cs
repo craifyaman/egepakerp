@@ -19,7 +19,7 @@ namespace EgePakErp.Controllers
             repo = new KalipRepository();
         }
         // GET: Cari
-        [Menu("Kalıplar", "flaticon2-download icon-xl", "Üretim", 0, 4)]
+        [Menu("Kalıplar", "flaticon2-soft-icons icon-xl", "Üretim", 0, 4)]
         public ActionResult Index()
         {
             return View();

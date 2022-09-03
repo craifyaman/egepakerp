@@ -797,6 +797,79 @@
         return columns;
     }
 
+    function uretimEmirColumns() {
+        var columns = [
+            {
+                field: 'UretimEmirId',
+                title: '#',
+                width: 50
+            },
+            {
+                field: 'Baslangic',
+                title: 'Baslangic',
+            },
+            {
+                field: 'Bitis',
+                title: 'Bitis',
+            },
+            {
+                field: 'Durum',
+                title: 'Durum',
+            },
+            {
+                field: 'SiparisAdet',
+                title: 'Sipariş Adet',
+            },
+            {
+                field: 'UretilenAdet',
+                title: 'Üretilen Adet',
+            },
+            {
+                field: 'KalanAdet',
+                title: 'Kalan Adet',
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'event="UretimEmirFormPopup" href = "#" id = "' + row.UretimEmirId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    return str;
+                },
+            }];
+        return columns;
+    }
+
+    function makineColumns() {
+        var columns = [
+            {
+                field: 'MakineId',
+                title: '#',
+                width: 50
+            },
+            {
+                field: 'MakineAd',
+                title: 'Adı',
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'event="MakineFormPopup" href = "#" id = "' + row.MakineId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    return str;
+                },
+            }];
+        return columns;
+    }
     return {
         // public functions
         CariColumns: function () {
@@ -840,7 +913,14 @@
         },
         YaldizColumns: function () {
             return yaldizColumns();
-        },        
+        }, 
+        UretimEmirColumns: function () {
+            return uretimEmirColumns();
+        },    
+        MakineColumns: function () {
+            return makineColumns();
+        },    
+        
         GetColoums: function (name) {
             if (name == "cari") {
                 return cariColumns();
@@ -877,6 +957,12 @@
             }
             else if (name == "yaldiz") {
                 return yaldizColumns();
+            }
+            else if (name == "uretimemir") {
+                return uretimEmirColumns();
+            }
+            else if (name == "makine") {
+                return makineColumns();
             }
             
 

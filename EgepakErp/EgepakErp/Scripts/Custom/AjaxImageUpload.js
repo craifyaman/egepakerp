@@ -18,11 +18,13 @@ function UploadImage(inputId, Url, TargetDirectory,TargetInputId) {
         // Adding one more key to FormData object  
         fileData.append('file', 'file');
 
+        var enCodeDirectory = escape(TargetDirectory);
+
         $.ajax({
             url: Url,
             type: "POST",
             dataType:"json",
-            headers: { 'TargetDirectory': TargetDirectory },
+            headers: { 'TargetDirectory': enCodeDirectory },
             contentType: false, // Not to set any content header  
             processData: false, // Not to process data  
             data: fileData,

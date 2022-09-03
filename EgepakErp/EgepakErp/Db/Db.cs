@@ -70,6 +70,10 @@ namespace EgePakErp
         public virtual DbSet<SiparisKalip> SiparisKalip { get; set; }
         public virtual DbSet<BoyaKod> BoyaKod { get; set; }
         public virtual DbSet<Yaldiz> Yaldiz { get; set; }
+        public virtual DbSet<UretimEmir> UretimEmir { get; set; }
+        public virtual DbSet<Makine> Makine { get; set; }
+
+
         //public virtual DbSet<SiparisKatman> SiparisKatman { get; set; }
         //public virtual DbSet<EvMontaj> EvMontaj { get; set; }
 

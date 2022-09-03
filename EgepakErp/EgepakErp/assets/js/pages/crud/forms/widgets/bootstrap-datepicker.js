@@ -18,13 +18,24 @@ var KTBootstrapDatepicker = function () {
     // Private functions
     var demos = function () {
         // minimum setup
-        $('#kt_datepicker_1, #kt_datepicker_1_validate').datepicker({
+        $('.kt_datepicker_1, #kt_datepicker_1_validate').datepicker({
             rtl: KTUtil.isRTL(),
             todayHighlight: true,
             orientation: "bottom left",
-            templates: arrows
+            templates: arrows,            
+            format: 'dd/mm/yyyy',
+            language: 'tr'
         });
 
+        // ful setup
+        $('.kt_datepicker_fullDate').datepicker({
+            rtl: KTUtil.isRTL(),
+            todayHighlight: true,
+            orientation: "bottom left",
+            templates: arrows,
+            format: 'dd/mm/yyyy ii',
+            language: 'tr'
+        });
         // minimum setup for modal demo
         $('#kt_datepicker_1_modal').datepicker({
             rtl: KTUtil.isRTL(),

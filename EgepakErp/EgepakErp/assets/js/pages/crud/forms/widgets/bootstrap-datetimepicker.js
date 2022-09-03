@@ -4,35 +4,38 @@ var KTBootstrapDatetimepicker = function () {
     // Private functions
     var baseDemos = function () {
         // Demo 1
-        $('#kt_datetimepicker_1').datetimepicker();
+        $('.kt_datetimepicker_1').datetimepicker();
 
-        // Demo 2
-        $('#kt_datetimepicker_2').datetimepicker({
-            locale: 'de'
+        $('#time').datetimepicker({
+            format: 'yyyy-mm-dd'
         });
+        //// Demo 2
+        //$('#kt_datetimepicker_2').datetimepicker({
+        //    locale: 'de'
+        //});
 
-        // Demo 3
-        $('#kt_datetimepicker_3').datetimepicker({
-            format: 'L'
-        });
+        //// Demo 3
+        //$('#kt_datetimepicker_3').datetimepicker({
+        //    format: 'L'
+        //});
 
-        // Demo 4
-        $('#kt_datetimepicker_4').datetimepicker({
-            format: 'LT'
-        });
+        //// Demo 4
+        //$('#kt_datetimepicker_4').datetimepicker({
+        //    format: 'LT'
+        //});
 
-        // Demo 5
-        $('#kt_datetimepicker_5').datetimepicker();
+        //// Demo 5
+        //$('#kt_datetimepicker_5').datetimepicker();
 
-        // Demo 6
-        $('#kt_datetimepicker_6').datetimepicker({
-            defaultDate: '11/1/2020',
-            disabledDates: [
-                moment('12/25/2020'),
-                new Date(2020, 11 - 1, 21),
-                '11/22/2022 00:53'
-            ]
-        });
+        //// Demo 6
+        //$('#kt_datetimepicker_6').datetimepicker({
+        //    defaultDate: '11/1/2020',
+        //    disabledDates: [
+        //        moment('12/25/2020'),
+        //        new Date(2020, 11 - 1, 21),
+        //        '11/22/2022 00:53'
+        //    ]
+        //});
 
         // Demo 7
         $('#kt_datetimepicker_7_1').datetimepicker();
@@ -86,6 +89,3 @@ var KTBootstrapDatetimepicker = function () {
     };
 }();
 
-jQuery(document).ready(function() {
-    KTBootstrapDatetimepicker.init();
-});
