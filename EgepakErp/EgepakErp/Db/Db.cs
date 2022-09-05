@@ -72,6 +72,10 @@ namespace EgePakErp
         public virtual DbSet<Yaldiz> Yaldiz { get; set; }
         public virtual DbSet<UretimEmir> UretimEmir { get; set; }
         public virtual DbSet<Makine> Makine { get; set; }
+        public virtual DbSet<SiparisDurum> SiparisDurum { get; set; }
+        public virtual DbSet<UretimEmirDurum> UretimEmirDurum { get; set; }
+        public virtual DbSet<AksiyonType> AksiyonType { get; set; }
+        public virtual DbSet<Aksiyon> Aksiyon { get; set; }
 
 
         //public virtual DbSet<SiparisKatman> SiparisKatman { get; set; }

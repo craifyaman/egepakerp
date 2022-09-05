@@ -19,6 +19,8 @@ namespace EgePakErp.Models
         public Cari Cari { get; set; }
         public int UrunId { get; set; }
         public Urun Urun { get; set; }
+        public int SiparisDurumId { get; set; }
+        public SiparisDurum SiparisDurum { get; set; }
 
         [Column(TypeName = "money")]
         public decimal ToplamMaliyet { get; set; }

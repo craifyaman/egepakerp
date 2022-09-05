@@ -2,7 +2,6 @@
 <!--begin::Form-->
 <form id="UretimEmirForm">
     @Html.HiddenFor(x => x.UretimEmirId)
-
     <div class="form-group row">
         <div class="col-lg-12">
             <label>Sipariş:</label>
@@ -10,16 +9,51 @@
                 var siparisler = BaseSiparis().ToList();
 
             }
+
             <select class="form-control" id="SiparisId" name="SiparisId">
                 <option>Sipariş seçin</option>
+
                 @foreach (var item in siparisler)
                 {
-                    <option value="@item.SiparisId">@item.SiparisAdi - (@item.Cari.Unvan)</option>
+                    var attr = item.SiparisId == Model?.SiparisKalip.SiparisId ? "selected" : "";
+                    <option @attr value="@item.SiparisId">@item.SiparisAdi - (@item.Cari.Unvan)</option>
                 }
+
             </select>
         </div>
 
-        <div class="col-lg-12" id="SiparisKalipList" style="display:none;">
+
+        <div class="col-lg-12" id="SiparisKalipList" style="">
+            @if (Model != null)
+            {
+
+                var siparisKaliplar = BaseSiparisKalipListe().Where(x => x.SiparisId == Model.SiparisKalip.SiparisId);
+
+                var liste = siparisKaliplar?.GroupBy(x => x.KalipKod).Select(x => new
+                {
+                    Kod = x.FirstOrDefault().KalipKod,
+                    SiparisKalipId = x.FirstOrDefault().SiparisKalipId,
+                    SiparisId = x.FirstOrDefault().SiparisId
+                }).ToList();
+
+                var kalipListe = BaseKalip().ToList();
+
+
+                <label>Siparis Kalıpları:</label>
+                <select class="form-control" id="SiparisKalipId" name="SiparisKalipId">
+                    @foreach (var item in liste)
+                    {
+                        var kalip = kalipListe.FirstOrDefault(x => x.ParcaKodu == item.Kod);
+                        var attr = item.SiparisKalipId == Model?.SiparisKalipId ? "selected" : "";
+                        <option @attr value="@(item.SiparisKalipId)">@(kalip?.Adi)</option>
+                    }
+                </select>
+            }
+
+            else
+            {
+
+            }
 
         </div>
 
@@ -38,17 +72,35 @@
 
 
     </div>
-    <div class="form-group row">
-        <div class="col-6">
-            <label>Başlangıç:</label>
-            @Html.TextBoxFor(x => x.Baslangic, new { @class = "form-control form-control-solid", @type = "datetime-local" })
+    @if (Model != null)
+    {
+        <div class="form-group row">
+            <div class="col-6">
+                <label>Başlangıç:</label>
+                @Html.TextBoxFor(x => x.Baslangic, new { @class = "form-control" })
+            </div>
+            <div class="col-6">
+                <label>Bitiş:</label>
+                @Html.TextBoxFor(x => x.Bitis, new { @class = "form-control" })
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="form-group row">
+            <div class="col-6">
+                <label>Başlangıç:</label>
+                <input type="text" class="form-control form-control-solid datetimepicker-input" name="Baslangic" id="Baslangic" placeholder="Başlangıç zamanı seçin" data-toggle="datetimepicker" data-target="#Baslangic" value="@(Model?.Baslangic.ToString("yyyy-MM-dd HH:mm"))" />
 
+            </div>
+            <div class="col-6">
+                <label>Bitiş:</label>
+                <input type="text" class="form-control form-control-solid datetimepicker-input" name="Bitis" id="Bitis" placeholder="Bitiş zamanı seçin" data-toggle="datetimepicker" data-target="#Bitis" value="@(Model?.Bitis.ToString("yyyy-MM-dd HH:mm"))" />
+
+            </div>
         </div>
-        <div class="col-6">
-            <label>Bitiş:</label>
-            @Html.TextBoxFor(x => x.Bitis, new { @class = "form-control form-control-solid", @type = "datetime-local" })
-        </div>
-    </div>
+    }
+
 
     <div class="form-group row">
         <div class="col-lg-12">

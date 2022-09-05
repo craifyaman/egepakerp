@@ -2,9 +2,8 @@
 {
     public enum EDoviz
     {
-        TL=1,
-        USD=2,
-        EUR=3
+        TL = 1,
+        USD = 2,
+        EUR = 3
     }
-
 }

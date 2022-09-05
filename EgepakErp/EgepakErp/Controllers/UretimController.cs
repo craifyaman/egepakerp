@@ -17,6 +17,8 @@ namespace EgePakErp.Controllers
         {
             repo = new UretimEmirRepository();
         }
+
+        [Menu("Üretim", "flaticon-cogwheel-1 icon-xl", "Üretim", 1, 1)]
         public ActionResult Index()
         {
             var uretimEmir = repo.GetAll();

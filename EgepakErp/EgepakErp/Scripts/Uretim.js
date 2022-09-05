@@ -38,9 +38,11 @@
         }
 
         for (var i = 0; i < count; i++) {
-
             var start = UretimEmirleri[i].Baslangic;
             var end = UretimEmirleri[i].Bitis;
+            const content = `<a class="text-center text-dark uretimemir" event="uretimEmirDetay" UretimEmirId="` + UretimEmirleri[i].UretimEmirId + `">` + UretimEmirleri[i].KalipAd + `</a>`; 
+            const _content = document.createElement("div");
+            _content.innerHTML = content;
 
             items.add({
                 id: UretimEmirleri[i].UretimEmirId,
@@ -48,7 +50,8 @@
                 start: start,
                 end: end,
                 type: "range",
-                content: UretimEmirleri[i].KalipAd,
+                content: _content,
+                
             });
         }
 
@@ -82,18 +85,18 @@
             timeline.focus(vItems);
         };
         timeline.on("scroll", debounce(groupFocus, 200));
-                // Enabling the next line leads to a continuous since calling focus might scroll vertically even if it shouldn't
-                // this.timeline.on("scrollSide", debounce(groupFocus, 200))
+        // Enabling the next line leads to a continuous since calling focus might scroll vertically even if it shouldn't
+        // this.timeline.on("scrollSide", debounce(groupFocus, 200))
 
-                // Handle button click
-                //const button = document.getElementById('kt_docs_vistimeline_group_button');
-                //button.addEventListener('click', e => {
-                //    e.preventDefault();
+        // Handle button click
+        //const button = document.getElementById('kt_docs_vistimeline_group_button');
+        //button.addEventListener('click', e => {
+        //    e.preventDefault();
 
-                //    var a = timeline.getVisibleGroups();
-                //    document.getElementById("visibleGroupsContainer").innerHTML = "";
-                //    document.getElementById("visibleGroupsContainer").innerHTML += a;
-                //});
+        //    var a = timeline.getVisibleGroups();
+        //    document.getElementById("visibleGroupsContainer").innerHTML = "";
+        //    document.getElementById("visibleGroupsContainer").innerHTML += a;
+        //});
     }
 
     function GetUrunEmirleri() {
@@ -118,26 +121,25 @@
 
 
 
-    function UretimEmirForm() {
-        debugger;
-        Post("/UretimEmir/Form",
-            {},
-            function (response) {
-                console.log(response);
-                $("#UretimEmirDiv").html(response);
-            },
-            function (x, y, z) {
-                //Error
-                toastr.error("form yüklenemedi")
-            },
-            function () {
-                //BeforeSend
-            },
-            function () {
-            },
-            "html");
-    }
-    
+    //function UretimEmirForm() {
+    //    Post("/UretimEmir/Form",
+    //        {},
+    //        function (response) {
+    //            console.log(response);
+    //            $("#UretimEmirDiv").html(response);
+    //        },
+    //        function (x, y, z) {
+    //            //Error
+    //            toastr.error("form yüklenemedi")
+    //        },
+    //        function () {
+    //            //BeforeSend
+    //        },
+    //        function () {
+    //        },
+    //        "html");
+    //}
+
 
     var handleEvent = function () {
 
@@ -155,7 +157,7 @@
             },
             function () {
 
-               
+
             },
             "json");
 
@@ -185,10 +187,19 @@
             UretimEmir.Kaydet();
         });
 
-        $(document).ready(function () {
-            UretimEmirForm();
+        $(document).on("click", "[event='uretimEmirDetay']", function (event) {
+            event.preventDefault();
+            debugger;
+            var id = $(this).attr("uretimemirid");
+            UretimEmir.UretimEmirForm(id);            
         });
-        
+
+        $(document).on("click", "[event='UretimEmirEkle']", function (event) {
+            event.preventDefault();
+            debugger;
+            UretimEmir.UretimEmirForm(0);
+        });
+
     }
 
 

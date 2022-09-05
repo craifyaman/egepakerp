@@ -4,15 +4,16 @@ var KTBootstrapDatetimepicker = function () {
     // Private functions
     var baseDemos = function () {
         // Demo 1
-        $('.kt_datetimepicker_1').datetimepicker();
+        $('#kt_datetimepicker_1').datetimepicker();
 
         $('#time').datetimepicker({
             format: 'yyyy-mm-dd'
         });
+        
         //// Demo 2
-        //$('#kt_datetimepicker_2').datetimepicker({
-        //    locale: 'de'
-        //});
+        $('#kt_datetimepicker_2').datetimepicker({
+            locale: 'de'
+        });
 
         //// Demo 3
         //$('#kt_datetimepicker_3').datetimepicker({
@@ -20,12 +21,14 @@ var KTBootstrapDatetimepicker = function () {
         //});
 
         //// Demo 4
-        //$('#kt_datetimepicker_4').datetimepicker({
-        //    format: 'LT'
-        //});
+        $('#kt_datetimepicker_4').datetimepicker({
+            format: 'LT'
+        });
 
         //// Demo 5
-        //$('#kt_datetimepicker_5').datetimepicker();
+        $('#kt_datetimepicker_5').datetimepicker({
+            format:'yyyy-mm-dd'
+        });
 
         //// Demo 6
         //$('#kt_datetimepicker_6').datetimepicker({
@@ -79,12 +82,24 @@ var KTBootstrapDatetimepicker = function () {
         $('#kt_datetimepicker_13').datetimepicker();
     }
 
+
+    var uretimEmir = function () {
+
+        $('#Baslangic,#Bitis').datetimepicker({
+            format: 'DD-MM-YYYY HH:mm',
+            locale: 'tr',
+            maxDate: moment().add(1, 'year'),
+            minDate: moment().add(-1, 'year')
+        });
+    }
+
     return {
         // Public functions
         init: function() {
             baseDemos();
             modalDemos();
             validationDemos();
+            uretimEmir();
         }
     };
 }();

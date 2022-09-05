@@ -19,7 +19,7 @@ namespace EgePakErp.Controllers
             repo = new MakineRepository();
         }
 
-        [Menu("Makine", "flaticon2-menu-2 icon-xl", "Makine", 5, 1)]
+        [Menu("Makine", "flaticon2-menu-2 icon-xl", "Makine", 0, 1)]
         public ActionResult Index()
         {
             return View();

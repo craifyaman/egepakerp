@@ -147,6 +147,7 @@ namespace EgePakErp.Controllers
 
                 siparis.SiparisAdi = cari.MusteriNo + "-" + urunKod + "-" + sipNo;
                 siparis.KayitTarihi = DateTime.Now;
+                siparis.SiparisDurumId = (int)ESiparisType.SiparisAlindi;
                 siparisRepo.Insert(siparis);
 
                 response.Success = true;

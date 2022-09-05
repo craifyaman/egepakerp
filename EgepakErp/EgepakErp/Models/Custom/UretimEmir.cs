@@ -23,6 +23,8 @@ namespace EgePakErp.Models
         public string Durum { get; set; }
         public int UretilenAdet { get; set; }
         public int SiparisAdet { get; set; }
+        public int UretimEmirDurumId { get; set; }
+        public UretimEmirDurum UretimEmirDurum { get; set; }
 
         [NotMapped]
         public int KalanAdet

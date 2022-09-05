@@ -1,5 +1,5 @@
 ﻿var UretimEmir = function () {
-    
+
     function Kaydet() {
         debugger;
         var validation = ValidateForm.IsValid("UretimEmirForm", ValidationFields.UretimEmirFormFields())
@@ -8,7 +8,7 @@
                 var form = $("#UretimEmirForm").serializeJSON();
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
-                form.Include = include;               
+                form.Include = include;
                 console.log(form);
                 Post("/UretimEmir/kaydet",
                     { form: form },
@@ -32,7 +32,7 @@
                                 bootbox.hideAll();
                                 $('#kt_datatable').KTDatatable('reload');
                             }, 2000)
-                            
+
                         } else {
                             bootbox.hideAll();
                         }
@@ -44,60 +44,63 @@
             }
         });
     }
-    
+
+    function UretimEmirForm(id) {
+        Post("/UretimEmir/form",
+            { id: id },
+            function (response) {
+                bootbox.dialog({
+                    title: "UretimEmir form",
+                    message: Global.cardTemplate(response),
+                    size: 'large',
+                    buttons: {
+                        cancel: {
+                            label: "Kapat",
+                            className: 'btn-danger',
+                            callback: function () { }
+                        },
+                        ok: {
+                            label: "Kaydet",
+                            className: 'btn-info',
+                            callback: function () {
+                                Kaydet();
+                                return false;
+                            }
+                        }
+                    }
+                });
+
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+                Global.init();
+                KTBootstrapDatetimepicker.init();
+            },
+            "html");
+    }
 
     var handleEvent = function () {
 
         $(document).on("click", "[event='UretimEmirFormPopup']", function (e) {
             debugger;
             e.preventDefault();
-            var id = $(this).attr("id");            
-            Post("/UretimEmir/form",
-                { id: id },
-                function (response) {
-                    bootbox.dialog({
-                        title: "UretimEmir form",
-                        message: Global.cardTemplate(response),
-                        size: 'large',
-                        buttons: {
-                            cancel: {
-                                label: "Kapat",
-                                className: 'btn-danger',
-                                callback: function () { }
-                            },
-                            ok: {
-                                label: "Kaydet",
-                                className: 'btn-info',
-                                callback: function () {
-                                    Kaydet();
-                                    return false;
-                                }
-                            }
-                        }
-                    });
-                },
-                function (x, y, z) {
-                    //Error
-                },
-                function () {
-                    //BeforeSend
-                },
-                function () {
-                    Global.init();
-                    KTBootstrapTimepicker.init();
-                },
-                "html");
+            var id = $(this).attr("id");
+            UretimEmirForm(id);
         });
 
-        
+
         $(document).on("change", "#SiparisId", function (event) {
             event.preventDefault();
-            var siparisId = $(this).val();            
+            var siparisId = $(this).val();
             Post("/uretimemir/SiparisKalipBySiparis",
                 { siparisId: siparisId },
                 function (response) {
                     $("#SiparisKalipList").empty().html(response);
-                    $("#SiparisKalipList").show();
 
                 },
                 function (x, y, z) {
@@ -120,8 +123,10 @@
         },
         Kaydet: function () {
             Kaydet();
+        },
+        UretimEmirForm: function (id) {
+            UretimEmirForm(id);
         }
     };
 }();
 
- 

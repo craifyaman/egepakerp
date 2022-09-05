@@ -204,6 +204,9 @@
     <Compile Include="Controllers\HammaddeHareketController.cs" />
     <Compile Include="DtModels\CariMusteriNoDto.cs" />
     <Compile Include="DtModels\MaliyetDto.cs" />
+    <Compile Include="Enums\EAksiyonType.cs" />
+    <Compile Include="Enums\ESiparisType.cs" />
+    <Compile Include="Enums\EUretimEmirDurum.cs" />
     <Compile Include="Enums\EUretimSabitler.cs" />
     <Compile Include="Enums\EKoliTur.cs" />
     <Compile Include="Enums\EDoviz.cs" />
@@ -426,6 +429,18 @@
     <Compile Include="Migrations\202209030847287_update_baslangic_and_bitis_to_datetime.designer.cs">
       <DependentUpon>202209030847287_update_baslangic_and_bitis_to_datetime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209051524559_create_aksiyon_table.cs" />
+    <Compile Include="Migrations\202209051524559_create_aksiyon_table.designer.cs">
+      <DependentUpon>202209051524559_create_aksiyon_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209051541394_create_aksiyon.cs" />
+    <Compile Include="Migrations\202209051541394_create_aksiyon.designer.cs">
+      <DependentUpon>202209051541394_create_aksiyon.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\Aksiyon.cs" />
+    <Compile Include="Models\Custom\AksiyonType.cs" />
+    <Compile Include="Models\Custom\UretimEmirDurum.cs" />
+    <Compile Include="Models\Custom\SiparisDurum.cs" />
     <Compile Include="Models\Custom\UretimEmir.cs" />
     <Compile Include="Models\Custom\Yaldiz.cs" />
     <Compile Include="Models\Custom\DovizKur.cs" />
@@ -3258,6 +3273,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="nano.gitignore" />
     <None Include="packages.config" />
     <Content Include="Views\Cari\Detay.cshtml" />
     <Content Include="Views\Cari\FilterForm.cshtml" />
@@ -3871,6 +3887,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209030847287_update_baslangic_and_bitis_to_datetime.resx">
       <DependentUpon>202209030847287_update_baslangic_and_bitis_to_datetime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209051524559_create_aksiyon_table.resx">
+      <DependentUpon>202209051524559_create_aksiyon_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209051541394_create_aksiyon.resx">
+      <DependentUpon>202209051541394_create_aksiyon.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
