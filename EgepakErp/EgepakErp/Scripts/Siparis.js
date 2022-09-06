@@ -503,8 +503,8 @@
             this.Aciklama;//string
             this.TerminTarihi;//string
             this.SiparisAdet;//string
+            this.SiparisDurumId;//int
             this.Include;//string
-
         }
 
         var array = $(".birimFiyat").sort();
@@ -552,6 +552,7 @@
         siparisDto.Aciklama = $("#Aciklama").val();
         siparisDto.TerminTarihi = $("#TerminTarihi").val();
         siparisDto.SiparisAdet = $("#SiparisAdet").val();
+        siparisDto.SiparisDurumId = $("#SiparisDurumId").val();
 
         var keys = Object.keys(siparisDto);
         var include = keys.slice(1, keys.length);

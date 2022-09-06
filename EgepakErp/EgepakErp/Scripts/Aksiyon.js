@@ -1,16 +1,16 @@
-﻿var UretimEmir = function () {
+﻿var Aksiyon = function () {
 
-    function Kaydet() {
+    function Kaydet(box) {
         debugger;
-        var validation = ValidateForm.IsValid("UretimEmirForm", ValidationFields.UretimEmirFormFields())
+        var validation = ValidateForm.IsValid("AksiyonForm", ValidationFields.AksiyonFormFields())
         validation.validate().then(function (status) {
             if (status == 'Valid') {
-                var form = $("#UretimEmirForm").serializeJSON();
+                var form = $("#AksiyonForm").serializeJSON();
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;
                 console.log(form);
-                Post("/UretimEmir/kaydet",
+                Post("/Aksiyon/kaydet",
                     { form: form },
                     function (response) {
                         if (response.Success) {
@@ -27,14 +27,12 @@
                     },
                     function (r) {
                         //Complete
-                        if (r.responseJSON.Success) {
+                        if (r.responseJSON.Success) {                            
                             setTimeout(function () {
-                                bootbox.hideAll();
-                                $('#kt_datatable').KTDatatable('reload');
-                            }, 2000)
-
+                                box.modal('hide');
+                            }, 2000);
                         } else {
-                            bootbox.hideAll();
+                            //bootbox.modal('hide');
                         }
 
                     },
@@ -45,12 +43,12 @@
         });
     }
 
-    function UretimEmirForm(id) {
-        Post("/UretimEmir/form",
-            { id: id },
+    function AksiyonForm(id,uretimEmirId) {
+        Post("/Aksiyon/form",
+            { id: id, UretimEmirId: uretimEmirId },
             function (response) {
-                bootbox.dialog({
-                    title: "UretimEmir form",
+                var box = bootbox.dialog({
+                    title: "Aksiyon form",
                     message: Global.cardTemplate(response),
                     size: 'large',
                     buttons: {
@@ -63,7 +61,7 @@
                             label: "Kaydet",
                             className: 'btn-info',
                             callback: function () {
-                                Kaydet();
+                                Kaydet($(this));
                                 return false;
                             }
                         }
@@ -86,35 +84,13 @@
 
     var handleEvent = function () {
 
-        $(document).on("click", "[event='UretimEmirFormPopup']", function (e) {
-            debugger;
-            e.preventDefault();
-            var id = $(this).attr("id");
-            UretimEmirForm(id);
-        });
-
-
-        $(document).on("change", "#SiparisId", function (event) {
-            event.preventDefault();
-            var siparisId = $(this).val();
-            Post("/uretimemir/SiparisKalipBySiparis",
-                { siparisId: siparisId },
-                function (response) {
-                    $("#SiparisKalipList").empty().html(response);
-
-                },
-                function (x, y, z) {
-                    //Error
-                },
-                function () {
-                    //BeforeSend
-                },
-                function () {
-                },
-                "html");
-        });
-
-        
+        //$(document).on("click", "[event='AksiyonFormPopup']", function (e) {
+        //    debugger;
+        //    e.preventDefault();
+        //    var id = $(this).attr("id");
+        //    var uretimEmirId = $(this).attr("UretimEmirId");
+        //    AksiyonForm(id, uretimEmirId);
+        //});
 
     }
 
@@ -126,8 +102,8 @@
         Kaydet: function () {
             Kaydet();
         },
-        UretimEmirForm: function (id) {
-            UretimEmirForm(id);
+        AksiyonForm: function (id, uretimEmirId) {
+            AksiyonForm(id, uretimEmirId);
         }
     };
 }();

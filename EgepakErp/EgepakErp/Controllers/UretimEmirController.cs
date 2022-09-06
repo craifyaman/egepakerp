@@ -1,6 +1,7 @@
 ﻿using EgePakErp.Concrete;
 using EgePakErp.Controllers;
 using EgePakErp.Custom;
+using EgePakErp.Enums;
 using EgePakErp.Models;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -44,7 +45,7 @@ namespace EgePakErp.Controllers
             {
                 var searchQuery = Request.Form["query[searchQuery]"].ToString();
                 model = model.Where(i =>
-                i.Durum.ToLower().Contains(searchQuery.ToLower())
+                i.UretimEmirId.ToString() == searchQuery.ToLower()
                 );
             }
             try
@@ -65,7 +66,7 @@ namespace EgePakErp.Controllers
             dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
             //sayfala
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
-            
+
             var dto = model.AsEnumerable().Select(x => new
             {
                 UretimEmirId = x.UretimEmirId,
@@ -74,10 +75,11 @@ namespace EgePakErp.Controllers
                 MakineId = x.Makine.MakineId,
                 Baslangic = x.Baslangic.ToString("dd MMMM yyyy HH:mm"),
                 Bitis = x.Bitis.ToString("dd MMMM yyyy HH:mm"),
-                Durum = x.Durum,
+                Durum = x.UretimEmirDurum.Durum,
                 UretilenAdet = x.UretilenAdet,
                 SiparisAdet = x.SiparisAdet,
-                KalanAdet = x.KalanAdet
+                KalanAdet = x.KalanAdet,
+                ClassList = x.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi ? "bg-success" : "bg-warning",
 
             }).ToList();
 
@@ -151,7 +153,7 @@ namespace EgePakErp.Controllers
         }
 
 
-        public JsonResult GetAll()
+        public JsonResult GetAll(string type)
         {
             var response = new Response<dynamic>();
             try
@@ -160,22 +162,45 @@ namespace EgePakErp.Controllers
                 var kaliplar = kaliprepo.GetAll();
 
                 var model = repo.GetAll();
+                if (type == "enjeksiyon")
+                {
+                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.Uretimde);
+                }
 
+                else if (type == "sicakbaski")
+                {
+                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.SicakBaski);
+                }
+                else if (type == "sprey")
+                {
+                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.Sprey);
+                }
+                else if (type == "montaj")
+                {
+                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.Montaj);
+                }
+                else if (type == "metalize")
+                {
+                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.Metalize);
+                }
                 var dto = model.AsEnumerable().Select(x => new
                 {
                     UretimEmirId = x.UretimEmirId,
                     SiparisKalip = x.SiparisKalip.KalipKod,
-                    KalipAd = kaliplar.FirstOrDefault(c=>c.ParcaKodu == x.SiparisKalip.KalipKod).Adi,
+                    KalipAd = kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi +" - ("+ x.SiparisKalip.Siparis.SiparisAdi+")",
                     Makine = x.Makine.MakineAd,
                     MakineId = x.Makine.MakineId,
                     Baslangic = x.Baslangic,
                     Bitis = x.Bitis,
-                    Durum = x.Durum,
+                    Durum = x.UretimEmirDurum?.Durum,
                     UretilenAdet = x.UretilenAdet,
                     SiparisAdet = x.SiparisAdet,
-                    KalanAdet = x.KalanAdet
+                    KalanAdet = x.KalanAdet,
+                    SiparisId = x.SiparisKalip.SiparisId,
+                    SiparisAdi = x.SiparisKalip.Siparis?.SiparisAdi,
+                    ClassList = x.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi ? "bg-success" : "bg-warning",
 
-                }).ToList();
+                }).OrderBy(x=>x.UretimEmirId).ToList();
 
                 response.Success = true;
                 response.Description = "veriler alındı";

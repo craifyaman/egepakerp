@@ -176,6 +176,19 @@
                                                 @Html.TextBoxFor(x => x.SiparisAdet, new { @class = "form-control" })
                                             </div>
 
+                                            <div class="col-6">
+                                                <label>Durum:</label>
+                                                @{
+                                                    var durumList = BaseSiparisDurum().ToList();
+                                                    <select id="SiparisDurumId" name="SiparisDurumId" class="form-control">
+                                                        @foreach (var durum in durumList)
+                                                        {
+                                                            <option value="@durum.SiparisDurumId">@durum.Durum</option>
+                                                        }
+                                                    </select>
+                                                }
+                                            </div>
+
                                         </div>
                                     }
                                 </div>

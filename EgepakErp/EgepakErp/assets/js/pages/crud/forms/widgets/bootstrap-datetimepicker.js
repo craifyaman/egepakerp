@@ -91,6 +91,13 @@ var KTBootstrapDatetimepicker = function () {
             maxDate: moment().add(1, 'year'),
             minDate: moment().add(-1, 'year')
         });
+
+        $('#AksiyonBaslangic,#AksiyonBitis').datetimepicker({
+            format: 'DD-MM-YYYY HH:mm',
+            locale: 'tr',
+            maxDate: moment().add(1, 'year'),
+            minDate: moment().add(-1, 'year')
+        });
     }
 
     return {

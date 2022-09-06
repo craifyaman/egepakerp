@@ -13,10 +13,12 @@ namespace EgePakErp.Models
         public string Aciklama { get; set; }
         public int AksiyonTypeId { get; set; }
         public AksiyonType AksiyonType { get; set; }
-        public DateTime Baslangic { get; set; }
-        public DateTime Bitis { get; set; }
+        public DateTime AksiyonBaslangic { get; set; }
+        public DateTime AksiyonBitis { get; set; }
+        public int UretimEmirId { get; set; }
+        public UretimEmir UretimEmir { get; set; }
 
-
+        //public ICollection<UretimEmirAksiyonRel> UretimEmirAksiyonRel { get; set; }
         [NotMapped]
         public List<string> Include { get; set; }
 

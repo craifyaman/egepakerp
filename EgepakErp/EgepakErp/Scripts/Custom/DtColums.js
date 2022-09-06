@@ -708,6 +708,10 @@
                 title: 'Cari'
             },
             {
+                field: 'Durum',
+                title: 'Durum'
+            },            
+            {
                 field: 'Urun',
                 title: 'Urun'
             },
@@ -870,6 +874,47 @@
             }];
         return columns;
     }
+
+    function aksiyonColumns() {
+        var columns = [
+            {
+                field: 'Id',
+                title: '#',
+                width: 50
+            },
+            {
+                field: 'Aciklama',
+                title: 'Açıklama',
+            },
+            {
+                field: 'AksiyonType',
+                title: 'AksiyonType',
+            },
+            {
+                field: 'Baslangic',
+                title: 'Başlangıç',
+            },
+            {
+                field: 'Bitis',
+                title: 'Bitiş',
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'event="UretimEmirFormPopup" href = "#" id = "' + row.UretimEmirId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    return str;
+                },
+            }];
+        return columns;
+    }
+
+
     return {
         // public functions
         CariColumns: function () {
@@ -919,7 +964,11 @@
         },    
         MakineColumns: function () {
             return makineColumns();
-        },    
+        },   
+        AksiyonColumns: function () {
+            return aksiyonColumns();
+        },   
+        
         
         GetColoums: function (name) {
             if (name == "cari") {
@@ -963,6 +1012,9 @@
             }
             else if (name == "makine") {
                 return makineColumns();
+            }
+            else if (name == "aksiyon") {
+                return aksiyonColumns();
             }
             
 

@@ -172,6 +172,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Concrete\MakineRepository.cs" />
+    <Compile Include="Concrete\AksiyonRepository.cs" />
     <Compile Include="Concrete\UretimEmirRepository.cs" />
     <Compile Include="Concrete\YaldizRepository.cs" />
     <Compile Include="Concrete\HammaddeHareketRepository.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Concrete\UrunRepository.cs" />
     <Compile Include="Concrete\_GenericRepository.cs" />
     <Compile Include="Controllers\MakineController.cs" />
+    <Compile Include="Controllers\AksiyonController.cs" />
     <Compile Include="Controllers\UretimEmirController.cs" />
     <Compile Include="Controllers\UretimController.cs" />
     <Compile Include="Controllers\YaldizController.cs" />
@@ -437,8 +439,26 @@
     <Compile Include="Migrations\202209051541394_create_aksiyon.designer.cs">
       <DependentUpon>202209051541394_create_aksiyon.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209060708592_delete_durum_from_uretimemirü.cs" />
+    <Compile Include="Migrations\202209060708592_delete_durum_from_uretimemirü.designer.cs">
+      <DependentUpon>202209060708592_delete_durum_from_uretimemirü.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209060722036_create_UretimEmirAksiyonRel.cs" />
+    <Compile Include="Migrations\202209060722036_create_UretimEmirAksiyonRel.designer.cs">
+      <DependentUpon>202209060722036_create_UretimEmirAksiyonRel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209060843338_delete_uretimemirAksiyonRelTable.cs" />
+    <Compile Include="Migrations\202209060843338_delete_uretimemirAksiyonRelTable.designer.cs">
+      <DependentUpon>202209060843338_delete_uretimemirAksiyonRelTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209060922084_update_baslangic_to_AksiyonBaslangic_from_Aksiyon_table.cs" />
+    <Compile Include="Migrations\202209060922084_update_baslangic_to_AksiyonBaslangic_from_Aksiyon_table.designer.cs">
+      <DependentUpon>202209060922084_update_baslangic_to_AksiyonBaslangic_from_Aksiyon_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\UretimEmirAksiyonRel.cs" />
     <Compile Include="Models\Custom\Aksiyon.cs" />
     <Compile Include="Models\Custom\AksiyonType.cs" />
+    <Compile Include="Models\Custom\Makine.cs" />
     <Compile Include="Models\Custom\UretimEmirDurum.cs" />
     <Compile Include="Models\Custom\SiparisDurum.cs" />
     <Compile Include="Models\Custom\UretimEmir.cs" />
@@ -2757,6 +2777,7 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
     <Content Include="Scripts\Custom\DataPickerTr.js" />
+    <Content Include="Scripts\Aksiyon.js" />
     <Content Include="Scripts\UretimEmir.js" />
     <Content Include="Scripts\Makine.js" />
     <Content Include="Scripts\Uretim.js" />
@@ -3724,6 +3745,9 @@
     <Content Include="Views\Makine\Form.cshtml" />
     <Content Include="Views\Makine\Index.cshtml" />
     <Content Include="Views\UretimEmir\SiparisKalipBySiparis.cshtml" />
+    <Content Include="Views\Aksiyon\FilterForm.cshtml" />
+    <Content Include="Views\Aksiyon\Form.cshtml" />
+    <Content Include="Views\Aksiyon\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -3893,6 +3917,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209051541394_create_aksiyon.resx">
       <DependentUpon>202209051541394_create_aksiyon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209060708592_delete_durum_from_uretimemirü.resx">
+      <DependentUpon>202209060708592_delete_durum_from_uretimemirü.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209060722036_create_UretimEmirAksiyonRel.resx">
+      <DependentUpon>202209060722036_create_UretimEmirAksiyonRel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209060843338_delete_uretimemirAksiyonRelTable.resx">
+      <DependentUpon>202209060843338_delete_uretimemirAksiyonRelTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209060922084_update_baslangic_to_AksiyonBaslangic_from_Aksiyon_table.resx">
+      <DependentUpon>202209060922084_update_baslangic_to_AksiyonBaslangic_from_Aksiyon_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

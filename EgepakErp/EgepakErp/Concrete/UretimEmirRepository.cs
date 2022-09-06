@@ -13,6 +13,9 @@ namespace EgePakErp.Concrete
             return dbset
                 .Include(x=>x.Makine)
                 .Include(x => x.SiparisKalip)
+                .Include(x => x.SiparisKalip.Siparis)
+                .Include(x => x.SiparisKalip.Yaldiz)
+                .Include(x => x.UretimEmirDurum)
                .FirstOrDefault(x => x.UretimEmirId== id);
         }
         public override UretimEmir Get(Expression<Func<UretimEmir, bool>> filter)
@@ -20,6 +23,9 @@ namespace EgePakErp.Concrete
             return dbset
                 .Include(x=>x.Makine)
                 .Include(x => x.SiparisKalip)
+                .Include(x => x.UretimEmirDurum)
+                .Include(x => x.SiparisKalip.Siparis)
+                .Include(x => x.SiparisKalip.Yaldiz)
                .FirstOrDefault(filter);
         }
         public override IQueryable<UretimEmir> GetAll()
@@ -27,6 +33,9 @@ namespace EgePakErp.Concrete
             return dbset
                 .Include(x => x.Makine)
                 .Include(x => x.SiparisKalip)
+                .Include(x => x.UretimEmirDurum)
+                .Include(x => x.SiparisKalip.Siparis)
+                .Include(x => x.SiparisKalip.Yaldiz)
                .AsQueryable();
         }
 
@@ -35,6 +44,9 @@ namespace EgePakErp.Concrete
             return dbset
                 .Include(x => x.Makine)
                 .Include(x => x.SiparisKalip)
+                .Include(x => x.UretimEmirDurum)
+                .Include(x => x.SiparisKalip.Siparis)
+                .Include(x => x.SiparisKalip.Yaldiz)
                 .Where(filter)
                .AsQueryable();
         }

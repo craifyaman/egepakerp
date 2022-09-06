@@ -20,11 +20,15 @@ namespace EgePakErp.Models
         public DateTime Baslangic { get; set; }
 
         public DateTime Bitis { get; set; }
-        public string Durum { get; set; }
+        //public string Durum { get; set; }
         public int UretilenAdet { get; set; }
         public int SiparisAdet { get; set; }
         public int UretimEmirDurumId { get; set; }
         public UretimEmirDurum UretimEmirDurum { get; set; }
+
+        //public ICollection<UretimEmirAksiyonRel> UretimEmirAksiyonRel { get; set; }
+
+        public ICollection<Aksiyon> Aksiyon { get; set; }
 
         [NotMapped]
         public int KalanAdet
@@ -38,20 +42,6 @@ namespace EgePakErp.Models
                 return -1;
             }
         }
-
-        [NotMapped]
-        public List<string> Include { get; set; }
-
-    }
-
-
-    [Table("Makine")]
-    public partial class Makine
-    {
-        [Key]
-        public int MakineId { get; set; }
-        public string MakineAd { get; set; }
-        public ICollection<UretimEmir> UretimEmir { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }

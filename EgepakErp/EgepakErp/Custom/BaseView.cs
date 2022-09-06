@@ -432,9 +432,21 @@ namespace EgePakErp.Custom
                 .AsQueryable();
             return list;
         }
+        public IQueryable<SiparisDurum> BaseSiparisDurum()
+        {
+            var list = db.SiparisDurum
+                .AsQueryable();
+            return list;
+        }
         public IQueryable<Makine> BaseMakine()
         {
             var list = db.Makine
+                .AsQueryable();
+            return list;
+        }
+        public IQueryable<UretimEmirDurum> BaseUretimEmirDurum()
+        {
+            var list = db.UretimEmirDurum
                 .AsQueryable();
             return list;
         }
@@ -477,12 +489,24 @@ namespace EgePakErp.Custom
             var liste = db.Kalip.AsQueryable();
             return liste;
         }
+        public IQueryable<Aksiyon> BaseAksiyon()
+        {
+            var liste = db.Aksiyon
+                .Include(x=>x.AksiyonType)
+                .AsQueryable();
+            return liste;
+        }
+        public IQueryable<AksiyonType> BaseAksiyonType()
+        {
+            var liste = db.AksiyonType.AsQueryable();
+            return liste;
+        }
         //public List<EvMontaj> BaseEvMontaj()
         //{
         //    var liste = db.EvMontaj.ToList();
         //    return liste;
         //}
-        
+
         public List<BaseMenu> baseMenu(string pre = "Menu", string nameSpace = "EgePakErp.Controllers")
         {
             Assembly asm = Assembly.GetExecutingAssembly();

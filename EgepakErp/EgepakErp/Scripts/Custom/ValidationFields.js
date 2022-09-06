@@ -325,7 +325,7 @@
 
     function uretimEmirFormFields() {
         var fields = {
-            Durum: {
+            UretimEmirDurumId: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
@@ -361,6 +361,33 @@
         return fields;
     }
 
+    function aksiyonFormFields() {
+
+        var fields = {
+            Aciklama: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            AksiyonTypeId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Baslangic: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Bitis: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+
+        };
+        return fields;
+    }
 
     function makineFormFields() {
         var fields = {
@@ -418,7 +445,11 @@
         },
         MakineFormFields: function () {
             return makineFormFields();
+        },
+        AksiyonFormFields: function () {
+            return aksiyonFormFields();
         }
+        
         
     };
 }();

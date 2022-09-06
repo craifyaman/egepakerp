@@ -7,12 +7,9 @@
 @section styles{
     <link href="~/assets/plugins/custom/vis-timeline/vis-timeline.bundle.css" rel="stylesheet" />
 }
-
-
 <!--begin::Subheader-->
 <!--begin::Subheader-->
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <!--begin::Info-->
         <div class="d-flex align-items-center flex-wrap mr-1">
@@ -35,10 +32,10 @@
             <!--end::Page Heading-->
         </div>
         <!--end::Info-->
-
     </div>
 </div>
 <!--end::Subheader-->
+
 <!--begin::Entry-->
 <div class="d-flex flex-column-fluid">
     <!--begin::Container-->
@@ -56,31 +53,6 @@
                             <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
                         </h3>
                         <div class="card-toolbar">
-                        </div>
-                    </div>
-                    <!--end::Header-->
-                    <!--begin::Body-->
-                    <div class="card-body">
-                        <div id="kt_docs_vistimeline_group"></div>
-                    </div>
-                    <!--end::Body-->
-                </div>
-                <!--end::Card-->
-            </div>
-        </div>
-        <!--end::Row-->
-
-        <div class="row mt-2">
-            <div class="flex-row-fluid ml-lg-8">
-                <!--begin::Card-->
-                <div class="card card-custom">
-                    <!--begin::Header-->
-                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
-                        <h3 class="card-title align-items-start flex-column">
-                            <span class="card-label font-weight-bolder text-dark">Üretim Emri Ekle</span>
-                            <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
-                        </h3>
-                        <div class="card-toolbar">
                             <div class="dropdown dropdown-inline">
                                 <!--begin::Trigger Modal-->
                                 <a href="#" class="btn btn-success font-weight-bolder font-size-sm "
@@ -93,28 +65,98 @@
                     <!--end::Header-->
                     <!--begin::Body-->
                     <div class="card-body">
-                        <!--begin: Search Form-->
-                        <!--begin::Search Form-->
-                        <div class="mb-10">
-                        </div>
-                        <!--end::Search Form-->
-                        <!--end: Search Form-->
-                        <!--begin: Datatable-->
+                        <div id="kt_docs_vistimeline_group"></div>
+                    </div>
 
-                        <div class="" id="UretimEmirDiv">
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+                <!--begin::Card-->
+                <div class="card card-custom mt-2">
+                    <!--begin::Header-->
+                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label font-weight-bolder text-dark">Sıcak Baskı</span>
+                            <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
+                        </h3>
+                        <div class="card-toolbar">
+
                         </div>
-                        <!--end: Datatable-->
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <div id="kt_docs_vistimeline_group_SicakBaski"></div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+                <!--begin::Card-->
+                <div class="card card-custom mt-2">
+                    <!--begin::Header-->
+                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label font-weight-bolder text-dark">Sprey Boya</span>
+                            <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
+                        </h3>
+                        <div class="card-toolbar">
+
+                        </div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <div id="kt_docs_vistimeline_group_Sprey"></div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+                <!--begin::Card-->
+                <div class="card card-custom mt-2">
+                    <!--begin::Header-->
+                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label font-weight-bolder text-dark">Montaj</span>
+                            <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
+                        </h3>
+                        <div class="card-toolbar">
+
+                        </div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <div id="kt_docs_vistimeline_group_Montaj"></div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+                <!--begin::Card-->
+                <div class="card card-custom mt-2">
+                    <!--begin::Header-->
+                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label font-weight-bolder text-dark">Metalize</span>
+                            <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
+                        </h3>
+                        <div class="card-toolbar">
+
+                        </div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <div id="kt_docs_vistimeline_group_Metalize"></div>
                     </div>
                     <!--end::Body-->
                 </div>
                 <!--end::Card-->
             </div>
         </div>
+        <!--end::Row-->
         <!--end::Dashboard-->
     </div>
     <!--end::Container-->
-
-
 </div>
 <!--end::Entry-->
 
@@ -122,8 +164,9 @@
     <script src="~/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js.js"></script>
     <script src="~/Scripts/UretimEmir.js?v=@ScriptVersion"></script>
     <script src="~/Scripts/Uretim.js?v=@ScriptVersion"></script>
-
+    <script src="~/Scripts/Aksiyon.js?v=@ScriptVersion"></script>
     <script>
+
         $(document).ready(function () {
             Uretim.EventInit();
         });

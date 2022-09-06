@@ -90,7 +90,8 @@ namespace EgePakErp.Controllers
                 SiparisAdi = i.SiparisAdi,
                 Cari = i.Cari.Unvan,
                 Urun = i.Urun.UrunCinsi.Kisaltmasi + i.Urun.UrunNo,
-                UrunId = i.UrunId
+                UrunId = i.UrunId,
+                Durum = i.SiparisDurum.Durum,
             }).ToList<dynamic>();
 
 
@@ -237,6 +238,7 @@ namespace EgePakErp.Controllers
             {
                 var _siparis = siparisRepo.Get(siparis.SiparisId);
                 _siparis.Aciklama = siparis.Aciklama;
+                _siparis.SiparisDurumId = siparis.SiparisDurumId;
                 siparisRepo.Update(_siparis);
 
                 response.Success = true;

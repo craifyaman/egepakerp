@@ -15,6 +15,7 @@ namespace EgePakErp.Concrete
                .Include(x=>x.Urun)
                .Include(x=>x.SiparisKalip)
                .Include(x => x.Urun.UrunCinsi)
+               .Include(x => x.SiparisDurum)
                .FirstOrDefault(x=>x.SiparisId == id);
         }
         public override Siparis Get(Expression<Func<Siparis, bool>> filter)
@@ -24,6 +25,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.Urun)
                .Include(x => x.SiparisKalip)
                .Include(x => x.Urun.UrunCinsi)
+               .Include(x => x.SiparisDurum)
                .FirstOrDefault(filter);
         }
         public override IQueryable<Siparis> GetAll()
@@ -33,6 +35,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.Urun)
                .Include(x => x.SiparisKalip)
                .Include(x => x.Urun.UrunCinsi)
+               .Include(x => x.SiparisDurum)
                .AsQueryable();
         }
 
@@ -43,6 +46,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.Urun)
                .Include(x => x.SiparisKalip)
                .Include(x => x.Urun.UrunCinsi)
+               .Include(x => x.SiparisDurum)
                .Where(filter)
                .AsQueryable();
         }
