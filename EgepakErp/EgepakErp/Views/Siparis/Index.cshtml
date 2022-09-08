@@ -1,15 +1,13 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Siparişler";
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
 
+}
 
 
 <!--begin::Subheader-->
 <!--begin::Subheader-->
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <!--begin::Info-->
         <div class="d-flex align-items-center flex-wrap mr-1">
@@ -32,7 +30,6 @@
             <!--end::Page Heading-->
         </div>
         <!--end::Info-->
-
     </div>
 </div>
 <!--end::Subheader-->
@@ -54,7 +51,7 @@
                         </h3>
                         <div class="card-toolbar">
                             <div class="dropdown dropdown-inline">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -70,7 +67,6 @@
                         <!--end: Search Form-->
                         <!--begin: Datatable-->
                         <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable">
-
                         </div>
                         <!--end: Datatable-->
                     </div>
@@ -87,19 +83,14 @@
 
 </div>
 <!--end::Entry-->
-
 @section Scripts{
+
     <script src="~/Scripts/Siparis.js?v=@ScriptVersion"></script>
     <script>
         $(document).ready(function () {
             Dt.DtInit("kt_datatable", "/Siparis/Liste", DtColums.SiparisColumns(), {}, {});
             Siparis.EventInit();
-        })
-
+        });
     </script>
 
 }
-
-
-
-

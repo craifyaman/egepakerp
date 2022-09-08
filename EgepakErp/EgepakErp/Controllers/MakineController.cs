@@ -19,13 +19,13 @@ namespace EgePakErp.Controllers
             repo = new MakineRepository();
         }
 
-        [Menu("Makine", "flaticon2-menu-2 icon-xl", "Makine", 0, 1)]
+        [Menu("Makine", "flaticon2-graph-2 icon-xl", "Üretim", 0, 5)]
         public ActionResult Index()
         {
             return View();
         }
 
-        [Yetki("Makine Listesi", "Makine")]
+        [Yetki("Makine Listesi", "Üretim")]
         public JsonResult Liste()
         {
             //kabasını aldır
@@ -90,7 +90,7 @@ namespace EgePakErp.Controllers
             return PartialView();
         }
 
-        [Yetki("Makine Kaydet", "Makine")]
+        [Yetki("Makine Kaydet", "Üretim")]
         public JsonResult Kaydet(Makine form)
         {
             var response = new Response();
@@ -130,7 +130,6 @@ namespace EgePakErp.Controllers
                 response.Success = false;
                 response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
             }
-
             return Json(response);
 
         }

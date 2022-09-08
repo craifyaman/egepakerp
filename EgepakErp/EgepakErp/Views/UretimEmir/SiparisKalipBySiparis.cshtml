@@ -14,7 +14,9 @@
     @foreach (var item in liste)
     {
         var kalip = kalipListe.FirstOrDefault(x => x.ParcaKodu == item.Kod);
-        
-        <option value="@(item.SiparisKalipId)">@(kalip?.Adi)</option>
+        if (kalip != null)
+        {
+            <option value="@(item.SiparisKalipId)">@(kalip.Adi)</option>
+        }
     }
 </select>

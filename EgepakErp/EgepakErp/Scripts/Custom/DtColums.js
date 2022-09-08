@@ -710,7 +710,7 @@
             {
                 field: 'Durum',
                 title: 'Durum'
-            },            
+            },
             {
                 field: 'Urun',
                 title: 'Urun'
@@ -727,11 +727,11 @@
                 overflow: 'visible',
                 autoHide: false,
                 template: function (row) {
-
+                    var _title = row.DurumId == 2 ? "Tamamlandı olarak işaretle" : "Üretime Aç";
+                    var cls = row.DurumId == 2 ? "btn-success" : "btn-danger";
                     var str = '<a class="btn btn-icon btn-info mr-1" href="siparis/siparisformu?siparisId=' + row.SiparisId + '&urunId=' + row.UrunId + '" target="_blank" title="Düzenle" data-toggle="tooltip" data-placement="top"><i class="flaticon-edit" ></i> </a>'
-                    //str += ' <a class="btn btn-icon btn-primary mr-1" href = "/kisi/detay/' + row.KisiId + '" title = "Kişi Detay" data - toggle="tooltip" data - placement="top" > <i class="flaticon-search" ></i></a>'
+                    str += ' <a class="btn btn-icon  mr-1 ' + cls + '" href = "" title = "' + _title + '" event="UretimeAcKapat" SiparisId="' + row.SiparisId +'" > <i class="flaticon-cogwheel-1" ></i></a>'
                     //str += '<a class="btn btn-icon mr-1 btn-' + cls + '" event="kisiDurum" href="#" id="' + row.KisiId + '" title="' + durum + ' Yap" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
-
                     return str;
                 },
             }
@@ -958,18 +958,18 @@
         },
         YaldizColumns: function () {
             return yaldizColumns();
-        }, 
+        },
         UretimEmirColumns: function () {
             return uretimEmirColumns();
-        },    
+        },
         MakineColumns: function () {
             return makineColumns();
-        },   
+        },
         AksiyonColumns: function () {
             return aksiyonColumns();
-        },   
-        
-        
+        },
+
+
         GetColoums: function (name) {
             if (name == "cari") {
                 return cariColumns();
@@ -1016,7 +1016,7 @@
             else if (name == "aksiyon") {
                 return aksiyonColumns();
             }
-            
+
 
         }
     };

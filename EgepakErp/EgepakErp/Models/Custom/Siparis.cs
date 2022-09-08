@@ -34,6 +34,7 @@ namespace EgePakErp.Models
         public string Aciklama { get; set; }
 
         public ICollection<SiparisKalip> SiparisKalip { get; set; }
+        public ICollection<StokHareket> StokHareket { get; set; }
 
 
         [NotMapped]

@@ -23,6 +23,7 @@ namespace EgePakErp.Models
         public int SiparisId { get; set; }
         public Siparis Siparis { get; set; }
         public ICollection<UretimEmir> UretimEmir { get; set; }
+        public ICollection<StokHareket> StokHareket { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }

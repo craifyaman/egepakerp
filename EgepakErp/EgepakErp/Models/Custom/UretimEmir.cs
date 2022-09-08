@@ -20,13 +20,15 @@ namespace EgePakErp.Models
         public DateTime Baslangic { get; set; }
 
         public DateTime Bitis { get; set; }
-        //public string Durum { get; set; }
         public int UretilenAdet { get; set; }
         public int SiparisAdet { get; set; }
         public int UretimEmirDurumId { get; set; }
         public UretimEmirDurum UretimEmirDurum { get; set; }
-
-        //public ICollection<UretimEmirAksiyonRel> UretimEmirAksiyonRel { get; set; }
+        public bool isUretimBitti { get; set; }
+        public bool isSicakBaskiBitti { get; set; }
+        public bool? isSpreyBoyaBitti { get; set; }
+        public bool isMetalizeBitti { get; set; }
+        public bool? isMontajBitti { get; set; }
 
         public ICollection<Aksiyon> Aksiyon { get; set; }
 

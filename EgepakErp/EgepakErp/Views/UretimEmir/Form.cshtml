@@ -1,8 +1,5 @@
 ﻿@using EgePakErp.Enums;
-
-
 @model UretimEmir
-
 <!--begin::Form-->
 <form id="UretimEmirForm">
     @Html.HiddenFor(x => x.UretimEmirId)
@@ -49,7 +46,11 @@
                     {
                         var kalip = kalipListe.FirstOrDefault(x => x.ParcaKodu == item.Kod);
                         var attr = item.SiparisKalipId == Model?.SiparisKalipId ? "selected" : "";
-                        <option @attr value="@(item.SiparisKalipId)">@(kalip?.Adi)</option>
+                        if (kalip != null)
+                        {
+                            <option @attr value="@(item.SiparisKalipId)">@(kalip.Adi)</option>
+                        }
+
                     }
                 </select>
             }
@@ -123,6 +124,75 @@
         </div>
     </div>
 
+
+    @if (Model != null)
+    {
+        <div class="form-group row">
+            <label class="col-2 col-form-label">Enjeksiyon Bitti</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        @{
+                            var uretimChc = Model.isUretimBitti == true ? "checked" : "";
+                        }
+                        <input type="checkbox" @uretimChc name="isUretimBitti:CustomSwitch" id="isUretimBitti" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+            <label class="col-2 col-form-label">Sıcak Baskı</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        @{
+                            var sicakbaskiChc = Model.isSicakBaskiBitti == true ? "checked" : "";
+                        }
+                        <input type="checkbox" @sicakbaskiChc name="isSicakBaskiBitti:CustomSwitch" id="isSicakBaskiBitti" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+
+            <label class="col-2 col-form-label">Spery Bitti</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        @{
+                            var speryChc = Model.isSpreyBoyaBitti == true ? "checked" : "";
+                        }
+                        <input type="checkbox" @speryChc name="isSpreyBoyaBitti:CustomSwitch" id="isSpreyBoyaBitti" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+
+            <label class="col-2 col-form-label">Metalize Bitti</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        @{
+                            var metalizeChc = Model.isMetalizeBitti == true ? "checked" : "";
+                        }
+                        <input type="checkbox" @metalizeChc name="isMetalizeBitti:CustomSwitch" id="isMetalizeBitti" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+            <label class="col-2 col-form-label">Montaj Bitti</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        @{
+                            var montajChc = Model.isMontajBitti == true ? "checked" : "";
+                        }
+                        <input type="checkbox" @montajChc name="isMontajBitti:CustomSwitch" id="isMontajBitti" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+        </div>
+    }
+
     <div class="form-group row">
         <div class="col-lg-12">
             <label>Durum:</label>
@@ -142,10 +212,22 @@
 
     @if (Model != null)
     {
-        <div>
-            yol  @Model.SiparisKalip.YaldizId
-        </div>
+        var yaldiz = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.YaldizId != null);
+        var boyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.BoyaKodId != null);
+        if (yaldiz != null)
+        {
+            <div>
+                @yaldiz.Yaldiz.PdfYol
+            </div>
+        }
+        if (boyaKod != null)
+        {
+            <div>
+                @boyaKod.BoyaKod.Kod
+            </div>
+        }
     }
+
     @if (Model != null)
     {
         <div class="form-group row">
@@ -153,7 +235,7 @@
                 <div>Önceki Süreçler:</div>
             </div>
             <div class="col-lg-6">
-                <a href="#" class="btn btn-primary" event="AksiyonEkle" UretimEmirId="@Model.UretimEmirId">Aksiyon Ekle</a>
+                <a href="#" class="btn btn-primary" event="AksiyonEkle" UretimEmirId="@Model.UretimEmirId">Sonraki aşamaya geç</a>
             </div>
         </div>
         <div class="col-lg-12">

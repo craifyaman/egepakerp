@@ -10,15 +10,18 @@ using System.Web.Mvc;
 
 namespace EgePakErp.Controllers
 {
-    public class AksiyonController : BaseController
+    public class StokHareketController : BaseController
     {
-        public AksiyonRepository repo { get; set; }
-        public AksiyonController()
+        public StokHareketRepository repo { get; set; }
+        public string dtMetaField { get; set; }
+
+        public StokHareketController()
         {
-            repo = new AksiyonRepository();
+            repo = new StokHareketRepository();
+            dtMetaField = "StokHareketId";
         }
 
-        [Menu("Aksiyonlar", "flaticon2-menu-2 icon-xl", "Üretim", 0, 5)]
+        [Menu("Stok Hareket", "flaticon2-menu-2 icon-xl", "Depo", 0, 5)]
         public ActionResult Index()
         {
             return View();
@@ -30,7 +33,7 @@ namespace EgePakErp.Controllers
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
 
-            dtMeta.field = Request.Form["sort[field]"] == null ? "AksiyonId" : Request.Form["sort[field]"];
+            dtMeta.field = Request.Form["sort[field]"] == null ? dtMetaField : Request.Form["sort[field]"];
             dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
 
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
@@ -45,8 +48,8 @@ namespace EgePakErp.Controllers
 
             catch (Exception)
             {
-                model = model.OrderBy("AksiyonId Desc");
-                dtMeta.field = "AksiyonId";
+                model = model.OrderBy(dtMetaField+" Desc");
+                dtMeta.field = dtMetaField;
                 dtMeta.sort = "Desc";
             }
 
@@ -59,11 +62,14 @@ namespace EgePakErp.Controllers
 
             var dto = model.AsEnumerable().Select(x => new
             {
-                Id = x.AksiyonId,
-                Aciklama = x.Aciklama,
-                AksiyonType = x.AksiyonType.Aciklama,
-                Baslangic = x.AksiyonBaslangic.ToString("dd-MM-yyyy HH:mm"),
-                Bitis = x.AksiyonBitis.ToString("dd-MM-yyyy HH:mm"),
+                Id = x.StokHareketId,
+                Type = x.StokHareketType.Type,
+                SiparisId = x.SiparisId,
+                SiparisAdi = x.Siparis.SiparisAdi,
+                SiparisKalipId = x.SiparisKalipId,
+                Adet = x.Adet,
+                MontajliMi = x.MontajliMi,
+                MontajKod = x.MontajKod,
             }).ToList();
 
 
@@ -76,7 +82,6 @@ namespace EgePakErp.Controllers
         {
             id = id == null ? 0 : id.Value;
             var model = repo.Get((int)id);
-            ViewBag.UretimEmirId = UretimEmirId;
 
             return PartialView(model);
         }
@@ -85,13 +90,13 @@ namespace EgePakErp.Controllers
             return PartialView();
         }
 
-        public JsonResult Kaydet(Aksiyon form)
+        public JsonResult Kaydet(StokHareket form)
         {
             var response = new Response();
 
             try
             {
-                if (form.AksiyonId == 0)
+                if (form.StokHareketId == 0)
                 {
                     repo.Insert(form);
                     response.Success = true;
@@ -99,7 +104,7 @@ namespace EgePakErp.Controllers
                 }
                 else
                 {
-                    var entity = repo.Get(form.AksiyonId);
+                    var entity = repo.Get(form.StokHareketId);
                     if (entity != null)
                     {
                         //alanları güncelle

@@ -1,0 +1,182 @@
+﻿@model List<Siparis>
+@{
+    ViewBag.Title = "UretimdekiSiparisler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string CheckedHtml = "<a href=\"#\" class=\"btn btn-icon btn-light-success pulse pulse-success mr-5\">\r\n    <i class=\"flaticon2-protected\"></i>\r\n </a>";
+    string UncheckedHtml = "<a href=\"#\" class=\"btn btn-icon btn-light-danger pulse pulse-danger mr-5\">\r\n    <i class=\"flaticon2-information\"></i>\r\n </a>";
+}
+
+
+<!--begin::Subheader-->
+<!--begin::Subheader-->
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">Üretimdeki Sipariş Listesi</h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="/" class="text-muted">Anasayfa</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="" class="text-muted">Üretimdeki Sipariş Listesi</a>
+                    </li>
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+
+    </div>
+</div>
+<!--end::Subheader-->
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!--begin::Dashboard-->
+        <!--begin::Row-->
+        <div class="row">
+            <div class="flex-row-fluid ml-lg-8">
+                <!--begin::Card-->
+                <div class="card card-custom">
+                    <!--begin::Header-->
+                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label font-weight-bolder text-dark">Üretimdeki Sipariş Listesi</span>
+                            <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
+                        </h3>
+                        <div class="card-toolbar">
+                            <div class="dropdown dropdown-inline">
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <!--begin: Search Form-->
+                        <!--begin::Search Form-->
+                        <div class="mb-10">
+                            @*@Html.Partial("FilterForm")*@
+                        </div>
+                        <!--end::Search Form-->
+                        <!--end: Search Form-->
+                        <!--begin: Datatable-->
+                        <a class="btn btn-primary mb-1" title="Seçilen kalıplar montajlı bir şekilde depoya eklenir" event="MontajliKalipDepoEkleme">Seçilenleri Depoya Aktar</a>
+                        <div class="table-responsive table-hover table-bordered">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>İşlem</th>
+                                        <th>Sipariş</th>
+                                        <th>Cari</th>
+                                        <th>Kalıp</th>
+                                        <th>Kayıt Tarihi</th>
+                                        <th>Termin Tarihi</th>
+                                        <th>Sipariş Adet</th>
+                                        <th>Enjeksiyon Durumu</th>
+                                        <th>Sıcak Baskı Durumu</th>
+                                        <th>Spery Boya Durumu</th>
+                                        <th>Metalize Kaplama Durumu</th>
+                                        <th>Montaj Durumu</th>
+                                        <th>İşlem</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        var siparisKaliplar = item.SiparisKalip.GroupBy(x => x.KalipKod).ToList();
+                                        var count = 0;
+                                        foreach (var kalip in siparisKaliplar)
+                                        {
+                                            var _kalip = KalipFindByKalipKod(kalip.FirstOrDefault().KalipKod);
+                                            if (_kalip != null)
+                                            {
+                                                var tdCls = count == 0 ? "bg-secondary" : "";
+                                                <tr class="@tdCls">
+                                                    <td>
+                                                        <label class="checkbox">
+                                                            <input type="checkbox" class="MontajliKalip" SiparisKalipId="@kalip.FirstOrDefault(x=>x.MaliyetType.ToLower()=="hammadde").SiparisKalipId" />
+                                                            <span></span>
+                                                        </label>
+
+                                                    </td>
+                                                    <td style="width:150px;">@item.SiparisAdi</td>
+                                                    <td>@item.Cari.Unvan</td>
+                                                    <td>@(_kalip?.Adi)</td>
+                                                    <td>@item.KayitTarihi.ToString("dd MMMM yyyy")</td>
+                                                    <td>@item.TerminTarihi.ToString("dd MMMM yyyy")</td>
+                                                    <td>@item.SiparisAdet</td>
+                                                    <td class="text-center">
+                                                        @Html.Raw(kalip?.FirstOrDefault()?.UretimEmir?.FirstOrDefault()?.isUretimBitti == true ? CheckedHtml : UncheckedHtml)
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSicakBaskiBitti == true ? CheckedHtml : UncheckedHtml)
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSpreyBoyaBitti != null)
+                                                        {
+                                                            @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSpreyBoyaBitti == true ? CheckedHtml : UncheckedHtml)
+                                                        }
+
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMetalizeBitti == true ? CheckedHtml : UncheckedHtml)
+                                                    </td>
+                                                    <td class="text-center">
+                                                        @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMontajBitti != null)
+                                                        {
+                                                            @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMontajBitti == true ? CheckedHtml : UncheckedHtml)
+                                                        }
+
+                                                    </td>
+
+                                                    <td class="text-center">
+                                                        <a href="#" class="btn btn-light btn-text-success btn-hover-text-success" title="Tekli olarak depoya ekle">depola</a>
+                                                    </td>
+
+
+                                                </tr>
+                                                count++;
+                                            }
+
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--end: Datatable-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+            </div>
+        </div>
+        <!--end::Row-->
+        <!--end::Dashboard-->
+    </div>
+    <!--end::Container-->
+
+
+</div>
+<!--end::Entry-->
+
+@section scripts{
+    <script src="~/Scripts/Uretim.js?v=@ScriptVersion"></script>
+    <script>
+
+        $(document).ready(function () {
+            Uretim.EventInit2();
+        });
+
+    </script>
+}

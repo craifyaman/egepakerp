@@ -174,6 +174,7 @@
     <Compile Include="Concrete\MakineRepository.cs" />
     <Compile Include="Concrete\AksiyonRepository.cs" />
     <Compile Include="Concrete\UretimEmirRepository.cs" />
+    <Compile Include="Concrete\StokHareketRepository.cs" />
     <Compile Include="Concrete\YaldizRepository.cs" />
     <Compile Include="Concrete\HammaddeHareketRepository.cs" />
     <Compile Include="Concrete\HammaddeCinsiRepository.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Concrete\SiparisRepository.cs" />
     <Compile Include="Concrete\UrunRepository.cs" />
     <Compile Include="Concrete\_GenericRepository.cs" />
+    <Compile Include="Controllers\StokHareketController.cs" />
     <Compile Include="Controllers\MakineController.cs" />
     <Compile Include="Controllers\AksiyonController.cs" />
     <Compile Include="Controllers\UretimEmirController.cs" />
@@ -208,6 +210,7 @@
     <Compile Include="DtModels\MaliyetDto.cs" />
     <Compile Include="Enums\EAksiyonType.cs" />
     <Compile Include="Enums\ESiparisType.cs" />
+    <Compile Include="Enums\EStokHareketType.cs" />
     <Compile Include="Enums\EUretimEmirDurum.cs" />
     <Compile Include="Enums\EUretimSabitler.cs" />
     <Compile Include="Enums\EKoliTur.cs" />
@@ -455,6 +458,24 @@
     <Compile Include="Migrations\202209060922084_update_baslangic_to_AksiyonBaslangic_from_Aksiyon_table.designer.cs">
       <DependentUpon>202209060922084_update_baslangic_to_AksiyonBaslangic_from_Aksiyon_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209070737089_add_uretimSureceBools_to_UretimEmir_table.cs" />
+    <Compile Include="Migrations\202209070737089_add_uretimSureceBools_to_UretimEmir_table.designer.cs">
+      <DependentUpon>202209070737089_add_uretimSureceBools_to_UretimEmir_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209071125322_update_isSperyBitti_to_nullable.cs" />
+    <Compile Include="Migrations\202209071125322_update_isSperyBitti_to_nullable.designer.cs">
+      <DependentUpon>202209071125322_update_isSperyBitti_to_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209071140533_update_isMontaj_to_isMontajBitti.cs" />
+    <Compile Include="Migrations\202209071140533_update_isMontaj_to_isMontajBitti.designer.cs">
+      <DependentUpon>202209071140533_update_isMontaj_to_isMontajBitti.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209081430468_create_StokHareket_table.cs" />
+    <Compile Include="Migrations\202209081430468_create_StokHareket_table.designer.cs">
+      <DependentUpon>202209081430468_create_StokHareket_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\StokHareket.cs" />
+    <Compile Include="Models\Custom\StokHareketType.cs" />
     <Compile Include="Models\Custom\UretimEmirAksiyonRel.cs" />
     <Compile Include="Models\Custom\Aksiyon.cs" />
     <Compile Include="Models\Custom\AksiyonType.cs" />
@@ -3748,6 +3769,7 @@
     <Content Include="Views\Aksiyon\FilterForm.cshtml" />
     <Content Include="Views\Aksiyon\Form.cshtml" />
     <Content Include="Views\Aksiyon\Index.cshtml" />
+    <Content Include="Views\Siparis\UretimdekiSiparisler.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -3929,6 +3951,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209060922084_update_baslangic_to_AksiyonBaslangic_from_Aksiyon_table.resx">
       <DependentUpon>202209060922084_update_baslangic_to_AksiyonBaslangic_from_Aksiyon_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209070737089_add_uretimSureceBools_to_UretimEmir_table.resx">
+      <DependentUpon>202209070737089_add_uretimSureceBools_to_UretimEmir_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209071125322_update_isSperyBitti_to_nullable.resx">
+      <DependentUpon>202209071125322_update_isSperyBitti_to_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209071140533_update_isMontaj_to_isMontajBitti.resx">
+      <DependentUpon>202209071140533_update_isMontaj_to_isMontajBitti.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209081430468_create_StokHareket_table.resx">
+      <DependentUpon>202209081430468_create_StokHareket_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

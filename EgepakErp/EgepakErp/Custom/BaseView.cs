@@ -422,7 +422,17 @@ namespace EgePakErp.Custom
             var list = db.SiparisKalip
                 .Include(x=>x.BoyaKod)
                 .Include(x=>x.Siparis)
+                .Include(x=>x.Yaldiz)
                 .ToList();
+            return list;
+        }
+        public IQueryable<SiparisKalip> BaseSiparisKalipListeQ()
+        {
+            var list = db.SiparisKalip
+                .Include(x => x.BoyaKod)
+                .Include(x => x.Siparis)
+                .Include(x => x.Yaldiz)
+                .AsQueryable();
             return list;
         }
         public IQueryable<Siparis> BaseSiparis()
@@ -488,6 +498,11 @@ namespace EgePakErp.Custom
         {
             var liste = db.Kalip.AsQueryable();
             return liste;
+        }
+        public Kalip KalipFindByKalipKod(string kod)
+        {
+            var kalip = db.Kalip.FirstOrDefault(x=>x.ParcaKodu == kod);
+            return kalip;
         }
         public IQueryable<Aksiyon> BaseAksiyon()
         {

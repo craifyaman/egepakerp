@@ -47,6 +47,35 @@
         });
     }
 
+    function SiparisUretimAcKapat(siparisId) {
+        Post("/siparis/ackapat",
+            { siparisId: siparisId },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function (r) {
+                //Complete
+                if (r.responseJSON.Success) {
+                    setTimeout(function () {
+                        bootbox.hideAll();
+                        $('#kt_datatable').KTDatatable('reload');
+                    }, 2000);
+
+                }
+
+            },
+            "json");
+    }
     function FaturadanCikar(id, tagname) {
         debugger
         var tdInputs = $("td[" + tagname + "-cikar='" + id + "'] input");
@@ -931,7 +960,7 @@
             event.preventDefault();
             debugger;
             var inputId = $(this).attr("id");
-            var TargetDirectory = "SiparisPdf/CariId-" + $("#SiparisCariId").val()+"/";
+            var TargetDirectory = "SiparisPdf/CariId-" + $("#SiparisCariId").val() + "/";
             var TargetInputId = $(this).attr("TargetInputId");
             UploadImage(inputId, "/File/DosyaKaydet", TargetDirectory, TargetInputId);
         });
@@ -960,6 +989,15 @@
             $(".Fiyat").attr("YaldizId", YaldizId);
 
         });
+
+
+        $(document).on("click", "[event='UretimeAcKapat']", function (event) {
+            event.preventDefault();
+            debugger;
+            var siparisId = $(this).attr("SiparisId");
+            SiparisUretimAcKapat(siparisId);
+        });
+
 
         $(document).on("click", "#YaldizEkle", function (event) {
             event.preventDefault();
@@ -1001,7 +1039,7 @@
                 "html");
 
         });
-        
+
 
         $(document).on("click", ".webviewer", function (event) {
             event.preventDefault();
@@ -1028,7 +1066,7 @@
                 }
             });
 
-            
+
 
             WebViewer({
                 path: 'WebViewer/lib', // path to the PDF.js Express'lib' folder on your server

@@ -14,6 +14,8 @@ namespace EgePakErp.Concrete
                .Include(x=>x.Cari)
                .Include(x=>x.Urun)
                .Include(x=>x.SiparisKalip)
+               .Include("SiparisKalip.UretimEmir")
+               .Include("SiparisKalip.UretimEmir.UretimEmirDurum")
                .Include(x => x.Urun.UrunCinsi)
                .Include(x => x.SiparisDurum)
                .FirstOrDefault(x=>x.SiparisId == id);
@@ -24,6 +26,8 @@ namespace EgePakErp.Concrete
                .Include(x => x.Cari)
                .Include(x => x.Urun)
                .Include(x => x.SiparisKalip)
+               .Include("SiparisKalip.UretimEmir")
+               .Include("SiparisKalip.UretimEmir.UretimEmirDurum")
                .Include(x => x.Urun.UrunCinsi)
                .Include(x => x.SiparisDurum)
                .FirstOrDefault(filter);
@@ -34,6 +38,8 @@ namespace EgePakErp.Concrete
                .Include(x => x.Cari)
                .Include(x => x.Urun)
                .Include(x => x.SiparisKalip)
+               .Include("SiparisKalip.UretimEmir")
+               .Include("SiparisKalip.UretimEmir.UretimEmirDurum")
                .Include(x => x.Urun.UrunCinsi)
                .Include(x => x.SiparisDurum)
                .AsQueryable();
@@ -45,6 +51,8 @@ namespace EgePakErp.Concrete
                .Include(x => x.Cari)
                .Include(x => x.Urun)
                .Include(x => x.SiparisKalip)
+               .Include("SiparisKalip.UretimEmir")
+               .Include("SiparisKalip.UretimEmir.UretimEmirDurum")
                .Include(x => x.Urun.UrunCinsi)
                .Include(x => x.SiparisDurum)
                .Where(filter)

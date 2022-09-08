@@ -5,11 +5,22 @@
         var validation = ValidateForm.IsValid("UretimEmirForm", ValidationFields.UretimEmirFormFields())
         validation.validate().then(function (status) {
             if (status == 'Valid') {
-                var form = $("#UretimEmirForm").serializeJSON();
+                var form = $("#UretimEmirForm").serializeJSON(
+                    {
+                        customTypes: {
+                            CustomSwitch: (str, el) => {
+                                if (str == "on") {
+                                    return "true";
+                                }
+                                return "false";
+                            },
+                        }
+                    });
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;
                 console.log(form);
+
                 Post("/UretimEmir/kaydet",
                     { form: form },
                     function (response) {
@@ -114,7 +125,7 @@
                 "html");
         });
 
-        
+
 
     }
 

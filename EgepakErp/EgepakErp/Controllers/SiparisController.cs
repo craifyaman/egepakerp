@@ -33,9 +33,19 @@ namespace EgePakErp.Controllers
         }
 
         [Menu("Sipariş Listesi", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
+        [Yetki("Sipariş Listesi", "Sipariş")]
         public ActionResult Index()
         {
-            return View();
+            var model = siparisRepo.GetAll().ToList();
+            return View(model);
+        }
+
+        [Menu("Üretimdeki Siparişler", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
+        [Yetki("Üretimdeki Siparişler", "Sipariş")]
+        public ActionResult UretimdekiSiparisler()
+        {
+            var model = siparisRepo.GetAll(x=>x.SiparisDurumId == (int)ESiparisType.Uretimde).ToList();
+            return View(model);
         }
 
         [Menu("Sipariş Formu", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
@@ -92,6 +102,7 @@ namespace EgePakErp.Controllers
                 Urun = i.Urun.UrunCinsi.Kisaltmasi + i.Urun.UrunNo,
                 UrunId = i.UrunId,
                 Durum = i.SiparisDurum.Durum,
+                DurumId = i.SiparisDurumId
             }).ToList<dynamic>();
 
 
@@ -481,6 +492,37 @@ namespace EgePakErp.Controllers
             }
             return Json(new { Aciklama = "Veriler yüklenemedi!!" });
         }
+
+        public JsonResult AcKapat(int siparisId)
+        {
+            Response response = new Response();
+            try
+            {
+                var siparis = siparisRepo.Get(siparisId);
+                if(siparis.SiparisDurumId == (int)ESiparisType.Tamamlandi)
+                {
+                    siparis.SiparisDurumId = (int)ESiparisType.Uretimde;
+                    response.Description = "Sipariş üretimde olarak işaretlendi";
+                }
+                else
+                {
+                    siparis.SiparisDurumId = (int)ESiparisType.Tamamlandi;
+                    response.Description = "Sipariş tamamlandı olarak işaretlendi";
+                }
+
+                siparisRepo.Update(siparis);
+                response.Success = true;
+              
+                return Json(response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = ex.Message;
+                return Json(response);
+            }
+        }
+
         private List<Kalip> FindKalipInParcaKodList(List<string> liste)
         {
             var kaliplar = kalipRepo.GetAll();

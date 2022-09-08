@@ -206,8 +206,21 @@
             "json");
     }
 
-    var handleEvent = function () {
+    function DepoyaAktarCoklu() {
         debugger;
+        var siparisKalipIdList = [];
+        var array = $(".MontajliKalip").sort();
+        array.each(function (index, value) {
+            var input = value;
+            var siparisKalipId = input.getAttribute("SiparisKalipId");
+            if ($(input).prop('checked') == true) {
+                siparisKalipIdList.push(siparisKalipId);    
+            }            
+        });
+        console.log(siparisKalipIdList);
+    }
+
+    var handleEvent = function () {
 
         Post("/UretimEmir/GetAll?type=enjeksiyon",
             {},
@@ -280,14 +293,30 @@
             var uretimEmirId = $(this).attr("UretimEmirId");
             Aksiyon.AksiyonForm(id, uretimEmirId);
         });
+
+        $(document).on("click", "[event='MontajliKalipDepoEkleme']", function (e) {
+            debugger;
+            e.preventDefault();
+            DepoyaAktarCoklu();
+        });
     }
 
+    var handleEvent2 = function () {        
 
+        $(document).on("click", "[event='MontajliKalipDepoEkleme']", function (e) {
+            debugger;
+            e.preventDefault();
+            DepoyaAktarCoklu();
+        });
+    }
 
     return {
 
         EventInit: function () {
             handleEvent();
+        },
+        EventInit2: function () {
+            handleEvent2();
         }
     };
 }();
