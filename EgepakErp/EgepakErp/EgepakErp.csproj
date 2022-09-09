@@ -207,6 +207,8 @@
     <Compile Include="Controllers\HammaddeCinsiController.cs" />
     <Compile Include="Controllers\HammaddeHareketController.cs" />
     <Compile Include="DtModels\CariMusteriNoDto.cs" />
+    <Compile Include="DtModels\DepoKalipDto.cs" />
+    <Compile Include="DtModels\SiparisDepoAktarimDto.cs" />
     <Compile Include="DtModels\MaliyetDto.cs" />
     <Compile Include="Enums\EAksiyonType.cs" />
     <Compile Include="Enums\ESiparisType.cs" />
@@ -473,6 +475,14 @@
     <Compile Include="Migrations\202209081430468_create_StokHareket_table.cs" />
     <Compile Include="Migrations\202209081430468_create_StokHareket_table.designer.cs">
       <DependentUpon>202209081430468_create_StokHareket_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209090735463_add_DepodaMi_to_SiparisKalip.cs" />
+    <Compile Include="Migrations\202209090735463_add_DepodaMi_to_SiparisKalip.designer.cs">
+      <DependentUpon>202209090735463_add_DepodaMi_to_SiparisKalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209090956425_update_StokHareket_montajKod_to_nullable.cs" />
+    <Compile Include="Migrations\202209090956425_update_StokHareket_montajKod_to_nullable.designer.cs">
+      <DependentUpon>202209090956425_update_StokHareket_montajKod_to_nullable.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Custom\StokHareket.cs" />
     <Compile Include="Models\Custom\StokHareketType.cs" />
@@ -2797,6 +2807,7 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.ttf" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
+    <Content Include="Scripts\StokHareket.js" />
     <Content Include="Scripts\Custom\DataPickerTr.js" />
     <Content Include="Scripts\Aksiyon.js" />
     <Content Include="Scripts\UretimEmir.js" />
@@ -3770,6 +3781,9 @@
     <Content Include="Views\Aksiyon\Form.cshtml" />
     <Content Include="Views\Aksiyon\Index.cshtml" />
     <Content Include="Views\Siparis\UretimdekiSiparisler.cshtml" />
+    <Content Include="Views\StokHareket\FilterForm.cshtml" />
+    <Content Include="Views\StokHareket\Form.cshtml" />
+    <Content Include="Views\StokHareket\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -3963,6 +3977,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209081430468_create_StokHareket_table.resx">
       <DependentUpon>202209081430468_create_StokHareket_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209090735463_add_DepodaMi_to_SiparisKalip.resx">
+      <DependentUpon>202209090735463_add_DepodaMi_to_SiparisKalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209090956425_update_StokHareket_montajKod_to_nullable.resx">
+      <DependentUpon>202209090956425_update_StokHareket_montajKod_to_nullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

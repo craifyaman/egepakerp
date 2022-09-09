@@ -76,6 +76,8 @@ namespace EgePakErp
         public virtual DbSet<UretimEmirDurum> UretimEmirDurum { get; set; }
         public virtual DbSet<AksiyonType> AksiyonType { get; set; }
         public virtual DbSet<Aksiyon> Aksiyon { get; set; }
+        public virtual DbSet<StokHareket> StokHareket { get; set; }
+        public virtual DbSet<StokHareketType> StokHareketType { get; set; }
         //public virtual DbSet<UretimEmirAksiyonRel> UretimEmirAksiyonRel { get; set; }
 
 

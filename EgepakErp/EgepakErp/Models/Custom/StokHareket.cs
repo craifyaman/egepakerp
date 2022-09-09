@@ -22,7 +22,7 @@ namespace EgePakErp.Models
 
         public int Adet { get; set; }
         public bool MontajliMi { get; set; }
-        public int MontajKod { get; set; }
+        public int? MontajKod { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }

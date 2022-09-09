@@ -913,6 +913,45 @@
             }];
         return columns;
     }
+    function stokHareketColumns() {
+        var columns = [
+            {
+                field: 'Id',
+                title: '#',
+                width: 50
+            },
+            {
+                field: 'Type',
+                title: 'Tip',
+            },
+            {
+                field: 'SiparisAdi',
+                title: 'SiparisAdi',
+            },
+            {
+                field: 'KalipKodList',
+                title: 'Kalıplar',
+            },
+            {
+                field: 'Adet',
+                title: 'Adet',
+            },            
+            //{
+            //    field: 'İşlem',
+            //    title: 'İşlem',
+            //    sortable: false,
+            //    width: 130,
+            //    overflow: 'visible',
+            //    autoHide: false,
+            //    template: function (row) {
+            //        var str = '<a class="btn btn-icon btn-info mr-1"';
+            //        str += 'event="StokHareketFormPopup" href = "#" id = "' + row.Id + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+            //        return str;
+            //    },
+            //}
+        ];
+        return columns;
+    }
 
 
     return {
@@ -968,7 +1007,9 @@
         AksiyonColumns: function () {
             return aksiyonColumns();
         },
-
+        StokHareketColumns: function () {
+            return stokHareketColumns();
+        },
 
         GetColoums: function (name) {
             if (name == "cari") {

@@ -19,6 +19,7 @@ namespace EgePakErp.Models
         public Yaldiz Yaldiz { get; set; }
         public int? BoyaKodId { get; set; }
         public BoyaKod BoyaKod { get; set; }
+        public bool DepodaMi { get; set; }
 
         public int SiparisId { get; set; }
         public Siparis Siparis { get; set; }

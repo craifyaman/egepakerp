@@ -208,16 +208,72 @@
 
     function DepoyaAktarCoklu() {
         debugger;
-        var siparisKalipIdList = [];
+        var SiparisKalipDepoDto = function () {
+            this.siparisKalipId;//int
+            this.SiparisId;//int
+            this.Adet;//int
+        }
+
+        var SiparisKalipDepoDtoList = [];
+
         var array = $(".MontajliKalip").sort();
+
         array.each(function (index, value) {
             var input = value;
-            var siparisKalipId = input.getAttribute("SiparisKalipId");
+            var dto = new SiparisKalipDepoDto();
+            dto.SiparisKalipId = $(input).attr("SiparisKalipId");
+            dto.SiparisId = $(input).attr("SiparisId");
+            dto.Adet = $(input).attr("Adet");
+
             if ($(input).prop('checked') == true) {
-                siparisKalipIdList.push(siparisKalipId);    
-            }            
+                SiparisKalipDepoDtoList.push(dto);
+            }
         });
-        console.log(siparisKalipIdList);
+
+        console.log(SiparisKalipDepoDtoList);
+
+        Post("stokhareket/DepoyaAktarCoklu",
+            { liste: SiparisKalipDepoDtoList },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+                location.reload();
+            },
+            "json");
+    }
+
+    function DepoyaAktarTekli(SiparisKalipId, SiparisId, Adet) {
+        debugger;
+        Post("stokhareket/DepoyaAktarTekli",
+            { SiparisKalipId: SiparisKalipId, SiparisId: SiparisId, Adet: Adet },
+            function (response) {
+                if (response.Success) {
+                    toastr.success(response.Description);
+                } else {
+                    toastr.error(response.Description);
+                }
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+                location.reload();
+            },
+            "json");
     }
 
     var handleEvent = function () {
@@ -244,7 +300,7 @@
         PostToTimeLine("/UretimEmir/GetAll?type=sprey", "kt_docs_vistimeline_group_Sprey");
         PostToTimeLine("/UretimEmir/GetAll?type=montaj", "kt_docs_vistimeline_group_Montaj");
         PostToTimeLine("/UretimEmir/GetAll?type=metalize", "kt_docs_vistimeline_group_Metalize");
-        
+
 
 
         $(document).on("change", "#SiparisId", function (event) {
@@ -301,12 +357,32 @@
         });
     }
 
-    var handleEvent2 = function () {        
+    var handleEvent2 = function () {
 
         $(document).on("click", "[event='MontajliKalipDepoEkleme']", function (e) {
             debugger;
             e.preventDefault();
-            DepoyaAktarCoklu();
+            if ($(this).attr("disabled") != "disabled") {
+                $(this).attr("disabled", "disabled");
+                DepoyaAktarCoklu();
+            }
+            
+        });
+
+        $(document).on("click", "[event='DepoAktarTekli']", function (e) {
+            debugger;
+            e.preventDefault();
+            if ($(this).attr("disabled") != "disabled") {
+
+                $(this).attr("disabled", "disabled");
+                var SiparisKalipId = $(this).attr("SiparisKalipId");
+                var SiparisId = $(this).attr("SiparisId");
+                var Adet = $(".SiparisAdetInput[SiparisKalipId='" + SiparisKalipId + "']").val();
+                DepoyaAktarTekli(SiparisKalipId, SiparisId, Adet);
+            }
+            else {
+                toastr.warning("ürün zaten depoya eklendi");
+            }
         });
     }
 

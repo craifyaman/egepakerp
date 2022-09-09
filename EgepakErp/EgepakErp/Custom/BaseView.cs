@@ -516,6 +516,16 @@ namespace EgePakErp.Custom
             var liste = db.AksiyonType.AsQueryable();
             return liste;
         }
+        public IQueryable<StokHareketType> BaseStokHareketType()
+        {
+            var liste = db.StokHareketType.AsQueryable();
+            return liste;
+        }
+        public IQueryable<StokHareket> BaseStokHareket()
+        {
+            var liste = db.StokHareket.AsQueryable();
+            return liste;
+        }
         //public List<EvMontaj> BaseEvMontaj()
         //{
         //    var liste = db.EvMontaj.ToList();
