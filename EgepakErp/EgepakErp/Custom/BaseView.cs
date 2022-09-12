@@ -435,6 +435,17 @@ namespace EgePakErp.Custom
                 .AsQueryable();
             return list;
         }
+        public IQueryable<SiparisKalip> BaseSiparisKalipListe(int siparisId)
+        {
+            var list = db.SiparisKalip
+                .Include(x => x.BoyaKod)
+                .Include(x => x.Siparis)
+                .Include(x => x.Yaldiz)
+                .Where(x => x.SiparisId == siparisId)
+                .AsQueryable();
+
+            return list;
+        }
         public IQueryable<Siparis> BaseSiparis()
         {
             var list = db.Siparis

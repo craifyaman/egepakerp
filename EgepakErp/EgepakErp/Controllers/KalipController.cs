@@ -45,12 +45,11 @@ namespace EgePakErp.Controllers
             {
                 var searchQuery = Request.Form["query[searchQuery]"].ToString();
                 model = model.Where(i =>
-                i.KalipNo.ToLower().Contains(searchQuery.ToLower()) ||
-                i.KalipOzellik.ToLower().Contains(searchQuery.ToLower()) ||
-                i.Adi.ToLower().Contains(searchQuery.ToLower()) ||
-                string.Concat(i.KalipNo.ToLower() + i.KalipOzellik).Contains(searchQuery.ToLower())
+                i.ParcaKodu.ToLower() == searchQuery.ToLower() ||
+                i.Adi.ToLower().Contains(searchQuery.ToLower())
                 );
             }
+
             //Filtre
             if (!string.IsNullOrEmpty(Request.Form["query[urunCinsiId]"]))
             {
@@ -209,7 +208,7 @@ namespace EgePakErp.Controllers
             };
             return Json(dto, JsonRequestBehavior.AllowGet);
 
-        }        
+        }
 
         public JsonResult Sil(int KalipId)
         {

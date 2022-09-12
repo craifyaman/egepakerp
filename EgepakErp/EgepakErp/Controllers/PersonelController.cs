@@ -33,6 +33,7 @@ namespace EgePakErp.Controllers
             dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
 
             IQueryable<Personel> model = null;
+
             model = Db.Personel
                 .Include("PersonelTip")
                 .Include("Departman")
@@ -48,6 +49,7 @@ namespace EgePakErp.Controllers
                 var searchQuery = Request.Form["query[searchQuery]"].ToString();
                 model = model.Where(i => i.Adi.ToLower().Contains(searchQuery.ToLower()));
             }
+
             //Filtre
             if (!string.IsNullOrEmpty(Request.Form["query[departman]"]))
             {

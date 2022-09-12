@@ -214,18 +214,40 @@
     {
         var yaldiz = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.YaldizId != null);
         var boyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.BoyaKodId != null);
-        if (yaldiz != null)
-        {
-            <div>
-                @yaldiz.Yaldiz.PdfYol
-            </div>
-        }
-        if (boyaKod != null)
-        {
-            <div>
-                @boyaKod.BoyaKod.Kod
-            </div>
-        }
+        <div class="form-group row">
+            @if (yaldiz != null)
+            {
+                <label class="col-2 col-form-label">Yaldız</label>
+                <div class="col-10">
+                    <span class="switch switch-outline switch-icon switch-success">
+                        <label>
+                            <a href="#" class="btn btn-info webviewer" pdfurl="@yaldiz.Yaldiz.PdfYol">Görmek için tıklayın</a>
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+
+                if (boyaKod != null)
+                {
+                    <label class="col-2 col-form-label mt-1">Boya kodu</label>
+                    <div class="col-10 mt-3">
+                        <span class="switch switch-outline switch-icon switch-success">
+                            <label>
+                                @boyaKod.BoyaKod.Kod
+                                <span></span>
+                            </label>
+                        </span>
+                    </div>
+                    
+                }
+
+
+            }
+
+
+
+        </div>
+        
     }
 
     @if (Model != null)

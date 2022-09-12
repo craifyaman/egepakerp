@@ -355,6 +355,15 @@
             e.preventDefault();
             DepoyaAktarCoklu();
         });
+
+        $(document).on("click", ".webviewer", function (e) {
+            debugger;
+            e.preventDefault();
+            var url = $(this).attr("pdfurl");
+            CustomWebViewer.View(url);
+        });
+
+
     }
 
     var handleEvent2 = function () {

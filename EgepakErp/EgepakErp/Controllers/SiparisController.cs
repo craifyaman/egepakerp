@@ -13,6 +13,9 @@ using System.Data.Entity;
 using EgePakErp.Concrete;
 using System.Collections;
 using System.ComponentModel.DataAnnotations.Schema;
+using SelectPdf;
+using System.IO;
+using System.Web.Hosting;
 
 namespace EgePakErp.Controllers
 {
@@ -44,7 +47,7 @@ namespace EgePakErp.Controllers
         [Yetki("Üretimdeki Siparişler", "Sipariş")]
         public ActionResult UretimdekiSiparisler()
         {
-            var model = siparisRepo.GetAll(x=>x.SiparisDurumId == (int)ESiparisType.Uretimde).ToList();
+            var model = siparisRepo.GetAll(x => x.SiparisDurumId == (int)ESiparisType.Uretimde).ToList();
             return View(model);
         }
 
@@ -499,7 +502,7 @@ namespace EgePakErp.Controllers
             try
             {
                 var siparis = siparisRepo.Get(siparisId);
-                if(siparis.SiparisDurumId == (int)ESiparisType.Tamamlandi)
+                if (siparis.SiparisDurumId == (int)ESiparisType.Tamamlandi)
                 {
                     siparis.SiparisDurumId = (int)ESiparisType.Uretimde;
                     response.Description = "Sipariş üretimde olarak işaretlendi";
@@ -512,7 +515,7 @@ namespace EgePakErp.Controllers
 
                 siparisRepo.Update(siparis);
                 response.Success = true;
-              
+
                 return Json(response);
             }
             catch (Exception ex)
@@ -521,6 +524,50 @@ namespace EgePakErp.Controllers
                 response.Description = ex.Message;
                 return Json(response);
             }
+        }
+
+
+        public FileResult SiparisDetayPdf(int siparisId)
+        {
+            var siparis = siparisRepo.Get(siparisId);
+            var bId = siparisId + ".pdf";
+            var vPath = "~/Content/SiparisPdf2/" + bId;
+            //string url = "https://crm.remifol.com/Pdf/SiparisDetay/" + id + "?fiyatGoster=" + fiyat;
+            string url = "https://localhost:44381/Pdf/SiparisDetay?siparisId=" + siparisId;
+
+            string pdf_page_size = "A4";
+            PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize),
+                pdf_page_size, true);
+
+            string pdf_orientation = "Portrait";
+            PdfPageOrientation pdfOrientation =
+                (PdfPageOrientation)Enum.Parse(typeof(PdfPageOrientation),
+                pdf_orientation, true);
+
+            int webPageWidth = 1024;
+            int webPageHeight = 0;
+
+
+            // instantiate a html to pdf converter object
+            HtmlToPdf converter = new HtmlToPdf();
+
+            // set converter options
+            converter.Options.PdfPageSize = pageSize;
+            converter.Options.PdfPageOrientation = pdfOrientation;
+            converter.Options.WebPageWidth = webPageWidth;
+            converter.Options.WebPageHeight = webPageHeight;
+
+            // create a new pdf document converting an url
+            PdfDocument doc = converter.ConvertUrl(url);
+
+            // save pdf document
+            doc.Save(HostingEnvironment.MapPath(vPath));
+
+            // close pdf document
+            doc.Close();
+
+            return File(vPath, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(siparis.Cari.Unvan + "-" + bId));
+
         }
 
         private List<Kalip> FindKalipInParcaKodList(List<string> liste)

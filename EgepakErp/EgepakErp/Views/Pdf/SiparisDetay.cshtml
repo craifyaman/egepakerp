@@ -1,0 +1,192 @@
+﻿@model Siparis
+@{
+    ViewBag.Title = "SiparisDetay";
+    Layout = "~/Views/Shared/_PdfLayout.cshtml";
+}
+<div class="col-lg-12">
+    <!--begin::Advance Table Widget 4-->
+    <div class="card card-custom card-stretch gutter-b">
+        <!--begin::Header-->
+        <div class="text-center p-5">
+            <h1>EGEPAK PLASTİK KOZMETİK SAN.VE TİC.LTD.ŞTİ.</h1>
+            <h5>NECİP FAZIL MAH. 19 MAYIS CAD. NO:22 ÜMRANİYE / İSTANBUL</h5>
+            <h5>TEL : 00 9 0216 365 89 83 FAX : 00 9 0216 365 89 84</h5>
+            <h5>www.egepak.net - e-mail : egepak@egepak.net</h5>
+        </div>
+        <div class="card-header border-0 py-5">
+
+            <h3 class="card-title align-items-start flex-column">
+                <span class="card-label font-weight-bolder text-dark">Sipariş Bilgileri</span>
+                <span class="text-muted mt-3 font-weight-bold font-size-sm"></span>
+            </h3>
+            <div class="card-toolbar">
+            </div>
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body pt-0 ">
+
+            <div class="tab-content">
+                <!--begin::Table-->
+                <div class="table-responsive">
+                    <table class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                        <thead>
+                            <tr class="text-left text-uppercase">
+                                <th>
+                                    <span class="text-dark-75">Sipariş</span>
+                                </th>
+                                <th style="min-width: 100px">Cari</th>
+                                <th style="min-width: 100px">Ürün</th>
+                                <th style="min-width: 100px">Kayıt Tarihi</th>
+                                <th style="min-width: 100px">Termin Tarihi</th>
+                                <th style="min-width: 100px">Toplam Tutar Tl</th>
+                                <th style="min-width: 100px">Toplam Tutar Usd</th>
+                                <th style="min-width: 100px">Toplam Tutar Eur</th>
+                                <th style="min-width: 80px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.SiparisAdi
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.Cari.Unvan
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @(Model.Urun.UrunCinsi.Kisaltmasi+" "+ Model.Urun.UrunNo )
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.KayitTarihi.ToShortDateString()
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.TerminTarihi.ToShortDateString()
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @((Model.ToplamMaliyet * Model.SiparisAdet).ToString("n2"))
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @((Model.ToplamMaliyetUsd * Model.SiparisAdet).ToString("n2"))
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @((Model.ToplamMaliyetEur * Model.SiparisAdet).ToString("n2"))
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--end::Table-->
+            </div>
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Advance Table Widget 4-->
+    <!--begin::Advance Table Widget 4-->
+    <div class="card card-custom card-stretch gutter-b">
+        <!--begin::Header-->
+        <div class="card-header border-0 py-5">
+            <h3 class="card-title align-items-start flex-column">
+                <span class="card-label font-weight-bolder text-dark">Sipariş Detay</span>
+                <span class="text-muted mt-3 font-weight-bold font-size-sm"></span>
+            </h3>
+            <div class="card-toolbar">
+                @*<a href="#" class="btn btn-info font-weight-bolder font-size-sm mr-3">New Report</a>*@
+            </div>
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        @{
+            var SiparisKaliplar = BaseSiparisKalipListe(Model.SiparisId);
+            var _SiparisKaliplar = SiparisKaliplar.ToList().GroupBy(x => x.KalipKod).ToList();
+        }
+        <div class="card-body pt-0 pb-3">
+            <div class="tab-content">
+                <!--begin::Table-->
+                <div class="table-responsive">
+                    <table class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                        <thead>
+                            <tr class="text-left text-uppercase">
+                                <th style="min-width: 100px">Kalıp</th>
+                                <th style="min-width: 100px">Adet</th>
+                                <th style="min-width: 100px">Birim Maliyet</th>
+                                <th style="min-width: 100px">Toplam</th>
+                                <th style="min-width: 100px">Yaldız</th>
+                                <th style="min-width: 100px">Boya Kod</th>
+                                <th style="min-width: 80px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in _SiparisKaliplar)
+                            {
+                                var kalip = KalipFindByKalipKod(item.FirstOrDefault().KalipKod);
+                                <tr>
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                            @kalip.Adi
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                            @Model.SiparisAdet
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                            @item.Sum(x => x.Maliyet).ToString("n3")
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                            @((item.Sum(x => x.Maliyet)*Model.SiparisAdet).ToString("n2"))
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                            @(item.FirstOrDefault(x=>x.YaldizId != null)?.Yaldiz?.Aciklama)
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                            @(item.FirstOrDefault(x=>x.BoyaKodId != null)?.BoyaKod?.Aciklama)
+                                        </span>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <!--end::Table-->
+            </div>
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Advance Table Widget 4-->
+</div>

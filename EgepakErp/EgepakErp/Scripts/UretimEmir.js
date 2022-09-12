@@ -104,6 +104,8 @@
             UretimEmirForm(id);
         });
 
+       
+
 
         $(document).on("change", "#SiparisId", function (event) {
             event.preventDefault();

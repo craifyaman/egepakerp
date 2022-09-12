@@ -1,5 +1,5 @@
 ﻿var BoyaKod = function () {
-    
+  
     function Kaydet() {
         debugger;
         var validation = ValidateForm.IsValid("BoyaKodForm", ValidationFields.BoyaKodFormFields())
