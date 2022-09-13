@@ -8,5 +8,6 @@
         Montaj = 4,
         Metalize = 5,
         Tamamlandi = 6,
+        EvMontaj = 7,
     }
 }

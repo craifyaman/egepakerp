@@ -14,9 +14,15 @@ namespace EgePakErp.Controllers
     public class UretimEmirController : BaseController
     {
         public UretimEmirRepository repo { get; set; }
+        public SiparisKalipRepository siparisKalipRepo { get; set; }
+        public YaldizRepository yaldizRepo { get; set; }
+        public BoyaKodRepository boyaKodRepo { get; set; }
         public UretimEmirController()
         {
             repo = new UretimEmirRepository();
+            siparisKalipRepo = new SiparisKalipRepository();
+            yaldizRepo = new YaldizRepository();
+            boyaKodRepo = new BoyaKodRepository();
         }
 
         [Menu("Üretim Emirleri", "flaticon2-menu-2 icon-xl", "Üretim", 5, 1)]
@@ -155,6 +161,9 @@ namespace EgePakErp.Controllers
 
         public JsonResult GetAll(string type)
         {
+            var yaldizList = yaldizRepo.GetAll();
+            var boyaKodList = boyaKodRepo.GetAll();
+            var siparisKaliplar = siparisKalipRepo.GetAll(x=>x.YaldizId != null || x.BoyaKodId != null);
             var response = new Response<dynamic>();
             try
             {
@@ -183,11 +192,15 @@ namespace EgePakErp.Controllers
                 {
                     model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.Metalize);
                 }
+
+                //var yaldiz = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.YaldizId != null);
+                //var boyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.BoyaKodId != null);
+
                 var dto = model.AsEnumerable().Select(x => new
                 {
                     UretimEmirId = x.UretimEmirId,
                     SiparisKalip = x.SiparisKalip.KalipKod,
-                    KalipAd = kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi +" - ("+ x.SiparisKalip.Siparis.SiparisAdi+")",
+                    KalipAd = kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi + " _ (" + x.SiparisKalip.Siparis.SiparisAdi + ")" + " _ " + siparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizId != null)?.Yaldiz.Aciklama + " _ " + siparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.BoyaKodId != null)?.BoyaKod.Aciklama,
                     Makine = x.Makine.MakineAd,
                     MakineId = x.Makine.MakineId,
                     Baslangic = x.Baslangic,
@@ -200,7 +213,7 @@ namespace EgePakErp.Controllers
                     SiparisAdi = x.SiparisKalip.Siparis?.SiparisAdi,
                     ClassList = x.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi ? "bg-success" : "bg-warning",
 
-                }).OrderBy(x=>x.UretimEmirId).ToList();
+                }).OrderBy(x => x.UretimEmirId).ToList();
 
                 response.Success = true;
                 response.Description = "veriler alındı";

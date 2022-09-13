@@ -91,6 +91,7 @@
             function () {
                 Global.init();
                 KTBootstrapDatetimepicker.init();
+                KTSelect2.init();
             },
             "html");
     }

@@ -20,6 +20,7 @@ namespace EgePakErp
     using EgePakErp.Models.Audit;
     using Newtonsoft.Json;
     using EgePakErp.Models.Custom;
+    using System.Configuration;
 
     public partial class Db : DbContext
     {
@@ -83,10 +84,19 @@ namespace EgePakErp
 
         #endregion
 
-        public Db() : base("name=Model1")
+
+        public static string CurrentDatabase
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["CurrentDatabase"].ToString();
+            }
+        }
+
+        public Db() : base("name=" + CurrentDatabase)
         {
             Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<Db, Configuration>("Model1"));
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<Db, Migrations.Configuration>(CurrentDatabase));
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

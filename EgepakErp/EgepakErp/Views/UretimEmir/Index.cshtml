@@ -96,13 +96,13 @@
 @section Scripts{
     <script src="~/Scripts/UretimEmir.js?v=@ScriptVersion"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/#[[latestVersion]]#/mdb.min.js"></script>
+    <script src="~/assets/js/pages/crud/forms/widgets/select2.js?v=@ScriptVersion"></script>
+
     <script>
 
         $(document).ready(function () {
             Dt.DtInit("kt_datatable", "/UretimEmir/Liste", DtColums.UretimEmirColumns(), {});
             UretimEmir.EventInit();
-
-
         })
 
     </script>

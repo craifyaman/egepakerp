@@ -471,6 +471,12 @@ namespace EgePakErp.Custom
                 .AsQueryable();
             return list;
         }
+        public IQueryable<Kisi> BaseMontajKisi()
+        {
+            var list = db.Kisi
+                .AsQueryable();
+            return list;
+        }
         public decimal BaseKur(string kurType, DateTime date)
         {
             var dovizKur = db.DovizKur.FirstOrDefault();

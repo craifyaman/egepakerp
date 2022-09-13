@@ -363,7 +363,18 @@
             CustomWebViewer.View(url);
         });
 
+        $(document).on("change", "#UretimEmirDurumId", function (e) {
+            debugger;
+            var id = $(this).val();            
+            if (id == 7) {
+                $("#evMontajDiv").show();
+            }
+            else {
+                $("#evMontajDiv").hide();
+            }
 
+        });
+        
     }
 
     var handleEvent2 = function () {

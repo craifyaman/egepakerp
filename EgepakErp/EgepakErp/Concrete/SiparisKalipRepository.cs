@@ -12,18 +12,30 @@ namespace EgePakErp.Concrete
         {
             return dbset
                .Include(x=>x.Siparis)
+               .Include(x => x.BoyaKod)
+               .Include(x => x.Yaldiz)
+               .Include(x => x.UretimEmir)
+               .Include(x => x.StokHareket)
                .FirstOrDefault(x=>x.SiparisKalipId == id);
         }
         public override SiparisKalip Get(Expression<Func<SiparisKalip, bool>> filter)
         {
             return dbset
                .Include(x => x.Siparis)
+               .Include(x => x.BoyaKod)
+               .Include(x => x.Yaldiz)
+               .Include(x => x.UretimEmir)
+               .Include(x => x.StokHareket)
                .FirstOrDefault(filter);
         }
         public override IQueryable<SiparisKalip> GetAll()
         {
             return dbset
                .Include(x => x.Siparis)
+               .Include(x => x.BoyaKod)
+               .Include(x => x.Yaldiz)
+               .Include(x => x.UretimEmir)
+               .Include(x => x.StokHareket)
                .AsQueryable();
         }
 
@@ -31,6 +43,10 @@ namespace EgePakErp.Concrete
         {
             return dbset
                .Include(x => x.Siparis)
+               .Include(x => x.BoyaKod)
+               .Include(x => x.Yaldiz)
+               .Include(x => x.UretimEmir)
+               .Include(x => x.StokHareket)
                .Where(filter)
                .AsQueryable();
         }

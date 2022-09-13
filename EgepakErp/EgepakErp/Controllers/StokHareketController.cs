@@ -17,11 +17,21 @@ namespace EgePakErp.Controllers
     public class StokHareketController : BaseController
     {
         public StokHareketRepository repo { get; set; }
+        public SiparisKalipRepository siparisKalipRepo { get; set; }
+        public YaldizRepository yaldizRepo { get; set; }
+        public BoyaKodRepository boyaKodRepo { get; set; }
+        public KalipRepository kalipRepo { get; set; }
         public string dtMetaField { get; set; }
 
         public StokHareketController()
         {
             repo = new StokHareketRepository();
+            siparisKalipRepo = new SiparisKalipRepository();
+            yaldizRepo = new YaldizRepository();
+            boyaKodRepo = new BoyaKodRepository();
+            kalipRepo = new KalipRepository();
+
+
             dtMetaField = "StokHareketId";
         }
 
@@ -33,6 +43,12 @@ namespace EgePakErp.Controllers
 
         public JsonResult Liste()
         {
+            bool montajli = false;
+
+            if (!string.IsNullOrEmpty(Request.Form["query[MontajliMi]"]))
+            {
+                montajli = Request.Form["query[MontajliMi]"].ToLower() == "true" ? true : false;
+            }
             //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
@@ -44,31 +60,13 @@ namespace EgePakErp.Controllers
             dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
 
             var model = repo.GetAll();
+            var allList = repo.GetAll().ToList();
+            var yaldizList = yaldizRepo.GetAll();
+            var BoyaKodList = boyaKodRepo.GetAll();
             var montajliKaliplar = repo.GetAll(x => x.MontajliMi).ToList();
-
-            //Filtre
-            if (!string.IsNullOrEmpty(Request.Form["query[MontajliMi]"]))
-            {
-                bool MontajDurum = Request.Form["query[MontajliMi]"].ToLower() == "true" ? true : false;
-
-                if (MontajDurum)
-                {
-                    model = model.Where(x => x.MontajliMi)
-                    .GroupBy(x => x.MontajKod)
-                    .AsEnumerable()
-                    .Select(a => a.FirstOrDefault())
-                    .AsQueryable();
-                }
-                else
-                {
-                    model = model.Where(x => x.MontajliMi == false);
-                }
-                    
-            }
-            else
-            {
-                model = model.Where(x => x.MontajliMi == false);
-            }
+            var yaldizKalipList = siparisKalipRepo.GetAll(x => x.YaldizId != null);
+            var boyaKodKalipList = siparisKalipRepo.GetAll(x => x.BoyaKodId != null);
+            var kalipListe = kalipRepo.GetAll();
 
             try
             {
@@ -91,26 +89,154 @@ namespace EgePakErp.Controllers
             //sayfala
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
 
-
-
-            var dto = model.AsEnumerable().Select(x => new
+            if (montajli)
             {
-                Id = x.StokHareketId,
-                Type = x.StokHareketType.Type,
-                KalipKodList = x.MontajliMi == true ? montajliKaliplar.Select(a => a.SiparisKalip.KalipKod) : new List<string>() { x.SiparisKalip.KalipKod },
-                SiparisId = x.SiparisId,
-                SiparisAdi = x.Siparis.SiparisAdi,
-                Adet = x.Adet,
-                MontajliMi = x.MontajliMi,
+                var dto = model.AsEnumerable().Where(x => x.MontajliMi == true).GroupBy(x => x.MontajKod).Select(x =>
+                {
+                    var temp = x.FirstOrDefault();
+                    var montajKod = temp.MontajKod;
+                    var montajliList = new List<StokHareket>();
+                    var BoyaKodId = 0;
+                    var BoyaKodlar = "";
+                    var KalipAdlar = "";
 
-            }).ToList();
+                    if (montajKod != null)
+                    {
+                        montajliList = allList.Where(a => a.MontajKod == montajKod).ToList();
+                    }
+
+                    var KalipKodList = temp.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == temp.MontajKod).Select(a => a.SiparisKalip.KalipKod) : new List<string>() { temp.SiparisKalip.KalipKod };
+
+                    var YaldizId = 0;
+                    var YaldizAd = "";
+
+                    foreach (var item in KalipKodList)
+                    {
+                        var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == item);
+                        if (_kalip != null)
+                        {
+                            KalipAdlar += "_" + _kalip.Adi;
+                        }
+
+                        var yaldizSiparisKalip = yaldizKalipList.FirstOrDefault(c => c.SiparisId == temp.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "yaldiz");
+                        var boyaKodSiparisKalip = boyaKodKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "tozboya").ToList();
+
+                        if (yaldizSiparisKalip != null)
+                        {
+                            YaldizId = (int)yaldizSiparisKalip.YaldizId;
+                            YaldizAd = yaldizList.FirstOrDefault(a => a.YaldizId == YaldizId).Aciklama + " (" + _kalip.Adi + ")";
+                        }
+
+                        if (boyaKodSiparisKalip != null && boyaKodSiparisKalip.Count > 0)
+                        {
+                            foreach (var b in boyaKodSiparisKalip)
+                            {
+                                BoyaKodId = (int)b.BoyaKodId;
+                                BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == BoyaKodId).Aciklama + "<br/>";
+                            }
+                        }
 
 
-            dtModel.meta = dtMeta;
-            dtModel.data = dto.ToList<dynamic>();
-            return Json(dtModel);
+                    }
+
+                    dynamic ret = new
+                    {
+                        Id = temp.StokHareketId,
+                        Type = temp.StokHareketType.Type,
+                        SiparisId = temp.SiparisId,
+                        KalipKodList = KalipAdlar.Remove(0, 1),
+                        Yaldiz = YaldizAd,
+                        BoyaKod = BoyaKodlar,
+                        SiparisAdi = temp.Siparis.SiparisAdi,
+                        Adet = temp.Adet,
+                        MontajliMi = temp.MontajliMi,
+                    };
+
+                    return ret;
+
+                }).ToList();
+
+
+                dtModel.meta = dtMeta;
+                dtModel.data = dto.ToList<dynamic>();
+                return Json(dtModel);
+            }
+
+            else
+            {
+                var dto = model.AsEnumerable().Where(x => x.MontajliMi == false).Select(x =>
+                {
+                    var montajKod = x.MontajKod;
+                    var montajliList = new List<StokHareket>();
+                    var BoyaKodId = 0;
+                    var BoyaKodlar = "";
+                    var KalipAdlar = "";
+
+                    if (montajKod != null)
+                    {
+                        montajliList = allList.Where(a => a.MontajKod == montajKod).ToList();
+                    }
+
+                    var KalipKodList = x.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == x.MontajKod).Select(a => a.SiparisKalip.KalipKod) : new List<string>() { x.SiparisKalip.KalipKod };
+
+                    var YaldizId = 0;
+                    var YaldizAd = "";
+
+                    foreach (var item in KalipKodList)
+                    {
+                        var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == item);
+                        if (_kalip != null)
+                        {
+                            KalipAdlar += "_" + _kalip.Adi;
+                        }
+
+                        var yaldizSiparisKalip = yaldizKalipList.FirstOrDefault(c => c.SiparisId == x.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "yaldiz");
+                        var boyaKodSiparisKalip = boyaKodKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "tozboya").ToList();
+
+                        if (yaldizSiparisKalip != null)
+                        {
+                            YaldizId = (int)yaldizSiparisKalip.YaldizId;
+                            YaldizAd = yaldizList.FirstOrDefault(a => a.YaldizId == YaldizId).Aciklama + " (" + _kalip.Adi + ")";
+                        }
+
+                        if (boyaKodSiparisKalip != null && boyaKodSiparisKalip.Count > 0)
+                        {
+                            foreach (var b in boyaKodSiparisKalip)
+                            {
+                                BoyaKodId = (int)b.BoyaKodId;
+                                BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == BoyaKodId).Aciklama + "<br/>";
+                            }
+                        }
+
+
+                    }
+
+                    dynamic ret = new
+                    {
+                        Id = x.StokHareketId,
+                        Type = x.StokHareketType.Type,
+                        SiparisId = x.SiparisId,
+                        KalipKodList = KalipAdlar.Remove(0, 1),
+                        Yaldiz = YaldizAd,
+                        BoyaKod = BoyaKodlar,
+                        SiparisAdi = x.Siparis.SiparisAdi,
+                        Adet = x.Adet,
+                        MontajliMi = x.MontajliMi,
+                    };
+
+                    return ret;
+
+                }).ToList();
+
+
+                dtModel.meta = dtMeta;
+                dtModel.data = dto.ToList<dynamic>();
+                return Json(dtModel);
+            }
 
         }
+
+
         public PartialViewResult Form(int? id)
         {
             id = id == null ? 0 : id.Value;

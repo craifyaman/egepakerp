@@ -29,6 +29,9 @@ namespace EgePakErp.Models
         public bool? isSpreyBoyaBitti { get; set; }
         public bool isMetalizeBitti { get; set; }
         public bool? isMontajBitti { get; set; }
+        public bool? isEvMontajBitti { get; set; }
+        public int? KisiId { get; set; }
+        public Kisi Kisi { get; set; }
 
         public ICollection<Aksiyon> Aksiyon { get; set; }
 

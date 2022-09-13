@@ -87,6 +87,7 @@
                                         <th>Spery Boya Durumu</th>
                                         <th>Metalize Kaplama Durumu</th>
                                         <th>Montaj Durumu</th>
+                                        <th>Ev Montaj Durumu</th>
                                         <th>İşlem</th>
                                     </tr>
                                 </thead>
@@ -96,8 +97,9 @@
                                     {
                                         var siparisKaliplar = item.SiparisKalip
                                             .GroupBy(x => x.KalipKod)
-                                            .Where(x => x.FirstOrDefault(a => a.MaliyetType.ToLower() == "hammadde").DepodaMi == false)
+                                            .Where(x => x.FirstOrDefault(a => a.MaliyetType.ToLower() == "hammadde")?.DepodaMi == false)
                                             .ToList();
+
                                         var count = 0;
 
                                         foreach (var kalip in siparisKaliplar)
@@ -107,72 +109,80 @@
                                             {
                                                 var tdCls = count == 0 ? "bg-secondary" : "";
                                                 SiparisKalip fixKalip = kalip.FirstOrDefault(x => x.MaliyetType.ToLower() == "hammadde");
-                                                <tr class="@tdCls">
-                                                    <td>
-                                                        @if (fixKalip.DepodaMi == false)
-                                                        {
-                                                            <label class="checkbox">
-                                                                <input type="checkbox"
-                                                                       class="MontajliKalip"
-                                                                       SiparisId="@item.SiparisId"
-                                                                       Adet="@item.SiparisAdet"
-                                                                       SiparisKalipId="@fixKalip.SiparisKalipId" />
-                                                                <span></span>
-                                                            </label>
-                                                        }
+                                    <tr class="@tdCls">
+                                        <td>
+                                            @if (fixKalip.DepodaMi == false)
+                                            {
+                                                <label class="checkbox">
+                                                    <input type="checkbox"
+                                                           class="MontajliKalip"
+                                                           SiparisId="@item.SiparisId"
+                                                           Adet="@item.SiparisAdet"
+                                                           SiparisKalipId="@fixKalip.SiparisKalipId" />
+                                                    <span></span>
+                                                </label>
+                                            }
 
 
-                                                    </td>
-                                                    <td style="width:150px;">@item.SiparisAdi</td>
-                                                    <td>@item.Cari.Unvan</td>
-                                                    <td>@(_kalip?.Adi)</td>
-                                                    <td>@item.KayitTarihi.ToString("dd MMMM yyyy")</td>
-                                                    <td>@item.TerminTarihi.ToString("dd MMMM yyyy")</td>
-                                                    <td>
-                                                        <input type="number" class="form-control SiparisAdetInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="@item.SiparisAdet"/>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @Html.Raw(kalip?.FirstOrDefault()?.UretimEmir?.FirstOrDefault()?.isUretimBitti == true ? CheckedHtml : UncheckedHtml)
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSicakBaskiBitti == true ? CheckedHtml : UncheckedHtml)
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSpreyBoyaBitti != null)
-                                                        {
-                                                            @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSpreyBoyaBitti == true ? CheckedHtml : UncheckedHtml)
-                                                        }
+                                        </td>
+                                        <td style="width:150px;">@item.SiparisAdi</td>
+                                        <td>@item.Cari.Unvan</td>
+                                        <td>@(_kalip?.Adi)</td>
+                                        <td>@item.KayitTarihi.ToString("dd MMMM yyyy")</td>
+                                        <td>@item.TerminTarihi.ToString("dd MMMM yyyy")</td>
+                                        <td>
+                                            <input type="number" class="form-control SiparisAdetInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="@item.SiparisAdet" />
+                                        </td>
+                                        <td class="text-center">
+                                            @Html.Raw(kalip?.FirstOrDefault()?.UretimEmir?.FirstOrDefault()?.isUretimBitti == true ? CheckedHtml : UncheckedHtml)
+                                        </td>
+                                        <td class="text-center">
+                                            @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSicakBaskiBitti == true ? CheckedHtml : UncheckedHtml)
+                                        </td>
+                                        <td class="text-center">
+                                            @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSpreyBoyaBitti != null)
+                                            {
+                                                @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSpreyBoyaBitti == true ? CheckedHtml : UncheckedHtml)
+                                            }
 
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMetalizeBitti == true ? CheckedHtml : UncheckedHtml)
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMontajBitti != null)
-                                                        {
-                                                            @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMontajBitti == true ? CheckedHtml : UncheckedHtml)
-                                                        }
+                                        </td>
+                                        <td class="text-center">
+                                            @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMetalizeBitti == true ? CheckedHtml : UncheckedHtml)
+                                        </td>
+                                        <td class="text-center">
+                                            @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMontajBitti != null)
+                                            {
+                                                @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMontajBitti == true ? CheckedHtml : UncheckedHtml)
+                                            }
 
-                                                    </td>
+                                        </td>
 
-                                                    <td class="text-center">
-                                                        @if (fixKalip.DepodaMi != true)
-                                                        {
-                                                            <a href="#"
-                                                               event="DepoAktarTekli"
-                                                               SiparisId="@item.SiparisId"
-                                                               Adet="@item.SiparisAdet"
-                                                               SiparisKalipId="@fixKalip.SiparisKalipId"
-                                                               class="btn btn-light btn-text-success btn-hover-text-success"
-                                                               title="Tekli olarak depoya ekle">
-                                                                depola
-                                                            </a>
-                                                        }
+                                        <td class="text-center">
+                                            @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isEvMontajBitti != null)
+                                            {
+                                                @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isEvMontajBitti== true ? CheckedHtml : UncheckedHtml)
+                                            }
 
-                                                    </td>
+                                        </td>
+
+                                        <td class="text-center">
+                                            @if (fixKalip.DepodaMi != true)
+                                            {
+                                                <a href="#"
+                                                   event="DepoAktarTekli"
+                                                   SiparisId="@item.SiparisId"
+                                                   Adet="@item.SiparisAdet"
+                                                   SiparisKalipId="@fixKalip.SiparisKalipId"
+                                                   class="btn btn-light btn-text-success btn-hover-text-success"
+                                                   title="Tekli olarak depoya ekle">
+                                                    depola
+                                                </a>
+                                            }
+
+                                        </td>
 
 
-                                                </tr>
+                                    </tr>
                                                 count++;
                                             }
 

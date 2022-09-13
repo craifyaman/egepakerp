@@ -488,6 +488,14 @@
     <Compile Include="Migrations\202209090956425_update_StokHareket_montajKod_to_nullable.designer.cs">
       <DependentUpon>202209090956425_update_StokHareket_montajKod_to_nullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209131516106_add_evMontaj_to_uretimEmirDurum.cs" />
+    <Compile Include="Migrations\202209131516106_add_evMontaj_to_uretimEmirDurum.designer.cs">
+      <DependentUpon>202209131516106_add_evMontaj_to_uretimEmirDurum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209131534412_add_KisiId_to_UretimEmir.cs" />
+    <Compile Include="Migrations\202209131534412_add_KisiId_to_UretimEmir.designer.cs">
+      <DependentUpon>202209131534412_add_KisiId_to_UretimEmir.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\StokHareket.cs" />
     <Compile Include="Models\Custom\StokHareketType.cs" />
     <Compile Include="Models\Custom\UretimEmirAksiyonRel.cs" />
@@ -3990,6 +3998,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209090956425_update_StokHareket_montajKod_to_nullable.resx">
       <DependentUpon>202209090956425_update_StokHareket_montajKod_to_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209131516106_add_evMontaj_to_uretimEmirDurum.resx">
+      <DependentUpon>202209131516106_add_evMontaj_to_uretimEmirDurum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209131534412_add_KisiId_to_UretimEmir.resx">
+      <DependentUpon>202209131534412_add_KisiId_to_UretimEmir.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
