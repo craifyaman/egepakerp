@@ -713,17 +713,17 @@
             },
             {
                 field: 'Urun',
-                title: 'Urun'
+                title: 'Urun',
+                width:100,
             },
-            {
-                field: 'UrunId',
-                title: 'Ürün Id'
-            },
+            //{
+            //    field: 'UrunId',
+            //    title: 'Ürün Id'
+            //},
             {
                 field: 'İşlem',
                 title: 'İşlem',
                 sortable: false,
-                width: 130,
                 overflow: 'visible',
                 autoHide: false,
                 template: function (row) {
@@ -732,6 +732,7 @@
                     var str = '<a class="btn btn-icon btn-info mr-1" href="siparis/siparisformu?siparisId=' + row.SiparisId + '&urunId=' + row.UrunId + '" target="_blank" title="Düzenle" data-toggle="tooltip" data-placement="top"><i class="flaticon-edit" ></i> </a>'
                     str += ' <a class="btn btn-icon  mr-1 ' + cls + '" href = "" title = "' + _title + '" event="UretimeAcKapat" SiparisId="' + row.SiparisId + '" > <i class="flaticon-cogwheel-1" ></i></a>'
                     str += '<a class="btn btn-primary btn-icon mr-1" href="/siparis/SiparisDetayPdf?siparisId=' + row.SiparisId + '" target="_blank" title="pdf dökümü" data-toggle="tooltip" data-placement="top"><i class="flaticon-multimedia-4" ></i></a> ';
+                    str += '<a class="btn btn-info btn-icon mr-1" href="/siparis/SiparisUretimDetayPdf?siparisId=' + row.SiparisId + '" target="_blank" title="Üretim dökümü" data-toggle="tooltip" data-placement="top"><i class="flaticon-multimedia-4" ></i></a> ';
                     return str;
                 },
             }
@@ -824,14 +825,14 @@
                 field: 'SiparisAdet',
                 title: 'Sipariş Adet',
             },
-            {
-                field: 'UretilenAdet',
-                title: 'Üretilen Adet',
-            },
-            {
-                field: 'KalanAdet',
-                title: 'Kalan Adet',
-            },
+            //{
+            //    field: 'UretilenAdet',
+            //    title: 'Üretilen Adet',
+            //},
+            //{
+            //    field: 'KalanAdet',
+            //    title: 'Kalan Adet',
+            //},
             {
                 field: 'İşlem',
                 title: 'İşlem',
@@ -939,7 +940,7 @@
             {
                 field: 'Adet',
                 title: 'Adet',
-                width:50
+                width: 50
             },
             //{
             //    field: 'İşlem',

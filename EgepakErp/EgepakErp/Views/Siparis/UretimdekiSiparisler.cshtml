@@ -136,8 +136,13 @@
                                         <td class="text-center">
                                             @Html.Raw(kalip?.FirstOrDefault()?.UretimEmir?.FirstOrDefault()?.isUretimBitti == true ? CheckedHtml : UncheckedHtml)
                                         </td>
+
                                         <td class="text-center">
-                                            @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSicakBaskiBitti == true ? CheckedHtml : UncheckedHtml)
+                                            @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSicakBaskiBitti != null)
+                                            {
+                                                @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSicakBaskiBitti == true ? CheckedHtml : UncheckedHtml)
+                                            }
+
                                         </td>
                                         <td class="text-center">
                                             @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isSpreyBoyaBitti != null)
@@ -147,7 +152,11 @@
 
                                         </td>
                                         <td class="text-center">
-                                            @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMetalizeBitti == true ? CheckedHtml : UncheckedHtml)
+                                            @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMetalizeBitti != null)
+                                            {
+                                                @Html.Raw(kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMetalizeBitti == true ? CheckedHtml : UncheckedHtml)
+                                            }
+
                                         </td>
                                         <td class="text-center">
                                             @if (kalip.FirstOrDefault().UretimEmir.FirstOrDefault()?.isMontajBitti != null)

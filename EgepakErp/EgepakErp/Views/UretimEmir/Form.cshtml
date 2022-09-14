@@ -28,7 +28,7 @@
             @if (Model != null)
             {
 
-                var siparisKaliplar = BaseSiparisKalipListe().Where(x => x.SiparisId == Model.SiparisKalip.SiparisId);
+                var siparisKaliplar = BaseSiparisKalipListe().Where(x => x.SiparisId == Model.SiparisKalip.SiparisId && x.MaliyetType == "hammadde");
 
                 var liste = siparisKaliplar?.GroupBy(x => x.KalipKod).Select(x => new
                 {
@@ -117,13 +117,6 @@
         </div>
     </div>
 
-    <div class="form-group row">
-        <div class="col-lg-12">
-            <label>Üretilen Adet:</label>
-            @Html.TextBoxFor(x => x.UretilenAdet, new { @class = "form-control", @type = "number" })
-        </div>
-    </div>
-
 
     @if (Model != null)
     {
@@ -140,70 +133,86 @@
                     </label>
                 </span>
             </div>
-            <label class="col-2 col-form-label">Sıcak Baskı</label>
-            <div class="col-2">
-                <span class="switch switch-outline switch-icon switch-success">
-                    <label>
-                        @{
-                            var sicakbaskiChc = Model.isSicakBaskiBitti == true ? "checked" : "";
-                        }
-                        <input type="checkbox" @sicakbaskiChc name="isSicakBaskiBitti:CustomSwitch" id="isSicakBaskiBitti" />
-                        <span></span>
-                    </label>
-                </span>
-            </div>
+            @if (Model.isSicakBaskiBitti != null)
+            {
+                <label class="col-2 col-form-label">Sıcak Baskı</label>
+                <div class="col-2">
+                    <span class="switch switch-outline switch-icon switch-success">
+                        <label>
+                            @{
+                                var sicakbaskiChc = Model.isSicakBaskiBitti == true ? "checked" : "";
+                            }
+                            <input type="checkbox" @sicakbaskiChc name="isSicakBaskiBitti:CustomSwitch" id="isSicakBaskiBitti" />
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+            }
 
-            <label class="col-2 col-form-label">Spery Bitti</label>
-            <div class="col-2">
-                <span class="switch switch-outline switch-icon switch-success">
-                    <label>
-                        @{
-                            var speryChc = Model.isSpreyBoyaBitti == true ? "checked" : "";
-                        }
-                        <input type="checkbox" @speryChc name="isSpreyBoyaBitti:CustomSwitch" id="isSpreyBoyaBitti" />
-                        <span></span>
-                    </label>
-                </span>
-            </div>
+            @if (Model.isSpreyBoyaBitti != null)
+            {
+                <label class="col-2 col-form-label">Spery Bitti</label>
+                <div class="col-2">
+                    <span class="switch switch-outline switch-icon switch-success">
+                        <label>
+                            @{
+                                var speryChc = Model.isSpreyBoyaBitti == true ? "checked" : "";
+                            }
+                            <input type="checkbox" @speryChc name="isSpreyBoyaBitti:CustomSwitch" id="isSpreyBoyaBitti" />
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+            }
 
-            <label class="col-2 col-form-label">Metalize Bitti</label>
-            <div class="col-2">
-                <span class="switch switch-outline switch-icon switch-success">
-                    <label>
-                        @{
-                            var metalizeChc = Model.isMetalizeBitti == true ? "checked" : "";
-                        }
-                        <input type="checkbox" @metalizeChc name="isMetalizeBitti:CustomSwitch" id="isMetalizeBitti" />
-                        <span></span>
-                    </label>
-                </span>
-            </div>
+            @if (Model.isMetalizeBitti != null)
+            {
+                <label class="col-2 col-form-label">Metalize Bitti</label>
+                <div class="col-2">
+                    <span class="switch switch-outline switch-icon switch-success">
+                        <label>
+                            @{
+                                var metalizeChc = Model.isMetalizeBitti == true ? "checked" : "";
+                            }
+                            <input type="checkbox" @metalizeChc name="isMetalizeBitti:CustomSwitch" id="isMetalizeBitti" />
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+            }
+            @if (Model.isMontajBitti != null)
+            {
 
-            <label class="col-2 col-form-label">Montaj Bitti</label>
-            <div class="col-2">
-                <span class="switch switch-outline switch-icon switch-success">
-                    <label>
-                        @{
-                            var montajChc = Model.isMontajBitti == true ? "checked" : "";
-                        }
-                        <input type="checkbox" @montajChc name="isMontajBitti:CustomSwitch" id="isMontajBitti" />
-                        <span></span>
-                    </label>
-                </span>
-            </div>
+                <label class="col-2 col-form-label">Montaj Bitti</label>
+                <div class="col-2">
+                    <span class="switch switch-outline switch-icon switch-success">
+                        <label>
+                            @{
+                                var montajChc = Model.isMontajBitti == true ? "checked" : "";
+                            }
+                            <input type="checkbox" @montajChc name="isMontajBitti:CustomSwitch" id="isMontajBitti" />
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+            }
+            @if (Model.isEvMontajBitti != null)
+            {
 
-            <label class="col-2 col-form-label">Ev Montaj Bitti</label>
-            <div class="col-2">
-                <span class="switch switch-outline switch-icon switch-success">
-                    <label>
-                        @{
-                            var evMontajChc = Model.isEvMontajBitti == true ? "checked" : "";
-                        }
-                        <input type="checkbox" @evMontajChc name="isEvMontajBitti:CustomSwitch" id="isEvMontajBitti" />
-                        <span></span>
-                    </label>
-                </span>
-            </div>
+                <label class="col-2 col-form-label">Ev Montaj Bitti</label>
+                <div class="col-2">
+                    <span class="switch switch-outline switch-icon switch-success">
+                        <label>
+                            @{
+                                var evMontajChc = Model.isEvMontajBitti == true ? "checked" : "";
+                            }
+                            <input type="checkbox" @evMontajChc name="isEvMontajBitti:CustomSwitch" id="isEvMontajBitti" />
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+            }
+
 
         </div>
     }
@@ -224,8 +233,8 @@
             </select>
         </div>
     </div>
-    @{ 
-        var visibleEvMontaj = Model?.KisiId != null ? "": "display:none;";
+    @{
+        var visibleEvMontaj = Model?.KisiId != null ? "" : "display:none;";
     }
     <div class="form-group row" style="@visibleEvMontaj" id="evMontajDiv">
         <div class="col-lg-12">
@@ -249,7 +258,8 @@
     @if (Model != null)
     {
         var yaldiz = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.YaldizId != null);
-        var boyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.BoyaKodId != null);
+        var tozBoyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.TozBoyaKodId != null);
+        var spreyBoyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.SpreyBoyaKodId != null);
         <div class="form-group row">
             @if (yaldiz != null)
             {
@@ -266,13 +276,27 @@
 
             }
 
-            @if (boyaKod != null)
+            @if (tozBoyaKod != null)
             {
-                <label class="col-2 col-form-label mt-1">Boya kodu</label>
+                <label class="col-2 col-form-label mt-1">Toz Boya kodu</label>
                 <div class="col-10 mt-3">
                     <span class="switch switch-outline switch-icon switch-success">
                         <label>
-                            @boyaKod.BoyaKod.Kod
+                            @tozBoyaKod.TozBoyaKod.Kod
+                            <span></span>
+                        </label>
+                    </span>
+                </div>
+
+            }
+
+            @if (spreyBoyaKod != null)
+            {
+                <label class="col-2 col-form-label mt-1">Sprey Boya kodu</label>
+                <div class="col-10 mt-3">
+                    <span class="switch switch-outline switch-icon switch-success">
+                        <label>
+                            @spreyBoyaKod.SpreyBoyaKod.Kod
                             <span></span>
                         </label>
                     </span>
@@ -285,13 +309,68 @@
 
     }
 
+    @if (Model == null)
+    {
+        <div class="form-group row">
+            <label class="col-2 col-form-label">Sıcak Baskı Yapılacak</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        <input type="checkbox" name="SicakBaskiYapilacak:CustomSwitch" id="SicakBaskiYapilacak" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+
+            <label class="col-2 col-form-label">Sprey Boya Yapılacak</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        <input type="checkbox" name="SpreyYapilacak:CustomSwitch" id="SpreyYapilacak" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+
+            <label class="col-2 col-form-label">Metalize Yapılacak</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        <input type="checkbox" name="MetalizeYapilacak:CustomSwitch" id="MetalizeYapilacak" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+
+            <label class="col-2 col-form-label">Montaj Yapılacak</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        <input type="checkbox" name="MontajYapilacak:CustomSwitch" id="MontajYapilacak" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+
+            <label class="col-2 col-form-label">Ev Montaj Yapılacak</label>
+            <div class="col-2">
+                <span class="switch switch-outline switch-icon switch-success">
+                    <label>
+                        <input type="checkbox" name="EvMontajYapilacak:CustomSwitch" id="EvMontajYapilacak" />
+                        <span></span>
+                    </label>
+                </span>
+            </div>
+        </div>
+    }
+
     @if (Model != null)
     {
         <div class="form-group row">
-            <div class="col-lg-6">
+            <div class="col-lg-2">
                 <div>Önceki Süreçler:</div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-10">
                 <a href="#" class="btn btn-primary" event="AksiyonEkle" UretimEmirId="@Model.UretimEmirId">Sonraki aşamaya geç</a>
             </div>
         </div>

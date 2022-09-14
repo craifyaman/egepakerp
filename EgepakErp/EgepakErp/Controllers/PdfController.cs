@@ -25,5 +25,16 @@ namespace EgePakErp.Controllers
 
             return View(siparis);
         }
+
+        public ActionResult SiparisUretimDetay(int siparisId)
+        {
+            var db = new Db();
+            var siparis = db.Siparis
+                .Include("Cari")
+                .Include("Urun")
+                .Include(x => x.Urun.UrunCinsi)
+                .FirstOrDefault(x => x.SiparisId == siparisId);
+            return View(siparis);
+        }
     }
 }

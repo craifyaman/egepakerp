@@ -17,12 +17,14 @@ namespace EgePakErp.Controllers
         public SiparisKalipRepository siparisKalipRepo { get; set; }
         public YaldizRepository yaldizRepo { get; set; }
         public BoyaKodRepository boyaKodRepo { get; set; }
+        public CariRepository cariRepo { get; set; }
         public UretimEmirController()
         {
             repo = new UretimEmirRepository();
             siparisKalipRepo = new SiparisKalipRepository();
             yaldizRepo = new YaldizRepository();
             boyaKodRepo = new BoyaKodRepository();
+            cariRepo = new CariRepository();
         }
 
         [Menu("Üretim Emirleri", "flaticon2-menu-2 icon-xl", "Üretim", 5, 1)]
@@ -46,6 +48,7 @@ namespace EgePakErp.Controllers
 
             var model = repo.GetAll();
             var model2 = model.ToList();
+
             //Filtre
             if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
             {
@@ -82,9 +85,9 @@ namespace EgePakErp.Controllers
                 Baslangic = x.Baslangic.ToString("dd MMMM yyyy HH:mm"),
                 Bitis = x.Bitis.ToString("dd MMMM yyyy HH:mm"),
                 Durum = x.UretimEmirDurum.Durum,
-                UretilenAdet = x.UretilenAdet,
+                //UretilenAdet = x.UretilenAdet,
                 SiparisAdet = x.SiparisAdet,
-                KalanAdet = x.KalanAdet,
+                //KalanAdet = x.KalanAdet,
                 ClassList = x.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi ? "bg-success" : "bg-warning",
 
             }).ToList();
@@ -115,7 +118,36 @@ namespace EgePakErp.Controllers
             {
                 if (form.UretimEmirId == 0)
                 {
+                    if (form.SicakBaskiYapilacak)
+                    {
+                        form.isSicakBaskiBitti = false;
+                    }
+                    if (form.SpreyYapilacak)
+                    {
+                        form.isSpreyBoyaBitti = false;
+                    }
+                    if (form.MetalizeYapilacak)
+                    {
+                        form.isMetalizeBitti = false;
+                    }
+                    if (form.MontajYapilacak)
+                    {
+                        form.isMontajBitti = false;
+                    }
+                    if (form.EvMontajYapilacak)
+                    {
+                        form.isEvMontajBitti = false;
+                    }
+                    
                     repo.Insert(form);
+
+                    var sk = siparisKalipRepo.Get(form.SiparisKalipId);
+                    if (sk != null)
+                    {
+                        sk.UretimBasladiMi = true;
+                        siparisKalipRepo.Update(sk);
+                    }
+
                     response.Success = true;
                     response.Description = "Kayıt edildi.";
                 }
@@ -163,13 +195,13 @@ namespace EgePakErp.Controllers
         {
             var yaldizList = yaldizRepo.GetAll();
             var boyaKodList = boyaKodRepo.GetAll();
-            var siparisKaliplar = siparisKalipRepo.GetAll(x=>x.YaldizId != null || x.BoyaKodId != null);
+            var siparisKaliplar = siparisKalipRepo.GetAll(x => x.YaldizId != null || x.TozBoyaKodId != null);
             var response = new Response<dynamic>();
             try
             {
                 var kaliprepo = new KalipRepository();
                 var kaliplar = kaliprepo.GetAll();
-
+                var cariList = cariRepo.GetAll();
                 var model = repo.GetAll();
                 if (type == "enjeksiyon")
                 {
@@ -196,22 +228,31 @@ namespace EgePakErp.Controllers
                 //var yaldiz = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.YaldizId != null);
                 //var boyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.BoyaKodId != null);
 
-                var dto = model.AsEnumerable().Select(x => new
+                var dto = model.AsEnumerable().Select(x =>
                 {
-                    UretimEmirId = x.UretimEmirId,
-                    SiparisKalip = x.SiparisKalip.KalipKod,
-                    KalipAd = kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi + " _ (" + x.SiparisKalip.Siparis.SiparisAdi + ")" + " _ " + siparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizId != null)?.Yaldiz.Aciklama + " _ " + siparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.BoyaKodId != null)?.BoyaKod.Aciklama,
-                    Makine = x.Makine.MakineAd,
-                    MakineId = x.Makine.MakineId,
-                    Baslangic = x.Baslangic,
-                    Bitis = x.Bitis,
-                    Durum = x.UretimEmirDurum?.Durum,
-                    UretilenAdet = x.UretilenAdet,
-                    SiparisAdet = x.SiparisAdet,
-                    KalanAdet = x.KalanAdet,
-                    SiparisId = x.SiparisKalip.SiparisId,
-                    SiparisAdi = x.SiparisKalip.Siparis?.SiparisAdi,
-                    ClassList = x.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi ? "bg-success" : "bg-warning",
+                    var cariId = x.SiparisKalip.Siparis.CariId;
+                    var cari = cariList.FirstOrDefault(a => a.CariId == cariId).Unvan;
+
+                    dynamic ret = new
+                    {
+                        UretimEmirId = x.UretimEmirId,
+                        SiparisKalip = x.SiparisKalip.KalipKod,
+                        KalipAd = "<b>" + kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi + "</b>" + " ( " + cari + " ) " + " _ (" + x.SiparisKalip.Siparis.SiparisAdi + ")" + " _ " + siparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizId != null)?.Yaldiz.Aciklama + " _ " + siparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.TozBoyaKodId != null)?.TozBoyaKod.Aciklama,
+                        Makine = x.Makine.MakineAd,
+                        MakineId = x.Makine.MakineId,
+                        Baslangic = x.Baslangic,
+                        Bitis = x.Bitis,
+                        Durum = x.UretimEmirDurum?.Durum,
+                        //UretilenAdet = x.UretilenAdet,
+                        SiparisAdet = x.SiparisAdet,
+                        //KalanAdet = x.KalanAdet,
+                        SiparisId = x.SiparisKalip.SiparisId,
+                        SiparisAdi = x.SiparisKalip.Siparis?.SiparisAdi,
+                        ClassList = x.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi ? "bg-success" : "bg-secondary",
+                    };
+                    return ret;
+
+
 
                 }).OrderBy(x => x.UretimEmirId).ToList();
 

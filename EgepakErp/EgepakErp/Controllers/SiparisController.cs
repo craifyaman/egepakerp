@@ -123,7 +123,7 @@ namespace EgePakErp.Controllers
                 var cariSiparisleri = siparisRepo.GetAll(x => x.CariId == siparis.CariId && x.UrunId == siparis.UrunId).OrderByDescending(x => x.KayitTarihi).ToList();
                 var sipNo = 0;
 
-                var boyaKodlar = siparis.SiparisKalip.Where(x => x.BoyaKodId != null).Select(x => x.BoyaKodId + "_" + x.KalipKod).ToList();
+                var boyaKodlar = siparis.SiparisKalip.Where(x => x.TozBoyaKodId != null).Select(x => x.TozBoyaKodId + "_" + x.KalipKod).ToList();
                 var yaldizIdList = siparis.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId + "_" + x.KalipKod).ToList();
 
                 List<string> yaldizlar = yaldizIdList.ConvertAll<string>(x => x.ToString());
@@ -140,7 +140,7 @@ namespace EgePakErp.Controllers
 
                 foreach (var sip in cariSiparisleri)
                 {
-                    var _boyaKodlar = sip.SiparisKalip.Where(x => x.BoyaKodId != null).Select(x => x.BoyaKodId + "_" + x.KalipKod).ToList();
+                    var _boyaKodlar = sip.SiparisKalip.Where(x => x.TozBoyaKodId != null).Select(x => x.TozBoyaKod + "_" + x.KalipKod).ToList();
                     var _yaldizIdList = sip.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId + "_" + x.KalipKod).ToList();
 
                     List<string> _yaldizlar = _yaldizIdList.ConvertAll<string>(x => x.ToString());
@@ -213,8 +213,14 @@ namespace EgePakErp.Controllers
                         {
                             siparisKalip.Maliyet = item.Maliyet;
                             siparisKalip.isEnable = item.isEnable;
-                            siparisKalip.BoyaKodId = item.BoyaKodId;
-                            siparisKalip.YaldizId = item.YaldizId;
+                            siparisKalip.TozBoyaKodId = item.TozBoyaKodId;
+                            if (item.YaldizId != null && item.YaldizId != 0)
+                            {
+                                siparisKalip.YaldizId = item.YaldizId;
+                            }
+
+                            siparisKalip.Aciklama = item.Aciklama;
+                            siparisKalip.Formul = item.Formul;
                             siparisKalipRepo.Update(siparisKalip);
                         }
                     }
@@ -502,7 +508,7 @@ namespace EgePakErp.Controllers
             try
             {
                 var siparis = siparisRepo.Get(siparisId);
-                if (siparis.SiparisDurumId == (int)ESiparisType.Tamamlandi)
+                if (siparis.SiparisDurumId == (int)ESiparisType.Tamamlandi || siparis.SiparisDurumId == (int)ESiparisType.SiparisAlindi)
                 {
                     siparis.SiparisDurumId = (int)ESiparisType.Uretimde;
                     response.Description = "Sipariş üretimde olarak işaretlendi";
@@ -534,6 +540,49 @@ namespace EgePakErp.Controllers
             var vPath = "~/Content/SiparisPdf2/" + bId;
             //string url = "https://crm.remifol.com/Pdf/SiparisDetay/" + id + "?fiyatGoster=" + fiyat;
             string url = "https://localhost:44381/Pdf/SiparisDetay?siparisId=" + siparisId;
+
+            string pdf_page_size = "A4";
+            PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize),
+                pdf_page_size, true);
+
+            string pdf_orientation = "Portrait";
+            PdfPageOrientation pdfOrientation =
+                (PdfPageOrientation)Enum.Parse(typeof(PdfPageOrientation),
+                pdf_orientation, true);
+
+            int webPageWidth = 1024;
+            int webPageHeight = 0;
+
+
+            // instantiate a html to pdf converter object
+            HtmlToPdf converter = new HtmlToPdf();
+
+            // set converter options
+            converter.Options.PdfPageSize = pageSize;
+            converter.Options.PdfPageOrientation = pdfOrientation;
+            converter.Options.WebPageWidth = webPageWidth;
+            converter.Options.WebPageHeight = webPageHeight;
+
+            // create a new pdf document converting an url
+            PdfDocument doc = converter.ConvertUrl(url);
+
+            // save pdf document
+            doc.Save(HostingEnvironment.MapPath(vPath));
+
+            // close pdf document
+            doc.Close();
+
+            return File(vPath, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(siparis.Cari.Unvan + "-" + bId));
+
+        }
+
+        public FileResult SiparisUretimDetayPdf(int siparisId)
+        {
+            var siparis = siparisRepo.Get(siparisId);
+            var bId = siparisId + "_uretim" + ".pdf";
+            var vPath = "~/Content/UretimTakip/" + bId;
+            //string url = "https://crm.remifol.com/Pdf/SiparisDetay/" + id + "?fiyatGoster=" + fiyat;
+            string url = "https://localhost:44381/Pdf/SiparisUretimDetay?siparisId=" + siparisId;
 
             string pdf_page_size = "A4";
             PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize),

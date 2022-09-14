@@ -302,7 +302,7 @@
         maliyetHesapla();
     }
 
-    function InputBulEkle(MaliyetType, KalipId, Value, YaldizId = null, boyaKod = null) {
+    function InputBulEkle(MaliyetType, KalipId, Value, YaldizId = null, boyaKod = null, formul, aciklama = null, spreyBoyaKod = null) {
         debugger;
         var Input = $("td[" + MaliyetType + "-cikar='" + KalipId + "'] input");
         Input.val(Value);
@@ -314,6 +314,21 @@
 
         if (boyaKod != null) {
             Input.attr("boyaKod", boyaKod)
+            Input.addClass("changed");
+        }
+
+        if (spreyBoyaKod != null) {
+            Input.attr("spreyBoyaKod", spreyBoyaKod)
+            Input.addClass("changed");
+        }
+
+        if (formul != null) {
+            Input.attr("formul", formul)
+            Input.addClass("changed");
+        }
+
+        if (aciklama != null) {
+            Input.attr("aciklama", aciklama)
             Input.addClass("changed");
         }
     }
@@ -349,6 +364,9 @@
                                 var value = $(".Fiyat").val();
                                 var YaldizId = null;
                                 var boyaKod = null;
+                                var spreyBoyaKod = null;
+                                var formul = null;
+                                var aciklama = null;
 
                                 if ($(".Fiyat").attr("YaldizId") !== null && $(".Fiyat").attr("YaldizId") !== undefined) {
                                     YaldizId = $(".Fiyat").attr("YaldizId");
@@ -358,13 +376,26 @@
                                     boyaKod = $(".Fiyat").attr("boyaKod");
                                 }
 
-                                InputBulEkle(maliyetType, kalipId, value, YaldizId, boyaKod);
+                                if ($(".Fiyat").attr("spreyBoyaKod") !== null && $(".Fiyat").attr("spreyBoyaKod") !== undefined) {
+                                    spreyBoyaKod = $(".Fiyat").attr("spreyBoyaKod");
+                                }
+                                
+                                if ($(".Fiyat").attr("formul") !== null && $(".Fiyat").attr("formul") !== undefined) {
+                                    formul = $("#formul").val();
+                                }
+
+                                if ($("#SiparisKalipAciklama").val() !== null && $("#SiparisKalipAciklama").val() !== undefined) {
+                                    aciklama = $("#SiparisKalipAciklama").val();
+                                }
+
+                                InputBulEkle(maliyetType, kalipId, value, YaldizId, boyaKod, formul, aciklama, spreyBoyaKod);
 
                                 if ($(".parentDiv").attr("uruntype") == "koli") {
                                     var posetKatsayi = $("#posetParametre").val();
                                     var targetId = $("#posetParametre").attr("targetInputId");
                                     $("#" + targetId).val(posetKatsayi);
                                 }
+
                                 maliyetHesapla();
                                 bootbox.hideAll();
                                 return false;
@@ -521,7 +552,10 @@
             this.MaliyetType;//string
             this.isEnable;//bool
             this.YaldizId;//string 
-            this.BoyaKodId;//int 
+            this.TozBoyaKodId;//int 
+            this.SpreyBoyaKodId;//int 
+            this.Aciklama;//string
+            this.Formul;//string
         }
 
         var SiparisDto = function () {
@@ -555,9 +589,31 @@
 
             var BoyaKod = input.getAttribute("boyaKod");
             if (BoyaKod !== undefined && BoyaKod != null) {
-                dto.BoyaKodId = BoyaKod;
+                dto.TozBoyaKodId = BoyaKod;
             } else {
-                dto.BoyaKodId = null;
+                dto.TozBoyaKodId = null;
+            }
+
+            var SpreyBoyaKod = input.getAttribute("spreyBoyaKod");
+
+            if (SpreyBoyaKod !== undefined && SpreyBoyaKod != null) {
+                dto.SpreyBoyaKodId = SpreyBoyaKod;
+            } else {
+                dto.SpreyBoyaKodId = null;
+            }
+
+            var Aciklama = input.getAttribute("Aciklama");
+            if (Aciklama !== undefined && Aciklama != null) {
+                dto.Aciklama = Aciklama;
+            } else {
+                dto.Aciklama = null;
+            }
+
+            var Formul = input.getAttribute("Formul");
+            if (Formul !== undefined && Formul != null) {
+                dto.Formul = Formul;
+            } else {
+                dto.Formul = null;
             }
 
             if ($(input).prop('disabled') == false) {
@@ -638,7 +694,10 @@
             this.Maliyet;//decimal
             this.isEnable;//bool
             this.YaldizId;//string
-            this.BoyaKodId;//int
+            this.TozBoyaKodId;//int
+            this.SpreyBoyaKodId;//int
+            this.Aciklama;//string
+            this.Formul;//string
         }
 
         var array = $(".changed").sort();
@@ -648,7 +707,11 @@
             degisen.SiparisKalipId = input.getAttribute("SiparisKalipId");
             degisen.Maliyet = input.value;
             degisen.YaldizId = null;
-            degisen.BoyaKodId = null;
+            degisen.TozBoyaKodId = null;
+            degisen.SpreyBoyaKodId = null;
+            degisen.Aciklama = null;
+            degisen.Formul = null;
+
             if ($(input).prop('disabled') == false) {
                 degisen.isEnable = true;
             } else {
@@ -656,11 +719,25 @@
             }
             var yaldiz = $(input).attr("YaldizId");
             var boyaKod = $(input).attr("boyaKod");
+            var spreyBoyaKod = $(input).attr("spreyBoyaKod");
+            var aciklama = $(input).attr("aciklama");
+            var formul = $(input).attr("formul");
+
             if (yaldiz != null && yaldiz !== undefined) {
                 degisen.YaldizId = yaldiz;
             }
             if (boyaKod != null && boyaKod !== undefined) {
-                degisen.BoyaKodId = boyaKod;
+                degisen.TozBoyaKodId = boyaKod;
+            }
+            if (spreyBoyaKod != null && spreyBoyaKod !== undefined) {
+                degisen.SpreyBoyaKodId = spreyBoyaKod;
+            }
+            
+            if (aciklama != null && aciklama !== undefined) {
+                degisen.Aciklama = aciklama;
+            }
+            if (formul != null && formul !== undefined) {
+                degisen.Formul = formul;
             }
 
             liste.push(degisen);
@@ -982,6 +1059,14 @@
 
         });
 
+        $(document).on("change", "#spreyBoyaKodSelect", function (event) {
+            event.preventDefault();
+            debugger;
+            var boyaKod = $(this).val();
+            $(".Fiyat").attr("spreyBoyaKod", boyaKod);
+
+        });
+        
         $(document).on("change", "#YaldizId", function (event) {
             event.preventDefault();
             debugger;

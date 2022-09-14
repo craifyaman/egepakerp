@@ -93,10 +93,10 @@
                                     @buttonText
                                 </span>
                             </div>
-                            @if (siparisKalip.BoyaKodId != null)
+                            @if (siparisKalip.TozBoyaKodId != null)
                             {
                                 <div>
-                                    boya kod = @siparisKalip.BoyaKod.Kod
+                                    boya kod = @siparisKalip.TozBoyaKod.Kod
                                 </div>
                             }
                         </div>
@@ -194,20 +194,29 @@
             <td>Sprey Boya</td>
             @foreach (var kalip in Model)
             {
-                var siparisKalip = siparisKalipListe.FirstOrDefault(x => x.KalipKod == kalip.ParcaKodu && x.MaliyetType == "sprey");
+                var siparisKalip = siparisKalipListe.FirstOrDefault(x => x.KalipKod == kalip.ParcaKodu && x.MaliyetType == "spreyBoya");
                 var maliyet = siparisKalip.Maliyet;
                 var attr = siparisKalip.isEnable == false ? "disabled" : "";
                 var cls = attr == "disabled" ? "btn-success" : "btn-danger";
                 var buttonText = attr == "disabled" ? "+" : "-";
-                <td sprey-cikar="@kalip.KalipId" HazirMalzemeMi="@kalip.isHazirMalzeme.ToString()">
+                <td spreyBoya-cikar="@kalip.KalipId" HazirMalzemeMi="@kalip.isHazirMalzeme.ToString()">
                     <div class="col-lg-12 mb-2">
                         <label>Maliyet:</label>
                         <div class="input-group mb-5">
-                            <input @attr kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="sprey" HesplamaType="malzeme" type="text" class="form-control birimFiyat siparisFiyat" SiparisKalipId="@siparisKalip.SiparisKalipId" value="@maliyet" />
-                            <span sprey-cikar="@kalip.KalipId" class="btn btn-sm input-group-text @cls" KalipId="@kalip.KalipId" cikar-type="sprey" event="FaturadanCikar" TargetSiparisKalipId="@siparisKalip.SiparisKalipId">
+                            <span class="input-group-text" event="MaliyetDetay" maliyetType="spreyBoya" kalipId="@kalip.KalipId">
+                                <i class="flaticon-mark"></i>
+                            </span>
+                            <input @attr kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="spreyBoya" HesplamaType="malzeme" type="text" class="form-control birimFiyat siparisFiyat" SiparisKalipId="@siparisKalip.SiparisKalipId" value="@maliyet" />
+                            <span spreyBoya-cikar="@kalip.KalipId" class="btn btn-sm input-group-text @cls" KalipId="@kalip.KalipId" cikar-type="spreyBoya" event="FaturadanCikar" TargetSiparisKalipId="@siparisKalip.SiparisKalipId">
                                 @buttonText
                             </span>
                         </div>
+                        @if (siparisKalip.SpreyBoyaKodId != null)
+                        {
+                            <div>
+                                sprey boya kod = @siparisKalip.SpreyBoyaKod.Kod
+                            </div>
+                        }
                     </div>
                 </td>
 

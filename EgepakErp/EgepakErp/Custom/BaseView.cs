@@ -420,16 +420,18 @@ namespace EgePakErp.Custom
         public List<SiparisKalip> BaseSiparisKalipListe()
         {
             var list = db.SiparisKalip
-                .Include(x=>x.BoyaKod)
-                .Include(x=>x.Siparis)
-                .Include(x=>x.Yaldiz)
+                .Include(x => x.TozBoyaKod)
+                .Include(x => x.SpreyBoyaKod)
+                .Include(x => x.Siparis)
+                .Include(x => x.Yaldiz)
                 .ToList();
             return list;
         }
         public IQueryable<SiparisKalip> BaseSiparisKalipListeQ()
         {
             var list = db.SiparisKalip
-                .Include(x => x.BoyaKod)
+                .Include(x => x.TozBoyaKod)
+                .Include(x => x.SpreyBoyaKod)
                 .Include(x => x.Siparis)
                 .Include(x => x.Yaldiz)
                 .AsQueryable();
@@ -438,7 +440,8 @@ namespace EgePakErp.Custom
         public IQueryable<SiparisKalip> BaseSiparisKalipListe(int siparisId)
         {
             var list = db.SiparisKalip
-                .Include(x => x.BoyaKod)
+                .Include(x => x.TozBoyaKod)
+                .Include(x => x.SpreyBoyaKod)
                 .Include(x => x.Siparis)
                 .Include(x => x.Yaldiz)
                 .Where(x => x.SiparisId == siparisId)
@@ -449,7 +452,7 @@ namespace EgePakErp.Custom
         public IQueryable<Siparis> BaseSiparis()
         {
             var list = db.Siparis
-                .Include(x=>x.Cari)
+                .Include(x => x.Cari)
                 .AsQueryable();
             return list;
         }
@@ -477,6 +480,19 @@ namespace EgePakErp.Custom
                 .AsQueryable();
             return list;
         }
+        public IQueryable<Cari> BaseCari()
+        {
+            var list = db.Cari
+               .Include(x => x.CariGrup)
+               .Include(x => x.Kisi)
+               .Include(x => x.Il)
+               .Include(x => x.Ilce)
+               .Include(x => x.BaglantiTipi)
+               .AsQueryable();
+            return list;
+
+        }
+
         public decimal BaseKur(string kurType, DateTime date)
         {
             var dovizKur = db.DovizKur.FirstOrDefault();
@@ -511,6 +527,11 @@ namespace EgePakErp.Custom
             var liste = db.BoyaKod.AsQueryable();
             return liste;
         }
+        public IQueryable<BoyaKodType> BaseBoyaKodType()
+        {
+            var liste = db.BoyaKodType.AsQueryable();
+            return liste;
+        }
         public IQueryable<Kalip> BaseKalip()
         {
             var liste = db.Kalip.AsQueryable();
@@ -518,13 +539,13 @@ namespace EgePakErp.Custom
         }
         public Kalip KalipFindByKalipKod(string kod)
         {
-            var kalip = db.Kalip.FirstOrDefault(x=>x.ParcaKodu == kod);
+            var kalip = db.Kalip.FirstOrDefault(x => x.ParcaKodu == kod);
             return kalip;
         }
         public IQueryable<Aksiyon> BaseAksiyon()
         {
             var liste = db.Aksiyon
-                .Include(x=>x.AksiyonType)
+                .Include(x => x.AksiyonType)
                 .AsQueryable();
             return liste;
         }

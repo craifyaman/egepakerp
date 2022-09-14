@@ -10,6 +10,9 @@ var KTSelect2 = function() {
         $('#KisiId').select2({
             placeholder: 'Kisi Seciniz'
         });
+        $('#CariId').select2({
+            placeholder: 'Cari Seciniz'
+        });
         // nested
         $('#kt_select2_2, #kt_select2_2_validate').select2({
             placeholder: 'Select a state'
@@ -174,17 +177,27 @@ var KTSelect2 = function() {
             });
         });
     }
+    var yaldiz = function () {
+        // basic
+        $('#CariId').select2({
+            placeholder: 'Cari Seciniz'
+        });
 
+    }
     // Public functions
     return {
         init: function() {
             demos();
             modalDemos();
+            
+        },
+        Yaldiz: function () {
+            yaldiz();
         }
     };
 }();
 
 // Initialization
-jQuery(document).ready(function() {
-    KTSelect2.init();
-});
+//jQuery(document).ready(function() {
+//    KTSelect2.init();
+//});

@@ -12,11 +12,18 @@ namespace EgePakErp.Models
         public int BoyaKodId { get; set; }
         public string Aciklama { get; set; }
         public string Kod { get; set; }
-        public ICollection<SiparisKalip> SiparisKalip { get; set; }
+        public int BoyaKodTypeId { get; set; }
+        public BoyaKodType BoyaKodType { get; set; }
+
+        [InverseProperty("TozBoyaKod")]
+        public ICollection<SiparisKalip> TozBoyaKods { get; set; }
+        [InverseProperty("SpreyBoyaKod")]
+        public ICollection<SiparisKalip> SpreyBoyaKods { get; set; }
+
 
         [NotMapped]
         public List<string> Include { get; set; }
 
-
     }
+
 }

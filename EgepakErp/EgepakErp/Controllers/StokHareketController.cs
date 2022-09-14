@@ -65,7 +65,7 @@ namespace EgePakErp.Controllers
             var BoyaKodList = boyaKodRepo.GetAll();
             var montajliKaliplar = repo.GetAll(x => x.MontajliMi).ToList();
             var yaldizKalipList = siparisKalipRepo.GetAll(x => x.YaldizId != null);
-            var boyaKodKalipList = siparisKalipRepo.GetAll(x => x.BoyaKodId != null);
+            var tozBoyaKodKalipList = siparisKalipRepo.GetAll(x => x.TozBoyaKodId != null);
             var kalipListe = kalipRepo.GetAll();
 
             try
@@ -119,7 +119,7 @@ namespace EgePakErp.Controllers
                         }
 
                         var yaldizSiparisKalip = yaldizKalipList.FirstOrDefault(c => c.SiparisId == temp.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "yaldiz");
-                        var boyaKodSiparisKalip = boyaKodKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "tozboya").ToList();
+                        var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "tozboya").ToList();
 
                         if (yaldizSiparisKalip != null)
                         {
@@ -127,11 +127,11 @@ namespace EgePakErp.Controllers
                             YaldizAd = yaldizList.FirstOrDefault(a => a.YaldizId == YaldizId).Aciklama + " (" + _kalip.Adi + ")";
                         }
 
-                        if (boyaKodSiparisKalip != null && boyaKodSiparisKalip.Count > 0)
+                        if (tozBoyaKodSiparisKalip != null && tozBoyaKodSiparisKalip.Count > 0)
                         {
-                            foreach (var b in boyaKodSiparisKalip)
+                            foreach (var b in tozBoyaKodSiparisKalip)
                             {
-                                BoyaKodId = (int)b.BoyaKodId;
+                                BoyaKodId = (int)b.TozBoyaKodId;
                                 BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == BoyaKodId).Aciklama + "<br/>";
                             }
                         }
@@ -191,7 +191,7 @@ namespace EgePakErp.Controllers
                         }
 
                         var yaldizSiparisKalip = yaldizKalipList.FirstOrDefault(c => c.SiparisId == x.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "yaldiz");
-                        var boyaKodSiparisKalip = boyaKodKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "tozboya").ToList();
+                        var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "tozboya").ToList();
 
                         if (yaldizSiparisKalip != null)
                         {
@@ -199,11 +199,11 @@ namespace EgePakErp.Controllers
                             YaldizAd = yaldizList.FirstOrDefault(a => a.YaldizId == YaldizId).Aciklama + " (" + _kalip.Adi + ")";
                         }
 
-                        if (boyaKodSiparisKalip != null && boyaKodSiparisKalip.Count > 0)
+                        if (tozBoyaKodSiparisKalip != null && tozBoyaKodSiparisKalip.Count > 0)
                         {
-                            foreach (var b in boyaKodSiparisKalip)
+                            foreach (var b in tozBoyaKodSiparisKalip)
                             {
-                                BoyaKodId = (int)b.BoyaKodId;
+                                BoyaKodId = (int)b.TozBoyaKodId;
                                 BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == BoyaKodId).Aciklama + "<br/>";
                             }
                         }

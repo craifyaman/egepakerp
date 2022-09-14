@@ -84,6 +84,7 @@
                 },
                 function () {
                     Global.init();
+                    KTSelect2.Yaldiz();
                 },
                 "html");
         });

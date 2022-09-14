@@ -18,7 +18,7 @@ namespace EgePakErp.Controllers
             repo = new YaldizRepository();
         }
 
-        [Menu("Yaldız listesi", "fas fa-align-justify icon-xl", "Yaldız", 0, 1)]
+        [Menu("Yaldız Pdf Dosyaları", "fas fa-align-justify icon-xl", "Yaldız", 0, 1)]
         public ActionResult Index()
         {
             return View();

@@ -170,6 +170,10 @@
                 <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N3")" />
                 <span class="form-text text-muted">( (Birim Fiyat * Fire Oranı) / 1000) * Mamül Ağırlık</span>
             </div>
+            <div class="form-group">
+                <label>Açıklama:</label>
+                <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
+            </div>
         </div>
     </div>
 }
@@ -201,14 +205,14 @@
 
                 <div class="col-lg-12 mb-2">
                     <label>bir adet için üretim maliyeti:</label>
-                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("n4")" />
+                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" formul="0" value="@Maliyet.ToString("n4")" />
                     <span class="form-text text-muted">0,0012 * Mamül Ağırlık * (Birim Fiyat / 1000)</span>
                 </div>
 
                 <div class="col-lg-12 mb-2">
                     <label>Boya Kodu:</label>
                     @{
-                        var kodListe = BaseBoyaKod().ToList();
+                        var kodListe = BaseBoyaKod().Where(x => x.BoyaKodTypeId == (int)EBoyaKodType.TozBoya).ToList();
                         <select class="form-control" id="boyaKodSelect">
                             <option>Kod seçin</option>
                             @foreach (var kod in kodListe)
@@ -220,7 +224,56 @@
                     }
                 </div>
 
+                <div class="col-lg-12 mb-2">
+                    <label>Formül:</label>
+                    <input type="text" class="form-control" id="formul" placeholder="formül girin" />
+                </div>
 
+                <div class="col-lg-12 mb-2">
+                    <label>Açıklama:</label>
+                    <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
+                </div>
+
+            </div>
+        </td>
+    }
+    catch (Exception ex)
+    {
+
+    }
+}
+
+@if (type == "spreyBoya")
+{
+    try
+    {
+
+
+        <td spreyBoya-cikar="@Model.KalipId">
+            <div class="form-group row parentDiv" UrunType="spreyBoya">
+                <div class="col-lg-12 mb-2">
+                    <label>Boya Kodu:</label>
+                    @{
+                        var kodListe = BaseBoyaKod().Where(x => x.BoyaKodTypeId == (int)EBoyaKodType.SpreyBoya).ToList();
+                        <select class="form-control" id="spreyBoyaKodSelect">
+                            <option>Kod seçin</option>
+                            @foreach (var kod in kodListe)
+                            {
+                                <option value="@kod.BoyaKodId">@kod.Kod</option>
+                            }
+                        </select>
+                    }
+                </div>
+
+                <div class="col-lg-12 mb-2">
+                    <label>Maliyet:</label>
+                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="0" />
+                </div>
+
+                <div class="col-lg-12 mb-2">
+                    <label>Açıklama:</label>
+                    <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
+                </div>
             </div>
         </td>
     }
@@ -324,6 +377,10 @@
                     <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N5")" />
                     <span class="form-text text-muted">(BantFiyat * Katsayi + BirimFiyat) / Kapasite</span>
                 </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Açıklama:</label>
+                    <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
+                </div>
             </div>
         </td>
     </tr>
@@ -376,7 +433,10 @@
             <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birimMaliyet.Value.ToString("N4")" />
             <span class="form-text text-muted">(Birim Fiyat * @Katsayi) / @Kapasite</span>
         </div>
-
+        <div class="col-lg-12 mb-2">
+            <label>Açıklama:</label>
+            <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
+        </div>
     </div>
 }
 
@@ -443,7 +503,10 @@
                     <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" YaldizId="0" value="@Maliyet.ToString("n2")" />
                     <span class="form-text text-muted">(BirimFiyat * Kat Sayı) / <span id="yaldizSabit">@Bolum</span></span>
                 </div>
-
+                <div class="col-lg-12 mb-2">
+                    <label>Açıklama:</label>
+                    <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
+                </div>
             </div>
 
         </td>
@@ -477,6 +540,10 @@
                 <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@birAdetUrunUretimMaliyeti.ToString("N3")" />
                 <span class="form-text text-muted">( enjeksiyon saat maliyet ) / ( (3600/üretim süresi(sn)) * göz sayısı )</span>
             </div>
+            <div class="col-lg-12 mb-2">
+                <label>Açıklama:</label>
+                <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
+            </div>
         </div>
 
     }
@@ -501,6 +568,10 @@
                 <label>üretim maliyeti</label>
                 <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="0" />
                 <span class="form-text text-muted">( enjeksiyon saat maliyet ) / ( (3600/üretim süresi(sn)) * göz sayısı )</span>
+            </div>
+            <div class="col-lg-12 mb-2">
+                <label>Açıklama:</label>
+                <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
             </div>
         </div>
 
@@ -578,6 +649,10 @@
                         <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@Maliyet.ToString("N3")" />
                         <span class="form-text text-muted">Personel Saat Maliyet / Saatlik Üretim Adedi</span>
                     </div>
+                    <div class="col-lg-12 mb-2">
+                        <label>Açıklama:</label>
+                        <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
+                    </div>
                 </div>
 
             </td>
@@ -620,6 +695,10 @@
                     <label>adet maliyeti</label>
                     <input kalipId="@kalip.KalipId" type="text" class="form-control Fiyat" value="@sonuc.ToString("N3")" />
                     <span class="form-text text-muted">Personel Saat Maliyet / Saatlik Üretim Adedi</span>
+                </div>
+                <div class="col-lg-12 mb-2">
+                    <label>Açıklama:</label>
+                    <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
                 </div>
             </div>
         }

@@ -8,15 +8,14 @@
     <div class="card card-custom card-stretch gutter-b">
         <!--begin::Header-->
         <div class="text-center p-5">
-            <h1>EGEPAK PLASTİK KOZMETİK SAN.VE TİC.LTD.ŞTİ.</h1>
-            <h5>NECİP FAZIL MAH. 19 MAYIS CAD. NO:22 ÜMRANİYE / İSTANBUL</h5>
-            <h5>TEL : 00 9 0216 365 89 83 FAX : 00 9 0216 365 89 84</h5>
-            <h5>www.egepak.net - e-mail : egepak@egepak.net</h5>
+            <h1>
+                Üretim Dökümanı
+            </h1>
         </div>
         <div class="card-header border-0 py-5">
 
             <h3 class="card-title align-items-start flex-column">
-                <span class="card-label font-weight-bolder text-dark">Sipariş Bilgileri</span>
+                <span class="card-label font-weight-bolder text-dark">Ürün Bilgileri</span>
                 <span class="text-muted mt-3 font-weight-bold font-size-sm"></span>
             </h3>
             <div class="card-toolbar">
@@ -35,14 +34,10 @@
                                 <th>
                                     <span class="text-dark-75">Sipariş</span>
                                 </th>
-                                <th style="min-width: 100px">Cari</th>
+                                <th style="min-width: 250px">Cari</th>
                                 <th style="min-width: 100px">Ürün</th>
                                 <th style="min-width: 100px">Kayıt Tarihi</th>
                                 <th style="min-width: 100px">Termin Tarihi</th>
-                                <th style="min-width: 100px">Toplam Tutar Tl</th>
-                                <th style="min-width: 100px">Toplam Tutar Usd</th>
-                                <th style="min-width: 100px">Toplam Tutar Eur</th>
-                                <th style="min-width: 80px"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,23 +72,6 @@
                                     </span>
                                 </td>
 
-                                <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                        @((Model.ToplamMaliyet * Model.SiparisAdet).ToString("n2"))
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                        @((Model.ToplamMaliyetUsd * Model.SiparisAdet).ToString("n2"))
-                                    </span>
-                                </td>
-
-                                <td>
-                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                        @((Model.ToplamMaliyetEur * Model.SiparisAdet).ToString("n2"))
-                                    </span>
-                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -103,6 +81,9 @@
         </div>
         <!--end::Body-->
     </div>
+    <!--end::Advance Table Widget 4-->
+    <!--begin::Advance Table Widget 4-->
+
     <!--end::Advance Table Widget 4-->
     <!--begin::Advance Table Widget 4-->
     <div class="card card-custom card-stretch gutter-b">
@@ -126,22 +107,23 @@
             <div class="tab-content">
                 <!--begin::Table-->
                 <div class="table-responsive">
-                    <table class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                    <table class="table table-head-custom table-head-bg table-bordered table-vertical-center">
                         <thead>
                             <tr class="text-left text-uppercase">
                                 <th style="min-width: 100px">Kalıp</th>
-                                @*<th style="min-width: 100px">Adet</th>
-                                <th style="min-width: 100px">Birim Maliyet</th>
-                                <th style="min-width: 100px">Toplam</th>*@
                                 <th style="min-width: 100px">Yaldız</th>
-                                <th style="min-width: 100px">Boya Kod</th>
-                                <th style="min-width: 80px"></th>
+                                <th style="min-width: 100px">Toz Boya Kod</th>
+                                <th style="min-width: 100px">Sprey Boya Kod</th>
+                                <th style="min-width: 100px">
+                                    Açıklamalar
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in _SiparisKaliplar)
                             {
                                 var kalip = KalipFindByKalipKod(item.FirstOrDefault().KalipKod);
+
                                 if (kalip != null)
                                 {
                                     <tr>
@@ -150,34 +132,40 @@
                                                 @(kalip.Adi)
                                             </span>
                                         </td>
-                                        @*<td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @Model.SiparisAdet
-                                            </span>
-                                        </td>
+
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @item.Sum(x => x.Maliyet).ToString("n3")
+                                                @if (item.FirstOrDefault(x => x.YaldizId != null)?.Yaldiz != null)
+                                                {
+                                                    @("(#"+ item.FirstOrDefault(x => x.YaldizId != null)?.Yaldiz?.YaldizId+") ") @(item.FirstOrDefault(x=>x.YaldizId != null)?.Yaldiz?.Aciklama)
+                                                }
+
                                             </span>
                                         </td>
 
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @((item.Sum(x => x.Maliyet)*Model.SiparisAdet).ToString("n2"))
-                                            </span>
-                                        </td>*@
-
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @(item.FirstOrDefault(x=>x.YaldizId != null)?.Yaldiz?.Aciklama)
+                                                @(item.FirstOrDefault(x=>x.TozBoyaKodId != null)?.TozBoyaKod?.Aciklama)
                                             </span>
                                         </td>
-
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @(item.FirstOrDefault(x=>x.BoyaKodId != null)?.BoyaKod?.Aciklama)
+                                                @(item.FirstOrDefault(x=>x.SpreyBoyaKodId != null)?.SpreyBoyaKod?.Aciklama)
                                             </span>
                                         </td>
+                                        <td>
+                                            @foreach (var sKalip in item)
+                                            {
+                                                if (sKalip.Aciklama != null)
+                                                {
+                                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                        @sKalip.Aciklama ( @sKalip.MaliyetType )
+                                                    </span>
+                                                }
+
+                                            }
+                                        </td>
+
 
                                     </tr>
                                 }

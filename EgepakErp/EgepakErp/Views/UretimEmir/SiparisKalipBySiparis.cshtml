@@ -1,6 +1,6 @@
 ﻿@model List<SiparisKalip>
 @{
-    var liste = Model.GroupBy(x => x.KalipKod).Select(x => new
+    var liste = Model.Where(x => x.UretimBasladiMi == false && x.MaliyetType == "hammadde").GroupBy(x => x.KalipKod).Select(x => new
     {
         Kod = x.FirstOrDefault().KalipKod,
         SiparisKalipId = x.FirstOrDefault().SiparisKalipId

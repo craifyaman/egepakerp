@@ -215,6 +215,7 @@
     <Compile Include="DtModels\SiparisDepoAktarimDto.cs" />
     <Compile Include="DtModels\MaliyetDto.cs" />
     <Compile Include="Enums\EAksiyonType.cs" />
+    <Compile Include="Enums\EBoyaKodType.cs" />
     <Compile Include="Enums\ESiparisType.cs" />
     <Compile Include="Enums\EStokHareketType.cs" />
     <Compile Include="Enums\EUretimEmirDurum.cs" />
@@ -496,6 +497,31 @@
     <Compile Include="Migrations\202209131534412_add_KisiId_to_UretimEmir.designer.cs">
       <DependentUpon>202209131534412_add_KisiId_to_UretimEmir.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209140701228_add_formul_and_aciklama_to_SiparisKalip.cs" />
+    <Compile Include="Migrations\202209140701228_add_formul_and_aciklama_to_SiparisKalip.designer.cs">
+      <DependentUpon>202209140701228_add_formul_and_aciklama_to_SiparisKalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209140904549_update_uretimEmir_bools_to_nullable.cs" />
+    <Compile Include="Migrations\202209140904549_update_uretimEmir_bools_to_nullable.designer.cs">
+      <DependentUpon>202209140904549_update_uretimEmir_bools_to_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209141208309_create_BoyaKodType.cs" />
+    <Compile Include="Migrations\202209141208309_create_BoyaKodType.designer.cs">
+      <DependentUpon>202209141208309_create_BoyaKodType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209141336186_add_spreyboyakod_to_sipariskalip.cs" />
+    <Compile Include="Migrations\202209141336186_add_spreyboyakod_to_sipariskalip.designer.cs">
+      <DependentUpon>202209141336186_add_spreyboyakod_to_sipariskalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209141444239_delete_uretilen_adet_from_uretimemir.cs" />
+    <Compile Include="Migrations\202209141444239_delete_uretilen_adet_from_uretimemir.designer.cs">
+      <DependentUpon>202209141444239_delete_uretilen_adet_from_uretimemir.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209141505315_add_uretimbasladimi_to_sipariskalip.cs" />
+    <Compile Include="Migrations\202209141505315_add_uretimbasladimi_to_sipariskalip.designer.cs">
+      <DependentUpon>202209141505315_add_uretimbasladimi_to_sipariskalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Custom\BoyaKodType.cs" />
     <Compile Include="Models\Custom\StokHareket.cs" />
     <Compile Include="Models\Custom\StokHareketType.cs" />
     <Compile Include="Models\Custom\UretimEmirAksiyonRel.cs" />
@@ -3799,6 +3825,7 @@
     <Content Include="Views\StokHareket\Index.cshtml" />
     <Content Include="Views\Pdf\SiparisDetay.cshtml" />
     <Content Include="Views\Shared\_PdfLayout.cshtml" />
+    <Content Include="Views\Pdf\SiparisUretimDetay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -4004,6 +4031,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209131534412_add_KisiId_to_UretimEmir.resx">
       <DependentUpon>202209131534412_add_KisiId_to_UretimEmir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209140701228_add_formul_and_aciklama_to_SiparisKalip.resx">
+      <DependentUpon>202209140701228_add_formul_and_aciklama_to_SiparisKalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209140904549_update_uretimEmir_bools_to_nullable.resx">
+      <DependentUpon>202209140904549_update_uretimEmir_bools_to_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209141208309_create_BoyaKodType.resx">
+      <DependentUpon>202209141208309_create_BoyaKodType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209141336186_add_spreyboyakod_to_sipariskalip.resx">
+      <DependentUpon>202209141336186_add_spreyboyakod_to_sipariskalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209141444239_delete_uretilen_adet_from_uretimemir.resx">
+      <DependentUpon>202209141444239_delete_uretilen_adet_from_uretimemir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209141505315_add_uretimbasladimi_to_sipariskalip.resx">
+      <DependentUpon>202209141505315_add_uretimbasladimi_to_sipariskalip.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
