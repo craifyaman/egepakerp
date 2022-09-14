@@ -538,8 +538,8 @@ namespace EgePakErp.Controllers
             var siparis = siparisRepo.Get(siparisId);
             var bId = siparisId + ".pdf";
             var vPath = "~/Content/SiparisPdf2/" + bId;
-            //string url = "https://crm.remifol.com/Pdf/SiparisDetay/" + id + "?fiyatGoster=" + fiyat;
-            string url = "https://localhost:44381/Pdf/SiparisDetay?siparisId=" + siparisId;
+            string url = "https://crm.egepak.net/Pdf/SiparisDetay?siparisId=" + siparisId;
+            //string url = "https://localhost:44381/Pdf/SiparisDetay?siparisId=" + siparisId;
 
             string pdf_page_size = "A4";
             PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize),
@@ -581,8 +581,8 @@ namespace EgePakErp.Controllers
             var siparis = siparisRepo.Get(siparisId);
             var bId = siparisId + "_uretim" + ".pdf";
             var vPath = "~/Content/UretimTakip/" + bId;
-            //string url = "https://crm.remifol.com/Pdf/SiparisDetay/" + id + "?fiyatGoster=" + fiyat;
-            string url = "https://localhost:44381/Pdf/SiparisUretimDetay?siparisId=" + siparisId;
+            string url = "https://crm.egepak.net/Pdf/SiparisUretimDetay?siparisId=" + siparisId;
+            //string url = "https://localhost:44381/Pdf/SiparisUretimDetay?siparisId=" + siparisId;
 
             string pdf_page_size = "A4";
             PdfPageSize pageSize = (PdfPageSize)Enum.Parse(typeof(PdfPageSize),
