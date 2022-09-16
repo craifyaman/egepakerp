@@ -30,6 +30,7 @@
                         if (r.responseJSON.Success) {                            
                             setTimeout(function () {
                                 bootbox.hideAll();
+                                $('#kt_datatable').KTDatatable('reload');
                             }, 2000);
                         } else {
                         }

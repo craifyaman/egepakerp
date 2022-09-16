@@ -411,6 +411,17 @@
         };
         return fields;
     }
+    function siparisFormFields() {
+        var fields = {
+            TeklifFiyati: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
+
     return {
         // public functions
         GorusmeFormFields: function () {
@@ -463,7 +474,11 @@
         },
         StokHareketFormFields: function () {
             return stokHareketFormFields();
+        },
+        SiparisFormFields: function () {
+            return siparisFormFields();
         }
+        
         
         
     };

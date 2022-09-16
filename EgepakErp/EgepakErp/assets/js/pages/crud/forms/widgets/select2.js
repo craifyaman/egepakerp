@@ -184,6 +184,16 @@ var KTSelect2 = function() {
         });
 
     }
+    var siparis= function () {
+        // basic
+        $('#SiparisDurumId').select2({
+            placeholder: 'Sipariþ durumu'
+        });
+        $('#CariId').select2({
+            placeholder: 'Cari Seciniz'
+        });
+
+    }
     // Public functions
     return {
         init: function() {
@@ -193,6 +203,9 @@ var KTSelect2 = function() {
         },
         Yaldiz: function () {
             yaldiz();
+        },
+        Siparis: function () {
+            siparis();
         }
     };
 }();

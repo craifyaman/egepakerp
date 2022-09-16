@@ -49,6 +49,7 @@ namespace EgePakErp.Controllers
             {
                 montajli = Request.Form["query[MontajliMi]"].ToLower() == "true" ? true : false;
             }
+
             //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
@@ -67,6 +68,16 @@ namespace EgePakErp.Controllers
             var yaldizKalipList = siparisKalipRepo.GetAll(x => x.YaldizId != null);
             var tozBoyaKodKalipList = siparisKalipRepo.GetAll(x => x.TozBoyaKodId != null);
             var kalipListe = kalipRepo.GetAll();
+          
+            if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
+            {
+                string q = Request.Form["query[searchQuery]"].ToString();
+                model = model
+                    .Where(
+                    x => x.Siparis.SiparisAdi.Contains(q) ||
+                    x.SiparisKalip.KalipKod == q
+                    );
+            }
 
             try
             {
@@ -89,6 +100,7 @@ namespace EgePakErp.Controllers
             //sayfala
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
 
+            //kalıplar birbirine montajlı ise
             if (montajli)
             {
                 var dto = model.AsEnumerable().Where(x => x.MontajliMi == true).GroupBy(x => x.MontajKod).Select(x =>
@@ -115,7 +127,7 @@ namespace EgePakErp.Controllers
                         var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == item);
                         if (_kalip != null)
                         {
-                            KalipAdlar += "_" + _kalip.Adi;
+                            KalipAdlar += _kalip.Adi + "<br />";
                         }
 
                         var yaldizSiparisKalip = yaldizKalipList.FirstOrDefault(c => c.SiparisId == temp.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "yaldiz");
@@ -132,7 +144,7 @@ namespace EgePakErp.Controllers
                             foreach (var b in tozBoyaKodSiparisKalip)
                             {
                                 BoyaKodId = (int)b.TozBoyaKodId;
-                                BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == BoyaKodId).Aciklama + "<br/>";
+                                BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == BoyaKodId)?.Aciklama + "<br/>";
                             }
                         }
 
@@ -144,11 +156,13 @@ namespace EgePakErp.Controllers
                         Id = temp.StokHareketId,
                         Type = temp.StokHareketType.Type,
                         SiparisId = temp.SiparisId,
-                        KalipKodList = KalipAdlar.Remove(0, 1),
+                        SiparisKalipId = temp.SiparisKalipId,
+                        KalipKodList = KalipAdlar,
+                        Yer = x.FirstOrDefault(y => y.Yer != null)?.Yer,
                         Yaldiz = YaldizAd,
                         BoyaKod = BoyaKodlar,
                         SiparisAdi = temp.Siparis.SiparisAdi,
-                        Adet = temp.Adet,
+                        Adet = x.FirstOrDefault(y => y.Adet != null && y.Adet != 0)?.Adet,
                         MontajliMi = temp.MontajliMi,
                     };
 
@@ -162,6 +176,7 @@ namespace EgePakErp.Controllers
                 return Json(dtModel);
             }
 
+            //kalıplar tek tek girecek ise
             else
             {
                 var dto = model.AsEnumerable().Where(x => x.MontajliMi == false).Select(x =>
@@ -187,7 +202,7 @@ namespace EgePakErp.Controllers
                         var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == item);
                         if (_kalip != null)
                         {
-                            KalipAdlar += "_" + _kalip.Adi;
+                            KalipAdlar += _kalip.Adi + "<br />";
                         }
 
                         var yaldizSiparisKalip = yaldizKalipList.FirstOrDefault(c => c.SiparisId == x.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "yaldiz");
@@ -216,7 +231,9 @@ namespace EgePakErp.Controllers
                         Id = x.StokHareketId,
                         Type = x.StokHareketType.Type,
                         SiparisId = x.SiparisId,
-                        KalipKodList = KalipAdlar.Remove(0, 1),
+                        SiparisKalipId = x.SiparisKalipId,
+                        KalipKodList = KalipAdlar,
+                        Yer = x.Yer,
                         Yaldiz = YaldizAd,
                         BoyaKod = BoyaKodlar,
                         SiparisAdi = x.Siparis.SiparisAdi,
@@ -295,7 +312,7 @@ namespace EgePakErp.Controllers
 
 
 
-        public JsonResult DepoyaAktarTekli(int SiparisKalipId, int SiparisId, int Adet)
+        public JsonResult DepoyaAktarTekli(int SiparisKalipId, int SiparisId, int Adet, string Yer)
         {
             var response = new Response();
 
@@ -307,7 +324,7 @@ namespace EgePakErp.Controllers
                 hareket.SiparisKalipId = SiparisKalipId;
                 hareket.Adet = Adet;
                 hareket.MontajliMi = false;
-
+                hareket.Yer = Yer;
                 //kalıbı bul depoda diye işaretle
                 var siparisKalip = Db.SiparisKalip.Find(hareket.SiparisKalipId);
                 if (siparisKalip != null)
@@ -367,6 +384,7 @@ namespace EgePakErp.Controllers
                     hareket.Adet = item.Adet;
                     hareket.MontajliMi = true;
                     hareket.MontajKod = montajKod;
+                    hareket.Yer = item.Yer;
 
                     //kalıbı bul depoda diye işaretle
                     var siparisKalip = Db.SiparisKalip.Find(hareket.SiparisKalipId);

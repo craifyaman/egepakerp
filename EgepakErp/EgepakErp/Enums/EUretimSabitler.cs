@@ -5,7 +5,8 @@
         EnjeksiyonMakinaPersonelSaati=1,
         SicakBaskiTamponPersonelSaatMaliyet=2,
         MontajPersonelSaatMaliyet = 3,
-        SpreyBoyaKaplamaPersonelSaatMaliyet = 4
+        SpreyBoyaKaplamaPersonelSaatMaliyet = 4,
+        TutkalBolum=5,
     }
 
 }

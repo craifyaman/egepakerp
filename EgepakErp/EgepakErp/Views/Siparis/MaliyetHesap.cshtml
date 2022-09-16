@@ -11,11 +11,15 @@
 
     double ToplamTutar = 0;
     double VadeliFiyat = 0;
+    double nakitKatsayi = ViewBag.nakitKatsayi;
+    double vadeliKatsayi = ViewBag.vadeliKatsayi;
     decimal DolarKur = ViewBag.dolarKur;
     decimal EuroKur = ViewBag.euroKur;
 }
 
+
 <tr class="sum">
+
     <td>
         <table>
             <tr>
@@ -37,11 +41,11 @@
                         var dolarToplam = (decimal)tlToplam / DolarKur;
                         var euroToplam = (decimal)tlToplam / EuroKur;
                     }
-                    @tlToplam.ToString("n3")<b>₺</b>
-                    <br />
-                    @dolarToplam.ToString("n3")<b>$</b>
-                    <br />
-                    @euroToplam.ToString("n3")<b>€</b>
+                    <input type="text" class="form-control GenelGiderSatisFiyat" KalipId="@item.FirstOrDefault().KalipId" value="@tlToplam.ToString("n3")" />
+
+                    @*@dolarToplam.ToString("n3")<b>$</b>
+                        <br />
+                        @euroToplam.ToString("n3")<b>€</b>*@
 
                     @{ ToplamTutar += item.Sum(x => x.Tutar);}
                 </div>
@@ -57,7 +61,7 @@
             <tr>
                 <td width="75%" style="border:none;">
                     Nakit Satış Fiyatı
-                    <input type="text" class="form-control" value="1,25" disabled />
+                    <input type="text" class="form-control" id="NakitSatisKatsayi" value="@nakitKatsayi" />
                 </td>
             </tr>
         </table>
@@ -67,18 +71,19 @@
         <td>
             <div class="form-group row">
                 <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
-                    @{ var NakitFiyat = item.Where(x => x.Status == true).Sum(x => x.Tutar) * (1.25);}
+                    @{
+                        var OrjinalFiyat = item
+                            .Where(x => x.Status == true)
+                            .Sum(x => x.Tutar);
+
+                        var NakitFiyat = OrjinalFiyat * (1.25);
+                    }
 
                     @{
                         var dolarToplam = (decimal)NakitFiyat / DolarKur;
                         var euroToplam = (decimal)NakitFiyat / EuroKur;
                     }
-
-                    @NakitFiyat.ToString("n3")<b>₺</b>
-                    <br />
-                    @dolarToplam.ToString("n3")<b>$</b>
-                    <br />
-                    @euroToplam.ToString("n3")<b>€</b>
+                    <input KalipId="@item.FirstOrDefault().KalipId" OrjinalFiyat="@OrjinalFiyat" type="text" class="form-control NakitSatisFiyat" value="@NakitFiyat.ToString("n3")" />
 
                 </div>
             </div>
@@ -86,15 +91,30 @@
     }
 
 </tr>
+
 <tr class="sum">
     <td>
         <table>
             <tr>
                 <td width="75%" style="border:none;">
                     Vadeli Satış
-                    <input type="text" class="form-control" value="1,4" disabled />
+                    <input type="text" class="form-control" id="VadeliSatisKatsayi" value="@vadeliKatsayi" />
                 </td>
 
+
+            </tr>
+            <tr>
+                <td width="75%" style="border:none;">
+                    Vadeli Satış Usd
+                    <input type="text" class="form-control" value="" disabled />
+                </td>
+            </tr>
+            <tr>
+
+                <td width="75%" style="border:none;">
+                    Vadeli Satış Eur
+                    <input type="text" class="form-control" value="" disabled />
+                </td>
             </tr>
         </table>
     </td>
@@ -109,48 +129,18 @@
                         var dolarToplam = (decimal)VadeliFiyat / DolarKur;
                         var euroToplam = (decimal)VadeliFiyat / EuroKur;
                     }
+                    <input KalipId="@item.FirstOrDefault().KalipId" EskiTutar="@VadeliFiyat.ToString("n3")" class="form-control VadeliSatisFiyatTl" value="@VadeliFiyat.ToString("n3")" />
 
-                    @VadeliFiyat.ToString("n3")<b>₺</b>
-                    <br />
-                    @dolarToplam.ToString("n3")<b>$</b>
-                    <br />
-                    @euroToplam.ToString("n3")<b>€</b>
+                    <span class="p-2 pt-3 mt-2">
+                        <input KalipId="@item.FirstOrDefault().KalipId" class="form-control VadeliSatisFiyatUsd" disabled value="@dolarToplam.ToString("n3")" />
+                    </span>
+                    <span class="p-2 pt-3 mt-2">
+                        <input KalipId="@item.FirstOrDefault().KalipId" class="form-control VadeliSatisFiyatEur" disabled value="@euroToplam.ToString("n3")" />
+                    </span>
+
                 </div>
             </div>
         </td>
     }
 
 </tr>
-
-<tr class="sum">
-    <th>Teklif Tutar Tl</th>
-    <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;">
-        <span id="TeklifTutari">
-            @VadeliFiyat.ToString("n3")
-        </span>
-        ₺
-    </th>
-</tr>
-<input type="hidden" id="ToplamMaliyet" value="" />
-<input type="hidden" id="ToplamMaliyetUsd" value="" />
-<input type="hidden" id="ToplamMaliyetEur" value="" />
-@if (DolarKur != 0 || EuroKur != 0)
-{
-    <tr class="sum">
-        <th>Teklif Tutar USD</th>
-        @{
-            var DolarFiyat = (decimal)ToplamTutar / DolarKur;
-        }
-        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;"> <span id="usdKurSonuc">@DolarFiyat.ToString("n3") </span> $ <span style="font-size: 13px;"> (USD/TL @DolarKur) </span></th>
-    </tr>
-
-    <tr class="sum">
-        <th>Teklif Tutar EUR</th>
-        @{
-            var EuroFiyat = (decimal)ToplamTutar / EuroKur;
-        }
-        <th style="position: absolute; width: 80%; font-size: 15px; text-align:center;"><span id="eurKurSonuc">@EuroFiyat.ToString("n3")</span>€ <span style="font-size: 13px;">(EUR/TL @EuroKur)</span></th>
-    </tr>
-
-}
-

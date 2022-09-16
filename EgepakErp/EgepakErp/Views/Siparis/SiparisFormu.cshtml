@@ -163,20 +163,21 @@
                                         @Html.HiddenFor(x => x.SiparisAdi);
                                         @Html.HiddenFor(x => x.KayitTarihi)
                                         <input type="hidden" id="SiparisCariId" value="@Model.CariId" />
+                                        
                                         @Html.HiddenFor(x => x.UrunId)
                                         <div class="form-group row">
 
-                                            <div class="col-6">
+                                            <div class="col-4">
                                                 <label>Termin Tarihi:</label>
                                                 @Html.TextBoxFor(x => x.TerminTarihi, new { @class = "form-control form-control-solid kt_datepicker_1" })
                                             </div>
 
-                                            <div class="col-6">
+                                            <div class="col-4">
                                                 <label>Sipariş Adet:</label>
                                                 @Html.TextBoxFor(x => x.SiparisAdet, new { @class = "form-control" })
                                             </div>
 
-                                            <div class="col-6">
+                                            <div class="col-4">
                                                 <label>Durum:</label>
                                                 @{
                                                     var durumList = BaseSiparisDurum().ToList();
@@ -205,6 +206,33 @@
 
                             <div class="form-group row">
                                 <div class="col-lg-12" id="maliyetTablosu">
+                                </div>
+
+                                <div class="col-lg-12" id="TeklifTutarTablo">
+                                    <input type="hidden" id="UsdKur" value="0" />
+                                    <input type="hidden" id="EurKur" value="0" />
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Teklif Tutar Tl</th>
+                                                <th>Teklif Tutar Usd</th>
+                                                <th>Teklif Tutar Eur</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input class="form-control" value="0" id="TeklifTutarTl" />
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" value="0" id="TeklifTutarUsd" />
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" value="0" id="TeklifTutarEur" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -257,6 +285,12 @@
                         data = jQuery.parseJSON(data);
                         var siparisAciklama = data.Aciklama;
                         var siparisCariId = data.CariId;
+                        var nakitKatsayi = data.NakitKatsayi;
+                        var vadeliKatsayi = data.VadeliKatsayi;
+
+                        $("#NakitSatisKatsayi").val(nakitKatsayi);
+                        $("#VadeliSatisKatsayi").val(vadeliKatsayi);
+
                         $("#SiparisCariId").val(siparisCariId);
                         $(".note-editable").html(siparisAciklama);
                         $("#pdfFile").show();

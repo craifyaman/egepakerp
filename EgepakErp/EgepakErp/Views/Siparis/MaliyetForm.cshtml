@@ -482,11 +482,14 @@
         {
             var tutkal = BaseTutkal().FirstOrDefault();
             decimal tutkalFiyat = 0;
+            int sabitId = (int)EUretimSabitler.TutkalBolum;
+            var bolum = BaseUretimSabitler().FirstOrDefault(x => x.Kod == sabitId);
+
             if (tutkal != null)
             {
                 tutkalFiyat = tutkal.BirimFiyat;
             }
-            var Maliyet = (tutkalFiyat * (decimal)0.5) / 280;
+            var Maliyet = (tutkalFiyat * (decimal)0.5) / Convert.ToDecimal(bolum.Maliyet);
 
             <tr>
                 <td>Tutkal Maliyeti</td>

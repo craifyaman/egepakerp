@@ -521,6 +521,18 @@
     <Compile Include="Migrations\202209141505315_add_uretimbasladimi_to_sipariskalip.designer.cs">
       <DependentUpon>202209141505315_add_uretimbasladimi_to_sipariskalip.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209150649560_add_Yer_to_StokHareket.cs" />
+    <Compile Include="Migrations\202209150649560_add_Yer_to_StokHareket.designer.cs">
+      <DependentUpon>202209150649560_add_Yer_to_StokHareket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209150742565_update_adet_to_nullable_table_StokHareket.cs" />
+    <Compile Include="Migrations\202209150742565_update_adet_to_nullable_table_StokHareket.designer.cs">
+      <DependentUpon>202209150742565_update_adet_to_nullable_table_StokHareket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209161334571_add_teklifTutar_to_siparis.cs" />
+    <Compile Include="Migrations\202209161334571_add_teklifTutar_to_siparis.designer.cs">
+      <DependentUpon>202209161334571_add_teklifTutar_to_siparis.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\BoyaKodType.cs" />
     <Compile Include="Models\Custom\StokHareket.cs" />
     <Compile Include="Models\Custom\StokHareketType.cs" />
@@ -2854,6 +2866,7 @@
     <Content Include="Scripts\Uretim.js" />
     <Content Include="Scripts\Yaldiz.js" />
     <Content Include="Scripts\BoyaKod.js" />
+    <Content Include="SqlScript\25_08_2022.sql" />
     <Content Include="WebViewer\doc\classes.list.html" />
     <Content Include="WebViewer\doc\Core.Actions.Action.html" />
     <Content Include="WebViewer\doc\Core.Actions.Dest.html" />
@@ -3353,7 +3366,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\SiparisPdf\" />
-    <Folder Include="File\" />
+    <Folder Include="SiparisPdf\fdsf\29_08_2022\" />
     <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>
@@ -3366,6 +3379,14 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="nano.gitignore" />
+    <Content Include="File\01_09_2022\webviewer-demo %281%29.pdf" />
+    <Content Include="File\01_09_2022\webviewer-demo %282%29.pdf" />
+    <Content Include="File\01_09_2022\webviewer-demo %283%29.pdf" />
+    <Content Include="File\01_09_2022\webviewer-demo.pdf" />
+    <Content Include="File\SiparisPdf\CariId-27\Yaldiz\06_09_2022\webviewer-demo %281%29.pdf" />
+    <Content Include="File\SiparisPdf\CariId-27\Yaldiz\08_09_2022\images.pdf" />
+    <Content Include="File\SiparisPdf\CariId-2\Yaldiz\01_09_2022\webviewer-demo.pdf" />
+    <Content Include="File\SiparisPdf\CariId-88\Yaldiz\09_09_2022\webviewer-demo %281%29.pdf" />
     <None Include="packages.config" />
     <Content Include="Views\Cari\Detay.cshtml" />
     <Content Include="Views\Cari\FilterForm.cshtml" />
@@ -3826,6 +3847,10 @@
     <Content Include="Views\Pdf\SiparisDetay.cshtml" />
     <Content Include="Views\Shared\_PdfLayout.cshtml" />
     <Content Include="Views\Pdf\SiparisUretimDetay.cshtml" />
+    <Content Include="SiparisPdf\fds\29_08_2022\pdf-lib_creation_example %281%29.pdf" />
+    <Content Include="SiparisPdf\fds\29_08_2022\pdf-lib_modification_example.pdf" />
+    <Content Include="SiparisPdf\fds\Kalip_53221\29_08_2022\pdf-lib_creation_example.pdf" />
+    <Content Include="Views\Siparis\Form.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -4049,6 +4074,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209141505315_add_uretimbasladimi_to_sipariskalip.resx">
       <DependentUpon>202209141505315_add_uretimbasladimi_to_sipariskalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209150649560_add_Yer_to_StokHareket.resx">
+      <DependentUpon>202209150649560_add_Yer_to_StokHareket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209150742565_update_adet_to_nullable_table_StokHareket.resx">
+      <DependentUpon>202209150742565_update_adet_to_nullable_table_StokHareket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209161334571_add_teklifTutar_to_siparis.resx">
+      <DependentUpon>202209161334571_add_teklifTutar_to_siparis.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

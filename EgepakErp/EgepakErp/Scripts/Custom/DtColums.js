@@ -730,6 +730,7 @@
                     var _title = row.DurumId == 2 ? "Tamamlandı olarak işaretle" : "Üretime Aç";
                     var cls = row.DurumId == 2 ? "btn-success" : "btn-danger";
                     var str = '<a class="btn btn-icon btn-info mr-1" href="siparis/siparisformu?siparisId=' + row.SiparisId + '&urunId=' + row.UrunId + '" target="_blank" title="Düzenle" data-toggle="tooltip" data-placement="top"><i class="flaticon-edit" ></i> </a>'
+                    str += '<a class="btn btn-icon btn-primary mr-1" event="SiparisKisitliFormPopup" id="' + row.SiparisId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top"><i class="flaticon2-pen" ></i> </a>'
                     str += ' <a class="btn btn-icon  mr-1 ' + cls + '" href = "" title = "' + _title + '" event="UretimeAcKapat" SiparisId="' + row.SiparisId + '" > <i class="flaticon-cogwheel-1" ></i></a>'
                     str += '<a class="btn btn-primary btn-icon mr-1" href="/siparis/SiparisDetayPdf?siparisId=' + row.SiparisId + '" target="_blank" title="pdf dökümü" data-toggle="tooltip" data-placement="top"><i class="flaticon-multimedia-4" ></i></a> ';
                     str += '<a class="btn btn-info btn-icon mr-1" href="/siparis/SiparisUretimDetayPdf?siparisId=' + row.SiparisId + '" target="_blank" title="Üretim dökümü" data-toggle="tooltip" data-placement="top"><i class="flaticon-multimedia-4" ></i></a> ';
@@ -929,6 +930,15 @@
                 title: 'Kalıplar',
             },
             {
+                field: 'Yer',
+                title: 'Yer',
+            },
+            {
+                field: 'Adet',
+                title: 'Adet',
+                width: 50
+            },
+            {
                 field: 'Yaldiz',
                 title: 'Yaldiz'
             },
@@ -936,25 +946,19 @@
                 field: 'BoyaKod',
                 title: 'BoyaKod'
             },
-
             {
-                field: 'Adet',
-                title: 'Adet',
-                width: 50
-            },
-            //{
-            //    field: 'İşlem',
-            //    title: 'İşlem',
-            //    sortable: false,
-            //    width: 130,
-            //    overflow: 'visible',
-            //    autoHide: false,
-            //    template: function (row) {
-            //        var str = '<a class="btn btn-icon btn-info mr-1"';
-            //        str += 'event="StokHareketFormPopup" href = "#" id = "' + row.Id + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
-            //        return str;
-            //    },
-            //}
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'event="StokHareketFormPopup" href = "#" id = "' + row.Id + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    return str;
+                },
+            }
         ];
         return columns;
     }

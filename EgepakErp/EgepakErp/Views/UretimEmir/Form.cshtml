@@ -8,7 +8,7 @@
         <div class="col-lg-12">
             <label>Sipariş:</label>
             @{
-                var siparisler = BaseSiparis().Where(x => x.SiparisDurumId != (int)ESiparisType.Tamamlandi).ToList();
+                var siparisler = BaseSiparis().Where(x => x.SiparisDurumId == (int)ESiparisType.Uretimde).ToList();
 
             }
             <select class="form-control" id="SiparisId" name="SiparisId">

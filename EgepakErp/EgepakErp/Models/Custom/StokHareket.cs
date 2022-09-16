@@ -20,9 +20,12 @@ namespace EgePakErp.Models
         public int SiparisKalipId { get; set; }
         public SiparisKalip SiparisKalip { get; set; }
 
-        public int Adet { get; set; }
+        public int? Adet { get; set; }
         public bool MontajliMi { get; set; }
         public int? MontajKod { get; set; }
+
+        public string Yer { get; set; }
+
 
         [NotMapped]
         public List<string> Include { get; set; }

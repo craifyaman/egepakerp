@@ -29,7 +29,7 @@
             <div class="tab-content">
                 <!--begin::Table-->
                 <div class="table-responsive">
-                    <table class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                    <table class="table table-head-custom table-head-bg table-bordered table-vertical-center">
                         <thead>
                             <tr class="text-left text-uppercase">
                                 <th>
@@ -42,7 +42,6 @@
                                 <th style="min-width: 100px">Toplam Tutar Tl</th>
                                 <th style="min-width: 100px">Toplam Tutar Usd</th>
                                 <th style="min-width: 100px">Toplam Tutar Eur</th>
-                                <th style="min-width: 80px"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,19 +78,19 @@
 
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                        @((Model.ToplamMaliyet * Model.SiparisAdet).ToString("n2"))
+                                        @((Model.TeklifFiyat * Model.SiparisAdet).ToString("n2"))
                                     </span>
                                 </td>
 
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                        @((Model.ToplamMaliyetUsd * Model.SiparisAdet).ToString("n2"))
+                                        @((Model.TeklifFiyatUsd * Model.SiparisAdet).ToString("n2"))
                                     </span>
                                 </td>
 
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                        @((Model.ToplamMaliyetEur * Model.SiparisAdet).ToString("n2"))
+                                        @((Model.TeklifFiyatEur * Model.SiparisAdet).ToString("n2"))
                                     </span>
                                 </td>
                             </tr>
@@ -126,7 +125,7 @@
             <div class="tab-content">
                 <!--begin::Table-->
                 <div class="table-responsive">
-                    <table class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                    <table class="table table-head-custom table-head-bg table-bordered table-vertical-center">
                         <thead>
                             <tr class="text-left text-uppercase">
                                 <th style="min-width: 100px">Kalıp</th>
@@ -135,7 +134,6 @@
                                 <th style="min-width: 100px">Toplam</th>*@
                                 <th style="min-width: 100px">Yaldız</th>
                                 <th style="min-width: 100px">Boya Kod</th>
-                                <th style="min-width: 80px"></th>
                             </tr>
                         </thead>
                         <tbody>

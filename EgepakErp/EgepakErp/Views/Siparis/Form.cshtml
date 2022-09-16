@@ -1,0 +1,84 @@
+﻿@model Siparis
+<!--begin::Form-->
+<form id="SiparisKisitliForm">
+    @Html.HiddenFor(x => x.SiparisId)
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>açıklama:</label>
+            @Html.TextAreaFor(x => x.Aciklama, new { @class = "form-control summernote" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            @{
+                var cariId = Model?.CariId != null ? Model?.CariId : 0;
+                var cariList = baseCari;
+            }
+            <label>Cari:</label>
+            <div class="input-group">
+                <select name="CariId" id="CariId" class="form-control select2">
+                    <option value="">Cari Seçin</option>
+                    @foreach (var item in cariList)
+                    {
+                        var chk = Model != null && Model.CariId == item.CariId ? "selected" : "";
+                        <option @chk value="@item.CariId">@item.Unvan</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            @{
+                var durumId = Model?.SiparisDurumId != null ? Model?.SiparisDurumId : 0;
+                var durumList = BaseSiparisDurum().ToList();
+            }
+            <label>Sipariş durumu:</label>
+            <div class="input-group">
+                <select name="SiparisDurumId" id="SiparisDurumId" class="form-control select2">
+                    <option value="">Sipariş Durumu Seçin</option>
+                    @foreach (var item in durumList)
+                    {
+                        var chk = Model != null && Model.SiparisDurumId == item.SiparisDurumId ? "selected" : "";
+                        <option @chk value="@item.SiparisDurumId">@item.Durum</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>Adet:</label>
+            @Html.TextBoxFor(x => x.SiparisAdet, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-4">
+            <label>Teklif Fiyatı:</label>
+            @Html.TextBoxFor(x => x.TeklifFiyat, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-4">
+            <label>Teklif Fiyatı Dolar:</label>
+            @Html.TextBoxFor(x => x.TeklifFiyatUsd, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-4">
+            <label>Teklif Fiyatı Euro:</label>
+            @Html.TextBoxFor(x => x.TeklifFiyatEur, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label>Nakit satış fiyat katsayısı:</label>
+            @Html.TextBoxFor(x => x.NakitKatsayi, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-6">
+            <label>Vadeli satış fiyat katsayısı:</label>
+            @Html.TextBoxFor(x => x.VadeliKatsayi, new { @class = "form-control" })
+        </div>
+
+
+    </div>
+
+</form>
+<!--end::Form-->

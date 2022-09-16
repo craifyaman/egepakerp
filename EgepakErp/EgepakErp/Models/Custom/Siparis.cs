@@ -23,13 +23,18 @@ namespace EgePakErp.Models
         public SiparisDurum SiparisDurum { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal ToplamMaliyet { get; set; }
+        public decimal TeklifFiyat { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal ToplamMaliyetUsd { get; set; }
+        public decimal TeklifFiyatUsd { get; set; }
 
         [Column(TypeName = "money")]
-        public decimal ToplamMaliyetEur { get; set; }
+        public decimal TeklifFiyatEur { get; set; }
+
+        public double NakitKatsayi { get; set; }
+        public double VadeliKatsayi { get; set; }
+
+
         [AllowHtml]
         public string Aciklama { get; set; }
 

@@ -16,6 +16,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using SelectPdf;
 using System.IO;
 using System.Web.Hosting;
+using System.Configuration;
 
 namespace EgePakErp.Controllers
 {
@@ -114,7 +115,12 @@ namespace EgePakErp.Controllers
             return Json(dtModel);
 
         }
-
+        public PartialViewResult Form(int? id)
+        {
+            id = id == null ? 0 : id.Value;
+            var model = siparisRepo.Get((int)id);
+            return PartialView(model);
+        }
         public JsonResult Kaydet(Siparis siparis)
         {
             Response response = new Response();
@@ -179,6 +185,50 @@ namespace EgePakErp.Controllers
 
         }
 
+        
+        public JsonResult KisitliKaydet(Siparis form)
+        {
+            var response = new Response();
+
+            try
+            {
+                if (form.SiparisId == 0)
+                {
+                    siparisRepo.Insert(form);
+                    response.Success = true;
+                    response.Description = "Kayıt edildi.";
+                }
+                else
+                {
+                    var entity = siparisRepo.Get(form.SiparisId);
+                    if (entity != null)
+                    {
+                        //alanları güncelle
+                        var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                        foreach (var prop in propList)
+                        {
+                            if (form.Include.Contains(prop.Name))
+                            {
+                                prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
+                            }
+                        }
+                        siparisRepo.Update(entity);
+                        response.Success = true;
+                        response.Description = "Güncellendi.";
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
+            }
+
+            return Json(response);
+
+        }
         public JsonResult SiparisKalipGuncelle(int siparisKalipId, decimal maliyet)
         {
             Response response = new Response();
@@ -199,7 +249,7 @@ namespace EgePakErp.Controllers
                 return Json(response);
             }
         }
-        public JsonResult TopluSiparisKalipGuncelle(List<SiparisKalip> liste, decimal toplam, decimal toplamUsd, decimal toplamEur, int siparisId)
+        public JsonResult TopluSiparisKalipGuncelle(List<SiparisKalip> liste, decimal toplam, decimal toplamUsd, decimal toplamEur, int siparisId,double nakitKatsayi,double vadeliKatsayi)
         {
             Response response = new Response();
             try
@@ -230,9 +280,11 @@ namespace EgePakErp.Controllers
 
                 if (siparis != null)
                 {
-                    siparis.ToplamMaliyet = toplam;
-                    siparis.ToplamMaliyetUsd = toplamUsd;
-                    siparis.ToplamMaliyetEur = toplamEur;
+                    siparis.TeklifFiyat = toplam;
+                    siparis.TeklifFiyatUsd = toplamUsd;
+                    siparis.TeklifFiyatEur = toplamEur;
+                    siparis.NakitKatsayi = nakitKatsayi;
+                    siparis.VadeliKatsayi = vadeliKatsayi;
                     siparisRepo.Update(siparis);
                     response.Success = true;
                     response.Description = "Sipariş başarı ile güncellendi";
@@ -414,7 +466,19 @@ namespace EgePakErp.Controllers
         }
 
 
-        public PartialViewResult MaliyetHesap(List<MaliyetDto> liste)
+        public PartialViewResult MaliyetHesap(List<MaliyetDto> liste, double nakitKatsayi=1.25, double vadeliKatsayi=1.4)
+        {
+            var doviz = Db.DovizKur.FirstOrDefault();
+            ViewBag.dolarKur = doviz.UsdKur;
+            ViewBag.euroKur = doviz.EurKur;
+            ViewBag.nakitKatsayi = nakitKatsayi;
+            ViewBag.vadeliKatsayi = vadeliKatsayi;
+
+            var FixListe = liste.Where(x => x.KalipId != 0).ToList();
+            return PartialView(FixListe);
+        }
+
+        public PartialViewResult MaliyetHesapTeklifTutar(List<MaliyetDto> liste)
         {
             var doviz = Db.DovizKur.FirstOrDefault();
             ViewBag.dolarKur = doviz.UsdKur;
@@ -425,37 +489,25 @@ namespace EgePakErp.Controllers
         }
 
         [HttpGet]
-        public JsonResult UsdKurHesapla(double tutar)
+        public JsonResult KurGetir(string kisaltma)
         {
             Response<decimal> response = new Response<decimal>();
             try
             {
                 var doviz = Db.DovizKur.FirstOrDefault();
-                var usdKur = doviz.UsdKur;
-                var sonuc = (decimal)tutar / usdKur;
+                decimal Kur = 0;
+                if (kisaltma.ToLower() == "usd")
+                {
+                    Kur = doviz.UsdKur;
+                }
+
+                if (kisaltma.ToLower() == "eur")
+                {
+                    Kur = doviz.EurKur;
+                }               
+                
                 response.Success = true;
-                response.Data = sonuc;
-                return Json(response, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Description = ex.Message;
-                return Json(response, JsonRequestBehavior.AllowGet);
-            }
-        }
-        [HttpGet]
-        public JsonResult EurKurHesapla(double tutar)
-        {
-            Response<decimal> response = new Response<decimal>();
-            try
-            {
-                var doviz = Db.DovizKur.FirstOrDefault();
-                var eurKur = doviz.EurKur;
-                var sonuc = (decimal)tutar / eurKur;
-                response.Success = true;
-                response.Description = "başarılı";
-                response.Data = sonuc;
+                response.Data = Kur;
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -536,9 +588,10 @@ namespace EgePakErp.Controllers
         public FileResult SiparisDetayPdf(int siparisId)
         {
             var siparis = siparisRepo.Get(siparisId);
-            var bId = siparisId + ".pdf";
+            var bId = siparis.Cari.Unvan + "_detay_" + siparisId + ".pdf";
             var vPath = "~/Content/SiparisPdf2/" + bId;
-            string url = "https://crm.egepak.net/Pdf/SiparisDetay?siparisId=" + siparisId;
+            var baseUrl = ConfigurationManager.AppSettings["BaseUrl"].ToString();
+            string url = baseUrl + "/Pdf/SiparisDetay?siparisId=" + siparisId;
             //string url = "https://localhost:44381/Pdf/SiparisDetay?siparisId=" + siparisId;
 
             string pdf_page_size = "A4";
@@ -572,16 +625,17 @@ namespace EgePakErp.Controllers
             // close pdf document
             doc.Close();
 
-            return File(vPath, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(siparis.Cari.Unvan + "-" + bId));
+            return File(vPath, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(bId));
 
         }
 
         public FileResult SiparisUretimDetayPdf(int siparisId)
         {
             var siparis = siparisRepo.Get(siparisId);
-            var bId = siparisId + "_uretim" + ".pdf";
+            var bId = siparis.Cari.Unvan + "_uretim_" + siparisId + ".pdf";
             var vPath = "~/Content/UretimTakip/" + bId;
-            string url = "https://crm.egepak.net/Pdf/SiparisUretimDetay?siparisId=" + siparisId;
+            var baseUrl = ConfigurationManager.AppSettings["BaseUrl"].ToString();
+            string url = baseUrl + "/Pdf/SiparisUretimDetay?siparisId=" + siparisId;
             //string url = "https://localhost:44381/Pdf/SiparisUretimDetay?siparisId=" + siparisId;
 
             string pdf_page_size = "A4";
@@ -615,7 +669,7 @@ namespace EgePakErp.Controllers
             // close pdf document
             doc.Close();
 
-            return File(vPath, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(siparis.Cari.Unvan + "-" + bId));
+            return File(vPath, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(bId));
 
         }
 
