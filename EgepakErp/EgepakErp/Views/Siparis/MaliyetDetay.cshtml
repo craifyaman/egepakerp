@@ -212,17 +212,16 @@
                 <div class="col-lg-12 mb-2">
                     <label>Boya Kodu:</label>
                     @{
-                        var kodListe = BaseBoyaKod().Where(x => x.BoyaKodTypeId == (int)EBoyaKodType.TozBoya).ToList();
-                        <select class="form-control" id="boyaKodSelect">
-                            <option>Kod seçin</option>
+                        var kodListe = BaseBoyaKaplama().Where(x => x.BoyaKaplamaTypeId == (int)EBoyaKaplamaType.Granul).ToList();
+                        <select class="form-control select2" id="boyaKodSelect" multiple="multiple">
                             @foreach (var kod in kodListe)
                             {
-                                <option value="@kod.BoyaKodId">@kod.Kod</option>
+                                <option value="@kod.BoyaKaplamaTypeId">@kod.Kod</option>
                             }
                         </select>
-
                     }
                 </div>
+
 
                 <div class="col-lg-12 mb-2">
                     <label>Formül:</label>
@@ -260,6 +259,45 @@
                             @foreach (var kod in kodListe)
                             {
                                 <option value="@kod.BoyaKodId">@kod.Kod</option>
+                            }
+                        </select>
+                    }
+                </div>
+
+                <div class="col-lg-12 mb-2">
+                    <label>Maliyet:</label>
+                    <input kalipId="@Model.KalipId" type="text" class="form-control Fiyat" value="0" />
+                </div>
+
+                <div class="col-lg-12 mb-2">
+                    <label>Açıklama:</label>
+                    <input type="text" class="form-control" id="SiparisKalipAciklama" placeholder="açıklama girin" />
+                </div>
+            </div>
+        </td>
+    }
+    catch (Exception ex)
+    {
+
+    }
+}
+
+@if (type == "metalize")
+{
+    try
+    {
+
+        <td metalize-cikar="@Model.KalipId">
+            <div class="form-group row parentDiv" UrunType="metalize">
+                <div class="col-lg-12 mb-2">
+                    <label>Boya Kodu:</label>
+                    @{
+                        var kodListe = BaseBoyaKaplama().Where(x => x.BoyaKaplamaTypeId == (int)EBoyaKaplamaType.Metalize).ToList();
+                        <select class="form-control" id="boyaKaplamaKodSelect">
+                            <option>Kod seçin</option>
+                            @foreach (var kod in kodListe)
+                            {
+                                <option value="@kod.BoyaKaplamaId">@kod.Kod</option>
                             }
                         </select>
                     }

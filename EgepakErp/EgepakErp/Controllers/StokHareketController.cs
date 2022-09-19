@@ -66,7 +66,7 @@ namespace EgePakErp.Controllers
             var BoyaKodList = boyaKodRepo.GetAll();
             var montajliKaliplar = repo.GetAll(x => x.MontajliMi).ToList();
             var yaldizKalipList = siparisKalipRepo.GetAll(x => x.YaldizId != null);
-            var tozBoyaKodKalipList = siparisKalipRepo.GetAll(x => x.TozBoyaKodId != null);
+            var tozBoyaKodKalipList = siparisKalipRepo.GetAll(x => x.TozBoyaKodList != null);
             var kalipListe = kalipRepo.GetAll();
           
             if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
@@ -143,8 +143,14 @@ namespace EgePakErp.Controllers
                         {
                             foreach (var b in tozBoyaKodSiparisKalip)
                             {
-                                BoyaKodId = (int)b.TozBoyaKodId;
-                                BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == BoyaKodId)?.Aciklama + "<br/>";
+                                var bKodList = b.TozBoyaKodList.Split(',');
+                                BoyaKodlar += "<p class=\"BoyaKodList\">";
+                                foreach (var bId in bKodList)
+                                {
+                                    var id = Convert.ToInt32(bId);
+                                    BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == id)?.Aciklama + "<br/>";
+                                }
+                                BoyaKodlar += "</p>";
                             }
                         }
 
@@ -218,9 +224,16 @@ namespace EgePakErp.Controllers
                         {
                             foreach (var b in tozBoyaKodSiparisKalip)
                             {
-                                BoyaKodId = (int)b.TozBoyaKodId;
-                                BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == BoyaKodId).Aciklama + "<br/>";
+                                BoyaKodlar += "<p class=\"BoyaKodList\">";
+                                var bKodList = b.TozBoyaKodList.Split(',');
+                                foreach (var bId in bKodList)
+                                {
+                                    var id = Convert.ToInt32(bId);
+                                    BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == id)?.Aciklama + "<br/>";
+                                }
+                                BoyaKodlar += "</p>";
                             }
+                           
                         }
 
 

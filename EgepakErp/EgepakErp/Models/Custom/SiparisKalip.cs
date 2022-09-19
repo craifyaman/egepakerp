@@ -23,11 +23,22 @@ namespace EgePakErp.Models
         public int? TozBoyaKodId { get; set; }
         public BoyaKod TozBoyaKod { get; set; }
 
+
         [ForeignKey("SpreyBoyaKod")]
         public int? SpreyBoyaKodId { get; set; }
         public BoyaKod SpreyBoyaKod { get; set; }
 
 
+
+        [ForeignKey("MetalizeKod")]
+        public int? MetalizeKodId { get; set; }
+        public BoyaKaplama MetalizeKod { get; set; }
+
+        [ForeignKey("GranulKod")]
+        public int? GranulKodId { get; set; }
+        public BoyaKaplama GranulKod { get; set; }
+
+        public string TozBoyaKodList { get; set; }
 
         public bool DepodaMi { get; set; }
         public bool UretimBasladiMi { get; set; }
@@ -38,9 +49,12 @@ namespace EgePakErp.Models
         public Siparis Siparis { get; set; }
         public ICollection<UretimEmir> UretimEmir { get; set; }
         public ICollection<StokHareket> StokHareket { get; set; }
+        //public ICollection<BoyaKodSiparisKalipRel> BoyaKodSiparisKalipRel { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }
+
+       
 
 
     }

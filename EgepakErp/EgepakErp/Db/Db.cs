@@ -48,6 +48,8 @@ namespace EgePakErp
         public virtual DbSet<KoliTur> KoliTur { get; set; }
         public virtual DbSet<UretimSabitler> UretimSabitler { get; set; }
         public virtual DbSet<DovizKur> DovizKur { get; set; }
+        public virtual DbSet<BoyaKaplama> BoyaKaplama { get; set; }
+        public virtual DbSet<BoyaKaplamaType> BoyaKaplamaType { get; set; }
 
         #region Custom
         public virtual DbSet<HammaddeCinsi> HammaddeCinsi { get; set; }

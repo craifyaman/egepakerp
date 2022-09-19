@@ -177,6 +177,7 @@ var KTSelect2 = function() {
             });
         });
     }
+
     var yaldiz = function () {
         // basic
         $('#CariId').select2({
@@ -184,6 +185,16 @@ var KTSelect2 = function() {
         });
 
     }
+
+    var boyaKod = function () {
+        // basic
+        $('#boyaKodSelect').select2({
+            language: "tr",
+            placeholder: 'Boya Kodlarini secin'
+        });
+
+    }
+
     var siparis= function () {
         // basic
         $('#SiparisDurumId').select2({
@@ -206,6 +217,9 @@ var KTSelect2 = function() {
         },
         Siparis: function () {
             siparis();
+        },
+        BoyaKod: function () {
+            boyaKod();
         }
     };
 }();

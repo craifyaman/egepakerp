@@ -17,9 +17,11 @@ namespace EgePakErp.Models
 
         [InverseProperty("TozBoyaKod")]
         public ICollection<SiparisKalip> TozBoyaKods { get; set; }
+       
         [InverseProperty("SpreyBoyaKod")]
         public ICollection<SiparisKalip> SpreyBoyaKods { get; set; }
 
+        //public ICollection<BoyaKodSiparisKalipRel> BoyaKodSiparisKalipRel { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }

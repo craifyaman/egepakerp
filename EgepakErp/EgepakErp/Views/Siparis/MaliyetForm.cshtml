@@ -290,6 +290,12 @@
                     <div class="col-lg-12 mb-2">
                         <label>Maliyet:</label>
                         <div class="input-group mb-5">
+                            @if (!kalip.isHazirMalzeme)
+                            {
+                                <span class="input-group-text" event="MaliyetDetay" maliyetType="metalize" kalipId="@kalip.KalipId">
+                                    <i class="flaticon-mark"></i>
+                                </span>
+                            }
                             <input kalipId="@kalip.KalipId" KalipKod="@kalip.ParcaKodu" MaliyetType="metalize" HesplamaType="malzeme" type="text" class="form-control birimFiyat" value="@KarliFiyat" />
                             <span metalize-cikar="@kalip.KalipId" class="btn btn-sm  btn-danger input-group-text" KalipId="@kalip.KalipId" cikar-type="metalize" event="FaturadanCikar">
                                 -
@@ -750,5 +756,105 @@
 
         </tr>
 
+        
+        @*//teklif tutar hesaplama kısmı*@
+        <tr class="sum">
+
+            <td>
+                <table>
+                    <tr>
+                        <td width="75%" style="border:none;">
+                            Genel giderli Toplam Maliyet
+                            <input type="text" class="form-control" value="1" disabled />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            @foreach (var kalip in Model)
+            {
+                <td>
+                    <div class="form-group row">
+                        <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
+                            <input type="text" class="form-control GenelGiderSatisFiyat" KalipId="@kalip.KalipId" value="0" />
+                        </div>
+                    </div>
+                </td>
+            }
+
+        </tr>
+
+        <tr class="sum">
+            <td>
+                <table>
+                    <tr>
+                        <td width="75%" style="border:none;">
+                            Nakit Satış Fiyatı
+                            <input type="text" class="form-control" id="NakitSatisKatsayi" value="0" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            @foreach (var kalip in Model)
+            {
+                <td>
+                    <div class="form-group row">
+                        <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
+                            <input KalipId="@kalip.KalipId" type="text" class="form-control NakitSatisFiyat" value="0" />
+
+                        </div>
+                    </div>
+                </td>
+            }
+
+        </tr>
+
+        <tr class="sum">
+            <td>
+                <table>
+                    <tr>
+                        <td width="75%" style="border:none;">
+                            Vadeli Satış
+                            <input type="text" class="form-control" id="VadeliSatisKatsayi" value="0" />
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td width="75%" style="border:none;">
+                            Vadeli Satış Usd
+                            <input type="text" class="form-control" value="" disabled />
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td width="75%" style="border:none;">
+                            Vadeli Satış Eur
+                            <input type="text" class="form-control" value="" disabled />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            @foreach (var kalip in Model)
+            {
+                <td>
+                    <div class="form-group row">
+                        <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
+                            <input KalipId="@kalip.KalipId" class="form-control VadeliSatisFiyatTl" value="0" />
+
+                            <span class="p-2 pt-3 mt-2">
+                                <input KalipId="@kalip.KalipId" class="form-control VadeliSatisFiyatUsd" disabled value="0" />
+                            </span>
+                            <span class="p-2 pt-3 mt-2">
+                                <input KalipId="@kalip.KalipId" class="form-control VadeliSatisFiyatEur" disabled value="0" />
+                            </span>
+
+                        </div>
+                    </div>
+                </td>
+            }
+
+        </tr>
     </tbody>
 </table>

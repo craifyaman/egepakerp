@@ -129,14 +129,13 @@ namespace EgePakErp.Controllers
                 var cariSiparisleri = siparisRepo.GetAll(x => x.CariId == siparis.CariId && x.UrunId == siparis.UrunId).OrderByDescending(x => x.KayitTarihi).ToList();
                 var sipNo = 0;
 
-                var boyaKodlar = siparis.SiparisKalip.Where(x => x.TozBoyaKodId != null).Select(x => x.TozBoyaKodId + "_" + x.KalipKod).ToList();
+                var boyaKodlar = siparis.SiparisKalip.Where(x => x.TozBoyaKodList!= null).Select(x => x.TozBoyaKodList+ "_" + x.KalipKod).ToList();
                 var yaldizIdList = siparis.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId + "_" + x.KalipKod).ToList();
 
                 List<string> yaldizlar = yaldizIdList.ConvertAll<string>(x => x.ToString());
-                List<string> boyaKodList = boyaKodlar.ConvertAll<string>(x => x.ToString());
+               List<string> boyaKodList = boyaKodlar.ConvertAll<string>(x => x.ToString());
                 string yaldizListToString = String.Join(", ", yaldizlar);
                 string boyaKodListToString = String.Join(", ", boyaKodList);
-
 
                 var urun = urunRepo.Get(siparis.UrunId);
                 var cari = Db.Cari.Include(x => x.BaglantiTipi).FirstOrDefault(x => x.CariId == siparis.CariId);
@@ -146,7 +145,7 @@ namespace EgePakErp.Controllers
 
                 foreach (var sip in cariSiparisleri)
                 {
-                    var _boyaKodlar = sip.SiparisKalip.Where(x => x.TozBoyaKodId != null).Select(x => x.TozBoyaKod + "_" + x.KalipKod).ToList();
+                    var _boyaKodlar = sip.SiparisKalip.Where(x => x.TozBoyaKodList!= null).Select(x => x.TozBoyaKodList+ "_" + x.KalipKod).ToList();
                     var _yaldizIdList = sip.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId + "_" + x.KalipKod).ToList();
 
                     List<string> _yaldizlar = _yaldizIdList.ConvertAll<string>(x => x.ToString());
@@ -154,7 +153,9 @@ namespace EgePakErp.Controllers
 
                     string _yaldizListToString = String.Join(", ", _yaldizlar);
                     string _boyaKodListToString = String.Join(", ", _boyaKodList);
-
+                    var l1 = boyaKodlar.ToArray().ToString();
+                    var l2 = _boyaKodlar.ToArray();
+                   
                     if (yaldizListToString != _yaldizListToString || boyaKodListToString != _boyaKodListToString)
                     {
                         var splitSiparisNo = sip.SiparisAdi.Split('-');
@@ -162,6 +163,14 @@ namespace EgePakErp.Controllers
                         sipNo = siparisNo += 1;
                         break;
                     }
+
+                    //if (yaldizListToString != _yaldizListToString || boyaKodListToString != _boyaKodListToString)
+                    //{
+                    //    var splitSiparisNo = sip.SiparisAdi.Split('-');
+                    //    var siparisNo = Convert.ToInt32(splitSiparisNo[2]);
+                    //    sipNo = siparisNo += 1;
+                    //    break;
+                    //}
                 }
 
                 //siparis.SiparisAdi = cari.MusteriNo + urunCinsi + urunNo + String.Join(", ", yaldizlar) + String.Join(", ", boyaKodList);
@@ -229,6 +238,7 @@ namespace EgePakErp.Controllers
             return Json(response);
 
         }
+      
         public JsonResult SiparisKalipGuncelle(int siparisKalipId, decimal maliyet)
         {
             Response response = new Response();
@@ -249,6 +259,7 @@ namespace EgePakErp.Controllers
                 return Json(response);
             }
         }
+       
         public JsonResult TopluSiparisKalipGuncelle(List<SiparisKalip> liste, decimal toplam, decimal toplamUsd, decimal toplamEur, int siparisId,double nakitKatsayi,double vadeliKatsayi)
         {
             Response response = new Response();
@@ -263,7 +274,8 @@ namespace EgePakErp.Controllers
                         {
                             siparisKalip.Maliyet = item.Maliyet;
                             siparisKalip.isEnable = item.isEnable;
-                            siparisKalip.TozBoyaKodId = item.TozBoyaKodId;
+                            siparisKalip.TozBoyaKodList = item.TozBoyaKodList;
+                            siparisKalip.MetalizeKodId = item.MetalizeKodId;
                             if (item.YaldizId != null && item.YaldizId != 0)
                             {
                                 siparisKalip.YaldizId = item.YaldizId;
@@ -466,7 +478,7 @@ namespace EgePakErp.Controllers
         }
 
 
-        public PartialViewResult MaliyetHesap(List<MaliyetDto> liste, double nakitKatsayi=1.25, double vadeliKatsayi=1.4)
+        public PartialViewResult MaliyetHesap(List<MaliyetDto> liste, double nakitKatsayi = 1.25, double vadeliKatsayi = 1.4)
         {
             var doviz = Db.DovizKur.FirstOrDefault();
             ViewBag.dolarKur = doviz.UsdKur;

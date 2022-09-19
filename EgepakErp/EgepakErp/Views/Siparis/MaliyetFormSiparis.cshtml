@@ -93,14 +93,23 @@
                                     @buttonText
                                 </span>
                             </div>
-                            @if (siparisKalip.TozBoyaKodId != null)
+                            @if (siparisKalip.TozBoyaKodList != null)
                             {
-                                <div>
-                                    boya kod = @siparisKalip.TozBoyaKod.Kod
-                                </div>
+                                var idList = siparisKalip.TozBoyaKodList?.Split(',');
+                                if (idList != null)
+                                {
+                                    foreach (var id in idList)
+                                    {
+                                        int _id = Convert.ToInt32(id);
+                                        var aciklama = BaseBoyaKod().FirstOrDefault(x => x.BoyaKodId == _id)?.Aciklama;
+                                        if (aciklama != null)
+                                        {
+                                            @aciklama <br />
+                                        }
+                                    }
+                                }
                             }
                         </div>
-
 
                     </td>
 
@@ -247,6 +256,13 @@
                         var fiyat = Convert.ToDecimal(kalip.KromPlastMetalizeBrFiyat);
                         <div>
                             Alış Fiyatı @fiyat
+                        </div>
+                    }
+
+                    @if (siparisKalip.MetalizeKodId != null)
+                    {
+                        <div>
+                            metalize = @siparisKalip.MetalizeKod.Kod
                         </div>
                     }
                 </td>
@@ -593,5 +609,105 @@
 
         </tr>
 
+
+        @*//teklif tutar hesaplama kısmı*@
+        <tr class="sum">
+
+            <td>
+                <table>
+                    <tr>
+                        <td width="75%" style="border:none;">
+                            Genel giderli Toplam Maliyet
+                            <input type="text" class="form-control" value="1" disabled />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            @foreach (var kalip in Model)
+            {
+                <td>
+                    <div class="form-group row">
+                        <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
+                            <input type="text" class="form-control GenelGiderSatisFiyat" KalipId="@kalip.KalipId" value="0" />
+                        </div>
+                    </div>
+                </td>
+            }
+
+        </tr>
+
+        <tr class="sum">
+            <td>
+                <table>
+                    <tr>
+                        <td width="75%" style="border:none;">
+                            Nakit Satış Fiyatı
+                            <input type="text" class="form-control" id="NakitSatisKatsayi" value="0" />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+            @foreach (var kalip in Model)
+            {
+                <td>
+                    <div class="form-group row">
+                        <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
+                            <input KalipId="@kalip.KalipId" type="text" class="form-control NakitSatisFiyat" value="0" />
+
+                        </div>
+                    </div>
+                </td>
+            }
+
+        </tr>
+
+        <tr class="sum">
+            <td>
+                <table>
+                    <tr>
+                        <td width="75%" style="border:none;">
+                            Vadeli Satış
+                            <input type="text" class="form-control" id="VadeliSatisKatsayi" value="0" />
+                        </td>
+
+
+                    </tr>
+                    <tr>
+                        <td width="75%" style="border:none;">
+                            Vadeli Satış Usd
+                            <input type="text" class="form-control" value="" disabled />
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td width="75%" style="border:none;">
+                            Vadeli Satış Eur
+                            <input type="text" class="form-control" value="" disabled />
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+            @foreach (var kalip in Model)
+            {
+                <td>
+                    <div class="form-group row">
+                        <div class="col-lg-12 mb-2" style="position: relative; top: 25px;">
+                            <input KalipId="@kalip.KalipId" class="form-control VadeliSatisFiyatTl" value="0" />
+
+                            <span class="p-2 pt-3 mt-2">
+                                <input KalipId="@kalip.KalipId" class="form-control VadeliSatisFiyatUsd" disabled value="0" />
+                            </span>
+                            <span class="p-2 pt-3 mt-2">
+                                <input KalipId="@kalip.KalipId" class="form-control VadeliSatisFiyatEur" disabled value="0" />
+                            </span>
+
+                        </div>
+                    </div>
+                </td>
+            }
+
+        </tr>
     </tbody>
 </table>

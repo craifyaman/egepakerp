@@ -1,0 +1,31 @@
+﻿@model BoyaKaplama
+<!--begin::Form-->
+<form id="BoyaKaplamaForm">
+    @Html.HiddenFor(x=>x.BoyaKaplamaId)
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>Tür:</label>
+            <select class="form-control" name="BoyaKaplamaTypeId" id="BoyaKaplamaTypeId">
+                <option>Tür seçin</option>
+                @{ 
+                    int boyakodId = Model?.BoyaKaplamaTypeId != null ? Model.BoyaKaplamaTypeId: 0;
+                }
+                @foreach (var tur in BaseBoyaKaplamaType().ToList())
+                {
+                    var attr = tur.BoyaKaplamaTypeId == boyakodId ? "selected" : "";
+                    <option @attr value="@tur.BoyaKaplamaTypeId">@tur.Type</option>
+                }
+            </select>
+        </div>
+        <div class="col-lg-12">
+            <label>açıklama:</label>
+            @Html.TextBoxFor(x => x.Aciklama, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-12">
+            <label>Kod:</label>
+            @Html.TextBoxFor(x => x.Kod, new { @class = "form-control" })
+        </div>
+    </div>
+</form>
+<!--end::Form-->

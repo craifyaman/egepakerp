@@ -163,7 +163,7 @@
                                         @Html.HiddenFor(x => x.SiparisAdi);
                                         @Html.HiddenFor(x => x.KayitTarihi)
                                         <input type="hidden" id="SiparisCariId" value="@Model.CariId" />
-                                        
+
                                         @Html.HiddenFor(x => x.UrunId)
                                         <div class="form-group row">
 
@@ -211,6 +211,9 @@
                                 <div class="col-lg-12" id="TeklifTutarTablo">
                                     <input type="hidden" id="UsdKur" value="0" />
                                     <input type="hidden" id="EurKur" value="0" />
+                                    <input type="hidden" id="NakitKatsayiTemp" value="0" />
+                                    <input type="hidden" id="VadeliKatsayiTemp" value="0" />
+
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -257,6 +260,12 @@
     <script src="~/Scripts/Siparis.js?v=@ScriptVersion"></script>
     <script src="~/Scripts/Yaldiz.js"></script>
     <script>
+
+        //kur bilgisi çek
+        Siparis.KurGetir("Usd");
+        Siparis.KurGetir("Eur");
+
+
         // Read a page's GET URL variables and return them as an associative array.
         function getUrlVars() {
             var vars = [], hash;
@@ -282,14 +291,15 @@
                 Post("/siparis/GetById",
                     { siparisId: siparisId },
                     function (data) {
+
                         data = jQuery.parseJSON(data);
                         var siparisAciklama = data.Aciklama;
                         var siparisCariId = data.CariId;
                         var nakitKatsayi = data.NakitKatsayi;
                         var vadeliKatsayi = data.VadeliKatsayi;
 
-                        $("#NakitSatisKatsayi").val(nakitKatsayi);
-                        $("#VadeliSatisKatsayi").val(vadeliKatsayi);
+                        $("#NakitKatsayiTemp").val(nakitKatsayi);
+                        $("#VadeliKatsayiTemp").val(vadeliKatsayi);
 
                         $("#SiparisCariId").val(siparisCariId);
                         $(".note-editable").html(siparisAciklama);
@@ -298,6 +308,7 @@
                         $("#pdfFile").attr("href", data.AciklamaPdf);
                         $("#SiparisPdfView").attr("pdfurl", data.AciklamaPdf);
                         $("#SiparisPdfView").show();
+
                         console.log("siparis açıklama :" + siparisAciklama);
                     },
                     function (x, y, z) {
@@ -310,6 +321,13 @@
                     },
                     "json");
             }
+
+            var nakitGecici = $("#NakitKatsayiTemp").val();
+            var vadeliGecici = $("#VadeliKatsayiTemp").val();
+
+            $("#NakitSatisKatsayi").val(nakitGecici);
+            $("#VadeliSatisKatsayi").val(vadeliGecici);
+
         })
         Siparis.EventInit();
         Global.init();

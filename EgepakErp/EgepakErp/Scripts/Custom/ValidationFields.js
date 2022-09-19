@@ -312,6 +312,27 @@
         return fields;
     }
 
+    function boyaKaplamaFormFields() {
+        var fields = {
+            Aciklama: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            Kod: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            },
+            BoyaKaplamaTypeId: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
+
     function yaldizFormFields() {
         var fields = {
             Aciklama: {
@@ -459,6 +480,9 @@
         },
         BoyaKodFormFields: function () {
             return boyaKodFormFields();
+        },
+        BoyaKaplamaFormFields: function () {
+            return boyaKaplamaFormFields();
         },
         YaldizFormFields: function () {
             return yaldizFormFields();

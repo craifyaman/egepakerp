@@ -424,6 +424,7 @@ namespace EgePakErp.Custom
                 .Include(x => x.SpreyBoyaKod)
                 .Include(x => x.Siparis)
                 .Include(x => x.Yaldiz)
+                .Include(x => x.MetalizeKod)
                 .ToList();
             return list;
         }
@@ -527,9 +528,19 @@ namespace EgePakErp.Custom
             var liste = db.BoyaKod.AsQueryable();
             return liste;
         }
+        public IQueryable<BoyaKaplama> BaseBoyaKaplama()
+        {
+            var liste = db.BoyaKaplama.AsQueryable();
+            return liste;
+        }
         public IQueryable<BoyaKodType> BaseBoyaKodType()
         {
             var liste = db.BoyaKodType.AsQueryable();
+            return liste;
+        }
+        public IQueryable<BoyaKaplamaType> BaseBoyaKaplamaType()
+        {
+            var liste = db.BoyaKaplamaType.AsQueryable();
             return liste;
         }
         public IQueryable<Kalip> BaseKalip()

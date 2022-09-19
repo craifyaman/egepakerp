@@ -83,7 +83,6 @@
     </div>
     <!--end::Advance Table Widget 4-->
     <!--begin::Advance Table Widget 4-->
-
     <!--end::Advance Table Widget 4-->
     <!--begin::Advance Table Widget 4-->
     <div class="card card-custom card-stretch gutter-b">
@@ -145,6 +144,25 @@
 
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                @{
+                                                    foreach (var boya in item)
+                                                    {
+                                                        var idList = boya.TozBoyaKodList?.Split(',');
+                                                        if (idList != null)
+                                                        {
+                                                            foreach (var id in idList)
+                                                            {
+                                                                int _id = Convert.ToInt32(id);
+                                                                var aciklama = BaseBoyaKod().FirstOrDefault(x => x.BoyaKodId == _id)?.Aciklama;
+                                                                if (aciklama != null)
+                                                                {
+                                                                    @aciklama <br />
+                                                                }
+                                                            }
+                                                        }
+
+                                                    }
+                                                }
                                                 @(item.FirstOrDefault(x=>x.TozBoyaKodId != null)?.TozBoyaKod?.Aciklama)
                                             </span>
                                         </td>

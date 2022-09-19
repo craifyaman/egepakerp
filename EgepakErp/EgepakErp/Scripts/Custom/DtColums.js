@@ -773,7 +773,37 @@
             }];
         return columns;
     }
+    function boyaKaplamaColumns() {
+        var columns = [
+            {
+                field: 'BoyaKaplamaId',
+                title: '#',
+                width: 50
+            },
+            {
+                field: 'Aciklama',
+                title: 'Açıklama'
+            },
+            {
+                field: 'Kod',
+                title: 'Kod'
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
 
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'event="BoyaKaplamaFormPopup" href = "#" id = "' + row.BoyaKaplamaId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >';
+                    return str;
+                },
+            }];
+        return columns;
+    }
     function yaldizColumns() {
         var columns = [
             {
@@ -1005,6 +1035,9 @@
         BoyaKodColumns: function () {
             return boyaKodColumns();
         },
+        BoyaKaplamaColumns: function () {
+            return boyaKaplamaColumns();
+        },        
         YaldizColumns: function () {
             return yaldizColumns();
         },
@@ -1067,6 +1100,10 @@
             else if (name == "aksiyon") {
                 return aksiyonColumns();
             }
+            else if (name == "boyakaplama") {
+                return boyaKaplamaColumns();
+            }
+            
 
 
         }

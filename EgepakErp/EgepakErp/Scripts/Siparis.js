@@ -4,7 +4,7 @@
     var _EurKur = 0;
 
     function Kaydet() {
-        debugger;
+
         var validation = ValidateForm.IsValid("SiparisKisitliForm", ValidationFields.SiparisFormFields())
         validation.validate().then(function (status) {
             if (status == 'Valid') {
@@ -30,16 +30,16 @@
                     },
                     function (r) {
                         //Complete
-                        
+
                         if (r.responseJSON.Success) {
                             setTimeout(function () {
                                 bootbox.hideAll();
                                 $('#kt_datatable').KTDatatable('reload');
-                               
+
                             }, 2000)
 
                         } else {
-                            
+
                             bootbox.hideAll();
                         }
 
@@ -150,7 +150,7 @@
     }
 
     function OzelSecim() {
-        debugger;
+
         var urunCins = $("#UrunKisaltma").val().toLowerCase();
 
         if (urunCins == "ms") {
@@ -189,7 +189,7 @@
             excludes = $("#exclude").val().slice(0, -1);
         }
 
-        debugger;
+
         if (window.location.href.search("siparisId") != -1) {
             var siparisId = getUrlVars()["siparisId"];
 
@@ -263,7 +263,7 @@
         debugger;
         var array = $(".NakitSatisFiyat").sort();
         var teklifTutar = 0;
-        var katsayi = $("#NakitSatisKatsayi").val().replace(",", ".");
+        var nakitKatsayi = $("#NakitSatisKatsayi").val().replace(",", ".");
         var Vadelikatsayi = $("#VadeliSatisKatsayi").val().replace(",", ".");
 
         var UsdKur = $("#UsdKur").val();
@@ -276,25 +276,26 @@
             var KalipId = $(input).attr("KalipId");
 
             var orjinalFiyat = $(".GenelGiderSatisFiyat[KalipId=" + KalipId + "]").val().replace(",", ".");
-            var yeniFiyat = parseFloat(orjinalFiyat * katsayi);
+            var nakitSatisFiyat = parseFloat(orjinalFiyat * nakitKatsayi);
+
             var targetNakitSatisInput = $(".NakitSatisFiyat[KalipId=" + KalipId + "]");
-            targetNakitSatisInput.val(yeniFiyat.toFixed(3).replace(".", ","));
-            teklifTutar += yeniFiyat;
+            targetNakitSatisInput.val(nakitSatisFiyat.toFixed(3).replace(".", ","));
 
             //vadeli fiyat             
             var targetInputTl = $(".VadeliSatisFiyatTl[KalipId=" + KalipId + "]");
             var targetInputUsd = $(".VadeliSatisFiyatUsd[KalipId=" + KalipId + "]");
             var targetInputEur = $(".VadeliSatisFiyatEur[KalipId=" + KalipId + "]");
 
-            var sonuc = yeniFiyat * Vadelikatsayi;
+            var sonuc = nakitSatisFiyat * Vadelikatsayi;
             targetInputTl.val(sonuc.toFixed(3).replace(".", ","));
-            targetInputTl.attr("EskiTutar", sonuc.toFixed(3).replace(".", ","));
+            teklifTutar += sonuc;
 
-            sonuc = yeniFiyat * Vadelikatsayi / UsdKur;
+            sonuc = nakitSatisFiyat * Vadelikatsayi / UsdKur;
             targetInputUsd.val(sonuc.toFixed(3).replace(".", ","));
 
-            sonuc = yeniFiyat * Vadelikatsayi / EurKur;
+            sonuc = nakitSatisFiyat * Vadelikatsayi / EurKur;
             targetInputEur.val(sonuc.toFixed(3).replace(".", ","));
+
 
         });
 
@@ -310,10 +311,9 @@
 
         console.log("teklif tutarı : " + teklifTutar);
     }
-
     //Teklif tutar tablosunu çalıştır
     function VadeliFiyatHesapla() {
-        debugger;
+
         var array = $(".VadeliSatisFiyatTl").sort();
         var teklifTutar = 0;
         //var UsdKur = $("#UsdKur").val();
@@ -354,16 +354,16 @@
             maliyet.Tutar = input.value;
 
             if ($(input).prop('disabled') == false) {
-                maliyet.Status = true;
-                //teklifTutar += parseFloat($(input).val().replace(",", "."));
+                maliyet.Status = true;;
             } else {
                 maliyet.Status = false;
             }
             liste.push(maliyet);
         });
 
-        var nakitKatsayi = $("#NakitSatisKatsayi").val();
-        var vadeliKatsayi = $("#VadeliSatisKatsayi").val();
+        var nakitKatsayi = $("#NakitKatsayiTemp").val();
+        var vadeliKatsayi = $("#VadeliKatsayiTemp").val();
+
 
         Post("/siparis/MaliyetHesap",
             { liste: liste, nakitKatsayi: nakitKatsayi, vadeliKatsayi: vadeliKatsayi },
@@ -408,7 +408,7 @@
                 FixedIdList.push(idList[i])
             }
         }
-        debugger;
+
         if (window.location.href.search("siparisId") != -1) {
             var siparisId = getUrlVars()["siparisId"];
 
@@ -425,7 +425,7 @@
 
                 },
                 complete: function () {
-                    
+
                 }
             })
         }
@@ -444,7 +444,7 @@
                     //BeforeSend
                 },
                 function () {
-                    
+
                 },
                 "html");
         }
@@ -459,11 +459,11 @@
                 //$(val).find(".birimFiyat").val("0");
             }
         });
-        //maliyetHesapla();
+        ///maliyetHesapla();
     }
 
-    function InputBulEkle(MaliyetType, KalipId, Value, YaldizId = null, boyaKod = null, formul, aciklama = null, spreyBoyaKod = null) {
-        debugger;
+    function InputBulEkle(MaliyetType, KalipId, Value, YaldizId = null, boyaKod = null, formul, aciklama = null, spreyBoyaKod = null, metalizeId = null) {
+
         var Input = $("td[" + MaliyetType + "-cikar='" + KalipId + "'] input");
         Input.val(Value);
 
@@ -474,6 +474,11 @@
 
         if (boyaKod != null) {
             Input.attr("boyaKod", boyaKod)
+            Input.addClass("changed");
+        }
+
+        if (metalizeId != null) {
+            Input.attr("metalizeId", metalizeId)
             Input.addClass("changed");
         }
 
@@ -519,13 +524,14 @@
                             label: "Kaydet",
                             className: 'btn-info',
                             callback: function () {
-                                debugger;
+
                                 var value = $(".Fiyat").val();
                                 var YaldizId = null;
                                 var boyaKod = null;
                                 var spreyBoyaKod = null;
                                 var formul = null;
                                 var aciklama = null;
+                                var metalizeId = null;
 
                                 if ($(".Fiyat").attr("YaldizId") !== null && $(".Fiyat").attr("YaldizId") !== undefined) {
                                     YaldizId = $(".Fiyat").attr("YaldizId");
@@ -533,6 +539,9 @@
 
                                 if ($(".Fiyat").attr("boyaKod") !== null && $(".Fiyat").attr("boyaKod") !== undefined) {
                                     boyaKod = $(".Fiyat").attr("boyaKod");
+                                }
+                                if ($(".Fiyat").attr("metalizeId") !== null && $(".Fiyat").attr("metalizeId") !== undefined) {
+                                    metalizeId = $(".Fiyat").attr("metalizeId");
                                 }
 
                                 if ($(".Fiyat").attr("spreyBoyaKod") !== null && $(".Fiyat").attr("spreyBoyaKod") !== undefined) {
@@ -547,7 +556,7 @@
                                     aciklama = $("#SiparisKalipAciklama").val();
                                 }
 
-                                InputBulEkle(maliyetType, kalipId, value, YaldizId, boyaKod, formul, aciklama, spreyBoyaKod);
+                                InputBulEkle(maliyetType, kalipId, value, YaldizId, boyaKod, formul, aciklama, spreyBoyaKod, metalizeId);
 
                                 if ($(".parentDiv").attr("uruntype") == "koli") {
                                     var posetKatsayi = $("#posetParametre").val();
@@ -571,6 +580,7 @@
                 //BeforeSend
             },
             function () {
+                KTSelect2.BoyaKod();
             },
             "html");
     }
@@ -636,13 +646,16 @@
                 var f2 = 0;
                 try {
                     f1 = mamulInput.val().replace(",", ".");
+
                 }
                 catch (err) {
                     f1 = mamulInput.val();
                 }
+
                 try {
                     f2 = $(input).val().replace(",", ".");
                 }
+
                 catch (err) {
                     f2 = $(input).val();
                 }
@@ -657,7 +670,7 @@
     }
 
     function SiparisKaydet(SiparisId) {
-        debugger;
+
         var liste = [];
 
         var SiparisKalipDto = function () {
@@ -666,10 +679,11 @@
             this.MaliyetType;//string
             this.isEnable;//bool
             this.YaldizId;//string 
-            this.TozBoyaKodId;//int 
+            this.TozBoyaKodList;//string
             this.SpreyBoyaKodId;//int 
             this.Aciklama;//string
             this.Formul;//string
+            this.MetalizeKodId;//int
         }
 
         var SiparisDto = function () {
@@ -708,13 +722,20 @@
 
             var BoyaKod = input.getAttribute("boyaKod");
             if (BoyaKod !== undefined && BoyaKod != null) {
-                dto.TozBoyaKodId = BoyaKod;
+                dto.TozBoyaKodList = BoyaKod;
             } else {
-                dto.TozBoyaKodId = null;
+                dto.TozBoyaKodList = null;
             }
 
-            var SpreyBoyaKod = input.getAttribute("spreyBoyaKod");
+            var metalizeId = input.getAttribute("metalizeId");
+            if (metalizeId !== undefined && metalizeId != null) {
+                dto.MetalizeKodId = metalizeId;
+            } else {
+                dto.MetalizeKodId = null;
+            }
 
+
+            var SpreyBoyaKod = input.getAttribute("spreyBoyaKod");
             if (SpreyBoyaKod !== undefined && SpreyBoyaKod != null) {
                 dto.SpreyBoyaKodId = SpreyBoyaKod;
             } else {
@@ -743,7 +764,7 @@
 
             liste.push(dto);
         });
-        debugger;
+
 
         var siparisDto = new SiparisDto();
         siparisDto.SiparisId = SiparisId;
@@ -754,7 +775,7 @@
         siparisDto.TeklifFiyatUsd = $("#TeklifTutarUsd").val();
         siparisDto.TeklifFiyatEur = $("#TeklifTutarEur").val();
         siparisDto.NakitKatsayi = $("#NakitSatisKatsayi").val();
-        siparisDto.VadeliKatsayi = $("#VadeliSatisKatsayi").val();        
+        siparisDto.VadeliKatsayi = $("#VadeliSatisKatsayi").val();
         siparisDto.Aciklama = $("#Aciklama").val();
         siparisDto.TerminTarihi = $("#TerminTarihi").val();
         siparisDto.SiparisAdet = $("#SiparisAdet").val();
@@ -807,7 +828,7 @@
     }
 
     function TopluSiparisKalipGuncelle(toplam, toplamUsd, toplamEur, siparisId, nakitKatsayi, vadeliKatsayi) {
-        debugger;
+
         var liste = [];
 
         var Degisen = function () {
@@ -815,10 +836,11 @@
             this.Maliyet;//decimal
             this.isEnable;//bool
             this.YaldizId;//string
-            this.TozBoyaKodId;//int
+            this.TozBoyaKodList;//int
             this.SpreyBoyaKodId;//int
             this.Aciklama;//string
             this.Formul;//string
+            this.MetalizeKodId;//string
         }
 
         var array = $(".changed").sort();
@@ -828,7 +850,7 @@
             degisen.SiparisKalipId = input.getAttribute("SiparisKalipId");
             degisen.Maliyet = input.value;
             degisen.YaldizId = null;
-            degisen.TozBoyaKodId = null;
+            degisen.TozBoyaKodList = null;
             degisen.SpreyBoyaKodId = null;
             degisen.Aciklama = null;
             degisen.Formul = null;
@@ -843,12 +865,16 @@
             var spreyBoyaKod = $(input).attr("spreyBoyaKod");
             var aciklama = $(input).attr("aciklama");
             var formul = $(input).attr("formul");
+            var metalizeId = $(input).attr("metalizeId");
 
             if (yaldiz != null && yaldiz !== undefined) {
                 degisen.YaldizId = yaldiz;
             }
             if (boyaKod != null && boyaKod !== undefined) {
-                degisen.TozBoyaKodId = boyaKod;
+                degisen.TozBoyaKodList = boyaKod;
+            }
+            if (metalizeId != null && metalizeId !== undefined) {
+                degisen.MetalizeKodId = metalizeId;
             }
             if (spreyBoyaKod != null && spreyBoyaKod !== undefined) {
                 degisen.SpreyBoyaKodId = spreyBoyaKod;
@@ -893,7 +919,7 @@
             function () {
             },
             "json");
-        debugger;
+
         var siparis = $("#sipForm").serializeJSON();
 
         Post("/siparis/guncelle",
@@ -920,7 +946,7 @@
 
     var handleEvent = function () {
         $(document).on("click", "[event='SiparisKisitliFormPopup']", function (e) {
-            debugger;
+
             e.preventDefault();
             var id = $(this).attr("id");
             Post("/siparis/form",
@@ -1035,7 +1061,7 @@
 
         $(document).on("change", "#UrunId", function (event) {
             event.preventDefault();
-            debugger;
+
             $(".OzelSecim").hide();
             UrunKaliplariGetir();
         });
@@ -1051,7 +1077,7 @@
             var KalipId = $(this).attr("kalipId");
             var PosetParametre = $("#PosetParametre_" + KalipId).val();
             var urunId = $("#UrunId").val();
-            debugger;
+
             if (window.location.href.search("siparisId") != -1) {
                 urunId = getUrlVars()["urunId"];
             }
@@ -1060,7 +1086,7 @@
 
         $(document).on("click", "[event='FaturadanCikar']", function (event) {
             event.preventDefault();
-            debugger;
+
             var KalipId = $(this).attr("KalipId");
             var cikarType = $(this).attr("cikar-type");
             var siparisKalipId = $(this).attr("TargetSiparisKalipId");
@@ -1163,7 +1189,7 @@
 
         $(document).on("change", ".OzelSecimSelect", function (event) {
             event.preventDefault();
-            debugger;
+
             var kalipId = $(this).val();
             $("#include").val($("#include").val() + kalipId + ",");
             UrunKaliplariGetir();
@@ -1175,7 +1201,7 @@
             var siparisId = $(this).attr("siparisId");
 
             if (siparisId != 0) {
-                debugger;
+
                 var toplam = $("#TeklifTutarTl").val();
                 var toplamUsd = $("#TeklifTutarUsd").val();
                 var toplamEur = $("#TeklifTutarEur").val();
@@ -1193,32 +1219,33 @@
 
         $(document).on("change", ".siparisFiyat", function (event) {
             event.preventDefault();
-            debugger;
             $(this).addClass("changed");
         });
 
         $(document).on("change", "#NakitSatisKatsayi", function (event) {
             event.preventDefault();
-            debugger;
+            var katsayi = $(this).val();
+            $("#NakitKatsayiTemp").val(katsayi);
             SatisFiyatHesapla();
         });
 
         $(document).on("change", "#VadeliSatisKatsayi", function (event) {
             event.preventDefault();
             debugger;
+            var katsayi = $(this).val();
+            $("#VadeliKatsayiTemp").val(katsayi);
             SatisFiyatHesapla();
         });
 
         $(document).on("change", ".GenelGiderSatisFiyat", function (event) {
             event.preventDefault();
-            debugger;
             SatisFiyatHesapla();
         });
 
         //Teklif Tutarının tl karşılığı değişirse dolar ve euro karşılığını güncellle
         $(document).on("change", "#TeklifTutarTl", function (event) {
             event.preventDefault();
-            debugger;
+
             var fiyat = $(this).val().replace(",", ".");
 
             var UsdSonuc = fiyat / _UsdKur;
@@ -1232,8 +1259,8 @@
         //Teklif Tutarının dolar karşılığı değişirse tl ve euro karşılığını güncellle
         $(document).on("change", "#TeklifTutarUsd", function (event) {
             event.preventDefault();
-            debugger;
-            var fiyat = $(this).val().replace(",", "."); 
+
+            var fiyat = $(this).val().replace(",", ".");
 
             var TlSonuc = fiyat * _UsdKur;
             var EurSonuc = TlSonuc / _EurKur;
@@ -1246,7 +1273,7 @@
         //Teklif Tutarının euro karşılığı değişirse tl ve dolar karşılığını güncellle
         $(document).on("change", "#TeklifTutarEur", function (event) {
             event.preventDefault();
-            debugger;
+
             var fiyat = $(this).val().replace(",", ".");
 
             var TlSonuc = fiyat * _EurKur;
@@ -1260,7 +1287,7 @@
         //sipariş formu kalıp nakit satış alanında değişiklik olursa
         $(document).on("change", ".NakitSatisFiyat", function (event) {
             event.preventDefault();
-            debugger;
+
 
             var kalipId = $(this).attr("KalipId");
             //var UsdKur = $("#UsdKur").val();
@@ -1290,7 +1317,7 @@
         //sipariş formu kalıp vadeli satış alanında değişiklik olursa
         $(document).on("change", ".VadeliSatisFiyatTl", function (event) {
             event.preventDefault();
-            debugger;
+
             VadeliFiyatHesapla();
             //var eskiTutar = $(this).attr("EskiTutar").replace(",", ".");
             //var kalipId = $(this).attr("KalipId");
@@ -1318,7 +1345,7 @@
 
         $(document).on("click", ".siparisGuncelle", function (event) {
             event.preventDefault();
-            debugger;
+
             var toplam = $("#TeklifTutarTl").val();
             var toplamUsd = $("#TeklifTutarUsd").val();
             var toplamEur = $("#TeklifTutarEur").val();
@@ -1330,7 +1357,7 @@
 
         $(document).on("change", ".UploadFile", function (event) {
             event.preventDefault();
-            debugger;
+
             var inputId = $(this).attr("id");
             var TargetDirectory = "SiparisPdf/CariId-" + $("#SiparisCariId").val() + "/";
             var TargetInputId = $(this).attr("TargetInputId");
@@ -1340,7 +1367,7 @@
 
         $(document).on("change", "#CariId", function (event) {
             event.preventDefault();
-            debugger;
+
             var id = $(this).val();
             $("#SiparisCariId").val(id);
 
@@ -1348,15 +1375,22 @@
 
         $(document).on("change", "#boyaKodSelect", function (event) {
             event.preventDefault();
-            debugger;
+
             var boyaKod = $(this).val();
             $(".Fiyat").attr("boyaKod", boyaKod);
 
         });
 
+        $(document).on("change", "#boyaKaplamaKodSelect", function (event) {
+            event.preventDefault();
+            var metalizeId = $(this).val();
+            $(".Fiyat").attr("metalizeId", metalizeId);
+
+        });
+
         $(document).on("change", "#spreyBoyaKodSelect", function (event) {
             event.preventDefault();
-            debugger;
+
             var boyaKod = $(this).val();
             $(".Fiyat").attr("spreyBoyaKod", boyaKod);
 
@@ -1364,7 +1398,7 @@
 
         $(document).on("change", "#YaldizId", function (event) {
             event.preventDefault();
-            debugger;
+
             var YaldizId = $(this).val();
             $(".Fiyat").attr("YaldizId", YaldizId);
 
@@ -1373,7 +1407,7 @@
 
         $(document).on("click", "[event='UretimeAcKapat']", function (event) {
             event.preventDefault();
-            debugger;
+
             var siparisId = $(this).attr("SiparisId");
             SiparisUretimAcKapat(siparisId);
         });
@@ -1381,7 +1415,7 @@
 
         $(document).on("click", "#YaldizEkle", function (event) {
             event.preventDefault();
-            debugger;
+
             var id = 0;
             Post("/Yaldiz/form",
                 { id: id },
@@ -1423,7 +1457,7 @@
 
         $(document).on("click", ".webviewer", function (event) {
             event.preventDefault();
-            debugger;
+
             var url = $(this).attr("pdfurl");
             bootbox.dialog({
                 title: "pdf okuyucu",
@@ -1471,10 +1505,10 @@
 
         });
 
-        $(document).ready(function () {
-            KurGetir("Usd");
-            KurGetir("Eur");
-        });
+        //$(document).ready(function () {
+        //    KurGetir("Usd");
+        //    KurGetir("Eur");
+        //});
     }
 
 
@@ -1491,6 +1525,9 @@
         },
         EurKur: function () {
             return _EurKur;
+        },
+        KurGetir: function (doviz) {
+            KurGetir(doviz);
         }
     };
 }();
