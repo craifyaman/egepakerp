@@ -16,6 +16,8 @@ namespace EgePakErp.Concrete
                .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
                .Include(x => x.StokHareket)
+               .Include(x => x.MetalizeKod)
+               .Include(x => x.SpreyBoyaKod)
                .FirstOrDefault(x=>x.SiparisKalipId == id);
         }
         public override SiparisKalip Get(Expression<Func<SiparisKalip, bool>> filter)
@@ -26,6 +28,8 @@ namespace EgePakErp.Concrete
                .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
                .Include(x => x.StokHareket)
+               .Include(x => x.MetalizeKod)
+               .Include(x => x.SpreyBoyaKod)
                .FirstOrDefault(filter);
         }
         public override IQueryable<SiparisKalip> GetAll()
@@ -36,6 +40,8 @@ namespace EgePakErp.Concrete
                .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
                .Include(x => x.StokHareket)
+               .Include(x => x.MetalizeKod)
+               .Include(x => x.SpreyBoyaKod)
                .AsQueryable();
         }
 
@@ -47,6 +53,8 @@ namespace EgePakErp.Concrete
                .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
                .Include(x => x.StokHareket)
+               .Include(x => x.MetalizeKod)
+               .Include(x => x.SpreyBoyaKod)
                .Where(filter)
                .AsQueryable();
         }

@@ -2,7 +2,6 @@
 {
     public enum EBoyaKodType
     {
-        TozBoya = 1,
-        SpreyBoya = 2,
+        SpreyBoya = 1,
     }
 }

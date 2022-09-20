@@ -1,0 +1,39 @@
+﻿@model IEnumerable<EgePakErp.Models.StokCikisHareket>
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Cari
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Adet)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CikisTarih)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Aciklama)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.Cari.Unvan
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adet)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CikisTarih)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Aciklama)
+            </td>
+
+        </tr>
+    }
+
+</table>

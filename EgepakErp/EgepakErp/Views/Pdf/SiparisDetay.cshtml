@@ -129,9 +129,6 @@
                         <thead>
                             <tr class="text-left text-uppercase">
                                 <th style="min-width: 100px">Kalıp</th>
-                                @*<th style="min-width: 100px">Adet</th>
-                                <th style="min-width: 100px">Birim Maliyet</th>
-                                <th style="min-width: 100px">Toplam</th>*@
                                 <th style="min-width: 100px">Yaldız</th>
                                 <th style="min-width: 100px">Boya Kod</th>
                             </tr>
@@ -148,22 +145,6 @@
                                                 @(kalip.Adi)
                                             </span>
                                         </td>
-                                        @*<td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @Model.SiparisAdet
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @item.Sum(x => x.Maliyet).ToString("n3")
-                                            </span>
-                                        </td>
-
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @((item.Sum(x => x.Maliyet)*Model.SiparisAdet).ToString("n2"))
-                                            </span>
-                                        </td>*@
 
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
@@ -181,7 +162,7 @@
                                                         foreach (var id in idList)
                                                         {
                                                             int _id = Convert.ToInt32(id);
-                                                            var aciklama = BaseBoyaKod().FirstOrDefault(x => x.BoyaKodId == _id)?.Aciklama;
+                                                            var aciklama = BaseBoyaKaplama().FirstOrDefault(x => x.BoyaKaplamaId == _id)?.Aciklama;
                                                             if (aciklama != null)
                                                             {
                                                                 @aciklama <br />

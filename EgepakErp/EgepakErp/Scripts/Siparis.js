@@ -1505,10 +1505,11 @@
 
         });
 
-        //$(document).ready(function () {
-        //    KurGetir("Usd");
-        //    KurGetir("Eur");
-        //});
+        $(document).ready(function () {
+            $('#CariId').select2({
+                placeholder: 'Cari Seciniz'
+            });
+        });
     }
 
 

@@ -97,10 +97,15 @@
                                 <tbody>
                                     @foreach (var item in Model)
                                     {
+                                        var uretimEmirleri = BaseUretimEmir().Where(x => x.SiparisKalip.SiparisId == item.SiparisId);
+                                        var sKalipListe = uretimEmirleri.Select(x => x.SiparisKalip);
+
+
                                         var siparisKaliplar = item.SiparisKalip
                                             .GroupBy(x => x.KalipKod)
                                             .Where(x => x.FirstOrDefault(a => a.MaliyetType.ToLower() == "hammadde")?.DepodaMi == false)
                                             .ToList();
+
 
                                         var count = 0;
 

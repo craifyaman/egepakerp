@@ -9,5 +9,6 @@
         Metalize = 5,
         Tamamlandi = 6,
         EvMontaj = 7,
+        Iptal = 8,
     }
 }

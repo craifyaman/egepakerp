@@ -1,8 +1,10 @@
 ﻿using EgePakErp.Concrete;
-using EgePakErp.Controllers;
 using EgePakErp.Custom;
+using EgePakErp.DtModels;
+using EgePakErp.Enums;
 using EgePakErp.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -10,28 +12,32 @@ using System.Web.Mvc;
 
 namespace EgePakErp.Controllers
 {
-    public class BoyaKodController : BaseController
+    public class StokCikisHareketController : BaseController
     {
-        public BoyaKodRepository repo { get; set; }
-        public BoyaKodController()
+        public StokCikisHareketRepository repo { get; set; }
+        public string dtMetaField { get; set; }
+
+        public StokCikisHareketController()
         {
-            repo = new BoyaKodRepository();
+            repo = new StokCikisHareketRepository();
+
+
+            dtMetaField = "StokCikisHareketId";
         }
-        // GET: Fiyat
-        [Menu("Sprey Boya Kod Listesi", "fas fa-paint-brush icon-xl", "Boya Kodları", 0, 1)]
+
+        [Menu("Çıkış Hareketleri", "fa-solid fa-industry icon-xl", "Depo", 0, 5)]
         public ActionResult Index()
         {
             return View();
         }
 
-        [Yetki("Sprey Boya Kod Listesi", "Boya Kodları")]
         public JsonResult Liste()
         {
             //kabasını aldır
             var dtModel = new DataTableModel<dynamic>();
             var dtMeta = new DataTableMeta();
 
-            dtMeta.field = Request.Form["sort[field]"] == null ? "BoyaKodId" : Request.Form["sort[field]"];
+            dtMeta.field = Request.Form["sort[field]"] == null ? dtMetaField : Request.Form["sort[field]"];
             dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
 
             dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
@@ -39,14 +45,13 @@ namespace EgePakErp.Controllers
 
             var model = repo.GetAll();
 
-            //Filtre
             if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
             {
-                var searchQuery = Request.Form["query[searchQuery]"].ToString();
-                model = model.Where(i =>
-                i.Aciklama.ToLower().Contains(searchQuery.ToLower()) ||
-                i.Kod.ToLower().Contains(searchQuery.ToLower())
-                );
+                string q = Request.Form["query[searchQuery]"].ToString();
+                model = model
+                    .Where(
+                    x => x.Cari.Unvan.Contains(q)
+                    );
             }
 
             try
@@ -56,8 +61,8 @@ namespace EgePakErp.Controllers
 
             catch (Exception)
             {
-                model = model.OrderBy("BoyaKodId Desc");
-                dtMeta.field = "BoyaKodId";
+                model = model.OrderBy(dtMetaField + " Desc");
+                dtMeta.field = dtMetaField;
                 dtMeta.sort = "Desc";
             }
 
@@ -65,41 +70,63 @@ namespace EgePakErp.Controllers
 
             dtMeta.total = count;
             dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
+
+
             //sayfala
             model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
-            
+            var dto = model.Select(x => new
+            {
+                Id = x.StokCikisHareketId,
+                Adet = x.Adet,
+                CikisTarih = x.CikisTarih,
+                StokHareketId = x.StokHareketId,
+                Cari = x.Cari.Unvan,
+                Aciklama = x.Aciklama
+            }).ToList<dynamic>();
+
             dtModel.meta = dtMeta;
-            dtModel.data = model.ToList<dynamic>();
+            dtModel.data = dto;
             return Json(dtModel);
 
         }
-        public PartialViewResult Form(int? id)
+
+
+        public PartialViewResult Form(int? id, int stokHareketId,int cariId)
         {
+            ViewBag.StokHareketId = stokHareketId;
+            ViewBag.CariId = cariId;
             id = id == null ? 0 : id.Value;
             var model = repo.Get((int)id);
+
             return PartialView(model);
         }
+        public PartialViewResult GetListById(int stokHareketId)
+        {
+            var model = repo.GetAll(x=>x.StokHareketId == stokHareketId);
+            return PartialView(model);
+        }
+        
         public PartialViewResult FilterForm()
         {
             return PartialView();
         }
 
-        [Yetki("Boya Kod Kaydet", "Boya Kodları")]
-        public JsonResult Kaydet(BoyaKod form)
+        public JsonResult Kaydet(StokCikisHareket form)
         {
             var response = new Response();
 
             try
             {
-                if (form.BoyaKodId== 0)
+                if (form.StokCikisHareketId == 0)
                 {
+                    form.CikisTarih = DateTime.Now;
                     repo.Insert(form);
                     response.Success = true;
                     response.Description = "Kayıt edildi.";
                 }
                 else
                 {
-                    var entity = repo.Get(form.BoyaKodId);
+                    var entity = repo.Get(form.StokCikisHareketId);
                     if (entity != null)
                     {
                         //alanları güncelle
@@ -117,7 +144,7 @@ namespace EgePakErp.Controllers
                     }
 
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -128,6 +155,5 @@ namespace EgePakErp.Controllers
             return Json(response);
 
         }
-
     }
 }

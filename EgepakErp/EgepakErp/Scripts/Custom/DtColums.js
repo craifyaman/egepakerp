@@ -714,7 +714,7 @@
             {
                 field: 'Urun',
                 title: 'Urun',
-                width:100,
+                width: 100,
             },
             //{
             //    field: 'UrunId',
@@ -731,7 +731,7 @@
                     var cls = row.DurumId == 2 ? "btn-success" : "btn-danger";
                     var str = '<a class="btn btn-icon btn-info mr-1" href="siparis/siparisformu?siparisId=' + row.SiparisId + '&urunId=' + row.UrunId + '" target="_blank" title="Düzenle" data-toggle="tooltip" data-placement="top"><i class="flaticon-edit" ></i> </a>'
                     str += '<a class="btn btn-icon btn-primary mr-1" event="SiparisKisitliFormPopup" id="' + row.SiparisId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top"><i class="flaticon2-pen" ></i> </a>'
-                    str += ' <a class="btn btn-icon  mr-1 ' + cls + '" href = "" title = "' + _title + '" event="UretimeAcKapat" SiparisId="' + row.SiparisId + '" > <i class="flaticon-cogwheel-1" ></i></a>'
+                    /*str += ' <a class="btn btn-icon  mr-1 ' + cls + '" href = "" title = "' + _title + '" event="UretimeAcKapat" SiparisId="' + row.SiparisId + '" > <i class="flaticon-cogwheel-1" ></i></a>'*/
                     str += '<a class="btn btn-primary btn-icon mr-1" href="/siparis/SiparisDetayPdf?siparisId=' + row.SiparisId + '" target="_blank" title="pdf dökümü" data-toggle="tooltip" data-placement="top"><i class="flaticon-multimedia-4" ></i></a> ';
                     str += '<a class="btn btn-info btn-icon mr-1" href="/siparis/SiparisUretimDetayPdf?siparisId=' + row.SiparisId + '" target="_blank" title="Üretim dökümü" data-toggle="tooltip" data-placement="top"><i class="flaticon-multimedia-4" ></i></a> ';
                     return str;
@@ -969,6 +969,11 @@
                 width: 50
             },
             {
+                field: 'Kalan',
+                title: 'Kalan',
+                width: 50
+            },
+            {
                 field: 'Yaldiz',
                 title: 'Yaldiz'
             },
@@ -985,14 +990,44 @@
                 autoHide: false,
                 template: function (row) {
                     var str = '<a class="btn btn-icon btn-info mr-1"';
-                    str += 'event="StokHareketFormPopup" href = "#" id = "' + row.Id + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    str += 'event="StokHareketFormPopup" href = "#" id = "' + row.Id + '" title = "Hızlı Düzenle" data-toggle="tooltip" data-placement="top" > <i class="flaticon-edit" ></i> </a >'
+
+                    str += '<a class="btn btn-icon btn-info mr-1" event="StokCikisHareketFormPopup" href = "#" CariId="' + row.CariId +'" stokHareketId = "' + row.Id + '" title = "Çıkış Hareketi Ekle" data-toggle="tooltip" data-placement="top" > <i class="fa-solid fa-truck-fast"></i></a >'
+
+                    str += '<a class="btn btn-icon btn-info mr-1" event="CikisHareketListe" href = "#" stokHareketId = "' + row.Id + '" title = "Çıkış Hareket Listesi" data-toggle="tooltip" data-placement="top" > <i class="fa-solid fa-list"></i></a >'
+
                     return str;
                 },
             }
         ];
         return columns;
     }
-
+    function stokCikisHareketColumns() {
+        var columns = [
+            {
+                field: 'Id',
+                title: '#',
+            },
+            {
+                field: 'Adet',
+                title: 'Adet',
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'event="StokCikisHareketFormPopup" href = "#" id = "' + row.Id + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    return str;
+                },
+            }
+        ];
+        return columns;
+    }
 
     return {
         // public functions
@@ -1037,7 +1072,7 @@
         },
         BoyaKaplamaColumns: function () {
             return boyaKaplamaColumns();
-        },        
+        },
         YaldizColumns: function () {
             return yaldizColumns();
         },
@@ -1052,6 +1087,9 @@
         },
         StokHareketColumns: function () {
             return stokHareketColumns();
+        },
+        StokCikisHareketColumns: function () {
+            return stokCikisHareketColumns();
         },
 
         GetColoums: function (name) {
@@ -1103,7 +1141,7 @@
             else if (name == "boyakaplama") {
                 return boyaKaplamaColumns();
             }
-            
+
 
 
         }

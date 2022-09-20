@@ -14,6 +14,7 @@ namespace EgePakErp.Concrete
                 .Include(x=>x.StokHareketType)
                 .Include(x=>x.Siparis)
                 .Include(x=>x.SiparisKalip)
+                .Include(x=>x.StokCikisHareket)
                .FirstOrDefault(x => x.StokHareketId== id);
         }
         public override StokHareket Get(Expression<Func<StokHareket, bool>> filter)
@@ -22,6 +23,7 @@ namespace EgePakErp.Concrete
                 .Include(x => x.StokHareketType)
                 .Include(x => x.Siparis)
                 .Include(x => x.SiparisKalip)
+                .Include(x => x.StokCikisHareket)
                .FirstOrDefault(filter);
         }
         public override IQueryable<StokHareket> GetAll()
@@ -30,6 +32,7 @@ namespace EgePakErp.Concrete
                 .Include(x => x.StokHareketType)
                 .Include(x => x.Siparis)
                 .Include(x => x.SiparisKalip)
+                .Include(x => x.StokCikisHareket)
                .AsQueryable();
         }
 
@@ -39,6 +42,7 @@ namespace EgePakErp.Concrete
                 .Include(x => x.StokHareketType)
                 .Include(x => x.Siparis)
                 .Include(x => x.SiparisKalip)
+                .Include(x => x.StokCikisHareket)
                 .Where(filter)
                .AsQueryable();
         }

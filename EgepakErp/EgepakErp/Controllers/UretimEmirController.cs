@@ -138,7 +138,7 @@ namespace EgePakErp.Controllers
                     {
                         form.isEvMontajBitti = false;
                     }
-                    
+
                     repo.Insert(form);
 
                     var sk = siparisKalipRepo.Get(form.SiparisKalipId);
@@ -156,6 +156,12 @@ namespace EgePakErp.Controllers
                     var entity = repo.Get(form.UretimEmirId);
                     if (entity != null)
                     {
+                        //tamamlanma tarihi kaydetme
+                        if (form.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi)
+                        {
+                            entity.TamamlanmaTarih = DateTime.Now;
+                        }
+
                         //alanları güncelle
                         var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
                         foreach (var prop in propList)
@@ -195,7 +201,7 @@ namespace EgePakErp.Controllers
         {
             var yaldizList = yaldizRepo.GetAll();
             var boyaKodList = boyaKodRepo.GetAll();
-            var siparisKaliplar = siparisKalipRepo.GetAll(x => x.YaldizId != null || x.TozBoyaKodId != null);
+            var siparisKaliplar = siparisKalipRepo.GetAll(x => x.YaldizId != null || x.TozBoyaKodId != null || x.MetalizeKodId != null || x.TozBoyaKodList != null);
             var response = new Response<dynamic>();
             try
             {
@@ -232,12 +238,21 @@ namespace EgePakErp.Controllers
                 {
                     var cariId = x.SiparisKalip.Siparis.CariId;
                     var cari = cariList.FirstOrDefault(a => a.CariId == cariId).Unvan;
-
+                    var fixSiparisKaliplar = siparisKaliplar.Where(a => a.SiparisId == x.SiparisKalip.SiparisId);
                     dynamic ret = new
                     {
                         UretimEmirId = x.UretimEmirId,
                         SiparisKalip = x.SiparisKalip.KalipKod,
-                        KalipAd = "<b>" + kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi + "</b>" + " ( " + cari + " ) " + " _ (" + x.SiparisKalip.Siparis.SiparisAdi + ")" + " _ " + siparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizId != null)?.Yaldiz.Aciklama + " _ " + siparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.TozBoyaKodId != null)?.TozBoyaKod.Aciklama,
+                        KalipAd = "<b>" + kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi
+                        + "</b>" + " ( " + cari + " ) "
+                        + " _ (" + x.SiparisKalip.Siparis.SiparisAdi + ")"
+                        + " _ "
+                        + fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizId != null)?.Yaldiz.Aciklama
+                        + " _ "
+                        + fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.SpreyBoyaKodId != null)?.SpreyBoyaKod.Aciklama
+                        + "_"
+                        + fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.MetalizeKodId != null)?.MetalizeKod.Aciklama
+                        ,
                         Makine = x.Makine.MakineAd,
                         MakineId = x.Makine.MakineId,
                         Baslangic = x.Baslangic,

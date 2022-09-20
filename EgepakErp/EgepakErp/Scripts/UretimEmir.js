@@ -109,8 +109,11 @@
 
 
         $(document).on("change", "#SiparisId", function (event) {
+            debugger;
             event.preventDefault();
             var siparisId = $(this).val();
+            var adet = $("#SiparisId option:selected").attr("Adet");
+            $("#SiparisAdet").val(adet);
             Post("/uretimemir/SiparisKalipBySiparis",
                 { siparisId: siparisId },
                 function (response) {
@@ -127,8 +130,6 @@
                 },
                 "html");
         });
-
-
 
     }
 

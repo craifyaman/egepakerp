@@ -49,11 +49,11 @@
                         </h3>
                         <div class="card-toolbar">
                             <!--<div class="dropdown dropdown-inline">-->
-                                <!--begin::Trigger Modal-->
-                                <!--<a href="#" id="0" class="btn btn-success font-weight-bolder font-size-sm "
-                                   event="StokHareketFormPopup"
-                                   aria-haspopup="true" aria-expanded="false">Stok Hareket Ekle</a>-->
-                                <!--end::Trigger Modal-->
+                            <!--begin::Trigger Modal-->
+                            <!--<a href="#" id="0" class="btn btn-success font-weight-bolder font-size-sm "
+                               event="StokHareketFormPopup"
+                               aria-haspopup="true" aria-expanded="false">Stok Hareket Ekle</a>-->
+                            <!--end::Trigger Modal-->
                             <!--</div>-->
                         </div>
                     </div>
@@ -88,11 +88,13 @@
 
 @section Scripts{
     <script src="~/Scripts/StokHareket.js?v=@ScriptVersion"></script>
+    <script src="~/Scripts/StokCikisHareket.js?v=@ScriptVersion"></script>
     <script>
 
         $(document).ready(function () {
             Dt.DtInit("kt_datatable", "/StokHareket/Liste", DtColums.StokHareketColumns(), {});
             StokHareket.EventInit();
+            StokCikisHareket.EventInit();
         });
 
     </script>

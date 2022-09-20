@@ -20,7 +20,8 @@ namespace EgePakErp.Models
         public DateTime Baslangic { get; set; }
 
         public DateTime Bitis { get; set; }
-        //public int UretilenAdet { get; set; }
+        public DateTime? TamamlanmaTarih { get; set; }
+        public int UretilenAdet { get; set; }
         public int SiparisAdet { get; set; }
         public int UretimEmirDurumId { get; set; }
         public UretimEmirDurum UretimEmirDurum { get; set; }

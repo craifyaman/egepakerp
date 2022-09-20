@@ -50,6 +50,7 @@ namespace EgePakErp
         public virtual DbSet<DovizKur> DovizKur { get; set; }
         public virtual DbSet<BoyaKaplama> BoyaKaplama { get; set; }
         public virtual DbSet<BoyaKaplamaType> BoyaKaplamaType { get; set; }
+        public virtual DbSet<StokCikisHareket> StokCikisHareket { get; set; }
 
         #region Custom
         public virtual DbSet<HammaddeCinsi> HammaddeCinsi { get; set; }

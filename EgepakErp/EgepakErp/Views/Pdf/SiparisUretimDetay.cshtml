@@ -113,6 +113,7 @@
                                 <th style="min-width: 100px">Yaldız</th>
                                 <th style="min-width: 100px">Toz Boya Kod</th>
                                 <th style="min-width: 100px">Sprey Boya Kod</th>
+                                <th style="min-width: 100px">Metalize Kod</th>
                                 <th style="min-width: 100px">
                                     Açıklamalar
                                 </th>
@@ -153,7 +154,7 @@
                                                             foreach (var id in idList)
                                                             {
                                                                 int _id = Convert.ToInt32(id);
-                                                                var aciklama = BaseBoyaKod().FirstOrDefault(x => x.BoyaKodId == _id)?.Aciklama;
+                                                                var aciklama = BaseBoyaKaplama().FirstOrDefault(x => x.BoyaKaplamaId == _id)?.Aciklama;
                                                                 if (aciklama != null)
                                                                 {
                                                                     @aciklama <br />
@@ -169,6 +170,11 @@
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
                                                 @(item.FirstOrDefault(x=>x.SpreyBoyaKodId != null)?.SpreyBoyaKod?.Aciklama)
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                @(item.FirstOrDefault(x=>x.MetalizeKodId!= null)?.MetalizeKod?.Aciklama)
                                             </span>
                                         </td>
                                         <td>

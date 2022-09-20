@@ -9,7 +9,6 @@
             <label>Sipariş:</label>
             @{
                 var siparisler = BaseSiparis().Where(x => x.SiparisDurumId == (int)ESiparisType.Uretimde).ToList();
-
             }
             <select class="form-control" id="SiparisId" name="SiparisId">
                 <option>Sipariş seçin</option>
@@ -17,7 +16,7 @@
                 @foreach (var item in siparisler)
                 {
                     var attr = item.SiparisId == Model?.SiparisKalip.SiparisId ? "selected" : "";
-                    <option @attr value="@item.SiparisId">@item.SiparisAdi - (@item.Cari.Unvan)</option>
+                    <option @attr value="@item.SiparisId" Adet="@item.SiparisAdet">@item.SiparisAdi - (@item.Cari.Unvan)</option>
                 }
 
             </select>
@@ -111,9 +110,14 @@
 
 
     <div class="form-group row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <label>Sipariş Adet:</label>
             @Html.TextBoxFor(x => x.SiparisAdet, new { @class = "form-control", @type = "number" })
+        </div>
+
+        <div class="col-lg-6">
+            <label>Üretilen Adet:</label>
+            @Html.TextBoxFor(x => x.UretilenAdet, new { @class = "form-control", @type = "number" })
         </div>
     </div>
 

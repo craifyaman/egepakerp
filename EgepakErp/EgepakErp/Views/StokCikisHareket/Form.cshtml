@@ -1,0 +1,40 @@
+﻿@model StokCikisHareket
+@{
+    int StokHareketId = (int)ViewBag.StokHareketId;
+    int _cariId = (int)ViewBag.CariId;
+    if(Model != null)
+    {
+        _cariId = Model.CariId;
+    }
+}
+<!--begin::Form-->
+<form id="StokCikisHareketForm">
+    <input type="hidden" value="@StokHareketId" name="StokHareketId" id="StokHareketId" />
+    <div class="form-group">
+        <label>Cari:</label>
+        @{
+            var cariList = BaseCari().Where(x=>x.MusteriNo != null).ToList();
+        }
+        <select class="form-control select2" id="CariId" name="CariId">
+            <option>Cari Seçin</option>
+            @foreach (var item in cariList)
+            {
+                var attr = item.CariId == _cariId ? "selected" : "";
+                <option @attr value="@item.CariId">@item.Unvan</option>
+            }
+        </select>
+
+    </div>
+    <div class="form-group row">
+
+        <div class="col-12">
+            <label>Adet</label>
+            @Html.TextBoxFor(x => x.Adet, new { @class = "form-control", type = "number" })
+        </div>
+        <div class="col-12">
+            <label>Açıklama</label>
+            @Html.TextBoxFor(x => x.Aciklama, new { @class = "form-control" })
+        </div>
+    </div>
+</form>
+<!--end::Form-->

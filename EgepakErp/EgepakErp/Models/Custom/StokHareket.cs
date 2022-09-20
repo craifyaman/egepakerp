@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace EgePakErp.Models
@@ -25,10 +27,24 @@ namespace EgePakErp.Models
         public int? MontajKod { get; set; }
 
         public string Yer { get; set; }
+        public ICollection<StokCikisHareket> StokCikisHareket { get; set; }
+
+        [NotMapped]
+        public int? DepodaKalanAdet
+        {
+            get
+            {
+                var cikanToplam = StokCikisHareket?.Sum(x => x.Adet);
+                return Adet - cikanToplam;
+            }
+        }
 
 
         [NotMapped]
         public List<string> Include { get; set; }
 
+
     }
+
+
 }

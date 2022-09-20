@@ -20,6 +20,7 @@ namespace EgePakErp.Controllers
         public SiparisKalipRepository siparisKalipRepo { get; set; }
         public YaldizRepository yaldizRepo { get; set; }
         public BoyaKodRepository boyaKodRepo { get; set; }
+        public BoyaKaplamaRepository boyaKaplamaRepo { get; set; }
         public KalipRepository kalipRepo { get; set; }
         public string dtMetaField { get; set; }
 
@@ -30,12 +31,12 @@ namespace EgePakErp.Controllers
             yaldizRepo = new YaldizRepository();
             boyaKodRepo = new BoyaKodRepository();
             kalipRepo = new KalipRepository();
-
+            boyaKaplamaRepo = new BoyaKaplamaRepository();
 
             dtMetaField = "StokHareketId";
         }
 
-        [Menu("Depo", "fas fa-warehouse icon-xl", "Depo", 0, 1)]
+        [Menu("Depo", "fas fa-warehouse icon-xl", "Depo", 0, 5)]
         public ActionResult Index()
         {
             return View();
@@ -64,6 +65,7 @@ namespace EgePakErp.Controllers
             var allList = repo.GetAll().ToList();
             var yaldizList = yaldizRepo.GetAll();
             var BoyaKodList = boyaKodRepo.GetAll();
+            var BoyaKaplamaList = boyaKaplamaRepo.GetAll();
             var montajliKaliplar = repo.GetAll(x => x.MontajliMi).ToList();
             var yaldizKalipList = siparisKalipRepo.GetAll(x => x.YaldizId != null);
             var tozBoyaKodKalipList = siparisKalipRepo.GetAll(x => x.TozBoyaKodList != null);
@@ -108,8 +110,8 @@ namespace EgePakErp.Controllers
                     var temp = x.FirstOrDefault();
                     var montajKod = temp.MontajKod;
                     var montajliList = new List<StokHareket>();
-                    var BoyaKodId = 0;
-                    var BoyaKodlar = "";
+                 
+                    var GranulBoyalar = "";
                     var KalipAdlar = "";
 
                     if (montajKod != null)
@@ -144,13 +146,13 @@ namespace EgePakErp.Controllers
                             foreach (var b in tozBoyaKodSiparisKalip)
                             {
                                 var bKodList = b.TozBoyaKodList.Split(',');
-                                BoyaKodlar += "<p class=\"BoyaKodList\">";
+                                GranulBoyalar += "<p class=\"BoyaKodList\">";
                                 foreach (var bId in bKodList)
                                 {
                                     var id = Convert.ToInt32(bId);
-                                    BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == id)?.Aciklama + "<br/>";
+                                    GranulBoyalar += _kalip.Adi + "  : " + BoyaKaplamaList.FirstOrDefault(a => a.BoyaKaplamaId== id)?.Aciklama + "<br/>";
                                 }
-                                BoyaKodlar += "</p>";
+                                GranulBoyalar += "</p>";
                             }
                         }
 
@@ -166,9 +168,11 @@ namespace EgePakErp.Controllers
                         KalipKodList = KalipAdlar,
                         Yer = x.FirstOrDefault(y => y.Yer != null)?.Yer,
                         Yaldiz = YaldizAd,
-                        BoyaKod = BoyaKodlar,
+                        BoyaKod = GranulBoyalar,
                         SiparisAdi = temp.Siparis.SiparisAdi,
+                        CariId = temp.Siparis.CariId,
                         Adet = x.FirstOrDefault(y => y.Adet != null && y.Adet != 0)?.Adet,
+                        Kalan = temp.DepodaKalanAdet,
                         MontajliMi = temp.MontajliMi,
                     };
 
@@ -189,8 +193,8 @@ namespace EgePakErp.Controllers
                 {
                     var montajKod = x.MontajKod;
                     var montajliList = new List<StokHareket>();
-                    var BoyaKodId = 0;
-                    var BoyaKodlar = "";
+             
+                    var GranulBoyalar = "";
                     var KalipAdlar = "";
 
                     if (montajKod != null)
@@ -224,14 +228,14 @@ namespace EgePakErp.Controllers
                         {
                             foreach (var b in tozBoyaKodSiparisKalip)
                             {
-                                BoyaKodlar += "<p class=\"BoyaKodList\">";
+                                GranulBoyalar += "<p class=\"BoyaKodList\">";
                                 var bKodList = b.TozBoyaKodList.Split(',');
                                 foreach (var bId in bKodList)
                                 {
                                     var id = Convert.ToInt32(bId);
-                                    BoyaKodlar += _kalip.Adi + "  : " + BoyaKodList.FirstOrDefault(a => a.BoyaKodId == id)?.Aciklama + "<br/>";
+                                    GranulBoyalar += _kalip.Adi + "  : " + BoyaKaplamaList.FirstOrDefault(a => a.BoyaKaplamaId == id)?.Aciklama + "<br/>";
                                 }
-                                BoyaKodlar += "</p>";
+                                GranulBoyalar += "</p>";
                             }
                            
                         }
@@ -248,9 +252,11 @@ namespace EgePakErp.Controllers
                         KalipKodList = KalipAdlar,
                         Yer = x.Yer,
                         Yaldiz = YaldizAd,
-                        BoyaKod = BoyaKodlar,
+                        BoyaKod = GranulBoyalar,
                         SiparisAdi = x.Siparis.SiparisAdi,
+                        CariId = x.Siparis.CariId,
                         Adet = x.Adet,
+                        Kalan = x.DepodaKalanAdet,
                         MontajliMi = x.MontajliMi,
                     };
 

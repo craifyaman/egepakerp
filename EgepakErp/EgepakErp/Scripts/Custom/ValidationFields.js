@@ -422,6 +422,18 @@
         return fields;
     }
 
+    function stokCikisHareketFormFields() {
+
+        var fields = {
+            Adet: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
+
     function makineFormFields() {
         var fields = {
             MakineAdi: {
@@ -498,6 +510,9 @@
         },
         StokHareketFormFields: function () {
             return stokHareketFormFields();
+        },
+        StokCikisHareketFormFields: function () {
+            return stokCikisHareketFormFields();
         },
         SiparisFormFields: function () {
             return siparisFormFields();

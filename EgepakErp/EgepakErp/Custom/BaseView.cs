@@ -134,6 +134,7 @@ namespace EgePakErp.Custom
             }
             set { }
         }
+      
         public List<GorusmeTip> baseGorusmeTip
         {
             get
@@ -445,6 +446,8 @@ namespace EgePakErp.Custom
                 .Include(x => x.SpreyBoyaKod)
                 .Include(x => x.Siparis)
                 .Include(x => x.Yaldiz)
+                .Include(x => x.MetalizeKod)
+                .Include(x => x.GranulKod)
                 .Where(x => x.SiparisId == siparisId)
                 .AsQueryable();
 
@@ -472,6 +475,13 @@ namespace EgePakErp.Custom
         public IQueryable<UretimEmirDurum> BaseUretimEmirDurum()
         {
             var list = db.UretimEmirDurum
+                .AsQueryable();
+            return list;
+        }
+        public IQueryable<UretimEmir> BaseUretimEmir()
+        {
+            var list = db.UretimEmir
+                .Include(x=>x.SiparisKalip)
                 .AsQueryable();
             return list;
         }

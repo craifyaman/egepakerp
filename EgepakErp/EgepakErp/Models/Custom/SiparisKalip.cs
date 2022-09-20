@@ -29,7 +29,6 @@ namespace EgePakErp.Models
         public BoyaKod SpreyBoyaKod { get; set; }
 
 
-
         [ForeignKey("MetalizeKod")]
         public int? MetalizeKodId { get; set; }
         public BoyaKaplama MetalizeKod { get; set; }

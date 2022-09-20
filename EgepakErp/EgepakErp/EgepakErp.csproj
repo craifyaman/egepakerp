@@ -177,6 +177,7 @@
     <Compile Include="Concrete\BoyaKaplamaRepository.cs" />
     <Compile Include="Concrete\MakineRepository.cs" />
     <Compile Include="Concrete\AksiyonRepository.cs" />
+    <Compile Include="Concrete\StokCikisHareketRepository.cs" />
     <Compile Include="Concrete\UretimEmirRepository.cs" />
     <Compile Include="Concrete\StokHareketRepository.cs" />
     <Compile Include="Concrete\YaldizRepository.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Concrete\_GenericRepository.cs" />
     <Compile Include="Controllers\BoyaKaplamaController.cs" />
     <Compile Include="Controllers\PdfController.cs" />
+    <Compile Include="Controllers\StokCikisHareketController.cs" />
     <Compile Include="Controllers\StokHareketController.cs" />
     <Compile Include="Controllers\MakineController.cs" />
     <Compile Include="Controllers\AksiyonController.cs" />
@@ -544,9 +546,22 @@
     <Compile Include="Migrations\202209191343576_add_boyakaplama_table.designer.cs">
       <DependentUpon>202209191343576_add_boyakaplama_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209200800049_add_UretilenAdet_and_TamamlanmaTarih.cs" />
+    <Compile Include="Migrations\202209200800049_add_UretilenAdet_and_TamamlanmaTarih.designer.cs">
+      <DependentUpon>202209200800049_add_UretilenAdet_and_TamamlanmaTarih.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209200836539_set_TamamlanmaTarihi_to_nullable.cs" />
+    <Compile Include="Migrations\202209200836539_set_TamamlanmaTarihi_to_nullable.designer.cs">
+      <DependentUpon>202209200836539_set_TamamlanmaTarihi_to_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209201127069_create_StokCikisHareket_table.cs" />
+    <Compile Include="Migrations\202209201127069_create_StokCikisHareket_table.designer.cs">
+      <DependentUpon>202209201127069_create_StokCikisHareket_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\BoyaKaplama.cs" />
     <Compile Include="Models\Custom\BoyaKodSiparisKalipRel.cs" />
     <Compile Include="Models\Custom\BoyaKodType.cs" />
+    <Compile Include="Models\Custom\StokCikisHareket.cs" />
     <Compile Include="Models\Custom\StokHareket.cs" />
     <Compile Include="Models\Custom\StokHareketType.cs" />
     <Compile Include="Models\Custom\UretimEmirAksiyonRel.cs" />
@@ -2872,6 +2887,7 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
     <Content Include="Scripts\BoyaKaplama.js" />
     <Content Include="Scripts\Custom\WebViewer.js" />
+    <Content Include="Scripts\StokCikisHareket.js" />
     <Content Include="Scripts\StokHareket.js" />
     <Content Include="Scripts\Custom\DataPickerTr.js" />
     <Content Include="Scripts\Aksiyon.js" />
@@ -3868,6 +3884,10 @@
     <Content Include="Views\BoyaKaplama\FilterForm.cshtml" />
     <Content Include="Views\BoyaKaplama\Form.cshtml" />
     <Content Include="Views\BoyaKaplama\Index.cshtml" />
+    <Content Include="Views\StokCikisHareket\FilterForm.cshtml" />
+    <Content Include="Views\StokCikisHareket\Form.cshtml" />
+    <Content Include="Views\StokCikisHareket\Index.cshtml" />
+    <Content Include="Views\StokCikisHareket\GetListById.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -4106,6 +4126,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209191343576_add_boyakaplama_table.resx">
       <DependentUpon>202209191343576_add_boyakaplama_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209200800049_add_UretilenAdet_and_TamamlanmaTarih.resx">
+      <DependentUpon>202209200800049_add_UretilenAdet_and_TamamlanmaTarih.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209200836539_set_TamamlanmaTarihi_to_nullable.resx">
+      <DependentUpon>202209200836539_set_TamamlanmaTarihi_to_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209201127069_create_StokCikisHareket_table.resx">
+      <DependentUpon>202209201127069_create_StokCikisHareket_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
