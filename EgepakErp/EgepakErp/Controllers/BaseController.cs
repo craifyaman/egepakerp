@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -140,12 +141,27 @@ namespace EgePakErp.Controllers
                 JsonResult result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                 result.ContentType = "application/json";
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
-                result.Data = new Response
+
+                if (ConfigurationManager.AppSettings["Relase"].ToString() == "development")
                 {
-                    ex = new Exception(filterContext.Exception.Message),
-                    Description = "İşlem sırasında hata oluştu. Lütfen tekrar deneyin. Hatanın devam etmesi halinde teknik desteğe başvurun",
-                    Success = false
-                };
+                    result.Data = new Response
+                    {
+                        Description = filterContext.Exception.InnerException?.InnerException?.Message + "<br/>" + filterContext.Exception.Message,
+                        Success = false
+                    };
+                }
+                else
+                {
+                    result.Data = new Response
+                    {
+                        ex = filterContext.Exception,
+                        Description = "İşlem sırasında hata oluştu. Lütfen tekrar deneyin. Hatanın devam etmesi halinde teknik desteğe başvurun",
+                        Success = false
+                    };
+                }
+               
+
+               
                 filterContext.Result = result;
                 filterContext.ExceptionHandled = true;
             }

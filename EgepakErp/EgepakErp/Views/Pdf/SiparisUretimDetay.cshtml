@@ -38,6 +38,7 @@
                                 <th style="min-width: 100px">Ürün</th>
                                 <th style="min-width: 100px">Kayıt Tarihi</th>
                                 <th style="min-width: 100px">Termin Tarihi</th>
+                                <th style="min-width: 100px">Sipariş Adet</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,6 +70,11 @@
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
                                         @Model.TerminTarihi.ToShortDateString()
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.SiparisAdet
                                     </span>
                                 </td>
 
@@ -135,9 +141,23 @@
 
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @if (item.FirstOrDefault(x => x.YaldizId != null)?.Yaldiz != null)
+                                                @foreach (var yaldiz in item)
                                                 {
-                                                    @("(#"+ item.FirstOrDefault(x => x.YaldizId != null)?.Yaldiz?.YaldizId+") ") @(item.FirstOrDefault(x=>x.YaldizId != null)?.Yaldiz?.Aciklama)
+                                                    var idList = yaldiz.YaldizKodList?.Split(',');
+                                                    if (idList != null)
+                                                    {
+                                                        foreach (var id in idList)
+                                                        {
+                                                            int _id = Convert.ToInt32(id);
+                                                            var _yaldiz = BaseYaldiz().FirstOrDefault(x => x.YaldizId == _id);
+                                                            if (_yaldiz != null)
+                                                            {
+                                                                var url = "https://crm.egepak.net" + _yaldiz.PdfYol;
+                                                                <a href="@url" title="görmek için tıklayın">@_yaldiz.Aciklama</a><br />
+                                                            }
+                                                        }
+                                                    }
+
                                                 }
 
                                             </span>

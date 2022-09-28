@@ -581,6 +581,10 @@
             },
             function () {
                 KTSelect2.BoyaKod();
+                $('#yaldizKodSelect').select2({
+                    language: "tr",
+                    placeholder: 'Yaldiz secin'
+                });
             },
             "html");
     }
@@ -676,9 +680,10 @@
         var SiparisKalipDto = function () {
             this.Maliyet;//decimal
             this.KalipKod;//string
+            this.KalipAdi;//string
             this.MaliyetType;//string
             this.isEnable;//bool
-            this.YaldizId;//string 
+            this.YaldizKodList;//list<int>
             this.TozBoyaKodList;//string
             this.SpreyBoyaKodId;//int 
             this.Aciklama;//string
@@ -709,15 +714,16 @@
             var input = value;
             var dto = new SiparisKalipDto();
             dto.KalipKod = input.getAttribute("KalipKod");
+            dto.KalipAdi = input.getAttribute("KalipAdi");
             dto.Maliyet = input.value;
             dto.MaliyetType = input.getAttribute("MaliyetType");
 
             var YaldizId = input.getAttribute("YaldizId");
 
             if (YaldizId !== undefined && YaldizId != null) {
-                dto.YaldizId = YaldizId;
+                dto.YaldizKodList = YaldizId;
             } else {
-                dto.YaldizId = null;
+                dto.YaldizKodList = null;
             }
 
             var BoyaKod = input.getAttribute("boyaKod");
@@ -849,7 +855,7 @@
             var degisen = new Degisen();
             degisen.SiparisKalipId = input.getAttribute("SiparisKalipId");
             degisen.Maliyet = input.value;
-            degisen.YaldizId = null;
+            degisen.YaldizKodList = null;
             degisen.TozBoyaKodList = null;
             degisen.SpreyBoyaKodId = null;
             degisen.Aciklama = null;
@@ -868,7 +874,7 @@
             var metalizeId = $(input).attr("metalizeId");
 
             if (yaldiz != null && yaldiz !== undefined) {
-                degisen.YaldizId = yaldiz;
+                degisen.YaldizKodList = yaldiz;
             }
             if (boyaKod != null && boyaKod !== undefined) {
                 degisen.TozBoyaKodList = boyaKod;
@@ -1375,9 +1381,15 @@
 
         $(document).on("change", "#boyaKodSelect", function (event) {
             event.preventDefault();
-
             var boyaKod = $(this).val();
             $(".Fiyat").attr("boyaKod", boyaKod);
+
+        });
+
+        $(document).on("change", "#yaldizKodSelect", function (event) {
+            event.preventDefault();
+            var yaldizList = $(this).val();
+            $(".Fiyat").attr("yaldizId", yaldizList);
 
         });
 

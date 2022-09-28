@@ -91,7 +91,7 @@ namespace EgePakErp.Controllers
         }
 
 
-        public PartialViewResult Form(int? id, int stokHareketId,int cariId)
+        public PartialViewResult Form(int? id, int stokHareketId, int cariId)
         {
             ViewBag.StokHareketId = stokHareketId;
             ViewBag.CariId = cariId;
@@ -102,10 +102,10 @@ namespace EgePakErp.Controllers
         }
         public PartialViewResult GetListById(int stokHareketId)
         {
-            var model = repo.GetAll(x=>x.StokHareketId == stokHareketId);
+            var model = repo.GetAll(x => x.StokHareketId == stokHareketId);
             return PartialView(model);
         }
-        
+
         public PartialViewResult FilterForm()
         {
             return PartialView();
@@ -115,42 +115,34 @@ namespace EgePakErp.Controllers
         {
             var response = new Response();
 
-            try
+            if (form.StokCikisHareketId == 0)
             {
-                if (form.StokCikisHareketId == 0)
+                form.CikisTarih = DateTime.Now;
+                repo.Insert(form);
+                response.Success = true;
+                response.Description = "Kayıt edildi.";
+            }
+            else
+            {
+                var entity = repo.Get(form.StokCikisHareketId);
+                if (entity != null)
                 {
-                    form.CikisTarih = DateTime.Now;
-                    repo.Insert(form);
-                    response.Success = true;
-                    response.Description = "Kayıt edildi.";
-                }
-                else
-                {
-                    var entity = repo.Get(form.StokCikisHareketId);
-                    if (entity != null)
+                    //alanları güncelle
+                    var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                    foreach (var prop in propList)
                     {
-                        //alanları güncelle
-                        var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
-                        foreach (var prop in propList)
+                        if (form.Include.Contains(prop.Name))
                         {
-                            if (form.Include.Contains(prop.Name))
-                            {
-                                prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
-                            }
+                            prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
                         }
-                        repo.Update(entity);
-                        response.Success = true;
-                        response.Description = "Güncellendi.";
                     }
-
+                    repo.Update(entity);
+                    response.Success = true;
+                    response.Description = "Güncellendi.";
                 }
 
             }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
-            }
+
 
             return Json(response);
 

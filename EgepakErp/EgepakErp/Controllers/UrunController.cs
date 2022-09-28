@@ -106,48 +106,38 @@ namespace EgePakErp.Controllers
         {
             var response = new Response();
 
-            try
+            if (form.UrunId == 0)
             {
-                if (form.UrunId == 0)
+                form.KalipUrunRelation = form.KalipList.Select(s => new KalipUrunRelation { KalipId = s }).ToList();
+                form.isAktif = true;
+                repo.Insert(form);
+            }
+            else
+            {
+                var entity = repo.Get(form.UrunId);
+                if (entity != null)
                 {
-                    form.KalipUrunRelation = form.KalipList.Select(s => new KalipUrunRelation { KalipId = s }).ToList();
-                    form.isAktif = true;
-                    repo.Insert(form);
-                }
-                else
-                {
-                    var entity = repo.Get(form.UrunId);
-                    if (entity != null)
+                    var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                    foreach (var prop in propList)
                     {
-                        var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
-                        foreach (var prop in propList)
+                        if (form.Include.Contains(prop.Name))
                         {
-                            if (form.Include.Contains(prop.Name))
-                            {
-                                prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
-                            }
+                            prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
                         }
-                        repo.Update(entity);
-
-                        Db.KalipUrunRelation.RemoveRange(Db.KalipUrunRelation.Where(i => i.UrunId == form.UrunId));
-                        if (form.KalipList != null)
-                        {
-                            Db.KalipUrunRelation.AddRange(form.KalipList.Select(s => new KalipUrunRelation { KalipId = s, UrunId = entity.UrunId }));
-                        }
-                        
                     }
+                    repo.Update(entity);
+
+                    Db.KalipUrunRelation.RemoveRange(Db.KalipUrunRelation.Where(i => i.UrunId == form.UrunId));
+                    if (form.KalipList != null)
+                    {
+                        Db.KalipUrunRelation.AddRange(form.KalipList.Select(s => new KalipUrunRelation { KalipId = s, UrunId = entity.UrunId }));
+                    }
+
                 }
-                Db.SaveChanges(CurrentUser.PersonelId);
-                response.Success = true;
-                response.Description = "İşlem Başarılı";
             }
-            catch (Exception ex)
-            {
-                response.Success = true;
-                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
-            }
-
-
+            Db.SaveChanges(CurrentUser.PersonelId);
+            response.Success = true;
+            response.Description = "İşlem Başarılı";
 
             return Json(response);
 
@@ -203,7 +193,7 @@ namespace EgePakErp.Controllers
                 response.Description = "ürün silindi";
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Success = false;
                 response.Description = ex.Message;

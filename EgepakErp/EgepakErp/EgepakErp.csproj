@@ -177,6 +177,8 @@
     <Compile Include="Concrete\BoyaKaplamaRepository.cs" />
     <Compile Include="Concrete\MakineRepository.cs" />
     <Compile Include="Concrete\AksiyonRepository.cs" />
+    <Compile Include="Concrete\TeklifFormRepository.cs" />
+    <Compile Include="Concrete\StokGirisHareketRepository.cs" />
     <Compile Include="Concrete\StokCikisHareketRepository.cs" />
     <Compile Include="Concrete\UretimEmirRepository.cs" />
     <Compile Include="Concrete\StokHareketRepository.cs" />
@@ -194,6 +196,8 @@
     <Compile Include="Concrete\_GenericRepository.cs" />
     <Compile Include="Controllers\BoyaKaplamaController.cs" />
     <Compile Include="Controllers\PdfController.cs" />
+    <Compile Include="Controllers\TeklifFormController.cs" />
+    <Compile Include="Controllers\StokGirisHareketController.cs" />
     <Compile Include="Controllers\StokCikisHareketController.cs" />
     <Compile Include="Controllers\StokHareketController.cs" />
     <Compile Include="Controllers\MakineController.cs" />
@@ -230,6 +234,7 @@
     <Compile Include="Enums\FaturaOrtalama.cs" />
     <Compile Include="Helper\DovizHelper.cs" />
     <Compile Include="Helper\SonAylarFaturaHelper.cs" />
+    <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.cs" />
     <Compile Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.designer.cs">
       <DependentUpon>202208020842230_delete_birimId_from_hammaddeCinsi.cs</DependentUpon>
@@ -558,10 +563,28 @@
     <Compile Include="Migrations\202209201127069_create_StokCikisHareket_table.designer.cs">
       <DependentUpon>202209201127069_create_StokCikisHareket_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202209271223360_yaldiz_siparis_kalip_coklu_yapma.cs" />
+    <Compile Include="Migrations\202209271223360_yaldiz_siparis_kalip_coklu_yapma.designer.cs">
+      <DependentUpon>202209271223360_yaldiz_siparis_kalip_coklu_yapma.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209280659579_add_kalipAdi_to_siparisKalip.cs" />
+    <Compile Include="Migrations\202209280659579_add_kalipAdi_to_siparisKalip.designer.cs">
+      <DependentUpon>202209280659579_add_kalipAdi_to_siparisKalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209280923522_create_stok_giris_hareket.cs" />
+    <Compile Include="Migrations\202209280923522_create_stok_giris_hareket.designer.cs">
+      <DependentUpon>202209280923522_create_stok_giris_hareket.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202209281227208_create_teklif_form.cs" />
+    <Compile Include="Migrations\202209281227208_create_teklif_form.designer.cs">
+      <DependentUpon>202209281227208_create_teklif_form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\BoyaKaplama.cs" />
     <Compile Include="Models\Custom\BoyaKodSiparisKalipRel.cs" />
     <Compile Include="Models\Custom\BoyaKodType.cs" />
+    <Compile Include="Models\Custom\SiparisTeklifForm.cs" />
     <Compile Include="Models\Custom\StokCikisHareket.cs" />
+    <Compile Include="Models\Custom\StokGirisHareket.cs" />
     <Compile Include="Models\Custom\StokHareket.cs" />
     <Compile Include="Models\Custom\StokHareketType.cs" />
     <Compile Include="Models\Custom\UretimEmirAksiyonRel.cs" />
@@ -571,6 +594,7 @@
     <Compile Include="Models\Custom\UretimEmirDurum.cs" />
     <Compile Include="Models\Custom\SiparisDurum.cs" />
     <Compile Include="Models\Custom\UretimEmir.cs" />
+    <Compile Include="Models\Custom\SiparisTeklifFormUrun.cs" />
     <Compile Include="Models\Custom\Yaldiz.cs" />
     <Compile Include="Models\Custom\DovizKur.cs" />
     <Compile Include="Models\Custom\BoyaKod.cs" />
@@ -2887,6 +2911,8 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
     <Content Include="Scripts\BoyaKaplama.js" />
     <Content Include="Scripts\Custom\WebViewer.js" />
+    <Content Include="Scripts\TeklifForm.js" />
+    <Content Include="Scripts\StokGirisHareket.js" />
     <Content Include="Scripts\StokCikisHareket.js" />
     <Content Include="Scripts\StokHareket.js" />
     <Content Include="Scripts\Custom\DataPickerTr.js" />
@@ -3888,6 +3914,13 @@
     <Content Include="Views\StokCikisHareket\Form.cshtml" />
     <Content Include="Views\StokCikisHareket\Index.cshtml" />
     <Content Include="Views\StokCikisHareket\GetListById.cshtml" />
+    <Content Include="Views\StokGirisHareket\FilterForm.cshtml" />
+    <Content Include="Views\StokGirisHareket\Form.cshtml" />
+    <Content Include="Views\StokGirisHareket\GetListById.cshtml" />
+    <Content Include="Views\StokGirisHareket\Index.cshtml" />
+    <Content Include="Views\TeklifForm\FilterForm.cshtml" />
+    <Content Include="Views\TeklifForm\Form.cshtml" />
+    <Content Include="Views\TeklifForm\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -4135,6 +4168,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209201127069_create_StokCikisHareket_table.resx">
       <DependentUpon>202209201127069_create_StokCikisHareket_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209271223360_yaldiz_siparis_kalip_coklu_yapma.resx">
+      <DependentUpon>202209271223360_yaldiz_siparis_kalip_coklu_yapma.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209280659579_add_kalipAdi_to_siparisKalip.resx">
+      <DependentUpon>202209280659579_add_kalipAdi_to_siparisKalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209280923522_create_stok_giris_hareket.resx">
+      <DependentUpon>202209280923522_create_stok_giris_hareket.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202209281227208_create_teklif_form.resx">
+      <DependentUpon>202209281227208_create_teklif_form.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

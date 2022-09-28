@@ -516,17 +516,30 @@
                 <div class="col-lg-12 mb-2">
                     @{
                         var yaldizListe = BaseYaldiz().ToList();
-                    }
-
-                    <label>Yaldiz Seç:</label>
-                    <select class="form-control form-control-solid selectpicker" id="YaldizId">
+                        /*
+                         <select class="form-control form-control-solid selectpicker" id="YaldizId">
                         <option>yaldız seç</option>
                         @foreach (var item in yaldizListe)
                         {
                             <option value="@item.YaldizId">@item.Aciklama</option>
                         }
                     </select>
-                    <button class="btn btn-success mt-1 p-1" id="YaldizEkle">Yaldız Ekle</button>
+                        */
+                    }
+
+                    <label>Yaldiz Seç:</label>
+                    @*<button class="btn btn-success mt-1 p-1" id="YaldizEkle">Yaldız Ekle</button>*@
+
+
+                    @{
+                        <select class="form-control select2" id="yaldizKodSelect" multiple="multiple" placeholder="yaldız seçimi yapın">
+                            @foreach (var y in yaldizListe)
+                            {
+                                <option value="@y.YaldizId">@y.Aciklama</option>
+                            }
+                        </select>
+                    }
+
                 </div>
                 <div class="col-lg-12 mb-2">
                     <label>Birim Fiyat:</label>

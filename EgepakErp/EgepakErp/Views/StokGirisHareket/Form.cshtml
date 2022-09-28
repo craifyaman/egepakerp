@@ -1,0 +1,22 @@
+﻿@model StokGirisHareket
+@{
+    int StokHareketId = (int)ViewBag.StokHareketId;
+    
+}
+<!--begin::Form-->
+<form id="StokGirisHareketForm">
+    <input type="hidden" value="@StokHareketId" name="StokHareketId" id="StokHareketId" />
+    @Html.HiddenFor(x => x.StokGirisHareketId)
+    <div class="form-group row">
+
+        <div class="col-12">
+            <label>Adet</label>
+            @Html.TextBoxFor(x => x.Adet, new { @class = "form-control", type = "number" })
+        </div>
+        <div class="col-12">
+            <label>Açıklama</label>
+            @Html.TextBoxFor(x => x.Aciklama, new { @class = "form-control" })
+        </div>
+    </div>
+</form>
+<!--end::Form-->

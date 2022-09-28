@@ -89,12 +89,14 @@
 @section Scripts{
     <script src="~/Scripts/StokHareket.js?v=@ScriptVersion"></script>
     <script src="~/Scripts/StokCikisHareket.js?v=@ScriptVersion"></script>
+    <script src="~/Scripts/StokGirisHareket.js?v=@ScriptVersion"></script>
     <script>
 
         $(document).ready(function () {
             Dt.DtInit("kt_datatable", "/StokHareket/Liste", DtColums.StokHareketColumns(), {});
             StokHareket.EventInit();
             StokCikisHareket.EventInit();
+            StokGirisHareket.EventInit();
         });
 
     </script>

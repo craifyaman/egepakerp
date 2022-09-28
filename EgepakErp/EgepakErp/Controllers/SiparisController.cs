@@ -36,7 +36,7 @@ namespace EgePakErp.Controllers
             urunRepo = new UrunRepository();
         }
 
-        [Menu("Sipariş Listesi", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
+        [Menu("Sipariş Listesi", "icon-xl flaticon2-file", "Sipariş", 0, 5)]
         [Yetki("Sipariş Listesi", "Sipariş")]
         public ActionResult Index()
         {
@@ -44,7 +44,7 @@ namespace EgePakErp.Controllers
             return View(model);
         }
 
-        [Menu("Üretimdeki Siparişler", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
+        [Menu("Üretimdeki Siparişler", "icon-xl flaticon2-file-2", "Sipariş", 0, 5)]
         [Yetki("Üretimdeki Siparişler", "Sipariş")]
         public ActionResult UretimdekiSiparisler()
         {
@@ -52,7 +52,7 @@ namespace EgePakErp.Controllers
             return View(model);
         }
 
-        [Menu("Sipariş Formu", "flaticon2-cart icon-xl", "Sipariş", 0, 5)]
+        [Menu("Sipariş Formu", "flaticon2-file-2 icon-xl", "Sipariş", 0, 5)]
         public ActionResult SiparisFormu(int siparisId = 0)
         {
             if (siparisId != 0)
@@ -130,8 +130,9 @@ namespace EgePakErp.Controllers
                 var sipNo = 0;
 
                 var boyaKodlar = siparis.SiparisKalip.Where(x => x.TozBoyaKodList != null).Select(x => x.TozBoyaKodList + "_" + x.KalipKod).ToList();
-                var yaldizIdList = siparis.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId + "_" + x.KalipKod).ToList();
-                var spreyIdList= siparis.SiparisKalip.Where(x => x.SpreyBoyaKodId != null).Select(x => x.SpreyBoyaKodId + "_" + x.KalipKod).ToList();
+                var yaldizIdList = siparis.SiparisKalip.Where(x => x.YaldizKodList != null).Select(x => x.YaldizKodList + "_" + x.KalipKod).ToList();
+                //var yaldizIdList = siparis.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId + "_" + x.KalipKod).ToList();
+                var spreyIdList = siparis.SiparisKalip.Where(x => x.SpreyBoyaKodId != null).Select(x => x.SpreyBoyaKodId + "_" + x.KalipKod).ToList();
 
                 List<string> yaldizlar = yaldizIdList.ConvertAll<string>(x => x.ToString());
                 List<string> boyaKodList = boyaKodlar.ConvertAll<string>(x => x.ToString());
@@ -150,8 +151,8 @@ namespace EgePakErp.Controllers
                 foreach (var sip in cariSiparisleri)
                 {
                     var _boyaKodlar = sip.SiparisKalip.Where(x => x.TozBoyaKodList != null).Select(x => x.TozBoyaKodList + "_" + x.KalipKod).ToList();
-                    var _yaldizIdList = sip.SiparisKalip.Where(x => x.YaldizId != null).Select(x => x.YaldizId + "_" + x.KalipKod).ToList();
-                    var _spreyIdList = sip.SiparisKalip.Where(x => x.SpreyBoyaKodId!= null).Select(x => x.SpreyBoyaKodId + "_" + x.KalipKod).ToList();
+                    var _yaldizIdList = sip.SiparisKalip.Where(x => x.YaldizKodList != null).Select(x => x.YaldizKodList + "_" + x.KalipKod).ToList();
+                    var _spreyIdList = sip.SiparisKalip.Where(x => x.SpreyBoyaKodId != null).Select(x => x.SpreyBoyaKodId + "_" + x.KalipKod).ToList();
 
                     List<string> _yaldizlar = _yaldizIdList.ConvertAll<string>(x => x.ToString());
                     List<string> _boyaKodList = _boyaKodlar.ConvertAll<string>(x => x.ToString());
@@ -282,9 +283,9 @@ namespace EgePakErp.Controllers
                             siparisKalip.isEnable = item.isEnable;
                             siparisKalip.TozBoyaKodList = item.TozBoyaKodList;
                             siparisKalip.MetalizeKodId = item.MetalizeKodId;
-                            if (item.YaldizId != null && item.YaldizId != 0)
+                            if (item.YaldizKodList != null)
                             {
-                                siparisKalip.YaldizId = item.YaldizId;
+                                siparisKalip.YaldizKodList= item.YaldizKodList;
                             }
 
                             siparisKalip.Aciklama = item.Aciklama;

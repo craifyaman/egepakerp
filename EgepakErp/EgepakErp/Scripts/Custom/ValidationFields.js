@@ -434,6 +434,19 @@
         return fields;
     }
 
+    function stokGirisHareketFormFields() {
+
+        var fields = {
+            Adet: {
+                validators: {
+                    notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
+
+
     function makineFormFields() {
         var fields = {
             MakineAdi: {
@@ -444,11 +457,23 @@
         };
         return fields;
     }
+
     function siparisFormFields() {
         var fields = {
             TeklifFiyati: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
+                }
+            }
+        };
+        return fields;
+    }
+
+    function teklifFormFormFields() {
+        var fields = {
+            CariId: {
+                validators: {
+                    notEmpty: { message: 'Cari Seçin' }
                 }
             }
         };
@@ -514,12 +539,16 @@
         StokCikisHareketFormFields: function () {
             return stokCikisHareketFormFields();
         },
+        StokGirisHareketFormFields: function () {
+            return stokGirisHareketFormFields();
+        },
         SiparisFormFields: function () {
             return siparisFormFields();
+        },
+        TeklifFormFormFields: function () {
+            return teklifFormFormFields();
         }
-        
-        
-        
+
     };
 }();
 

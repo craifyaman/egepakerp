@@ -100,6 +100,13 @@ var KTBootstrapDatetimepicker = function () {
         });
     }
 
+    var teklifForm = function () {
+
+        $('#TeslimTarihi').datetimepicker({
+            locale: 'tr',
+        });
+    }
+
     return {
         // Public functions
         init: function() {
@@ -107,6 +114,9 @@ var KTBootstrapDatetimepicker = function () {
             modalDemos();
             validationDemos();
             uretimEmir();
+        },
+        TeklifForm: function () {
+            teklifForm();
         }
     };
 }();

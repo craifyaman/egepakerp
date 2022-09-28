@@ -28,6 +28,7 @@ namespace EgePakErp.Models
 
         public string Yer { get; set; }
         public ICollection<StokCikisHareket> StokCikisHareket { get; set; }
+        public ICollection<StokGirisHareket> StokGirisHareket { get; set; }
 
         [NotMapped]
         public int? DepodaKalanAdet

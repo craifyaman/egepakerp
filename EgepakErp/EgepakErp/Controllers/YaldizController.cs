@@ -97,41 +97,33 @@ namespace EgePakErp.Controllers
         {
             var response = new Response();
 
-            try
+            if (form.YaldizId == 0)
             {
-                if (form.YaldizId == 0)
+                repo.Insert(form);
+                response.Success = true;
+                response.Description = "Kayıt edildi.";
+            }
+            else
+            {
+                var entity = repo.Get(form.YaldizId);
+                if (entity != null)
                 {
-                    repo.Insert(form);
-                    response.Success = true;
-                    response.Description = "Kayıt edildi.";
-                }
-                else
-                {
-                    var entity = repo.Get(form.YaldizId);
-                    if (entity != null)
+                    //alanları güncelle
+                    var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                    foreach (var prop in propList)
                     {
-                        //alanları güncelle
-                        var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
-                        foreach (var prop in propList)
+                        if (form.Include.Contains(prop.Name))
                         {
-                            if (form.Include.Contains(prop.Name))
-                            {
-                                prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
-                            }
+                            prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
                         }
-                        repo.Update(entity);
-                        response.Success = true;
-                        response.Description = "Güncellendi.";
                     }
-
+                    repo.Update(entity);
+                    response.Success = true;
+                    response.Description = "Güncellendi.";
                 }
-                
+
             }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
-            }
+
 
             return Json(response);
 

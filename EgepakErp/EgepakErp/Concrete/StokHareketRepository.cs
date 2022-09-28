@@ -13,6 +13,7 @@ namespace EgePakErp.Concrete
             return dbset
                 .Include(x=>x.StokHareketType)
                 .Include(x=>x.Siparis)
+                .Include(x => x.Siparis.Cari)
                 .Include(x=>x.SiparisKalip)
                 .Include(x=>x.StokCikisHareket)
                .FirstOrDefault(x => x.StokHareketId== id);
@@ -22,6 +23,7 @@ namespace EgePakErp.Concrete
             return dbset
                 .Include(x => x.StokHareketType)
                 .Include(x => x.Siparis)
+                .Include(x => x.Siparis.Cari)
                 .Include(x => x.SiparisKalip)
                 .Include(x => x.StokCikisHareket)
                .FirstOrDefault(filter);
@@ -31,6 +33,7 @@ namespace EgePakErp.Concrete
             return dbset
                 .Include(x => x.StokHareketType)
                 .Include(x => x.Siparis)
+                .Include(x => x.Siparis.Cari)
                 .Include(x => x.SiparisKalip)
                 .Include(x => x.StokCikisHareket)
                .AsQueryable();
@@ -41,6 +44,7 @@ namespace EgePakErp.Concrete
             return dbset
                 .Include(x => x.StokHareketType)
                 .Include(x => x.Siparis)
+                .Include(x => x.Siparis.Cari)
                 .Include(x => x.SiparisKalip)
                 .Include(x => x.StokCikisHareket)
                 .Where(filter)

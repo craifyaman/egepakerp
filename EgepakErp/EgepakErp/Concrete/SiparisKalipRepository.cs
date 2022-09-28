@@ -13,7 +13,7 @@ namespace EgePakErp.Concrete
             return dbset
                .Include(x=>x.Siparis)
                .Include(x => x.TozBoyaKod)
-               .Include(x => x.Yaldiz)
+               //.Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
                .Include(x => x.StokHareket)
                .Include(x => x.MetalizeKod)
@@ -25,7 +25,7 @@ namespace EgePakErp.Concrete
             return dbset
                .Include(x => x.Siparis)
                .Include(x => x.TozBoyaKod)
-               .Include(x => x.Yaldiz)
+              // .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
                .Include(x => x.StokHareket)
                .Include(x => x.MetalizeKod)
@@ -37,7 +37,7 @@ namespace EgePakErp.Concrete
             return dbset
                .Include(x => x.Siparis)
                .Include(x => x.TozBoyaKod)
-               .Include(x => x.Yaldiz)
+              // .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
                .Include(x => x.StokHareket)
                .Include(x => x.MetalizeKod)
@@ -50,7 +50,7 @@ namespace EgePakErp.Concrete
             return dbset
                .Include(x => x.Siparis)
                .Include(x => x.TozBoyaKod)
-               .Include(x => x.Yaldiz)
+              // .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
                .Include(x => x.StokHareket)
                .Include(x => x.MetalizeKod)

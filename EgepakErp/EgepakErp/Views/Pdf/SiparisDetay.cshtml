@@ -148,7 +148,24 @@
 
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @(item.FirstOrDefault(x=>x.YaldizId != null)?.Yaldiz?.Aciklama)
+                                                @foreach (var yaldiz in item)
+                                                {
+                                                    var idList = yaldiz.YaldizKodList?.Split(',');
+                                                    if (idList != null)
+                                                    {
+                                                        foreach (var id in idList)
+                                                        {
+                                                            int _id = Convert.ToInt32(id);
+                                                            var _yaldiz = BaseYaldiz().FirstOrDefault(x => x.YaldizId == _id);
+                                                            if (_yaldiz != null)
+                                                            {
+                                                                var url = "https://crm.egepak.net" + _yaldiz.PdfYol;
+                                                                <a href="@url" title="görmek için tıklayın">@_yaldiz.Aciklama</a><br />
+                                                            }
+                                                        }
+                                                    }
+
+                                                }
                                             </span>
                                         </td>
 

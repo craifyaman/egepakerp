@@ -956,6 +956,10 @@
                 title: 'SiparisAdi',
             },
             {
+                field: 'Cari',
+                title: 'Cari',
+            },
+            {
                 field: 'KalipKodList',
                 title: 'Kalıplar',
             },
@@ -965,12 +969,12 @@
             },
             {
                 field: 'Adet',
-                title: 'Adet',
-                width: 50
+                title: 'Depoya Giren',
+
             },
             {
                 field: 'Kalan',
-                title: 'Kalan',
+                title: 'Stok',
                 width: 50
             },
             {
@@ -981,24 +985,71 @@
                 field: 'BoyaKod',
                 title: 'BoyaKod'
             },
+            //{
+            //    field: 'İşlem',
+            //    title: 'İşlem',
+            //    sortable: false,
+            //    width: 180,
+            //    overflow: 'visible',
+            //    autoHide: false,
+            //    template: function (row) {
+            //        var str = '<a class="btn btn-icon btn-info mr-1"';
+            //        str += 'event="StokHareketFormPopup" href = "#" id = "' + row.Id + '" title = "Hızlı Düzenle" data-toggle="tooltip" data-placement="top" > <i class="flaticon-edit" ></i> </a >'
+
+            //        str += '<a class="btn btn-icon btn-success mr-1" event="StokGirisHareketFormPopup" href = "#" stokHareketId = "' + row.Id + '" title = "Giriş Hareketi Ekle" data-toggle="tooltip" data-placement="top" > <i class="fa-solid fa-truck-fast"></i></a >'
+
+
+            //        str += '<a class="btn btn-icon btn-warning mr-1" event="StokCikisHareketFormPopup" href = "#" CariId="' + row.CariId + '" stokHareketId = "' + row.Id + '" title = "Çıkış Hareketi Ekle" data-toggle="tooltip" data-placement="top" > <i class="fas fa-truck-loading"></i></a >'
+
+
+            //        str += '<a class="btn btn-icon btn-info mr-1" event="CikisHareketListe" href = "#" stokHareketId = "' + row.Id + '" title = "Çıkış Hareket Listesi" data-toggle="tooltip" data-placement="top" > <i class="fa-solid fa-list"></i></a >'
+
+            //        return str;
+            //    },
+            //}
+
             {
                 field: 'İşlem',
                 title: 'İşlem',
                 sortable: false,
-                width: 130,
                 overflow: 'visible',
                 autoHide: false,
                 template: function (row) {
-                    var str = '<a class="btn btn-icon btn-info mr-1"';
-                    str += 'event="StokHareketFormPopup" href = "#" id = "' + row.Id + '" title = "Hızlı Düzenle" data-toggle="tooltip" data-placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    var str = `
+                    <div class="dropdown dropdown-inline mr-4" >
+                        <button type="button" class="btn btn-light-primary btn-icon btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ki ki-bold-more-hor"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                           <a class="dropdown-item" event="StokHareketFormPopup" href = "#" id="${row.Id}">
+                              <i class="flaticon-edit mr-3" ></i>  Hızlı düzenle
+                            </a >
+                           
+                           <a class="dropdown-item" event="StokGirisHareketFormPopup" href = "#" stokHareketId = "${row.Id}">
+                             <i class="fa-solid fa-truck-fast mr-3"></i>  Giriş Hareketi Ekle
+                           </a>
+             
+                            <a class="dropdown-item" event="StokCikisHareketFormPopup" href = "#" CariId="${row.CariId}" stokHareketId = ${row.Id}>
+                             <i class="fas fa-truck-loading mr-3"></i>  Çıkış Hareketi Ekle
+                            </a>
+               
+                            <a class="dropdown-item" event="CikisHareketListe" href = "#" stokHareketId = "${row.Id}">
+                              <i class="fa-solid fa-list mr-3"></i> Çıkış Hareketleri
+                            </a >
 
-                    str += '<a class="btn btn-icon btn-info mr-1" event="StokCikisHareketFormPopup" href = "#" CariId="' + row.CariId +'" stokHareketId = "' + row.Id + '" title = "Çıkış Hareketi Ekle" data-toggle="tooltip" data-placement="top" > <i class="fa-solid fa-truck-fast"></i></a >'
+                            <a class="dropdown-item" event="GirisHareketListe" href = "#" stokHareketId = "${row.Id}">
+                              <i class="fa-solid fa-list mr-3"></i> Giriş Hareketleri
+                            </a >
+                        </div>
+                   </div >
 
-                    str += '<a class="btn btn-icon btn-info mr-1" event="CikisHareketListe" href = "#" stokHareketId = "' + row.Id + '" title = "Çıkış Hareket Listesi" data-toggle="tooltip" data-placement="top" > <i class="fa-solid fa-list"></i></a >'
+`;
 
                     return str;
                 },
             }
+
+
         ];
         return columns;
     }
@@ -1022,6 +1073,103 @@
                 template: function (row) {
                     var str = '<a class="btn btn-icon btn-info mr-1"';
                     str += 'event="StokCikisHareketFormPopup" href = "#" id = "' + row.Id + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    return str;
+                },
+            }
+        ];
+        return columns;
+    }
+
+    function stokGirisHareketColumns() {
+        var columns = [
+            {
+                field: 'Id',
+                title: '#',
+            },
+            {
+                field: 'Adet',
+                title: 'Adet',
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var str = '<a class="btn btn-icon btn-info mr-1"';
+                    str += 'event="StokGirisHareketFormPopup" href = "#" id = "' + row.Id + '" stokhareketId = "' + row.StokHareketId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    return str;
+                },
+            }
+        ];
+        return columns;
+    }
+
+    function teklifFormColumns() {
+        var columns = [
+            {
+                field: 'Id',
+                title: '#',
+            },
+            {
+                field: 'Cari',
+                title: 'Cari',
+            },
+            {
+                field: 'KayitTarih',
+                title: 'KayitTarih',
+            },
+            {
+                field: 'Eposta',
+                title: 'Eposta',
+            },
+            {
+                field: 'GonderilenAdSoyad',
+                title: 'Ad Soyad',
+            },
+            {
+                field: 'Aciklama',
+                title: 'Aciklama',
+            },
+            {
+                field: 'MinSiparisAdet',
+                title: 'Min Sip Adet',
+            },
+            {
+                field: 'Odeme',
+                title: 'Odeme',
+            },
+            {
+                field: 'TeslimTarihi',
+                title: 'TeslimTarihi',
+            },
+            {
+                field: 'Personel',
+                title: 'Personel',
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var str = `
+                    <div class="dropdown dropdown-inline mr-4" >
+                        <button type="button" class="btn btn-light-primary btn-icon btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ki ki-bold-more-hor"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                           <a class="dropdown-item" event="TeklifFormFormPopup" href = "#" id="${row.Id}">
+                              <i class="flaticon-edit mr-3" ></i>  Hızlı düzenle
+                            </a >
+                        </div>
+                   </div >
+
+`;
                     return str;
                 },
             }
@@ -1091,6 +1239,13 @@
         StokCikisHareketColumns: function () {
             return stokCikisHareketColumns();
         },
+        StokGirisHareketColumns: function () {
+            return stokGirisHareketColumns();
+        },
+        TeklifFormColumns: function () {
+            return teklifFormColumns();
+        },
+        
 
         GetColoums: function (name) {
             if (name == "cari") {

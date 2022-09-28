@@ -45,7 +45,8 @@
                             }, 2000)
 
                         } else {
-                            toastr.error("Bir hata oluştu");
+                            console.log(r.responseJSON);
+                            toastr.error(r.responseJSON.Description);
                         }
 
                     },

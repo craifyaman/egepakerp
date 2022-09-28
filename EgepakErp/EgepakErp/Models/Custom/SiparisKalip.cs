@@ -13,11 +13,12 @@ namespace EgePakErp.Models
         [Column(TypeName = "money")]
         public decimal Maliyet { get; set; }
         public string KalipKod { get; set; }
+        public string KalipAdi { get; set; }
         public string MaliyetType { get; set; }
         public bool isEnable { get; set; }
-        public int? YaldizId { get; set; }
-        public Yaldiz Yaldiz { get; set; }
-
+        //public int? YaldizId { get; set; }
+        //public Yaldiz Yaldiz { get; set; }
+        public string YaldizKodList { get; set; }
 
         [ForeignKey("TozBoyaKod")]
         public int? TozBoyaKodId { get; set; }

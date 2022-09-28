@@ -183,8 +183,6 @@ namespace EgePakErp.Controllers
         {
             var response = new Response();
 
-            try
-            {
                 if (kisi.KisiId == 0)
                 {
                     kisi.PersonelId = CurrentUser.PersonelId;
@@ -209,15 +207,7 @@ namespace EgePakErp.Controllers
                 Db.SaveChanges(CurrentUser.PersonelId);
                 response.Success = true;
                 response.Description = "İşlem Başarılı";
-            }
-            catch (Exception ex)
-            {
-                response.Success = true;
-                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
-            }
-
-
-
+           
             return Json(response);
 
         }

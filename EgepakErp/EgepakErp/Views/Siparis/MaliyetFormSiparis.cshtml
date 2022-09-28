@@ -170,13 +170,21 @@
                                 @buttonText
                             </span>
                         </div>
-                        @if (siparisKalip.YaldizId != null)
+                        @if (siparisKalip.YaldizKodList != null)
                         {
-                            var yaldiz = BaseYaldiz().FirstOrDefault(x => x.YaldizId == siparisKalip.YaldizId);
-                            <div>
-                                <a href="#" class="btn btn-info webviewer" pdfurl="@yaldiz.PdfYol">incele</a>
-                                <a href="@yaldiz.PdfYol" class="btn btn-warning" download>indir</a>
-                            </div>
+                            var yaldizList = BaseYaldiz().ToList();
+                            var idList = siparisKalip.YaldizKodList.Split(',');
+                            foreach (var i in idList)
+                            {
+                                int _id = Convert.ToInt32(i);
+                                var y = yaldizList.FirstOrDefault(x => x.YaldizId == _id);
+                                <div class="mt-1 col-lg-12">
+                                    <a href="#" class="btn btn-info webviewer" pdfurl="@y.PdfYol">incele</a>
+                                    @*<a href="@y.PdfYol" class="btn btn-warning" download>indir</a>*@
+                                </div>
+                            }
+
+
                         }
                     </div>
                 </td>

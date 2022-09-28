@@ -14,7 +14,7 @@ namespace EgePakErp.Concrete
                 .Include(x=>x.Makine)
                 .Include(x => x.SiparisKalip)
                 .Include(x => x.SiparisKalip.Siparis)
-                .Include(x => x.SiparisKalip.Yaldiz)
+                //.Include(x => x.SiparisKalip.Yaldiz)
                 .Include(x => x.UretimEmirDurum)
                .FirstOrDefault(x => x.UretimEmirId== id);
         }
@@ -25,7 +25,7 @@ namespace EgePakErp.Concrete
                 .Include(x => x.SiparisKalip)
                 .Include(x => x.UretimEmirDurum)
                 .Include(x => x.SiparisKalip.Siparis)
-                .Include(x => x.SiparisKalip.Yaldiz)
+               // .Include(x => x.SiparisKalip.Yaldiz)
                .FirstOrDefault(filter);
         }
         public override IQueryable<UretimEmir> GetAll()
@@ -35,7 +35,7 @@ namespace EgePakErp.Concrete
                 .Include(x => x.SiparisKalip)
                 .Include(x => x.UretimEmirDurum)
                 .Include(x => x.SiparisKalip.Siparis)
-                .Include(x => x.SiparisKalip.Yaldiz)
+               // .Include(x => x.SiparisKalip.Yaldiz)
                .AsQueryable();
         }
 
@@ -46,7 +46,7 @@ namespace EgePakErp.Concrete
                 .Include(x => x.SiparisKalip)
                 .Include(x => x.UretimEmirDurum)
                 .Include(x => x.SiparisKalip.Siparis)
-                .Include(x => x.SiparisKalip.Yaldiz)
+                //.Include(x => x.SiparisKalip.Yaldiz)
                 .Where(filter)
                .AsQueryable();
         }

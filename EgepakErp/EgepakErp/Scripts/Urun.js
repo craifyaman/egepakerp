@@ -60,6 +60,8 @@
                             }, 3000)
                             
                         } else {
+                            console.log(r.responseJSON);
+                            toastr.error(r.responseJSON.Description);
                             bootbox.hideAll();
                         }
 

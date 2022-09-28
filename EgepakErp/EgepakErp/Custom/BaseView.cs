@@ -309,7 +309,6 @@ namespace EgePakErp.Custom
 
         }
 
-
         public decimal PonponSonFiyat()
         {
             var fatura = db.HammaddeHareket.OrderByDescending(x => x.HammaddeGirisTarihi).FirstOrDefault(x => x.UrunAdi.Contains("PONPON"));
@@ -424,7 +423,7 @@ namespace EgePakErp.Custom
                 .Include(x => x.TozBoyaKod)
                 .Include(x => x.SpreyBoyaKod)
                 .Include(x => x.Siparis)
-                .Include(x => x.Yaldiz)
+                //.Include(x => x.Yaldiz)
                 .Include(x => x.MetalizeKod)
                 .ToList();
             return list;
@@ -435,7 +434,7 @@ namespace EgePakErp.Custom
                 .Include(x => x.TozBoyaKod)
                 .Include(x => x.SpreyBoyaKod)
                 .Include(x => x.Siparis)
-                .Include(x => x.Yaldiz)
+                //.Include(x => x.Yaldiz)
                 .AsQueryable();
             return list;
         }
@@ -445,7 +444,7 @@ namespace EgePakErp.Custom
                 .Include(x => x.TozBoyaKod)
                 .Include(x => x.SpreyBoyaKod)
                 .Include(x => x.Siparis)
-                .Include(x => x.Yaldiz)
+                //.Include(x => x.Yaldiz)
                 .Include(x => x.MetalizeKod)
                 .Include(x => x.GranulKod)
                 .Where(x => x.SiparisId == siparisId)

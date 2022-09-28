@@ -114,8 +114,6 @@ namespace EgePakErp.Controllers
         {
             var response = new Response();
 
-            try
-            {
                 if (form.UretimEmirId == 0)
                 {
                     if (form.SicakBaskiYapilacak)
@@ -178,12 +176,7 @@ namespace EgePakErp.Controllers
 
                 }
 
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
-            }
+           
 
             return Json(response);
 
@@ -201,7 +194,7 @@ namespace EgePakErp.Controllers
         {
             var yaldizList = yaldizRepo.GetAll();
             var boyaKodList = boyaKodRepo.GetAll();
-            var siparisKaliplar = siparisKalipRepo.GetAll(x => x.YaldizId != null || x.TozBoyaKodId != null || x.MetalizeKodId != null || x.TozBoyaKodList != null);
+            var siparisKaliplar = siparisKalipRepo.GetAll(x => x.YaldizKodList != null || x.TozBoyaKodId != null || x.MetalizeKodId != null || x.TozBoyaKodList != null);
             var response = new Response<dynamic>();
             try
             {
@@ -247,7 +240,7 @@ namespace EgePakErp.Controllers
                         + "</b>" + " ( " + cari + " ) "
                         + " _ (" + x.SiparisKalip.Siparis.SiparisAdi + ")"
                         + " _ "
-                        + fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizId != null)?.Yaldiz.Aciklama
+                        + fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizKodList != null)?.YaldizKodList
                         + " _ "
                         + fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.SpreyBoyaKodId != null)?.SpreyBoyaKod.Aciklama
                         + "_"

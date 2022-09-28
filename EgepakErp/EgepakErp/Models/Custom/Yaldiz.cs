@@ -15,7 +15,7 @@ namespace EgePakErp.Models
         public string Aciklama { get; set; }
 
         public string PdfYol { get; set; }
-        public ICollection<SiparisKalip> SiparisKalip { get; set; }
+        //public ICollection<SiparisKalip> SiparisKalip { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }

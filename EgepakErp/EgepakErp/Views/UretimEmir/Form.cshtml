@@ -261,20 +261,33 @@
 
     @if (Model != null)
     {
-        var yaldiz = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.YaldizId != null);
+        var yaldiz = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.YaldizKodList != null);
         var tozBoyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.TozBoyaKodId != null);
         var spreyBoyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.SpreyBoyaKodId != null);
         <div class="form-group row">
             @if (yaldiz != null)
             {
-                <label class="col-2 col-form-label">Yaldız</label>
-                <div class="col-10">
-                    <span class="switch switch-outline switch-icon switch-success">
-                        <label>
-                            <a href="#" class="btn btn-info webviewer" pdfurl="@yaldiz.Yaldiz.PdfYol">Görmek için tıklayın</a>
-                            <span></span>
-                        </label>
-                    </span>
+                var yaldizIdList = yaldiz.YaldizKodList.Split(',');
+                <label class="col-2 col-form-label">Yaldız dosyaları</label>
+                <div class="col-10 row">
+                    @if (yaldizIdList != null)
+                    {
+                        foreach (var id in yaldizIdList)
+                        {
+                            int _id = Convert.ToInt32(id);
+                            var _yaldiz = BaseYaldiz().FirstOrDefault(x => x.YaldizId == _id);
+                            if (_yaldiz != null)
+                            {
+                                var url = "https://crm.egepak.net" + _yaldiz.PdfYol;
+                                <span class="switch switch-outline switch-icon switch-success mr-1">
+                                    <label>
+                                        <a href="#" class="btn btn-info webviewer" pdfurl="@_yaldiz.PdfYol">@_yaldiz.Aciklama</a>
+                                        <span></span>
+                                    </label>
+                                </span>
+                            }
+                        }
+                    }
                 </div>
 
 

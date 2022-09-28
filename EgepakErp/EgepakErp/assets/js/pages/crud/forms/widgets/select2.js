@@ -205,6 +205,17 @@ var KTSelect2 = function() {
         });
 
     }
+    var teklifForm = function () {
+        // basic
+        
+        $('#CariId').select2({
+            placeholder: 'Cari Seciniz'
+        });
+        $('#UrunId').select2({
+            placeholder: 'Urun Seciniz'
+        });
+        
+    }
     // Public functions
     return {
         init: function() {
@@ -220,6 +231,9 @@ var KTSelect2 = function() {
         },
         BoyaKod: function () {
             boyaKod();
+        },
+        TeklifForm: function () {
+            teklifForm();
         }
     };
 }();

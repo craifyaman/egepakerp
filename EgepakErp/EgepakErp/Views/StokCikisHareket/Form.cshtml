@@ -10,6 +10,7 @@
 <!--begin::Form-->
 <form id="StokCikisHareketForm">
     <input type="hidden" value="@StokHareketId" name="StokHareketId" id="StokHareketId" />
+    @Html.HiddenFor(x=>x.StokCikisHareketId)
     <div class="form-group">
         <label>Cari:</label>
         @{
