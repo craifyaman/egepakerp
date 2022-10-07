@@ -1,10 +1,13 @@
 ﻿@model Aksiyon
 @{
     int UretimEmirId = (int)ViewBag.UretimEmirId;
+    var aksiyonTypeId = Convert.ToInt32(ViewBag.AksiyonType);
 }
 <!--begin::Form-->
 <form id="AksiyonForm">
     @Html.HiddenFor(x => x.AksiyonId)
+    <input type="hidden" value="@aksiyonTypeId" name="AksiyonTypeId" id="AksiyonTypeId"/>
+    <input type="hidden" value="@ViewBag.UretimEmirDurumId" name="UretimEmirDurumId" id="UretimEmirDurumId"/>
 
     @if (Model == null)
     {
@@ -14,13 +17,14 @@
     {
         @Html.HiddenFor(x => x.UretimEmirId)
     }
+
     <div class="form-group row">
         <div class="col-lg-12">
             <label>Açıklama:</label>
             @Html.TextBoxFor(x => x.Aciklama, new { @class = "form-control" })
         </div>
 
-        <div class="col-lg-12">
+        @*<div class="col-lg-12">
             @{
                 var aksiyonTypeList = BaseAksiyonType().ToList();
             }
@@ -32,7 +36,7 @@
                     <option @attr value="@(item.AksiyonTypeId)">@(item.Aciklama)</option>
                 }
             </select>
-        </div>
+        </div>*@
 
     </div>
     @if (Model != null)

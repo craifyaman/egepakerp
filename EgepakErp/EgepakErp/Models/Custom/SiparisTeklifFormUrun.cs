@@ -23,4 +23,6 @@ namespace EgePakErp.Models
         public List<string> Include { get; set; }
 
     }
+
+
 }

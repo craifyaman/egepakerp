@@ -1,0 +1,52 @@
+﻿@using EgePakErp.HtmlHelpers;
+@{
+    int UretimEmirId = ViewBag.UretimEmirId;
+    int MakineId = ViewBag.MakineId;
+
+}
+
+@model UretimAksiyon
+<!--begin::Form-->
+<form id="UretimAksiyonForm">
+    @Html.HiddenFor(x => x.UretimAksiyonId)
+    @{
+        var _uretimEmirId = Model != null ? Model.UretimEmirId : UretimEmirId;
+    }
+
+    <input type="hidden" value="@_uretimEmirId" />
+    @Html.HiddenFor(x => x.UretimEmirId)
+    <div class="form-group row">
+        <div class="col-lg-12">
+            @{
+                var makineId = Model?.MakineId != null ? Model?.MakineId : 0;
+                var makineList = BaseMakine().ToList();
+            }
+            <label>Makine:</label>
+            <div class="input-group">
+                <select name="MakineId" id="MakineId" class="form-control">
+                    <option value="">Makine Seçin</option>
+                    @foreach (var item in makineList)
+                    {
+                        var chk = Model != null && Model.MakineId == item.MakineId ? "selected" : "";
+                        if (Model == null)
+                        {
+                            if(item.MakineId == MakineId)
+                            {
+                                chk = "selected";
+                            }
+                        }
+                        <option @chk value="@item.MakineId">@item.MakineAd</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+
+        <div class="col-lg-12">
+            <label>Üretilen Adet:</label>
+            @Html.NumberFor("UretilenAdet")
+        </div>
+    </div>
+
+</form>
+<!--end::Form-->

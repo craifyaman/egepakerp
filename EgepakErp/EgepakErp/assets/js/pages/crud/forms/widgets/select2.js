@@ -210,12 +210,20 @@ var KTSelect2 = function() {
         
         $('#CariId').select2({
             placeholder: 'Cari Seciniz'
-        });
-        $('#UrunId').select2({
-            placeholder: 'Urun Seciniz'
-        });
+        });       
         
     }
+
+    var proformaFaturaForm= function () {
+        // basic
+
+        $('#CariId').select2({
+            placeholder: 'Cari Seciniz'
+        });
+
+    }
+
+
     // Public functions
     return {
         init: function() {
@@ -234,6 +242,9 @@ var KTSelect2 = function() {
         },
         TeklifForm: function () {
             teklifForm();
+        },
+        ProformaFatura: function () {
+            proformaFaturaForm();
         }
     };
 }();

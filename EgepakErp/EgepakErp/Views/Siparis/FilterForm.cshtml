@@ -1,0 +1,47 @@
+﻿<div class="row align-items-center">
+    <div class="col-lg-12 col-xl-12">
+        <div class="row align-items-center">
+            <div class="col-md-2 my-2 my-md-0">
+                <select id="cariId" class="form-control select2 filterFormControl">
+                    <option value="0">Tüm Cariler</option>
+                    @{
+                        var cariList = BaseCari().ToList();
+                        foreach (var cari in cariList)
+                        {
+                            <option value="@cari.CariId">@cari.Unvan</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2 my-2 my-md-0">
+                <select id="durumId" class="form-control select2 filterFormControl">
+                    <option value="0">Tüm Durumlar</option>
+                    @{
+                        var durumList = BaseSiparisDurum().ToList();
+                        foreach (var durum in durumList)
+                        {
+                            <option value="@durum.SiparisDurumId">@durum.Durum</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2 my-2 my-md-0">
+                <div class="input-icon">
+                    <input type="text" class="xxxx form-control form-control-solid filterFormControl " placeholder="sipariş numarası..." id="sipNo" />
+                    <span>
+                        <i class="flaticon2-search-1 text-muted"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2 my-2 my-md-0">
+                <div class="input-icon">
+                    <input type="text" class="xxxx form-control form-control-solid filterFormControl " placeholder="Ürün..." id="urun" />
+                    <span>
+                        <i class="flaticon2-search-1 text-muted"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

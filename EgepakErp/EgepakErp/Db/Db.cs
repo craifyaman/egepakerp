@@ -52,7 +52,10 @@ namespace EgePakErp
         public virtual DbSet<BoyaKaplamaType> BoyaKaplamaType { get; set; }
         public virtual DbSet<StokCikisHareket> StokCikisHareket { get; set; }
         public virtual DbSet<StokGirisHareket> StokGirisHareket { get; set; }
+        public virtual DbSet<SiparisTeklifForm> SiparisTeklifForm { get; set; }
         public virtual DbSet<SiparisTeklifFormUrun> SiparisTeklifFormUrun { get; set; }
+        public virtual DbSet<ProformaFatura> ProformaFatura { get; set; }
+        public virtual DbSet<ProformaUrun> ProformaUrun { get; set; }
 
         #region Custom
         public virtual DbSet<HammaddeCinsi> HammaddeCinsi { get; set; }
@@ -85,6 +88,7 @@ namespace EgePakErp
         public virtual DbSet<Aksiyon> Aksiyon { get; set; }
         public virtual DbSet<StokHareket> StokHareket { get; set; }
         public virtual DbSet<StokHareketType> StokHareketType { get; set; }
+        public virtual DbSet<UretimAksiyon> UretimAksiyon { get; set; }
         //public virtual DbSet<UretimEmirAksiyonRel> UretimEmirAksiyonRel { get; set; }
 
 

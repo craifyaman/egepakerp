@@ -44,6 +44,7 @@ namespace EgePakErp.Models
         public bool UretimBasladiMi { get; set; }
         public string Aciklama { get; set; }
         public string Formul { get; set; }
+        public string EnjeksiyonRenk { get; set; }
 
         public int SiparisId { get; set; }
         public Siparis Siparis { get; set; }

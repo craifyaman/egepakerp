@@ -107,6 +107,14 @@ var KTBootstrapDatetimepicker = function () {
         });
     }
 
+    var proformaFatura = function () {
+
+        $('#Tarih').datetimepicker({
+            locale: 'tr',
+        });
+        
+    }
+
     return {
         // Public functions
         init: function() {
@@ -117,6 +125,9 @@ var KTBootstrapDatetimepicker = function () {
         },
         TeklifForm: function () {
             teklifForm();
+        },
+        ProformaFatura: function () {
+            proformaFatura();
         }
     };
 }();

@@ -72,11 +72,13 @@ namespace EgePakErp.Controllers
             return Json(dtModel);
 
         }
-        public PartialViewResult Form(int? id, int UretimEmirId)
+        public PartialViewResult Form(int? id, int UretimEmirId, string aksiyonType, int UretimEmirDurumId)
         {
             id = id == null ? 0 : id.Value;
             var model = repo.Get((int)id);
             ViewBag.UretimEmirId = UretimEmirId;
+            ViewBag.AksiyonType = aksiyonType;
+            ViewBag.UretimEmirDurumId = UretimEmirDurumId;
 
             return PartialView(model);
         }
@@ -88,41 +90,37 @@ namespace EgePakErp.Controllers
         public JsonResult Kaydet(Aksiyon form)
         {
             var response = new Response();
+            var uretimEmirRepo = new UretimEmirRepository();
 
-            try
+            if (form.AksiyonId == 0)
             {
-                if (form.AksiyonId == 0)
-                {
-                    repo.Insert(form);
-                    response.Success = true;
-                    response.Description = "Kayıt edildi.";
-                }
-                else
-                {
-                    var entity = repo.Get(form.AksiyonId);
-                    if (entity != null)
-                    {
-                        //alanları güncelle
-                        var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
-                        foreach (var prop in propList)
-                        {
-                            if (form.Include.Contains(prop.Name))
-                            {
-                                prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
-                            }
-                        }
-                        repo.Update(entity);
-                        response.Success = true;
-                        response.Description = "Güncellendi.";
-                    }
+                repo.Insert(form);
 
-                }
-
+                var uretimemir = uretimEmirRepo.Get(form.UretimEmirId);
+                uretimemir.UretimEmirDurumList = uretimemir.UretimEmirDurumList + "," + form.UretimEmirDurumId;
+                uretimEmirRepo.Update(uretimemir);
+                response.Success = true;
+                response.Description = "Kayıt edildi.";
             }
-            catch (Exception ex)
+            else
             {
-                response.Success = false;
-                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
+                var entity = repo.Get(form.AksiyonId);
+                if (entity != null)
+                {
+                    //alanları güncelle
+                    var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                    foreach (var prop in propList)
+                    {
+                        if (form.Include.Contains(prop.Name))
+                        {
+                            prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
+                        }
+                    }
+                    repo.Update(entity);
+                    response.Success = true;
+                    response.Description = "Güncellendi.";
+                }
+
             }
 
             return Json(response);

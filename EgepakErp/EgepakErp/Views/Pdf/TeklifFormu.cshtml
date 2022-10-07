@@ -1,0 +1,164 @@
+﻿@model SiparisTeklifForm
+@{
+    string lang = ViewBag.lang;
+    ViewBag.Title = "SiparisDetay";
+    Layout = "~/Views/Shared/_PdfLayout.cshtml";
+}
+
+<div class="container">
+    @if (lang == "tr")
+    {
+        <div class="card card-custom card-stretch gutter-b mb-2" style="padding:15px;">
+            <div class="row">
+                <div class="col-6 row">
+                    <div class="col-3">Gonderen:</div>
+                    <div class="col-9">@Model.Gonderen</div>
+
+                    <div class="col-3">E-Mail:</div>
+                    <div class="col-9">@Model.GonderenEposta</div>
+
+                    <div class="col-3">Tel No:</div>
+                    <div class="col-9">@Model.GonderenTel</div>
+
+                    <div class="col-3">Konu:</div>
+                    <div class="col-9">Fiyat Teklifi</div>
+                </div>
+                <div class="col-6 row">
+                    <div class="col-3">Alan:</div>
+                    <div class="col-9">@Model.Alan</div>
+
+                    <div class="col-3">Tarih:</div>
+                    <div class="col-9">@DateTime.Now.ToShortDateString()</div>
+                   
+                    <div class="col-3">E-Mail:</div>
+                    <div class="col-9">@Model.AlanEposta</div>
+
+                    <div class="col-3">Bilgi:</div>
+                    <div class="col-9">@Model.AlanBilgi</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-custom card-stretch gutter-b mb-1" style="padding:15px;">
+            <div class="row">
+                <div class="col-12 row">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Kod</th>
+                                <th>Ürün Adı</th>
+                                <th>Birim Fiyat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SiparisTeklifFormUrun)
+                            {
+                                <tr>
+                                    <td>@item.Kod</td>
+                                    <td>@item.UrunAdi</td>
+                                    <td>@item.Teklif.ToString("n3") @(Model?.Doviz?.Sembol)</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-custom card-stretch gutter-b mb-1" style="padding:15px;">
+            <div class="row">
+                <div class="col-12">
+                    @Html.Raw(Model.Aciklama)
+                </div>
+                <p style="position:relative;right:0; text-align:center">
+                    Saygılarımla
+                    <br />
+                    @Model.PersonelAd
+                    <br />
+                    @Model.PersonelUnvan
+                </p>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="card card-custom card-stretch gutter-b mb-2" style="padding:15px;">
+            <div class="row">
+                <div class="col-6 row">
+                    <div class="col-3">Sender:</div>
+                    <div class="col-9">@Model.Gonderen</div>
+
+                    <div class="col-3">E-Mail:</div>
+                    <div class="col-9">@Model.GonderenEposta</div>
+
+
+                    <div class="col-3">Tel No:</div>
+                    <div class="col-9">@Model.GonderenTel</div>
+
+                    <div class="col-3">Subject:</div>
+                    <div class="col-9">Fiyat Teklifi</div>
+                </div>
+                <div class="col-6 row">
+                    <div class="col-3">Receiver:</div>
+                    <div class="col-9">@Model.Alan</div>
+
+                    <div class="col-3">Date:</div>
+                    <div class="col-9">@DateTime.Now.ToShortDateString()</div>
+
+                    <div class="col-3">E-Mail:</div>
+                    <div class="col-9">@Model.AlanEposta</div>
+
+
+                    <div class="col-3">Info:</div>
+                    <div class="col-9">@Model.AlanBilgi</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-custom card-stretch gutter-b mb-1" style="padding:15px;">
+            <div class="row">
+                <div class="col-12 row">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>PRODUCT CODE</th>
+                                <th>UNIT PRICE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.SiparisTeklifFormUrun)
+                            {
+                                <tr>
+                                    <td>@item.Kod</td>
+                                    <td>@item.UrunAdi</td>
+                                    <td>@item.Teklif.ToString("n3") @(Model?.Doviz?.Sembol)</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-custom card-stretch gutter-b mb-1" style="padding:15px;">
+            <div class="row">
+                <div class="col-12">
+                    @Html.Raw(Model.Aciklama)
+                </div>
+                <p style="position:relative;right:0; text-align:center">
+                    Best Regards
+                    <br />
+                    @Model.PersonelAd
+                    <br />
+                    @Model.PersonelUnvan
+                </p>
+            </div>
+        </div>
+
+    }
+
+</div>

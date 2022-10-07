@@ -16,9 +16,11 @@
                             },
                         }
                     });
+                form.UretimEmirDurumList = $("#UretimEmirDurumId").val().toString();
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;
+                
                 console.log(form);
 
                 Post("/UretimEmir/kaydet",
@@ -93,9 +95,12 @@
                 Global.init();
                 KTBootstrapDatetimepicker.init();
                 KTSelect2.init();
+                $("#UretimEmirDurumId").select2();
             },
             "html");
     }
+
+   
 
     var handleEvent = function () {
 
@@ -106,9 +111,14 @@
             UretimEmirForm(id);
         });
 
-       
+        $(document).on("click", "[event='UretimAksiyonFormPopup']", function (e) {
+            debugger;
+            e.preventDefault();
+            var UretimAksiyonId = $(this).attr("UretimAksiyonId");
+            UretimAksiyon.Form(UretimAksiyonId);
+        });
 
-
+        
         $(document).on("change", "#SiparisId", function (event) {
             debugger;
             event.preventDefault();

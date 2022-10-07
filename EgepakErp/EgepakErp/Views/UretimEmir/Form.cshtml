@@ -82,48 +82,50 @@
     @if (Model != null)
     {
         <div class="form-group row">
-            <div class="col-6">
+            <div class="col-12">
                 <label>Başlangıç:</label>
                 @Html.TextBoxFor(x => x.Baslangic, new { @class = "form-control", autocomplete = "off" })
             </div>
-            <div class="col-6">
+            @*<div class="col-6">
                 <label>Bitiş:</label>
                 @Html.TextBoxFor(x => x.Bitis, new { @class = "form-control", autocomplete = "off" })
-            </div>
+            </div>*@
         </div>
     }
     else
     {
         <div class="form-group row">
-            <div class="col-6">
+            <div class="col-12">
                 <label>Başlangıç:</label>
                 <input type="text" class="form-control form-control-solid datetimepicker-input" autocomplete="off" name="Baslangic" id="Baslangic" placeholder="Başlangıç zamanı seçin" data-toggle="datetimepicker" data-target="#Baslangic" value="@(Model?.Baslangic.ToString("yyyy-MM-dd HH:mm"))" />
 
             </div>
-            <div class="col-6">
+            @*<div class="col-6">
                 <label>Bitiş:</label>
                 <input type="text" class="form-control form-control-solid datetimepicker-input" autocomplete="off" name="Bitis" id="Bitis" placeholder="Bitiş zamanı seçin" data-toggle="datetimepicker" data-target="#Bitis" value="@(Model?.Bitis.ToString("yyyy-MM-dd HH:mm"))" />
 
-            </div>
+            </div>*@
         </div>
     }
 
 
     <div class="form-group row">
-        <div class="col-lg-6">
-            <label>Sipariş Adet:</label>
+        <div class="col-lg-12">
+            <label>
+            Sipariş Adet: (Üretilen Adet =
+            @if(Model != null)
+            {
+                @Model.UretimAksiyon.Sum(x=>x.UretilenAdet)
+            }
+              )</label>
             @Html.TextBoxFor(x => x.SiparisAdet, new { @class = "form-control", @type = "number" })
-        </div>
-
-        <div class="col-lg-6">
-            <label>Üretilen Adet:</label>
-            @Html.TextBoxFor(x => x.UretilenAdet, new { @class = "form-control", @type = "number" })
         </div>
     </div>
 
 
     @if (Model != null)
     {
+
         <div class="form-group row">
             <label class="col-2 col-form-label">Enjeksiyon Bitti</label>
             <div class="col-2">
@@ -226,12 +228,14 @@
             <label>Durum:</label>
             @{
                 var durumlar = BaseUretimEmirDurum().ToList();
+                var durumList = Model != null ? Model.UretimEmirDurumList : "";
                 var durumId = Model != null ? Model.UretimEmirDurumId : 0;
             }
-            <select class="form-control" id="UretimEmirDurumId" name="UretimEmirDurumId">
+            <select class="form-control select2" id="UretimEmirDurumId" multiple="multiple" name="UretimEmirDurumId">
                 @foreach (var item in durumlar)
                 {
-                    var attr = item.UretimEmirDurumId == durumId ? "selected" : "";
+                    //var attr = item.UretimEmirDurumId == durumId ? "selected" : "";
+                    var attr = durumList.Contains(item.UretimEmirDurumId.ToString()) ? "selected" : "";
                     <option @attr value="@item.UretimEmirDurumId">@item.Durum</option>
                 }
             </select>
@@ -383,73 +387,82 @@
 
     @if (Model != null)
     {
-        <div class="form-group row">
-            <div class="col-lg-2">
-                <div>Önceki Süreçler:</div>
-            </div>
-            <div class="col-lg-10">
-                <a href="#" class="btn btn-primary" event="AksiyonEkle" UretimEmirId="@Model.UretimEmirId">Sonraki aşamaya geç</a>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="timeline timeline-justified timeline-4">
-                <div class="timeline-bar"></div>
-                <div class="timeline-items">
-                    @{
-                        var aksiyonList = BaseAksiyon().Where(x => x.UretimEmirId == Model.UretimEmirId).ToList();
-                        <div class="timeline-item">
-                            <div class="timeline-badge">
-                                <div class="bg-danger"></div>
-                            </div>
+        @*<div class="form-group row">
+                <div class="col-lg-2">
+                    <div>Önceki Süreçler:</div>
+                </div>
+                <div class="col-lg-10">
+                    <a href="#" class="btn btn-primary" event="AksiyonEkle" UretimEmirId="@Model.UretimEmirId">Sonraki aşamaya geç</a>
+                </div>
+            </div>*@
 
-                            <div class="timeline-label">
-                                <span class="text-primary font-weight-bold">@(Model?.Baslangic.ToString("HH:mm"))</span>
-                            </div>
+        @*<div class="col-lg-12">
 
-                            <div class="timeline-content">
-                                Üretime Gönderildi
-                            </div>
-                        </div>
-                        foreach (var aks in aksiyonList)
-                        {
+                <div class="timeline timeline-justified timeline-4">
+                    <div class="timeline-bar"></div>
+                    <div class="timeline-items">
+                        @{
+                            var aksiyonList = BaseAksiyon().Where(x => x.UretimEmirId == Model.UretimEmirId).ToList();
                             <div class="timeline-item">
                                 <div class="timeline-badge">
                                     <div class="bg-danger"></div>
                                 </div>
 
                                 <div class="timeline-label">
-                                    <span class="text-primary font-weight-bold">@aks.AksiyonBaslangic.ToString("HH:mm")</span>
+                                    <span class="text-primary font-weight-bold">@(Model?.Baslangic.ToString("HH:mm"))</span>
                                 </div>
 
                                 <div class="timeline-content">
-                                    @aks.Aciklama (tip = @aks.AksiyonType.Aciklama)
+                                    Üretime Gönderildi
                                 </div>
                             </div>
+                            foreach (var aks in aksiyonList)
+                            {
+                                <div class="timeline-item">
+                                    <div class="timeline-badge">
+                                        <div class="bg-danger"></div>
+                                    </div>
+
+                                    <div class="timeline-label">
+                                        <span class="text-primary font-weight-bold">@aks.AksiyonBaslangic.ToString("HH:mm")</span>
+                                    </div>
+
+                                    <div class="timeline-content">
+                                        @aks.Aciklama (tip = @aks.AksiyonType.Aciklama)
+                                    </div>
+                                </div>
+                            }
+
+                            if (Model.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi)
+                            {
+                                <div class="timeline-item">
+                                    <div class="timeline-badge">
+                                        <div class="bg-success"></div>
+                                    </div>
+
+                                    <div class="timeline-label">
+                                        <span class="text-primary font-weight-bold">@(aksiyonList.LastOrDefault()?.AksiyonBitis.ToString("HH:mm"))</span>
+                                    </div>
+
+                                    <div class="timeline-content">
+                                        Tamamlandı
+                                    </div>
+                                </div>
+                            }
                         }
 
-                        if (Model.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi)
-                        {
-                            <div class="timeline-item">
-                                <div class="timeline-badge">
-                                    <div class="bg-success"></div>
-                                </div>
-
-                                <div class="timeline-label">
-                                    <span class="text-primary font-weight-bold">@(aksiyonList.LastOrDefault()?.AksiyonBitis.ToString("HH:mm"))</span>
-                                </div>
-
-                                <div class="timeline-content">
-                                    Tamamlandı
-                                </div>
-                            </div>
-                        }
-                    }
-
+                    </div>
                 </div>
+            </div>*@
+
+        <div class="form-group row">
+            <div class="col-lg-12">
+                <div>Üretim Aksiyon Ekle:</div>
+            </div>
+            <div class="col-lg-12">
+                <a href="#" class="btn btn-primary" event="UretimAksiyonFormPopup" UretimEmirId="@Model.UretimEmirId">Ekle</a>
             </div>
         </div>
-
-
     }
 
 

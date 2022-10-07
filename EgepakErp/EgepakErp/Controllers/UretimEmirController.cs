@@ -7,7 +7,10 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Dynamic;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
+using System.Data.Entity;
+
 
 namespace EgePakErp.Controllers
 {
@@ -18,6 +21,7 @@ namespace EgePakErp.Controllers
         public YaldizRepository yaldizRepo { get; set; }
         public BoyaKodRepository boyaKodRepo { get; set; }
         public CariRepository cariRepo { get; set; }
+        public KalipRepository kalipRepo { get; set; }
         public UretimEmirController()
         {
             repo = new UretimEmirRepository();
@@ -25,6 +29,8 @@ namespace EgePakErp.Controllers
             yaldizRepo = new YaldizRepository();
             boyaKodRepo = new BoyaKodRepository();
             cariRepo = new CariRepository();
+            kalipRepo = new KalipRepository();
+
         }
 
         [Menu("Üretim Emirleri", "flaticon2-menu-2 icon-xl", "Üretim", 5, 1)]
@@ -114,69 +120,88 @@ namespace EgePakErp.Controllers
         {
             var response = new Response();
 
-                if (form.UretimEmirId == 0)
+            if (form.UretimEmirId == 0)
+            {
+                if (form.SicakBaskiYapilacak)
                 {
-                    if (form.SicakBaskiYapilacak)
+                    form.isSicakBaskiBitti = false;
+                }
+                if (form.SpreyYapilacak)
+                {
+                    form.isSpreyBoyaBitti = false;
+                }
+                if (form.MetalizeYapilacak)
+                {
+                    form.isMetalizeBitti = false;
+                }
+                if (form.MontajYapilacak)
+                {
+                    form.isMontajBitti = false;
+                }
+                if (form.EvMontajYapilacak)
+                {
+                    form.isEvMontajBitti = false;
+                }
+
+                //tahmini bitiş zamanı hesaplama 
+                var _siparisKalip = siparisKalipRepo.Get(form.SiparisKalipId);
+                var _kalip = kalipRepo.Get(x => x.ParcaKodu == _siparisKalip.KalipKod);
+                var _gozSayisi = _kalip.KalipGozSayisi;
+
+                var fireOrani = _kalip.KalipHammaddeRelation.FirstOrDefault().HammaddeCinsi.HammaddeFire.Oran;
+                var fireliAdet = form.SiparisAdet + (form.SiparisAdet * fireOrani / 100);
+
+                var bitisZaman = fireliAdet * _kalip.UretimZamani / _gozSayisi;//saniye cinsinden bitis saati
+                form.Bitis = form.Baslangic.AddMinutes(bitisZaman / 60);
+                repo.Insert(form);
+
+                var sk = siparisKalipRepo.Get(form.SiparisKalipId);
+                if (sk != null)
+                {
+                    sk.UretimBasladiMi = true;
+                    siparisKalipRepo.Update(sk);
+                }
+
+                response.Success = true;
+                response.Description = "Kayıt edildi.";
+            }
+            else
+            {
+                var entity = repo.Get(form.UretimEmirId);
+                if (entity != null)
+                {
+                    //tahmini bitiş zamanı hesaplama 
+                    var _siparisKalip = siparisKalipRepo.Get(form.SiparisKalipId);
+                    var _kalip = kalipRepo.Get(x => x.ParcaKodu == _siparisKalip.KalipKod);
+                    var _gozSayisi = _kalip.KalipGozSayisi;
+
+                    var fireOrani = _kalip.KalipHammaddeRelation.FirstOrDefault().HammaddeCinsi.HammaddeFire.Oran;
+                    var fireliAdet = form.SiparisAdet + (form.SiparisAdet * fireOrani / 100);
+
+                    var bitisZaman = fireliAdet * _kalip.UretimZamani / _gozSayisi;//saniye cinsinden bitis saati
+                    form.Bitis = form.Baslangic.AddMinutes(bitisZaman / 60);
+                    entity.Bitis = form.Bitis;
+                    //tamamlanma tarihi kaydetme
+                    if (form.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi)
                     {
-                        form.isSicakBaskiBitti = false;
-                    }
-                    if (form.SpreyYapilacak)
-                    {
-                        form.isSpreyBoyaBitti = false;
-                    }
-                    if (form.MetalizeYapilacak)
-                    {
-                        form.isMetalizeBitti = false;
-                    }
-                    if (form.MontajYapilacak)
-                    {
-                        form.isMontajBitti = false;
-                    }
-                    if (form.EvMontajYapilacak)
-                    {
-                        form.isEvMontajBitti = false;
+                        entity.TamamlanmaTarih = DateTime.Now;
                     }
 
-                    repo.Insert(form);
-
-                    var sk = siparisKalipRepo.Get(form.SiparisKalipId);
-                    if (sk != null)
+                    //alanları güncelle
+                    var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                    foreach (var prop in propList)
                     {
-                        sk.UretimBasladiMi = true;
-                        siparisKalipRepo.Update(sk);
+                        if (form.Include.Contains(prop.Name))
+                        {
+                            prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
+                        }
                     }
-
+                    repo.Update(entity);
                     response.Success = true;
-                    response.Description = "Kayıt edildi.";
-                }
-                else
-                {
-                    var entity = repo.Get(form.UretimEmirId);
-                    if (entity != null)
-                    {
-                        //tamamlanma tarihi kaydetme
-                        if (form.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi)
-                        {
-                            entity.TamamlanmaTarih = DateTime.Now;
-                        }
-
-                        //alanları güncelle
-                        var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
-                        foreach (var prop in propList)
-                        {
-                            if (form.Include.Contains(prop.Name))
-                            {
-                                prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
-                            }
-                        }
-                        repo.Update(entity);
-                        response.Success = true;
-                        response.Description = "Güncellendi.";
-                    }
-
+                    response.Description = "Güncellendi.";
                 }
 
-           
+            }
 
             return Json(response);
 
@@ -202,26 +227,32 @@ namespace EgePakErp.Controllers
                 var kaliplar = kaliprepo.GetAll();
                 var cariList = cariRepo.GetAll();
                 var model = repo.GetAll();
+
                 if (type == "enjeksiyon")
                 {
-                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.Uretimde);
+                    //EUretimEmirDurum.Uretimde
+                    model = model.Where(x => x.UretimEmirDurumList.Contains("1"));
                 }
 
                 else if (type == "sicakbaski")
                 {
-                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.SicakBaski);
+                    //EUretimEmirDurum.SicakBaski
+                    model = model.Where(x => x.UretimEmirDurumList.Contains("2"));
                 }
                 else if (type == "sprey")
                 {
-                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.Sprey);
+                    //EUretimEmirDurum.Sprey
+                    model = model.Where(x => x.UretimEmirDurumList.Contains("3"));
                 }
                 else if (type == "montaj")
                 {
-                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.Montaj);
+                    //EUretimEmirDurum.Montaj
+                    model = model.Where(x => x.UretimEmirDurumList.Contains("4"));
                 }
                 else if (type == "metalize")
                 {
-                    model = model.Where(x => x.UretimEmirDurumId == (int)EUretimEmirDurum.Metalize);
+                    //EUretimEmirDurum.Metalize
+                    model = model.Where(x => x.UretimEmirDurumList.Contains("5"));
                 }
 
                 //var yaldiz = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.YaldizId != null);
@@ -236,15 +267,15 @@ namespace EgePakErp.Controllers
                     {
                         UretimEmirId = x.UretimEmirId,
                         SiparisKalip = x.SiparisKalip.KalipKod,
-                        KalipAd = "<b>" + kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi
-                        + "</b>" + " ( " + cari + " ) "
+                        KalipAd = "<b>"+x.SiparisKalip.EnjeksiyonRenk +" "+ kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi
+                        + "</b>" + " ( " + cari.Substring(0,10) + " ) "
                         + " _ (" + x.SiparisKalip.Siparis.SiparisAdi + ")"
-                        + " _ "
-                        + fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizKodList != null)?.YaldizKodList
-                        + " _ "
-                        + fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.SpreyBoyaKodId != null)?.SpreyBoyaKod.Aciklama
-                        + "_"
-                        + fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.MetalizeKodId != null)?.MetalizeKod.Aciklama
+                        
+                        //+ fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizKodList != null)?.YaldizKodList
+                        //+ " _ "
+                        //+ fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.SpreyBoyaKodId != null)?.SpreyBoyaKod.Aciklama
+                        //+ "_"
+                        //+ fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.MetalizeKodId != null)?.MetalizeKod.Aciklama
                         ,
                         Makine = x.Makine.MakineAd,
                         MakineId = x.Makine.MakineId,

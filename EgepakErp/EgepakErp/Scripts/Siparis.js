@@ -674,7 +674,7 @@
     }
 
     function SiparisKaydet(SiparisId) {
-
+        debugger;
         var liste = [];
 
         var SiparisKalipDto = function () {
@@ -689,6 +689,7 @@
             this.Aciklama;//string
             this.Formul;//string
             this.MetalizeKodId;//int
+            this.EnjeksiyonRenk;//string
         }
 
         var SiparisDto = function () {
@@ -717,7 +718,7 @@
             dto.KalipAdi = input.getAttribute("KalipAdi");
             dto.Maliyet = input.value;
             dto.MaliyetType = input.getAttribute("MaliyetType");
-
+            dto.EnjeksiyonRenk = $("#enj_renk_" + $(input).attr("KalipId")).val();
             var YaldizId = input.getAttribute("YaldizId");
 
             if (YaldizId !== undefined && YaldizId != null) {

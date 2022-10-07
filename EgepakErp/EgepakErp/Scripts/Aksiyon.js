@@ -43,9 +43,10 @@
         });
     }
 
-    function AksiyonForm(id,uretimEmirId) {
+    function AksiyonForm(id, uretimEmirId, aksiyonType, UretimEmirDurumId) {
+        debugger;
         Post("/Aksiyon/form",
-            { id: id, UretimEmirId: uretimEmirId },
+            { id: id, UretimEmirId: uretimEmirId, aksiyonType: aksiyonType, UretimEmirDurumId: UretimEmirDurumId },
             function (response) {
                 var box = bootbox.dialog({
                     title: "Aksiyon form",
@@ -102,8 +103,8 @@
         Kaydet: function () {
             Kaydet();
         },
-        AksiyonForm: function (id, uretimEmirId) {
-            AksiyonForm(id, uretimEmirId);
+        AksiyonForm: function (id, uretimEmirId, aksiyonType, UretimEmirDurumId) {
+            AksiyonForm(id, uretimEmirId, aksiyonType, UretimEmirDurumId);
         }
     };
 }();

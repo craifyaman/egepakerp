@@ -102,6 +102,10 @@
         $(document).ready(function () {
             Dt.DtInit("kt_datatable", "/Kalip/Liste", DtColums.KalipColumns(), {}, {});
             Kalip.EventInit();
+            $("#urunId").select2({
+                placeholder: "urun sec",
+                language:'tr'
+            })
         })
 
     </script>

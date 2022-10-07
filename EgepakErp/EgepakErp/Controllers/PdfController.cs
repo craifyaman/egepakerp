@@ -14,10 +14,15 @@ namespace EgePakErp.Controllers
     public class PdfController : Controller
     {
         // GET: Pdf
+        public Db _db { get; set; }
+        public PdfController()
+        {
+            _db = new Db();
+        }
+
         public ActionResult SiparisDetay(int siparisId)
         {
-            var db = new Db();
-            var siparis = db.Siparis
+            var siparis = _db.Siparis
                 .Include("Cari")
                 .Include("Urun")
                 .Include(x=>x.Urun.UrunCinsi)
@@ -28,13 +33,33 @@ namespace EgePakErp.Controllers
 
         public ActionResult SiparisUretimDetay(int siparisId)
         {
-            var db = new Db();
-            var siparis = db.Siparis
+            var siparis = _db.Siparis
                 .Include("Cari")
                 .Include("Urun")
                 .Include(x => x.Urun.UrunCinsi)
                 .FirstOrDefault(x => x.SiparisId == siparisId);
             return View(siparis);
         }
+
+        public ActionResult TeklifFormu(int formId,string lang)
+        {
+            var teklifForm = _db.SiparisTeklifForm
+                .Include(x=>x.SiparisTeklifFormUrun)
+                .Include(x=>x.Doviz)
+                .FirstOrDefault(x => x.SiparisTeklifFormId == formId);
+            ViewBag.lang = lang;
+            return View(teklifForm);
+        }
+
+        public ActionResult ProformaFatura(int faturaId, string lang)
+        {
+            var teklifForm = _db.ProformaFatura
+                .Include(x => x.ProformaUrun)
+                .Include(x => x.Doviz)
+                .FirstOrDefault(x => x.ProformaFaturaId== faturaId);
+            ViewBag.lang = lang;
+            return View(teklifForm);
+        }
+
     }
 }

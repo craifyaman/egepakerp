@@ -85,6 +85,23 @@ namespace EgePakErp.Controllers
                     );
             }
 
+            if (!string.IsNullOrEmpty(Request.Form["query[cariId]"]))
+            {
+                int cariId = Convert.ToInt32(Request.Form["query[cariId]"].ToString());
+                model = model.Where(x => x.Siparis.CariId == cariId);
+            }
+
+            if (!string.IsNullOrEmpty(Request.Form["query[yer]"]))
+            {
+                string yer = Request.Form["query[cariId]"].ToString();
+                model = model.Where(x => x.Yer.Contains(yer));
+            }
+            if (!string.IsNullOrEmpty(Request.Form["query[adi]"]))
+            {
+                string adi = Request.Form["query[adi]"].ToString();
+                model = model.Where(x => (x.SiparisKalip.EnjeksiyonRenk+" "+x.SiparisKalip.KalipAdi).Contains(adi));
+            }
+
             try
             {
                 model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
@@ -124,18 +141,19 @@ namespace EgePakErp.Controllers
                         montajliList = allList.Where(a => a.MontajKod == montajKod).ToList();
                     }
 
-                    var KalipKodList = temp.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == temp.MontajKod).Select(a => a.SiparisKalip.KalipKod) : new List<string>() { temp.SiparisKalip.KalipKod };
+                    var KalipKodList = temp.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == temp.MontajKod).Select(a => a.SiparisKalip.SiparisKalipId) : new List<int>() { temp.SiparisKalip.SiparisKalipId };
 
                     foreach (var item in KalipKodList)
                     {
-                        var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == item);
+                        var siparisKalip = siparisKalipRepo.Get(item);
+                        var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == siparisKalip.KalipKod);
                         if (_kalip != null)
                         {
-                            KalipAdlar += _kalip.Adi + "<br />";
+                            KalipAdlar += siparisKalip.EnjeksiyonRenk + " " + _kalip.Adi + "<br />";
                         }
 
-                        var yaldizSiparisKalip = yaldizKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "yaldiz").ToList();
-                        var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "tozboya").ToList();
+                        var yaldizSiparisKalip = yaldizKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "yaldiz").ToList();
+                        var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "tozboya").ToList();
 
                         if (yaldizSiparisKalip != null && yaldizSiparisKalip.Count > 0)
                         {
@@ -215,19 +233,20 @@ namespace EgePakErp.Controllers
                         montajliList = allList.Where(a => a.MontajKod == montajKod).ToList();
                     }
 
-                    var KalipKodList = x.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == x.MontajKod).Select(a => a.SiparisKalip.KalipKod) : new List<string>() { x.SiparisKalip.KalipKod };
+                    var KalipKodList = x.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == x.MontajKod).Select(a => a.SiparisKalip.SiparisKalipId) : new List<int>() { x.SiparisKalip.SiparisKalipId };
 
 
                     foreach (var item in KalipKodList)
                     {
-                        var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == item);
+                        var siparisKalip = siparisKalipRepo.Get(item);
+                        var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == siparisKalip.KalipKod);
                         if (_kalip != null)
                         {
-                            KalipAdlar += _kalip.Adi + "<br />";
+                            KalipAdlar += siparisKalip.EnjeksiyonRenk + " " + _kalip.Adi + "<br />";
                         }
 
-                        var yaldizSiparisKalip = yaldizKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "yaldiz").ToList();
-                        var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == item && c.MaliyetType.ToLower() == "tozboya").ToList();
+                        var yaldizSiparisKalip = yaldizKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "yaldiz").ToList();
+                        var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "tozboya").ToList();
 
                         if (yaldizSiparisKalip != null && yaldizSiparisKalip.Count > 0)
                         {
@@ -311,32 +330,32 @@ namespace EgePakErp.Controllers
         {
             var response = new Response();
 
-                if (form.StokHareketId == 0)
+            if (form.StokHareketId == 0)
+            {
+                repo.Insert(form);
+                response.Success = true;
+                response.Description = "Kayıt edildi.";
+            }
+            else
+            {
+                var entity = repo.Get(form.StokHareketId);
+                if (entity != null)
                 {
-                    repo.Insert(form);
-                    response.Success = true;
-                    response.Description = "Kayıt edildi.";
-                }
-                else
-                {
-                    var entity = repo.Get(form.StokHareketId);
-                    if (entity != null)
+                    //alanları güncelle
+                    var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                    foreach (var prop in propList)
                     {
-                        //alanları güncelle
-                        var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
-                        foreach (var prop in propList)
+                        if (form.Include.Contains(prop.Name))
                         {
-                            if (form.Include.Contains(prop.Name))
-                            {
-                                prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
-                            }
+                            prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
                         }
-                        repo.Update(entity);
-                        response.Success = true;
-                        response.Description = "Güncellendi.";
                     }
-
+                    repo.Update(entity);
+                    response.Success = true;
+                    response.Description = "Güncellendi.";
                 }
+
+            }
 
             return Json(response);
 
@@ -344,49 +363,56 @@ namespace EgePakErp.Controllers
 
 
 
-        public JsonResult DepoyaAktarTekli(int SiparisKalipId, int SiparisId, int Adet, string Yer)
+        public JsonResult DepoyaAktarTekli(int SiparisKalipId, int SiparisId, int Adet, string Yer, int UretimEmirId)
         {
             var response = new Response();
 
-            try
+            StokHareket hareket = new StokHareket();
+            hareket.StokHareketTypeId = (int)EStokHareketType.Giris;
+            hareket.SiparisId = SiparisId;
+            hareket.SiparisKalipId = SiparisKalipId;
+            hareket.Adet = Adet;
+            hareket.MontajliMi = false;
+            hareket.Yer = Yer;
+
+
+            //kalıbı bul depoda diye işaretle
+            //var siparisKalip = Db.SiparisKalip.Find(hareket.SiparisKalipId);
+            //if (siparisKalip != null)
+            //{
+            //    if (siparisKalip.DepodaMi == true)
+            //    {
+            //        hareket.Adet = Adet;
+            //        repo.Update(hareket);
+            //        response.Success = true;
+            //        response.Description = "Ürünün Depodaki miktarı güncellendi !!";
+            //        return Json(response);
+            //    }
+            //    repo.Insert(hareket);
+            //    siparisKalip.DepodaMi = true;
+            //    Db.SaveChanges();
+
+            //    response.Success = true;
+            //    response.Description = "Depoya ekleme başarı ile gerçekleşti";
+            //    return Json(response);
+            //}
+
+            //response.Success = false;
+            //response.Description = "kalıp bulunamadı";
+
+
+            //üretim emrini depoda olarak işaretle
+            var uretimEmir = Db.UretimEmir.Find(UretimEmirId);
+            if (uretimEmir != null)
             {
-                StokHareket hareket = new StokHareket();
-                hareket.StokHareketTypeId = (int)EStokHareketType.Giris;
-                hareket.SiparisId = SiparisId;
-                hareket.SiparisKalipId = SiparisKalipId;
-                hareket.Adet = Adet;
-                hareket.MontajliMi = false;
-                hareket.Yer = Yer;
-                //kalıbı bul depoda diye işaretle
-                var siparisKalip = Db.SiparisKalip.Find(hareket.SiparisKalipId);
-                if (siparisKalip != null)
-                {
-                    if (siparisKalip.DepodaMi == true)
-                    {
-                        hareket.Adet = Adet;
-                        repo.Update(hareket);
-                        response.Success = true;
-                        response.Description = "Ürünün Depodaki miktarı güncellendi !!";
-                        return Json(response);
-                    }
-                    repo.Insert(hareket);
-                    siparisKalip.DepodaMi = true;
-                    Db.SaveChanges();
-
-                    response.Success = true;
-                    response.Description = "Depoya ekleme başarı ile gerçekleşti";
-                    return Json(response);
-                }
-
-                response.Success = false;
-                response.Description = "kalıp bulunamadı";
-
+                uretimEmir.DepodaMi = true;
+                Db.SaveChanges();
             }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
-            }
+
+
+            repo.Insert(hareket);
+            response.Success = true;
+            response.Description = "Ürün depoya aktarıldı";
 
             return Json(response);
 
@@ -396,55 +422,56 @@ namespace EgePakErp.Controllers
         {
             var response = new Response();
 
-            try
+            var sonStokHareket = Db.StokHareket.OrderByDescending(x => x.MontajKod).FirstOrDefault(x => x.MontajKod != null);
+            int montajKod = 0;
+
+            if (sonStokHareket != null)
             {
-                var sonStokHareket = Db.StokHareket.OrderByDescending(x => x.MontajKod).FirstOrDefault(x => x.MontajKod != null);
-                int montajKod = 0;
+                montajKod = (int)sonStokHareket.MontajKod + 1;
+            }
+            var hareketList = new List<StokHareket>();
+            var kalipList = new List<SiparisKalip>();
+            foreach (var item in liste)
+            {
+                StokHareket hareket = new StokHareket();
+                hareket.StokHareketTypeId = (int)EStokHareketType.Giris;
+                hareket.SiparisId = item.SiparisId;
+                hareket.SiparisKalipId = item.SiparisKalipId;
+                hareket.Adet = item.Adet;
+                hareket.MontajliMi = true;
+                hareket.MontajKod = montajKod;
+                hareket.Yer = item.Yer;
 
-                if (sonStokHareket != null)
+                //kalıbı bul depoda diye işaretle
+                var siparisKalip = Db.SiparisKalip.Find(hareket.SiparisKalipId);
+                if (siparisKalip != null)
                 {
-                    montajKod = (int)sonStokHareket.MontajKod + 1;
+                    hareketList.Add(hareket);
+                    kalipList.Add(siparisKalip);
+                    //repo.Insert(hareket);
+                    //siparisKalip.DepodaMi = true;
+                    //Db.SaveChanges();
+                    //return Json(response);
                 }
-                var hareketList = new List<StokHareket>();
-                var kalipList = new List<SiparisKalip>();
-                foreach (var item in liste)
-                {
-                    StokHareket hareket = new StokHareket();
-                    hareket.StokHareketTypeId = (int)EStokHareketType.Giris;
-                    hareket.SiparisId = item.SiparisId;
-                    hareket.SiparisKalipId = item.SiparisKalipId;
-                    hareket.Adet = item.Adet;
-                    hareket.MontajliMi = true;
-                    hareket.MontajKod = montajKod;
-                    hareket.Yer = item.Yer;
 
-                    //kalıbı bul depoda diye işaretle
-                    var siparisKalip = Db.SiparisKalip.Find(hareket.SiparisKalipId);
-                    if (siparisKalip != null)
-                    {
-                        hareketList.Add(hareket);
-                        kalipList.Add(siparisKalip);
-                        //repo.Insert(hareket);
-                        //siparisKalip.DepodaMi = true;
-                        //Db.SaveChanges();
-                        //return Json(response);
-                    }
-                }
-                repo.AddRange(hareketList);
-                foreach (var item in kalipList)
+                //üretim emrini depoda olarak işaretle
+                var uretimEmir = Db.UretimEmir.Find(item.UretimEmirId);
+                if (uretimEmir != null)
                 {
-                    item.DepodaMi = true;
+                    uretimEmir.DepodaMi = true;
+                    Db.SaveChanges();
                 }
-                Db.SaveChanges();
-                response.Success = true;
-                response.Description = "Depoya ekleme başarı ile gerçekleşti";
+
 
             }
-            catch (Exception ex)
+            repo.AddRange(hareketList);
+            foreach (var item in kalipList)
             {
-                response.Success = false;
-                response.Description = "Hata Oluştu Hata Mesajı: " + ex.Message.ToString();
+                item.DepodaMi = true;
             }
+            Db.SaveChanges();
+            response.Success = true;
+            response.Description = "Depoya ekleme başarı ile gerçekleşti";
 
             return Json(response);
 

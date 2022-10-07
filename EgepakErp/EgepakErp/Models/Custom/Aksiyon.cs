@@ -21,6 +21,9 @@ namespace EgePakErp.Models
         //public ICollection<UretimEmirAksiyonRel> UretimEmirAksiyonRel { get; set; }
         [NotMapped]
         public List<string> Include { get; set; }
+        
+        [NotMapped]
+        public int UretimEmirDurumId{ get; set; }
 
     }
 }

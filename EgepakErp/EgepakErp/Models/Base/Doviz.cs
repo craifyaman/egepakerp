@@ -33,6 +33,7 @@ namespace EgePakErp.Models
         public virtual ICollection<YanSanayiStok> YanSanayiStokListesi { get; set; }
         public virtual ICollection<HazirMalzemeFiyat> HazirMalzemeFiyatListesi { get; set; }
         public virtual ICollection<Fiyat> FiyatListesi { get; set; }
+        public virtual ICollection<SiparisTeklifForm> SiparisTeklifForm { get; set; }
     }
 
 }

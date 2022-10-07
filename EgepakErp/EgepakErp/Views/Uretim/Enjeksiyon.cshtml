@@ -1,0 +1,189 @@
+﻿@model List<UretimEmir>
+@{
+    ViewBag.Title = "Üretim Takip";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link href="~/assets/plugins/custom/vis-timeline/vis-timeline.bundle.css" rel="stylesheet" />
+}
+<!--begin::Subheader-->
+<!--begin::Subheader-->
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">Üretim Takip</h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="/" class="text-muted">Anasayfa</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="" class="text-muted">Üretim Takip Enjeksiyon</a>
+                    </li>
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+    </div>
+</div>
+<!--end::Subheader-->
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container-fluid">
+        <!--begin::Dashboard-->
+        <!--begin::Row-->
+        <div class="row">
+            <div class="flex-row-fluid ml-lg-8">
+                <!--begin::Card-->
+                <div class="card card-custom mb-5">
+                    <!--begin::Header-->
+                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label font-weight-bolder text-dark"></span>
+                            <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
+                        </h3>
+                        <div class="card-toolbar">
+                            <div class="dropdown dropdown-inline">
+                                <!--begin::Trigger Modal-->
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Makine</th>
+                                    <th>Parça</th>
+                                    <th>Cari</th>
+                                    <th>Başlangıç</th>
+                                    <th>Tahmini Bitiş</th>
+
+                                    <th>Sipariş Adet</th>
+
+                                    <th>Üretilen</th>
+                                    <th>Kalan</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var liste = Model.Where(x => x.UretimEmirDurumList.Contains("1")).OrderBy(x => x.MakineId).ToList();
+                                }
+                                @foreach (var emir in liste)
+                                {
+                                    <tr>
+                                        <td>@emir.Makine.MakineAd</td>
+                                        <td>@emir.SiparisKalip.EnjeksiyonRenk @emir.SiparisKalip.KalipAdi</td>
+                                        <td>
+                                            @emir.Siparis.Cari.Unvan.Substring(0, 10) ...
+                                        </td>
+                                        <td>@emir.Baslangic.ToString("dd MMMM HH:mm")</td>
+                                        <td>@emir.Bitis.ToString("dd MMMM HH:mm")</td>
+
+                                        <td>@emir.Siparis.SiparisAdet</td>
+                                        <td>@emir.UretimAksiyon.Sum(x => x.UretilenAdet)</td>
+                                        <td>@(emir.SiparisAdet - emir.UretimAksiyon.Sum(x => x.UretilenAdet))</td>
+                                        <td>
+                                            <a href="#" event="uretimEmirDetay" UretimEmirId="@emir.UretimEmirId" class="btn btn-warning">Düzenle</a>
+
+
+                                            @*@if (emir.SicakBaskiYapilacak && emir.isSicakBaskiBitti == false && !emir.UretimEmirDurumList.Contains('2'))
+                                            {
+                                                <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.SicakBaski)" UretimEmirDurumId="@((int)EUretimEmirDurum.SicakBaski)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Sıcak Baskıya Al</a>
+                                            }
+
+                                            @if (emir.SpreyYapilacak && emir.isSpreyBoyaBitti == false && !emir.UretimEmirDurumList.Contains('3'))
+                                            {
+                                                <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.Sprey)" UretimEmirDurumId="@((int)EUretimEmirDurum.Sprey)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Sprey Boyamaya Al</a>
+                                            }
+
+                                            @if (emir.MetalizeYapilacak && emir.isMetalizeBitti == false && !emir.UretimEmirDurumList.Contains('5'))
+                                            {
+                                                <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.Metalize)" UretimEmirDurumId="@((int)EUretimEmirDurum.Metalize)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Metalize Al</a>
+                                            }
+
+                                            @if (emir.MontajYapilacak && emir.isMontajBitti == false && !emir.UretimEmirDurumList.Contains('4'))
+                                            {
+                                                <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.Montaj)" UretimEmirDurumId="@((int)EUretimEmirDurum.Montaj)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Montaja Al</a>
+                                            }
+
+                                            @if (emir.EvMontajYapilacak && emir.isEvMontajBitti == false && !emir.UretimEmirDurumList.Contains('7'))
+                                            {
+                                                <a href="#" event="AksiyonEkle" AksiyonType="evMontaj" UretimEmirDurumId="@((int)EUretimEmirDurum.EvMontaj)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Ev Montaja Gönder</a>
+                                            }*@
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+                <!--begin::Card-->
+                <div class="card card-custom">
+                    <!--begin::Header-->
+                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label font-weight-bolder text-dark">Enjeksiyon</span>
+                            <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
+                        </h3>
+                        <div class="card-toolbar">
+                            <div class="dropdown dropdown-inline">
+                                <!--begin::Trigger Modal-->
+                                <a href="#" class="btn btn-success font-weight-bolder font-size-sm "
+                                   event="UretimEmirEkle"
+                                   aria-haspopup="true" aria-expanded="false">Üretim Emri Ekle</a>
+                                <!--end::Trigger Modal-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <div id="kt_docs_vistimeline_group"></div>
+                    </div>
+
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+
+            </div>
+        </div>
+        <!--end::Row-->
+        <!--end::Dashboard-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Entry-->
+
+@section scripts{
+    <script src="~/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js.js"></script>
+    <script src="~/Scripts/UretimEmir.js?v=@ScriptVersion"></script>
+    <script src="~/Scripts/Uretim.js?v=@ScriptVersion"></script>
+    <script src="~/Scripts/Aksiyon.js?v=@ScriptVersion"></script>
+    <script src="~/Scripts/Custom/WebViewer.js"></script>
+    <script src="~/Scripts/UretimAksiyon.js?v=@ScriptVersion"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            Uretim.EventInit();
+        });
+
+    </script>
+}

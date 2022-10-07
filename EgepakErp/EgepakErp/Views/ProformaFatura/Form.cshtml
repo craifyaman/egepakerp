@@ -1,0 +1,201 @@
+﻿@using EgePakErp.HtmlHelpers;
+
+@model ProformaFatura
+
+<!--begin::Form-->
+<form id="ProformaFaturaForm">
+    @Html.HiddenFor(x => x.ProformaFaturaId)
+    <div class="form-group row">
+        <div class="col-12">
+            <label>Cari:</label>
+            @{
+                var cariList = BaseCari().Where(x => x.MusteriNo != null).ToList();
+
+            }
+            <select id="CariId" name="CariId" class="form-control select2" markup="Cari" placeHolder="Cari Seçiniz">
+                <option></option>
+                @foreach (var c in cariList)
+                {
+                    var attr = Model?.CariId == c.CariId ? "selected" : "";
+                    <option @attr value="@c.CariId">@c.Unvan (@c.MusteriNo)</option>
+                }
+            </select>
+        </div>
+
+
+    </div>
+    <div class="form-group row">
+        <div class="col-12">
+            <label>Ön Ödeme</label>
+            @{
+                var onOdeme = Model?.OnOdeme != 0 ? Model.OnOdeme.ToString("n0") : "";
+                <input type="text" name="OnOdeme" id="OnOdeme" class="form-control" value="@onOdeme" />}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-12">
+            <label>Ürünler:</label>
+            <div id="kt_repeater_1">
+                <div class="form-group row" id="kt_repeater_1">
+                    <div data-repeater-list="" class="col-lg-12">
+                        <div data-repeater-item class="form-group row align-items-center">
+                            <div class="col-md-3">
+                                <label>Açıklama:</label>
+                                <input type="text" class="form-control" name="ProformaUrun[Aciklama]" placeholder="ürün açıklaması" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Adet:</label>
+                                <input type="text" class="form-control" name="ProformaUrun[Adet]" placeholder="adet girin" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Birim Fiyat:</label>
+                                <input type="text" class="form-control" name="ProformaUrun[BirimFiyat]" placeholder="birim fiyat girin" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <a href="javascript:;" data-repeater-delete="" class="btn btn-sm font-weight-bolder btn-light-danger">
+                                    <i class="la la-trash-o"></i> Sil
+                                </a>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-lg-12 col-form-label text-right"></label>
+                    <div class="col-lg-4">
+                        <a href="javascript:;" data-repeater-create="" class="btn btn-sm font-weight-bolder btn-light-primary">
+                            <i class="la la-plus"></i> Ürün Ekle
+                        </a>
+                    </div>
+                </div>
+
+                @if (Model?.ProformaUrun.Count() > 0)
+                {
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Açıklama</th>
+                                <th>Adet</th>
+                                <th>Birim Fiyat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.ProformaUrun)
+                            {
+                                <tr>
+                                    <td>@item.Aciklama</td>
+                                    <td>@item.Adet</td>
+                                    <td>@item.BirimFiyat.ToString("n2")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+
+        <div class="col-lg-4">
+            <label>Gönderen:</label>
+            @{
+                string gonderen = !string.IsNullOrEmpty(Model?.Gonderen) ? Model.Gonderen : "EGEPAK PLST. KOZ. SAN.TİC.LTD.ŞTİ.";
+            }
+            <input type="text" class="form-control" name="Gonderen" id="Gonderen" value="@gonderen" />
+        </div>
+
+        <div class="col-lg-4">
+            <label>Gönderen Eposta:</label>
+            @{
+                string gonderenPosta = !string.IsNullOrEmpty(Model?.GonderenEposta) ? Model.GonderenEposta : "egepak@egepak.net";
+            }
+            <input type="text" class="form-control" name="GonderenEposta" id="GonderenEposta" value="@gonderenPosta" />
+        </div>
+
+        <div class="col-lg-4">
+            <label>Gönderen Telefon:</label>
+            @{
+                string gonderenTel = !string.IsNullOrEmpty(Model?.GonderenTel) ? Model.GonderenTel : "+90 216 365 89 83 - fx :84";
+            }
+            <input type="text" class="form-control" name="GonderenTel" id="GonderenTel" value="@gonderenTel" />
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+
+        <div class="col-lg-4">
+            <label>Firma:</label>
+            @Html.TextBoxFor(x => x.Firma, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-4">
+            <label>Yetkili:</label>
+            @Html.TextBoxFor(x => x.Yetkili, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-4">
+            <label>Eposta:</label>
+            @Html.TextBoxFor(x => x.AlanEposta, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-12">
+            <label>Firma Adres:</label>
+            @Html.TextBoxFor(x => x.Adres, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-12">
+            <label>Firma Tel:</label>
+            @Html.TextBoxFor(x => x.AlanTel, new { @class = "form-control" })
+        </div>
+
+    </div>
+
+    <div class="form-group row">
+
+        <div class="col-lg-6">
+            @if (Model != null)
+            {
+                <label>Tarih:</label>
+                <input class="form-control" type="text" name="Tarih" id="Tarih" value="@Model.Tarih.ToString("MM/dd/yyyy")" />
+            }
+            else
+            {
+                <label>Tarih:</label>
+                @Html.DateTimePicker("Tarih")
+            }
+        </div>
+        <div class="col-lg-6">
+            <label>Döviz:</label>
+            @{
+                var DovizList = baseDoviz;
+                int dId = Model?.DovizId != null ? Model.DovizId : 0;
+            }
+            <select name="DovizId" id="DovizId" class="form-control">
+                @foreach (var item in DovizList)
+                {
+                    string attr = item.DovizId == dId ? "selected" : "";
+                    <option value="@item.DovizId" @attr>
+                        @item.Adi
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>Açıklama:</label>
+            @Html.SummerNote("Aciklama")
+        </div>
+    </div>
+
+</form>
+<!--end::Form-->

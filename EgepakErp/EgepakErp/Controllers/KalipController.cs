@@ -14,9 +14,11 @@ namespace EgePakErp.Controllers
     public class KalipController : BaseController
     {
         public KalipRepository repo { get; set; }
+        public UrunRepository urunRepo { get; set; }
         public KalipController()
         {
             repo = new KalipRepository();
+            urunRepo = new UrunRepository();
         }
         // GET: Cari
         [Menu("Kalıplar", "flaticon2-soft-icons icon-xl", "Üretim", 0, 4)]
@@ -49,6 +51,19 @@ namespace EgePakErp.Controllers
                 i.Adi.ToLower().Contains(searchQuery.ToLower())
                 );
             }
+            //Filtre
+            if (!string.IsNullOrEmpty(Request.Form["query[agirlik]"]))
+            {
+                var agirlik = Convert.ToDecimal(Request.Form["query[agirlik]"].ToString());
+                model = model.Where(i => i.ParcaAgirlik == agirlik);
+            }
+
+            //Filtre
+            if (!string.IsNullOrEmpty(Request.Form["query[gozSayisi]"]))
+            {
+                var gozSayisi = Convert.ToDecimal(Request.Form["query[gozSayisi]"].ToString());
+                model = model.Where(i => i.KalipGozSayisi == gozSayisi);
+            }
 
             //Filtre
             if (!string.IsNullOrEmpty(Request.Form["query[urunCinsiId]"]))
@@ -58,7 +73,23 @@ namespace EgePakErp.Controllers
                 model = model.Where(i => i.KalipUrunRelation.FirstOrDefault().Urun.UrunCinsi.UrunCinsiId == id
                 );
             }
+            //Filtre
+            if (!string.IsNullOrEmpty(Request.Form["query[cevrimSuresi]"]))
+            {
+                var cevrimSuresi = Convert.ToInt32(Request.Form["query[cevrimSuresi]"].ToString());
+                model = model.Where(i => i.UretimZamani == cevrimSuresi);
+            }
 
+            //Filtre
+            if (!string.IsNullOrEmpty(Request.Form["query[urunId]"]))
+            {
+                var urunId = Convert.ToInt32(Request.Form["query[urunId]"].ToString());
+                if(urunId > 0)
+                {
+                    model = model.Where(i => i.KalipUrunRelation.Where(x => x.UrunId == urunId).ToList().Count() > 0);
+                }
+                
+            }
 
             try
             {

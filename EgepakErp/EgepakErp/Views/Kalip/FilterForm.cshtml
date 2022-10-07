@@ -1,9 +1,46 @@
 ﻿<div class="row align-items-center">
     <div class="col-lg-12 col-xl-12">
         <div class="row align-items-center">
-            <div class="col-md-3 my-2 my-md-0">
+            <div class="col-md-2 my-2 my-md-0">
+                <select id="urunId" class="select2 filterFormControl">
+                    <option value="0">Tüm Ürünler</option>
+                    @{
+                        var urunList = baseUrun;
+                        foreach (var urun in urunList)
+                        {
+                            <option value="@urun.UrunId">@urun.UrunCinsi.Kisaltmasi @urun.UrunNo</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-md-2 my-2 my-md-0">
                 <div class="input-icon">
-                    <input type="text" class="xxxx form-control form-control-solid filterFormControl " placeholder="Search..." id="searchQuery" />
+                    <input type="text" class="xxxx form-control form-control-solid filterFormControl " placeholder="Kalıp adı yada Kodu..." id="searchQuery" />
+                    <span>
+                        <i class="flaticon2-search-1 text-muted"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-2 my-2 my-md-0">
+                <div class="input-icon">
+                    <input type="text" class="xxxx form-control form-control-solid filterFormControl " placeholder="Ağırlık..." id="agirlik" />
+                    <span>
+                        <i class="flaticon2-search-1 text-muted"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2 my-2 my-md-0">
+                <div class="input-icon">
+                    <input type="text" class="xxxx form-control form-control-solid filterFormControl " placeholder="Göz sayısı..." id="gozSayisi" />
+                    <span>
+                        <i class="flaticon2-search-1 text-muted"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2 my-2 my-md-0">
+                <div class="input-icon">
+                    <input type="text" class="xxxx form-control form-control-solid filterFormControl " placeholder="Çevrim süresi..." id="cevrimSuresi" />
                     <span>
                         <i class="flaticon2-search-1 text-muted"></i>
                     </span>

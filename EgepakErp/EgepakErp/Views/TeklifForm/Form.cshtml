@@ -8,7 +8,7 @@
     <div class="form-group row">
         <div class="col-lg-12">
             <label>Açıklama:</label>
-            @Html.TextBoxFor(x => x.Aciklama, new { @class = "form-control" })
+            @Html.SummerNote("Aciklama")
         </div>
     </div>
 
@@ -36,28 +36,62 @@
             <label>Ürünler:</label>
             <div data-repeater-list="" class="col-lg-12">
                 <div data-repeater-item class="form-group row align-items-center">
-                    <div class="col-md-3">
-                        <label>Kod:</label>
-                        <input type="text" class="form-control" name="UrunList[Kod]" placeholder="ürün kodu girin" />
-                        <div class="d-md-none mb-2"></div>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Urun Adı:</label>
-                        <input type="email" class="form-control" name="UrunList[UrunAdi]" placeholder="ürün adı girin" />
-                        <div class="d-md-none mb-2"></div>
-                    </div>
-                    <div class="col-md-3">
-                        <label>Birim Fiyat:</label>
-                        <input type="text" class="form-control" name="UrunList[Teklif]" placeholder="birim fiyat girin" />
-                        <div class="d-md-none mb-2"></div>
-                    </div>
-                    
+                    @if (Model?.SiparisTeklifFormUrun.Count() > 0)
+                    {
+                        foreach (var item in Model.SiparisTeklifFormUrun)
+                        {
+                            <div class="col-md-3">
+                                <label>Kod:</label>
+                                <input type="text" class="form-control" name="SiparisTeklifFormUrun[Kod]" value="@item.Kod" placeholder="ürün kodu girin" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Urun Adı:</label>
+                                <input type="email" class="form-control" name="SiparisTeklifFormUrun[UrunAdi]" value="@item.UrunAdi" placeholder="ürün adı girin" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
 
-                    <div class="col-md-3">
-                        <a href="javascript:;" data-repeater-delete="" class="btn btn-sm font-weight-bolder btn-light-danger">
-                            <i class="la la-trash-o"></i> Sil
-                        </a>
-                    </div>
+                            <div class="col-md-3">
+                                <label>Birim Fiyat:</label>
+                                <input type="text" class="form-control" name="SiparisTeklifFormUrun[Teklif]" value="@item.Teklif" placeholder="birim fiyat girin" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <a href="javascript:;" data-repeater-delete="" class="btn btn-sm font-weight-bolder btn-light-danger">
+                                    <i class="la la-trash-o"></i> Sil
+                                </a>
+                            </div>
+
+                        }
+
+                    }
+                    else
+                    {
+                        <div class="col-md-3">
+                            <label>Kod:</label>
+                            <input type="text" class="form-control" name="SiparisTeklifFormUrun[Kod]" placeholder="ürün kodu girin" />
+                            <div class="d-md-none mb-2"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Urun Adı:</label>
+                            <input type="email" class="form-control" name="SiparisTeklifFormUrun[UrunAdi]" placeholder="ürün adı girin" />
+                            <div class="d-md-none mb-2"></div>
+                        </div>
+                        <div class="col-md-3">
+                            <label>Birim Fiyat:</label>
+                            <input type="text" class="form-control" name="SiparisTeklifFormUrun[Teklif]" placeholder="birim fiyat girin" />
+                            <div class="d-md-none mb-2"></div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <a href="javascript:;" data-repeater-delete="" class="btn btn-sm font-weight-bolder btn-light-danger">
+                                <i class="la la-trash-o"></i> Sil
+                            </a>
+                        </div>
+                    }
+
+
                 </div>
             </div>
         </div>
@@ -72,38 +106,89 @@
     </div>
 
     <div class="form-group row">
-        <div class="col-lg-12">
-            <label>Alıcı E-Posta:</label>
-            @Html.TextBoxFor(x => x.Eposta, new { @class = "form-control" })
+
+        <div class="col-lg-4">
+            <label>Gönderen:</label>
+            @{
+                string gonderen = !string.IsNullOrEmpty(Model?.Gonderen) ? Model.Gonderen : "EGEPAK PLST. KOZ. SAN.TİC.LTD.ŞTİ.";
+            }
+            <input type="text" class="form-control" name="Gonderen" id="Gonderen" value="@gonderen" />
         </div>
+
+        <div class="col-lg-4">
+            <label>Gönderen Eposta:</label>
+            @{
+                string gonderenPosta = !string.IsNullOrEmpty(Model?.GonderenEposta) ? Model.GonderenEposta : "egepak@egepak.net";
+            }
+            <input type="text" class="form-control" name="GonderenEposta" id="GonderenEposta" value="@gonderenPosta" />
+        </div>
+
+        <div class="col-lg-4">
+            <label>Gönderen Telefon:</label>
+            @{
+                string gonderenTel = !string.IsNullOrEmpty(Model?.GonderenTel) ? Model.GonderenTel : "+90 216 365 89 83 - fx :84";
+            }
+            <input type="text" class="form-control" name="GonderenTel" id="GonderenTel" value="@gonderenTel" />
+        </div>
+
     </div>
 
     <div class="form-group row">
-        <div class="col-lg-12">
-            <label>Alıcı Ad Soyad:</label>
-            @Html.TextBoxFor(x => x.GonderilenAdSoyad, new { @class = "form-control" })
+
+        <div class="col-lg-4">
+            <label>Alan:</label>
+            @Html.TextBoxFor(x => x.Alan, new { @class = "form-control" })
         </div>
+
+        <div class="col-lg-4">
+            <label>Alan Eposta:</label>
+            @Html.TextBoxFor(x => x.AlanEposta, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-4">
+            <label>Gönderen Bilgi:</label>
+            @Html.TextBoxFor(x => x.AlanBilgi, new { @class = "form-control" })
+        </div>
+
     </div>
 
     <div class="form-group row">
-        <div class="col-lg-12">
-            <label>Minimum Sipariş Adedi:</label>
-            @Html.TextBoxFor(x => x.MinSiparisAdet, new { @class = "form-control" })
+
+        <div class="col-lg-6">
+            <label>Personel Ad:</label>
+            @Html.TextBoxFor(x => x.PersonelAd, new { @class = "form-control" })
         </div>
+
+        <div class="col-lg-6">
+            <label>Personel Unvan:</label>
+            @Html.TextBoxFor(x => x.PersonelUnvan, new { @class = "form-control" })
+        </div>
+
     </div>
 
     <div class="form-group row">
-        <div class="col-lg-12">
-            <label>Ödeme:</label>
-            @Html.TextBoxFor(x => x.Odeme, new { @class = "form-control" })
-        </div>
-    </div>
-
-    <div class="form-group row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <label>Teslim Tarihi:</label>
             @Html.DateTimePicker("TeslimTarihi")
         </div>
+
+        <div class="col-lg-6">
+            <label>Döviz:</label>
+            @{
+                var DovizList = baseDoviz;
+                int dId = Model?.DovizId != null ? Model.DovizId : 0;
+            }
+            <select name="DovizId" id="DovizId" class="form-control">
+                @foreach (var item in DovizList)
+                {
+                    string attr = item.DovizId == dId ? "selected" : "";
+                    <option value="@item.DovizId" @attr>
+                        @item.Adi
+                    </option>
+                }
+            </select>
+        </div>
+
     </div>
 
 </form>

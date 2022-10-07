@@ -8,55 +8,38 @@ namespace EgePakErp.Concrete
 {
     public class SiparisRepository : _GenericRepository<Siparis>
     {
-        public override Siparis Get(int id)
+        private IQueryable<Siparis> AllIncludes()
         {
+
             return dbset
-               .Include(x=>x.Cari)
-               .Include(x=>x.Urun)
-               .Include(x=>x.SiparisKalip)
+               .Include(x => x.Cari)
+               .Include(x => x.Urun)
+               .Include(x => x.SiparisKalip)
                .Include("SiparisKalip.UretimEmir")
                .Include("SiparisKalip.UretimEmir.UretimEmirDurum")
                .Include(x => x.Urun.UrunCinsi)
                .Include(x => x.SiparisDurum)
-               .FirstOrDefault(x=>x.SiparisId == id);
+               .Include(x => x.UretimEmir)
+               .Include("UretimEmir.UretimAksiyon")
+               .AsQueryable();
+               
+        }
+        public override Siparis Get(int id)
+        {
+            return AllIncludes().FirstOrDefault(x => x.SiparisId == id);
         }
         public override Siparis Get(Expression<Func<Siparis, bool>> filter)
         {
-            return dbset
-               .Include(x => x.Cari)
-               .Include(x => x.Urun)
-               .Include(x => x.SiparisKalip)
-               .Include("SiparisKalip.UretimEmir")
-               .Include("SiparisKalip.UretimEmir.UretimEmirDurum")
-               .Include(x => x.Urun.UrunCinsi)
-               .Include(x => x.SiparisDurum)
-               .FirstOrDefault(filter);
+            return AllIncludes().FirstOrDefault(filter);
         }
         public override IQueryable<Siparis> GetAll()
         {
-            return dbset
-               .Include(x => x.Cari)
-               .Include(x => x.Urun)
-               .Include(x => x.SiparisKalip)
-               .Include("SiparisKalip.UretimEmir")
-               .Include("SiparisKalip.UretimEmir.UretimEmirDurum")
-               .Include(x => x.Urun.UrunCinsi)
-               .Include(x => x.SiparisDurum)
-               .AsQueryable();
+            return AllIncludes();
         }
 
         public override IQueryable<Siparis> GetAll(Expression<Func<Siparis, bool>> filter)
         {
-            return dbset
-               .Include(x => x.Cari)
-               .Include(x => x.Urun)
-               .Include(x => x.SiparisKalip)
-               .Include("SiparisKalip.UretimEmir")
-               .Include("SiparisKalip.UretimEmir.UretimEmirDurum")
-               .Include(x => x.Urun.UrunCinsi)
-               .Include(x => x.SiparisDurum)
-               .Where(filter)
-               .AsQueryable();
+            return AllIncludes().Where(filter);
         }
     }
 }

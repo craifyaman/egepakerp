@@ -727,14 +727,37 @@
                 overflow: 'visible',
                 autoHide: false,
                 template: function (row) {
-                    var _title = row.DurumId == 2 ? "Tamamlandı olarak işaretle" : "Üretime Aç";
-                    var cls = row.DurumId == 2 ? "btn-success" : "btn-danger";
-                    var str = '<a class="btn btn-icon btn-info mr-1" href="siparis/siparisformu?siparisId=' + row.SiparisId + '&urunId=' + row.UrunId + '" target="_blank" title="Düzenle" data-toggle="tooltip" data-placement="top"><i class="flaticon-edit" ></i> </a>'
-                    str += '<a class="btn btn-icon btn-primary mr-1" event="SiparisKisitliFormPopup" id="' + row.SiparisId + '" title="Hızlı Düzenle" data-toggle="tooltip" data-placement="top"><i class="flaticon2-pen" ></i> </a>'
-                    /*str += ' <a class="btn btn-icon  mr-1 ' + cls + '" href = "" title = "' + _title + '" event="UretimeAcKapat" SiparisId="' + row.SiparisId + '" > <i class="flaticon-cogwheel-1" ></i></a>'*/
-                    str += '<a class="btn btn-primary btn-icon mr-1" href="/siparis/SiparisDetayPdf?siparisId=' + row.SiparisId + '" target="_blank" title="pdf dökümü" data-toggle="tooltip" data-placement="top"><i class="flaticon-multimedia-4" ></i></a> ';
-                    str += '<a class="btn btn-info btn-icon mr-1" href="/siparis/SiparisUretimDetayPdf?siparisId=' + row.SiparisId + '" target="_blank" title="Üretim dökümü" data-toggle="tooltip" data-placement="top"><i class="flaticon-multimedia-4" ></i></a> ';
+                    /* 
+                     <a class="dropdown-item" href="/siparis/SiparisDetayPdf?siparisId=${row.SiparisId}" target="_blank">
+                             <i class="far fa-file-pdf mr-3"></i>  Pdf Dökümü
+                            </a>
+                     */
+                    var str = `
+                    <div class="dropdown dropdown-inline mr-4" >
+                        <button type="button" class="btn btn-light-primary btn-icon btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ki ki-bold-more-hor"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                           <a class="dropdown-item" href="/siparis/siparisformu?siparisId=${row.SiparisId}&urunId=${row.UrunId}" target="_blank">
+                              <i class="flaticon-edit mr-3" ></i>  Düzenle
+                            </a>
+
+                           <a class="dropdown-item" event="SiparisKisitliFormPopup" id="${row.SiparisId}">
+                             <i class="fa-solid fa-truck-fast mr-3"></i>  Hızlı Düzenle
+                           </a>
+
+                            <a class="dropdown-item" href="/siparis/SiparisUretimDetayPdf?siparisId=${row.SiparisId}" target="_blank">
+                             <i class="far fa-file-pdf mr-3"></i>  Üretim Pdf Dökümü
+                            </a>
+
+                        </div>
+                   </div >
+
+`;
+
                     return str;
+
+
                 },
             }
         ];
@@ -977,14 +1000,14 @@
                 title: 'Stok',
                 width: 50
             },
-            {
-                field: 'Yaldiz',
-                title: 'Yaldiz'
-            },
-            {
-                field: 'BoyaKod',
-                title: 'BoyaKod'
-            },
+            //{
+            //    field: 'Yaldiz',
+            //    title: 'Yaldiz'
+            //},
+            //{
+            //    field: 'BoyaKod',
+            //    title: 'BoyaKod'
+            //},
             //{
             //    field: 'İşlem',
             //    title: 'İşlem',
@@ -1117,36 +1140,31 @@
                 field: 'Cari',
                 title: 'Cari',
             },
+
+            {
+                field: 'Alan',
+                title: 'Alan',
+            },
+
+            {
+                field: 'AlanEposta',
+                title: 'Alan Eposta',
+            },
+
+            {
+                field: 'AlanBilgi',
+                title: 'Alan Bilgi',
+            },
             {
                 field: 'KayitTarih',
                 title: 'KayitTarih',
-            },
-            {
-                field: 'Eposta',
-                title: 'Eposta',
-            },
-            {
-                field: 'GonderilenAdSoyad',
-                title: 'Ad Soyad',
-            },
-            {
-                field: 'Aciklama',
-                title: 'Aciklama',
-            },
-            {
-                field: 'MinSiparisAdet',
-                title: 'Min Sip Adet',
-            },
-            {
-                field: 'Odeme',
-                title: 'Odeme',
             },
             {
                 field: 'TeslimTarihi',
                 title: 'TeslimTarihi',
             },
             {
-                field: 'Personel',
+                field: 'PersonelAd',
                 title: 'Personel',
             },
             {
@@ -1162,11 +1180,23 @@
                         <button type="button" class="btn btn-light-primary btn-icon btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="ki ki-bold-more-hor"></i>
                         </button>
+
                         <div class="dropdown-menu">
                            <a class="dropdown-item" event="TeklifFormFormPopup" href = "#" id="${row.Id}">
                               <i class="flaticon-edit mr-3" ></i>  Hızlı düzenle
                             </a >
+                    
+                            <a class="dropdown-item" target="_blank" href="teklifform/pdf?formId=${row.Id}&lang=tr" href = "#" id="${row.Id}">
+                              <i class="flaticon-edit mr-3" ></i>  Teklif Formu (Türkçe)
+                            </a >
+    
+                            <a class="dropdown-item" target="_blank" href="teklifform/pdf?formId=${row.Id}" href = "#" id="${row.Id}">
+                              <i class="flaticon-edit mr-3" ></i>  Teklif Formu (İngilizce)
+                            </a >
+
+
                         </div>
+
                    </div >
 
 `;
@@ -1176,6 +1206,82 @@
         ];
         return columns;
     }
+
+    function proformaFaturaFormColumns() {
+        var columns = [
+            {
+                field: 'Id',
+                title: '#',
+            },
+            {
+                field: 'Cari',
+                title: 'Cari',
+            },
+
+            {
+                field: 'Firma',
+                title: 'Firma',
+            },
+
+            {
+                field: 'Yetkili',
+                title: 'Yetkili',
+            },
+
+            {
+                field: 'AlanEposta',
+                title: 'E-Posta',
+            },
+            {
+                field: 'Tarih',
+                title: 'Tarih',
+            },
+            {
+                field: 'TeslimTarihi',
+                title: 'TeslimTarihi',
+            },
+            {
+                field: 'İşlem',
+                title: 'İşlem',
+                sortable: false,
+                width: 130,
+                overflow: 'visible',
+                autoHide: false,
+                template: function (row) {
+                    var str = `
+                    <div class="dropdown dropdown-inline mr-4" >
+                        <button type="button" class="btn btn-light-primary btn-icon btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ki ki-bold-more-hor"></i>
+                        </button>
+
+                        <div class="dropdown-menu">
+
+                           <a class="dropdown-item" event="ProformaFaturaFormPopup" href = "#" id="${row.Id}">
+                              <i class="flaticon-edit mr-3" ></i>  Hızlı düzenle
+                            </a >
+                    
+                            <a class="dropdown-item" target="_blank" href="proformafatura/pdf?faturaId=${row.Id}&lang=tr" href = "#" id="${row.Id}">
+                              <i class="flaticon-edit mr-3" ></i>  Proforma Fatura (Türkçe)
+                            </a >
+    
+                            <a class="dropdown-item" target="_blank" href="proformafatura/pdf?faturaId=${row.Id}" href = "#" id="${row.Id}">
+                              <i class="flaticon-edit mr-3" ></i>  Proforma Fatura (İngilizce)
+                            </a >
+
+
+                        </div>
+
+                   </div >
+
+`;
+                    return str;
+                },
+            }
+        ];
+        return columns;
+    }
+
+
 
     return {
         // public functions
@@ -1244,6 +1350,9 @@
         },
         TeklifFormColumns: function () {
             return teklifFormColumns();
+        },
+        ProformaFormColumns: function () {
+            return proformaFaturaFormColumns();
         },
         
 

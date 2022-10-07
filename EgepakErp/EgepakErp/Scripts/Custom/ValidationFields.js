@@ -390,11 +390,11 @@
                     notEmpty: { message: 'Bos Birakilamaz' }
                 }
             },
-            AksiyonTypeId: {
-                validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
-                }
-            },
+            //AksiyonTypeId: {
+            //    validators: {
+            //        notEmpty: { message: 'Bos Birakilamaz' }
+            //    }
+            //},
             Baslangic: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }
@@ -480,6 +480,37 @@
         return fields;
     }
 
+    function proformaFaturaFormFields() {
+        var fields = {
+            CariId: {
+                validators: {
+                    notEmpty: { message: 'Cari Seçin' }
+                }
+            }
+        };
+        return fields;
+    }
+
+    function uretimAksiyonFormFields() {
+        var fields = {
+            UretilenAdet: {
+                validators: {
+                    notEmpty: { message: 'Üretilen adet girin' }
+                }
+            },
+            MakineId: {
+                validators: {
+                    notEmpty: { message: 'Makine seçin' }
+                }
+            },
+            
+        };
+        return fields;
+    }
+
+    
+    
+
     return {
         // public functions
         GorusmeFormFields: function () {
@@ -547,6 +578,12 @@
         },
         TeklifFormFormFields: function () {
             return teklifFormFormFields();
+        },
+        ProformaFaturaFormFields: function () {
+            return proformaFaturaFormFields();
+        },
+        UretimAksiyonFormFields: function () {
+            return uretimAksiyonFormFields();
         }
 
     };

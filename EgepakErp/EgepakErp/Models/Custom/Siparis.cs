@@ -40,6 +40,7 @@ namespace EgePakErp.Models
 
         public ICollection<SiparisKalip> SiparisKalip { get; set; }
         public ICollection<StokHareket> StokHareket { get; set; }
+        public ICollection<UretimEmir> UretimEmir { get; set; }
 
 
         [NotMapped]

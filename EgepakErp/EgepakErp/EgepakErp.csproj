@@ -177,6 +177,8 @@
     <Compile Include="Concrete\BoyaKaplamaRepository.cs" />
     <Compile Include="Concrete\MakineRepository.cs" />
     <Compile Include="Concrete\AksiyonRepository.cs" />
+    <Compile Include="Concrete\UretimAksiyonRepository.cs" />
+    <Compile Include="Concrete\ProformaFaturaRepository.cs" />
     <Compile Include="Concrete\TeklifFormRepository.cs" />
     <Compile Include="Concrete\StokGirisHareketRepository.cs" />
     <Compile Include="Concrete\StokCikisHareketRepository.cs" />
@@ -196,6 +198,7 @@
     <Compile Include="Concrete\_GenericRepository.cs" />
     <Compile Include="Controllers\BoyaKaplamaController.cs" />
     <Compile Include="Controllers\PdfController.cs" />
+    <Compile Include="Controllers\ProformaFaturaController.cs" />
     <Compile Include="Controllers\TeklifFormController.cs" />
     <Compile Include="Controllers\StokGirisHareketController.cs" />
     <Compile Include="Controllers\StokCikisHareketController.cs" />
@@ -204,6 +207,7 @@
     <Compile Include="Controllers\AksiyonController.cs" />
     <Compile Include="Controllers\UretimEmirController.cs" />
     <Compile Include="Controllers\UretimController.cs" />
+    <Compile Include="Controllers\UretimAksiyonController.cs" />
     <Compile Include="Controllers\YaldizController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\BoyaKodController.cs" />
@@ -579,14 +583,81 @@
     <Compile Include="Migrations\202209281227208_create_teklif_form.designer.cs">
       <DependentUpon>202209281227208_create_teklif_form.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202210041230421_update_teklif_form.cs" />
+    <Compile Include="Migrations\202210041230421_update_teklif_form.designer.cs">
+      <DependentUpon>202210041230421_update_teklif_form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210041332242_mig13.cs" />
+    <Compile Include="Migrations\202210041332242_mig13.designer.cs">
+      <DependentUpon>202210041332242_mig13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210041400301_mig5.cs" />
+    <Compile Include="Migrations\202210041400301_mig5.designer.cs">
+      <DependentUpon>202210041400301_mig5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210050734195_create_proformaFatura.cs" />
+    <Compile Include="Migrations\202210050734195_create_proformaFatura.designer.cs">
+      <DependentUpon>202210050734195_create_proformaFatura.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210051123163_update_toplam_no_notMapped.cs" />
+    <Compile Include="Migrations\202210051123163_update_toplam_no_notMapped.designer.cs">
+      <DependentUpon>202210051123163_update_toplam_no_notMapped.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210051415294_add_enjeksiyonrenk_to_sipariskalip.cs" />
+    <Compile Include="Migrations\202210051415294_add_enjeksiyonrenk_to_sipariskalip.designer.cs">
+      <DependentUpon>202210051415294_add_enjeksiyonrenk_to_sipariskalip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210051507077_create_uretim_aksiyon_table.cs" />
+    <Compile Include="Migrations\202210051507077_create_uretim_aksiyon_table.designer.cs">
+      <DependentUpon>202210051507077_create_uretim_aksiyon_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210051540410_add_siparisId_to_uretimeEmir.cs" />
+    <Compile Include="Migrations\202210051540410_add_siparisId_to_uretimeEmir.designer.cs">
+      <DependentUpon>202210051540410_add_siparisId_to_uretimeEmir.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210060741558_add_UretimDurumList_to_uretimemir.cs" />
+    <Compile Include="Migrations\202210060741558_add_UretimDurumList_to_uretimemir.designer.cs">
+      <DependentUpon>202210060741558_add_UretimDurumList_to_uretimemir.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210060904382_update_UretimAksiyon_table.cs" />
+    <Compile Include="Migrations\202210060904382_update_UretimAksiyon_table.designer.cs">
+      <DependentUpon>202210060904382_update_UretimAksiyon_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210060924374_temp.cs" />
+    <Compile Include="Migrations\202210060924374_temp.designer.cs">
+      <DependentUpon>202210060924374_temp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210060934202_temp1.cs" />
+    <Compile Include="Migrations\202210060934202_temp1.designer.cs">
+      <DependentUpon>202210060934202_temp1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210061200139_add_depodami_to_uretimemir.cs" />
+    <Compile Include="Migrations\202210061200139_add_depodami_to_uretimemir.designer.cs">
+      <DependentUpon>202210061200139_add_depodami_to_uretimemir.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210070758077_update_uretimemir_table.cs" />
+    <Compile Include="Migrations\202210070758077_update_uretimemir_table.designer.cs">
+      <DependentUpon>202210070758077_update_uretimemir_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210070831096_mig14.cs" />
+    <Compile Include="Migrations\202210070831096_mig14.designer.cs">
+      <DependentUpon>202210070831096_mig14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210070832205_mig15.cs" />
+    <Compile Include="Migrations\202210070832205_mig15.designer.cs">
+      <DependentUpon>202210070832205_mig15.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\BoyaKaplama.cs" />
     <Compile Include="Models\Custom\BoyaKodSiparisKalipRel.cs" />
     <Compile Include="Models\Custom\BoyaKodType.cs" />
+    <Compile Include="Models\Custom\ProformaFatura.cs" />
+    <Compile Include="Models\Custom\ProformaUrun.cs" />
     <Compile Include="Models\Custom\SiparisTeklifForm.cs" />
     <Compile Include="Models\Custom\StokCikisHareket.cs" />
     <Compile Include="Models\Custom\StokGirisHareket.cs" />
     <Compile Include="Models\Custom\StokHareket.cs" />
     <Compile Include="Models\Custom\StokHareketType.cs" />
+    <Compile Include="Models\Custom\UretimAksiyon.cs" />
     <Compile Include="Models\Custom\UretimEmirAksiyonRel.cs" />
     <Compile Include="Models\Custom\Aksiyon.cs" />
     <Compile Include="Models\Custom\AksiyonType.cs" />
@@ -2911,6 +2982,7 @@
     <Content Include="assets\plugins\global\fonts\summernote\summernote.woff2" />
     <Content Include="Scripts\BoyaKaplama.js" />
     <Content Include="Scripts\Custom\WebViewer.js" />
+    <Content Include="Scripts\ProformaFatura.js" />
     <Content Include="Scripts\TeklifForm.js" />
     <Content Include="Scripts\StokGirisHareket.js" />
     <Content Include="Scripts\StokCikisHareket.js" />
@@ -2920,6 +2992,7 @@
     <Content Include="Scripts\UretimEmir.js" />
     <Content Include="Scripts\Makine.js" />
     <Content Include="Scripts\Uretim.js" />
+    <Content Include="Scripts\UretimAksiyon.js" />
     <Content Include="Scripts\Yaldiz.js" />
     <Content Include="Scripts\BoyaKod.js" />
     <Content Include="SqlScript\25_08_2022.sql" />
@@ -3921,6 +3994,20 @@
     <Content Include="Views\TeklifForm\FilterForm.cshtml" />
     <Content Include="Views\TeklifForm\Form.cshtml" />
     <Content Include="Views\TeklifForm\Index.cshtml" />
+    <Content Include="Views\Pdf\TeklifFormu.cshtml" />
+    <Content Include="Views\Pdf\ProformaFatura.cshtml" />
+    <Content Include="Views\ProformaFatura\FilterForm.cshtml" />
+    <Content Include="Views\ProformaFatura\Form.cshtml" />
+    <Content Include="Views\ProformaFatura\Index.cshtml" />
+    <Content Include="Views\UretimAksiyon\FilterForm.cshtml" />
+    <Content Include="Views\UretimAksiyon\Form.cshtml" />
+    <Content Include="Views\UretimAksiyon\Index.cshtml" />
+    <Content Include="Views\Uretim\Montaj.cshtml" />
+    <Content Include="Views\Uretim\SicakBaski.cshtml" />
+    <Content Include="Views\Uretim\Metalize.cshtml" />
+    <Content Include="Views\Uretim\Enjeksiyon.cshtml" />
+    <Content Include="Views\Uretim\SpreyBoya.cshtml" />
+    <Content Include="Views\Siparis\FilterForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -4180,6 +4267,54 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202209281227208_create_teklif_form.resx">
       <DependentUpon>202209281227208_create_teklif_form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210041230421_update_teklif_form.resx">
+      <DependentUpon>202210041230421_update_teklif_form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210041332242_mig13.resx">
+      <DependentUpon>202210041332242_mig13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210041400301_mig5.resx">
+      <DependentUpon>202210041400301_mig5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210050734195_create_proformaFatura.resx">
+      <DependentUpon>202210050734195_create_proformaFatura.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210051123163_update_toplam_no_notMapped.resx">
+      <DependentUpon>202210051123163_update_toplam_no_notMapped.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210051415294_add_enjeksiyonrenk_to_sipariskalip.resx">
+      <DependentUpon>202210051415294_add_enjeksiyonrenk_to_sipariskalip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210051507077_create_uretim_aksiyon_table.resx">
+      <DependentUpon>202210051507077_create_uretim_aksiyon_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210051540410_add_siparisId_to_uretimeEmir.resx">
+      <DependentUpon>202210051540410_add_siparisId_to_uretimeEmir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210060741558_add_UretimDurumList_to_uretimemir.resx">
+      <DependentUpon>202210060741558_add_UretimDurumList_to_uretimemir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210060904382_update_UretimAksiyon_table.resx">
+      <DependentUpon>202210060904382_update_UretimAksiyon_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210060924374_temp.resx">
+      <DependentUpon>202210060924374_temp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210060934202_temp1.resx">
+      <DependentUpon>202210060934202_temp1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210061200139_add_depodami_to_uretimemir.resx">
+      <DependentUpon>202210061200139_add_depodami_to_uretimemir.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210070758077_update_uretimemir_table.resx">
+      <DependentUpon>202210070758077_update_uretimemir_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210070831096_mig14.resx">
+      <DependentUpon>202210070831096_mig14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210070832205_mig15.resx">
+      <DependentUpon>202210070832205_mig15.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,0 +1,191 @@
+﻿@model ProformaFatura
+@{
+    string lang = ViewBag.lang;
+    ViewBag.Title = "Proforma Fatura";
+    Layout = "~/Views/Shared/_PdfLayout.cshtml";
+    string gonderen = !string.IsNullOrEmpty(Model?.Gonderen) ? Model.Gonderen : "";
+}
+
+<div class="container">
+    @if (lang == "tr")
+    {
+        <div class="card card-custom card-stretch gutter-b mb-2" style="padding:15px;">
+            <div class="row">
+                <div class="col-12 text-center mb-3">
+                    <h1>@gonderen</h1>
+                    <h2>
+                        NECİP FAZIL MAH. 19 MAYIS CAD. NO:22 ÜMRANİYE / İSTANBUL
+                    </h2>
+                </div>
+
+                <div class="col-12 row text-center mb-2 mt-2">
+                    
+                    <div class="col-12">Tel: @Model.GonderenTel</div>
+
+                    <div class="col-12">Fax: 00 9 0216 365 89 84</div>
+
+                    <div class="col-12">www.egepak.net - e-mail : egepak@egepak.net</div>
+                    <div class="col-12">
+                        <h2 class="text-center m-5">Proforma Fatura</h2>
+                    </div>
+                    
+                </div>
+
+                <div class="col-12 row text-center">
+                    <div class="col-12">Firma: @Model.Firma</div>
+
+                    <div class="col-12">Adres: @Model.Adres</div>
+
+                    <div class="col-12">Yetkili: @Model.Yetkili</div>
+
+                    <div class="col-12">Tel: @Model.AlanTel</div>
+
+                    <div class="col-12">E-posta: @Model.AlanEposta</div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="card card-custom card-stretch gutter-b mb-1" style="padding:15px;">
+            <div class="row">
+                <div class="col-12 row">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Açıklama</th>
+                                <th>Adet</th>
+                                <th>Birim Fiyat</th>
+                                <th>Tutar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.ProformaUrun)
+                            {
+                                <tr>
+                                    <td>@item.Aciklama</td>
+                                    <td>@item.Adet</td>
+                                    <td>@item.BirimFiyat.ToString("n3") @(Model?.Doviz?.Sembol)</td>
+                                    <td>@item.Tutar.ToString("n2") @(Model?.Doviz?.Sembol)</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                    <div class="col-12 row">
+                        <div class="col-3">Toplam:</div>
+                        <div class="col-9">
+                            @Model.Toplam.ToString("n2")
+                        </div>
+
+                        <div class="col-3">Ön Ödeme:</div>
+                        <div class="col-9">@Model.OnOdeme.ToString("n2")</div>
+
+                        <div class="col-3">Toplam Tutar:</div>
+                        <div class="col-9">@Model.ToplamTutar.ToString("n2")</div>
+                    </div>
+                    <div class="col-12">
+                        @Html.Raw(Model.Aciklama)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    }
+    else
+    {
+        <div class="card card-custom card-stretch gutter-b mb-2" style="padding:15px;">
+            <div class="row">
+                <div class="col-12">
+                    <h1>@gonderen</h1>
+                    <h2>
+                        NECİP FAZIL MAH. 19 MAYIS CAD. NO:22 ÜMRANİYE / İSTANBUL
+                    </h2>
+                </div>
+
+                <div class="col-6 row">
+                    <div class="col-3">Tel:</div>
+                    <div class="col-9">@Model.GonderenTel</div>
+
+                    <div class="col-3">Fax:</div>
+                    <div class="col-9">00 9 0216 365 89 84</div>
+
+                    <div class="col-6">www.egepak.net - e-mail :</div>
+                    <div class="col-6">egepak@egepak.net</div>
+                </div>
+                <div>
+                    <h2 class="text-center">Proforma Fatura</h2>
+                </div>
+
+                <div class="col-12 row">
+                    <div class="col-3">Buyers:</div>
+                    <div class="col-9">@Model.Firma</div>
+
+                    <div class="col-3">Adress:</div>
+                    <div class="col-9">@Model.Adres</div>
+
+                    <div class="col-3">Contact :</div>
+                    <div class="col-9">@Model.Yetkili</div>
+
+                    <div class="col-3">Tel:</div>
+                    <div class="col-9">@Model.AlanTel</div>
+
+
+                    <div class="col-3">E-mail:</div>
+                    <div class="col-9">@Model.AlanEposta</div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="card card-custom card-stretch gutter-b mb-1" style="padding:15px;">
+            <div class="row">
+                <div class="col-12 row">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>QUANTITY</th>
+                                <th>UNIT PRICE</th>
+                                <th>AMOUNT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model.ProformaUrun)
+                            {
+                                <tr>
+                                    <td>@item.Aciklama</td>
+                                    <td>@item.Adet</td>
+                                    <td>@item.BirimFiyat.ToString("n3") @(Model?.Doviz?.Sembol)</td>
+                                    <td>@item.Tutar.ToString("n3") @(Model?.Doviz?.Sembol)</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                    <div class="col-12 row">
+                        <div class="col-3">TOTAL ::</div>
+                        <div class="col-9">@Model.Toplam</div>
+
+                        <div class="col-3">ADVANCE PAYMENT:</div>
+                        <div class="col-9">@Model.OnOdeme</div>
+
+                        <div class="col-3">TOTAL AMOUNT</div>
+                        <div class="col-9">@Model.ToplamTutar</div>
+                    </div>
+                    <div class="col-12">
+                        @Html.Raw(Model.Aciklama)
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

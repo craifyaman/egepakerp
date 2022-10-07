@@ -52,7 +52,7 @@ namespace EgePakErp.Controllers
             return View(model);
         }
 
-        [Menu("Sipariş Formu", "flaticon2-file-2 icon-xl", "Sipariş", 0, 5)]
+        //[Menu("Sipariş Formu", "flaticon2-file-2 icon-xl", "Sipariş", 0, 5)]
         public ActionResult SiparisFormu(int siparisId = 0)
         {
             if (siparisId != 0)
@@ -78,6 +78,35 @@ namespace EgePakErp.Controllers
 
             var model = siparisRepo.GetAll();
 
+            if (!string.IsNullOrEmpty(Request.Form["query[cariId]"]))
+            {
+                int cariId = Convert.ToInt32(Request.Form["query[cariId]"].ToString());
+                if (cariId > 0)
+                {
+                    model = model.Where(x => x.CariId == cariId);
+                }
+               
+            }
+
+            if (!string.IsNullOrEmpty(Request.Form["query[durumId]"]))
+            {
+                int durumId = Convert.ToInt32(Request.Form["query[durumId]"].ToString());
+                if(durumId > 0)
+                {
+                    model = model.Where(x => x.SiparisDurumId == durumId);
+                }
+                
+            }
+            if (!string.IsNullOrEmpty(Request.Form["query[sipNo]"]))
+            {
+                string sipNo = Request.Form["query[sipNo]"].ToString();
+                model = model.Where(x => x.SiparisAdi.Contains(sipNo));
+            }
+            if (!string.IsNullOrEmpty(Request.Form["query[urun]"]))
+            {
+                string urun = Request.Form["query[urun]"].ToString();
+                model = model.Where(x => (x.Urun.UrunCinsi.Kisaltmasi + x.Urun.UrunNo).Contains(urun));
+            }
             try
             {
                 model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
@@ -285,7 +314,7 @@ namespace EgePakErp.Controllers
                             siparisKalip.MetalizeKodId = item.MetalizeKodId;
                             if (item.YaldizKodList != null)
                             {
-                                siparisKalip.YaldizKodList= item.YaldizKodList;
+                                siparisKalip.YaldizKodList = item.YaldizKodList;
                             }
 
                             siparisKalip.Aciklama = item.Aciklama;
