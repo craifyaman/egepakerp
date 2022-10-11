@@ -89,6 +89,10 @@ namespace EgePakErp
         public virtual DbSet<StokHareket> StokHareket { get; set; }
         public virtual DbSet<StokHareketType> StokHareketType { get; set; }
         public virtual DbSet<UretimAksiyon> UretimAksiyon { get; set; }
+        public virtual DbSet<UretimEmirAksiyon> UretimEmirAksiyon { get; set; }
+        public virtual DbSet<UretimEmirAksiyonType> UretimEmirAksiyonType { get; set; }
+
+
         //public virtual DbSet<UretimEmirAksiyonRel> UretimEmirAksiyonRel { get; set; }
 
 

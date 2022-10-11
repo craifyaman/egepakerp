@@ -73,24 +73,158 @@
 
                         <a class="btn btn-primary mb-1" title="Seçilen kalıplar montajlı bir şekilde depoya eklenir" event="MontajliKalipDepoEkleme">Seçilenleri Depoya Aktar</a>
                         <div class="table-responsive table-hover table-bordered">
+                            @*<table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>İşlem</th>
+                                            <th>Sipariş</th>
+                                            <th>Cari</th>
+                                            <th>Kalıp</th>
+                                            <th>Kayıt Tarihi</th>
+                                            <th>Termin Tarihi</th>
+                                            <th>Sipariş Adet</th>
+                                            <th>Üretilen Adet</th>
+                                            <th>Yer</th>
+                                            <th>Enjeksiyon Durumu</th>
+                                            <th>Sıcak Baskı Durumu</th>
+                                            <th>Spery Boya Durumu</th>
+                                            <th>Metalize Kaplama Durumu</th>
+                                            <th>Montaj Durumu</th>
+                                            <th>Ev Montaj Durumu</th>
+                                            <th>İşlem</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            //var uretimEmirleri = BaseUretimEmir().Where(x => x.SiparisKalip.SiparisId == item.SiparisId);
+                                            //var sKalipListe = uretimEmirleri.Select(x => x.SiparisKalip);
+                                            var count = 0;
+
+                                            foreach (var emir in item.UretimEmir)
+                                            {
+                                                var _kalip = KalipFindByKalipKod(emir.SiparisKalip.KalipKod);
+                                                if (_kalip != null)
+                                                {
+                                                    var tdCls = count == 0 ? "bg-secondary" : "";
+                                                    SiparisKalip fixKalip = emir.SiparisKalip;
+
+                                                    <tr class="@tdCls">
+                                                        <td>
+                                                            @if (emir.DepodaMi == false)
+                                                            {
+                                                                <label class="checkbox">
+                                                                    <input type="checkbox"
+                                                                           class="MontajliKalip"
+                                                                           SiparisId="@item.SiparisId"
+                                                                           Adet="@item.SiparisAdet"
+                                                                           Yer=""
+                                                                           SiparisKalipId="@fixKalip.SiparisKalipId"
+                                                                           UretimEmirId="@emir.UretimEmirId" />
+                                                                    <span></span>
+                                                                </label>
+                                                            }
+
+                                                        </td>
+                                                        <td style="width:150px;">@item.SiparisAdi</td>
+                                                        <td>@item.Cari.Unvan.Substring(0, 5) ...</td>
+                                                        <td>@(_kalip?.Adi)</td>
+                                                        <td>@item.KayitTarihi.ToString("dd MMMM yyyy")</td>
+                                                        <td>@item.TerminTarihi.ToString("dd MMMM yyyy")</td>
+                                                        <td>
+                                                            @item.SiparisAdet
+
+                                                        </td>
+                                                        <td>
+                                                            @if (fixKalip.DepodaMi)
+                                                            {
+
+                                                            }
+                                                            <input type="number" class="form-control SiparisAdetInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="@emir.UretimAksiyon.Sum(x=>x.UretilenAdet)" />
+                                                        </td>
+
+                                                        <td>
+                                                            <input type="text" class="form-control YerInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="" />
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @Html.Raw(emir.isUretimBitti == true ? CheckedHtml : UncheckedHtml)
+                                                        </td>
+
+                                                        <td class="text-center">
+                                                            @if (emir.isSicakBaskiBitti != null)
+                                                            {
+                                                                @Html.Raw(emir.isSicakBaskiBitti == true ? CheckedHtml : UncheckedHtml)
+                                                            }
+
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (emir.isSpreyBoyaBitti != null)
+                                                            {
+                                                                @Html.Raw(emir.isSpreyBoyaBitti == true ? CheckedHtml : UncheckedHtml)
+                                                            }
+
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (emir.isMetalizeBitti != null)
+                                                            {
+                                                                @Html.Raw(emir.isMetalizeBitti == true ? CheckedHtml : UncheckedHtml)
+                                                            }
+
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (emir.isMontajBitti != null)
+                                                            {
+                                                                @Html.Raw(emir.isMontajBitti == true ? CheckedHtml : UncheckedHtml)
+                                                            }
+
+                                                        </td>
+
+                                                        <td class="text-center">
+                                                            @if (emir.isEvMontajBitti != null)
+                                                            {
+                                                                @Html.Raw(emir.isEvMontajBitti == true ? CheckedHtml : UncheckedHtml)
+                                                            }
+
+                                                        </td>
+
+                                                        <td class="text-center">
+                                                            @if (emir.DepodaMi != true)
+                                                            {
+                                                                <a href="#"
+                                                                   event="DepoAktarTekli"
+                                                                   SiparisId="@item.SiparisId"
+                                                                   Adet="@item.SiparisAdet"
+                                                                   SiparisKalipId="@fixKalip.SiparisKalipId"
+                                                                   UretimEmirId="@emir.UretimEmirId"
+                                                                   class="btn btn-light btn-text-success btn-hover-text-success"
+                                                                   title="Tekli olarak depoya ekle">
+                                                                    depola
+                                                                </a>
+                                                            }
+
+                                                        </td>
+
+
+                                                    </tr>
+                                                    count++;
+                                                }
+
+                                            }
+                                        }
+                                    </tbody>
+                                </table>*@
+
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th>İşlem</th>
-                                        <th>Sipariş</th>
-                                        <th>Cari</th>
-                                        <th>Kalıp</th>
-                                        <th>Kayıt Tarihi</th>
-                                        <th>Termin Tarihi</th>
+                                        <th>Firma</th>
+                                        <th>Ürün Kodu</th>
+                                        <th>Parça Adı</th>
                                         <th>Sipariş Adet</th>
                                         <th>Üretilen Adet</th>
                                         <th>Yer</th>
-                                        <th>Enjeksiyon Durumu</th>
-                                        <th>Sıcak Baskı Durumu</th>
-                                        <th>Spery Boya Durumu</th>
-                                        <th>Metalize Kaplama Durumu</th>
-                                        <th>Montaj Durumu</th>
-                                        <th>Ev Montaj Durumu</th>
                                         <th>İşlem</th>
                                     </tr>
                                 </thead>
@@ -127,67 +261,19 @@
                                                         }
 
                                                     </td>
-                                                    <td style="width:150px;">@item.SiparisAdi</td>
                                                     <td>@item.Cari.Unvan.Substring(0, 5) ...</td>
-                                                    <td>@(_kalip?.Adi)</td>
-                                                    <td>@item.KayitTarihi.ToString("dd MMMM yyyy")</td>
-                                                    <td>@item.TerminTarihi.ToString("dd MMMM yyyy")</td>
+                                                    <td>@(emir.Siparis.Urun.UrunCinsi.Adi +" "+emir.Siparis.Urun.UrunNo)</td>
+                                                    <td>@(emir.SiparisKalip.EnjeksiyonRenk + " "+ emir.SiparisKalip.KalipAdi)</td>
+                                                    <td>@emir.SiparisAdet</td>
+                                                    @*<td>
+                                                            <input type="number" class="form-control SiparisAdetInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="@emir.UretimAksiyon.Sum(x=>x.UretilenAdet)" />
+                                                        </td>*@
                                                     <td>
-                                                        @item.SiparisAdet
-                                                        
+                                                        <input type="number" class="form-control SiparisAdetInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="0" />
                                                     </td>
-                                                    <td>
-                                                        @if (fixKalip.DepodaMi)
-                                                        {
-                                                           
-                                                        }
-                                                        <input type="number" class="form-control SiparisAdetInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="@emir.UretimAksiyon.Sum(x=>x.UretilenAdet)" />
-                                                    </td>
-
                                                     <td>
                                                         <input type="text" class="form-control YerInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="" />
                                                     </td>
-                                                    <td class="text-center">
-                                                        @Html.Raw(emir.isUretimBitti == true ? CheckedHtml : UncheckedHtml)
-                                                    </td>
-
-                                                    <td class="text-center">
-                                                        @if (emir.isSicakBaskiBitti != null)
-                                                        {
-                                                            @Html.Raw(emir.isSicakBaskiBitti == true ? CheckedHtml : UncheckedHtml)
-                                                        }
-
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @if (emir.isSpreyBoyaBitti != null)
-                                                        {
-                                                            @Html.Raw(emir.isSpreyBoyaBitti == true ? CheckedHtml : UncheckedHtml)
-                                                        }
-
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @if (emir.isMetalizeBitti != null)
-                                                        {
-                                                            @Html.Raw(emir.isMetalizeBitti == true ? CheckedHtml : UncheckedHtml)
-                                                        }
-
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @if (emir.isMontajBitti != null)
-                                                        {
-                                                            @Html.Raw(emir.isMontajBitti == true ? CheckedHtml : UncheckedHtml)
-                                                        }
-
-                                                    </td>
-
-                                                    <td class="text-center">
-                                                        @if (emir.isEvMontajBitti != null)
-                                                        {
-                                                            @Html.Raw(emir.isEvMontajBitti == true ? CheckedHtml : UncheckedHtml)
-                                                        }
-
-                                                    </td>
-
                                                     <td class="text-center">
                                                         @if (emir.DepodaMi != true)
                                                         {
@@ -221,6 +307,102 @@
                     <!--end::Body-->
                 </div>
                 <!--end::Card-->
+                <!--begin::Card-->
+                <div class="card card-custom mt-5">
+                    <!--begin::Header-->
+                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                        <h3 class="card-title align-items-start flex-column">
+                            <span class="card-label font-weight-bolder text-dark">Üretimdeki Sipariş Listesi</span>
+                            <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
+                        </h3>
+                        <div class="card-toolbar">
+                            <div class="dropdown dropdown-inline">
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <div class="table-responsive table-hover table-bordered">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Firma</th>
+                                        <th>Ürün Kodu</th>
+                                        <th>Parça Adı</th>
+                                        <th>Sipariş Adet</th>
+                                        <th>Enjeksiyon Biten</th>
+                                        <th>Sıcak Baskı Biten</th>
+                                        <th>Montaj Biten</th>
+                                        <th>Sprey Biten</th>
+                                        <th>Metalize Biten</th>
+                                        <th>Ev Montaj Biten</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        foreach (var emir in item.UretimEmir)
+                                        {
+                                            <tr>
+
+                                                <td>@item.Cari.Unvan</td>
+                                                <td>@item.Urun.UrunCinsi.Kisaltmasi @item.Urun.UrunNo</td>
+                                                <td>@emir.SiparisKalip.EnjeksiyonRenk @emir.SiparisKalip.KalipAdi</td>
+                                                <td>@emir.SiparisAdet</td>
+                                                <td>@emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.Enjeksiyon).Sum(a => a.BitenAdet).ToString("n0")</td>
+                                                <td>
+                                                    @if (emir.SicakBaskiYapilacak)
+                                                    {
+                                                        @emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.SicakBaski).Sum(a => a.BitenAdet).ToString("n0")
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    @if (emir.MontajYapilacak)
+                                                    {
+                                                        @emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.Montaj).Sum(a => a.BitenAdet).ToString("n0")
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @if (emir.SpreyYapilacak)
+                                                    {
+                                                        @emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.Sprey).Sum(a => a.BitenAdet).ToString("n0")
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    @if (emir.MetalizeYapilacak)
+                                                    {
+                                                        @emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.Metalize).Sum(a => a.BitenAdet).ToString("n0")
+                                                    }
+
+                                                </td>
+                                                <td>
+                                                    @if (emir.EvMontajYapilacak)
+                                                    {
+                                                        @emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.EvMontaj).Sum(a => a.BitenAdet).ToString("n0")
+                                                    }
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--end: Datatable-->
+
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
+
+
+
+
+
             </div>
         </div>
         <!--end::Row-->

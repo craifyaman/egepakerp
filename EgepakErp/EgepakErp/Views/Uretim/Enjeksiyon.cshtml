@@ -72,17 +72,19 @@
 
                                     <th>Sipariş Adet</th>
 
-                                    <th>Üretilen</th>
+                                    <th>Biten</th>
                                     <th>Kalan</th>
                                     <th>İşlem</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @{
-                                    var liste = Model.Where(x => x.UretimEmirDurumList.Contains("1")).OrderBy(x => x.MakineId).ToList();
+                                    var liste = Model.OrderBy(x => x.MakineId).ToList();
                                 }
                                 @foreach (var emir in liste)
                                 {
+                                    var bitenAdet = emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.Enjeksiyon).Sum(x => x.BitenAdet);
+
                                     <tr>
                                         <td>@emir.Makine.MakineAd</td>
                                         <td>@emir.SiparisKalip.EnjeksiyonRenk @emir.SiparisKalip.KalipAdi</td>
@@ -92,37 +94,41 @@
                                         <td>@emir.Baslangic.ToString("dd MMMM HH:mm")</td>
                                         <td>@emir.Bitis.ToString("dd MMMM HH:mm")</td>
 
-                                        <td>@emir.Siparis.SiparisAdet</td>
-                                        <td>@emir.UretimAksiyon.Sum(x => x.UretilenAdet)</td>
-                                        <td>@(emir.SiparisAdet - emir.UretimAksiyon.Sum(x => x.UretilenAdet))</td>
+                                        <td>@emir.SiparisAdet</td>
+                                        <td>@bitenAdet</td>
                                         <td>
-                                            <a href="#" event="uretimEmirDetay" UretimEmirId="@emir.UretimEmirId" class="btn btn-warning">Düzenle</a>
-
+                                            <span class="badge badge-warning text-white" style="font-size:17px; text-align:center;">
+                                                @((emir.SiparisAdet - bitenAdet).ToString("n0"))
+                                            </span>
+                                            
+                                        </td>
+                                        <td>
+                                            <a href="#" event="UretimEmirAksiyonFormPopup" UretimEmirId="@emir.UretimEmirId" UretimEmirAksiyonTypeId="@((int)EUretimEmirAksiyonType.Enjeksiyon)" class="btn btn-success">Kayıt Ekle</a>
 
                                             @*@if (emir.SicakBaskiYapilacak && emir.isSicakBaskiBitti == false && !emir.UretimEmirDurumList.Contains('2'))
-                                            {
-                                                <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.SicakBaski)" UretimEmirDurumId="@((int)EUretimEmirDurum.SicakBaski)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Sıcak Baskıya Al</a>
-                                            }
+                                                {
+                                                    <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.SicakBaski)" UretimEmirDurumId="@((int)EUretimEmirDurum.SicakBaski)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Sıcak Baskıya Al</a>
+                                                }
 
-                                            @if (emir.SpreyYapilacak && emir.isSpreyBoyaBitti == false && !emir.UretimEmirDurumList.Contains('3'))
-                                            {
-                                                <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.Sprey)" UretimEmirDurumId="@((int)EUretimEmirDurum.Sprey)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Sprey Boyamaya Al</a>
-                                            }
+                                                @if (emir.SpreyYapilacak && emir.isSpreyBoyaBitti == false && !emir.UretimEmirDurumList.Contains('3'))
+                                                {
+                                                    <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.Sprey)" UretimEmirDurumId="@((int)EUretimEmirDurum.Sprey)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Sprey Boyamaya Al</a>
+                                                }
 
-                                            @if (emir.MetalizeYapilacak && emir.isMetalizeBitti == false && !emir.UretimEmirDurumList.Contains('5'))
-                                            {
-                                                <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.Metalize)" UretimEmirDurumId="@((int)EUretimEmirDurum.Metalize)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Metalize Al</a>
-                                            }
+                                                @if (emir.MetalizeYapilacak && emir.isMetalizeBitti == false && !emir.UretimEmirDurumList.Contains('5'))
+                                                {
+                                                    <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.Metalize)" UretimEmirDurumId="@((int)EUretimEmirDurum.Metalize)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Metalize Al</a>
+                                                }
 
-                                            @if (emir.MontajYapilacak && emir.isMontajBitti == false && !emir.UretimEmirDurumList.Contains('4'))
-                                            {
-                                                <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.Montaj)" UretimEmirDurumId="@((int)EUretimEmirDurum.Montaj)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Montaja Al</a>
-                                            }
+                                                @if (emir.MontajYapilacak && emir.isMontajBitti == false && !emir.UretimEmirDurumList.Contains('4'))
+                                                {
+                                                    <a href="#" event="AksiyonEkle" AksiyonType="@((int)EAksiyonType.Montaj)" UretimEmirDurumId="@((int)EUretimEmirDurum.Montaj)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Montaja Al</a>
+                                                }
 
-                                            @if (emir.EvMontajYapilacak && emir.isEvMontajBitti == false && !emir.UretimEmirDurumList.Contains('7'))
-                                            {
-                                                <a href="#" event="AksiyonEkle" AksiyonType="evMontaj" UretimEmirDurumId="@((int)EUretimEmirDurum.EvMontaj)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Ev Montaja Gönder</a>
-                                            }*@
+                                                @if (emir.EvMontajYapilacak && emir.isEvMontajBitti == false && !emir.UretimEmirDurumList.Contains('7'))
+                                                {
+                                                    <a href="#" event="AksiyonEkle" AksiyonType="evMontaj" UretimEmirDurumId="@((int)EUretimEmirDurum.EvMontaj)" UretimEmirId="@emir.UretimEmirId" class="btn btn-info">Ev Montaja Gönder</a>
+                                                }*@
 
                                         </td>
                                     </tr>
@@ -183,6 +189,7 @@
 
         $(document).ready(function () {
             Uretim.EventInit();
+            UretimEmir.EventInit();
         });
 
     </script>

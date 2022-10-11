@@ -508,7 +508,17 @@
         return fields;
     }
 
-    
+    function uretimEmirAksiyonFormFields() {
+        var fields = {
+            BitenAdet: {
+                validators: {
+                    notEmpty: { message: 'Boş olamaz' }
+                }
+            },
+
+        };
+        return fields;
+    }
     
 
     return {
@@ -584,7 +594,11 @@
         },
         UretimAksiyonFormFields: function () {
             return uretimAksiyonFormFields();
+        },
+        UretimEmirAksiyonFormFields: function () {
+            return uretimEmirAksiyonFormFields();
         }
+        
 
     };
 }();

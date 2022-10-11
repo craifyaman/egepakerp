@@ -110,6 +110,13 @@ namespace EgePakErp.Controllers
             var model = repo.Get((int)id);
             return PartialView(model);
         }
+        public PartialViewResult UretimEmirAksiyonForm(int UretimEmirId,int UretimEmirAksiyonTypeId)
+        {
+            ViewBag.UretimEmirId = UretimEmirId;
+            ViewBag.UretimEmirAksiyonTypeId = UretimEmirAksiyonTypeId;
+            return PartialView();
+        }
+        
         public PartialViewResult FilterForm()
         {
             return PartialView();
@@ -207,6 +214,43 @@ namespace EgePakErp.Controllers
 
         }
 
+
+
+        public JsonResult UretimEmirAksiyonKaydet(UretimEmirAksiyon form)
+        {
+            var response = new Response();
+            var uretimEmirAksiyonRepo = new UretimEmirAksiyonRepository();
+            if (form.UretimEmirAksiyonId == 0)
+            {
+                form.KayitTarih = DateTime.Now;
+                uretimEmirAksiyonRepo.Insert(form);
+                response.Success = true;
+                response.Description = "Kayıt edildi.";
+            }
+            else
+            {
+                var entity = uretimEmirAksiyonRepo.Get(form.UretimEmirAksiyonId);
+                if (entity != null)
+                {
+                    //alanları güncelle
+                    var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                    foreach (var prop in propList)
+                    {
+                        if (form.Include.Contains(prop.Name))
+                        {
+                            prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
+                        }
+                    }
+                    uretimEmirAksiyonRepo.Update(entity);
+                    response.Success = true;
+                    response.Description = "Güncellendi.";
+                }
+
+            }
+            return Json(response);
+
+        }
+        
         public PartialViewResult SiparisKalipBySiparis(int siparisId)
         {
             SiparisKalipRepository siparisKalipRepo = new SiparisKalipRepository();
@@ -226,37 +270,7 @@ namespace EgePakErp.Controllers
                 var kaliprepo = new KalipRepository();
                 var kaliplar = kaliprepo.GetAll();
                 var cariList = cariRepo.GetAll();
-                var model = repo.GetAll();
-
-                if (type == "enjeksiyon")
-                {
-                    //EUretimEmirDurum.Uretimde
-                    model = model.Where(x => x.UretimEmirDurumList.Contains("1"));
-                }
-
-                else if (type == "sicakbaski")
-                {
-                    //EUretimEmirDurum.SicakBaski
-                    model = model.Where(x => x.UretimEmirDurumList.Contains("2"));
-                }
-                else if (type == "sprey")
-                {
-                    //EUretimEmirDurum.Sprey
-                    model = model.Where(x => x.UretimEmirDurumList.Contains("3"));
-                }
-                else if (type == "montaj")
-                {
-                    //EUretimEmirDurum.Montaj
-                    model = model.Where(x => x.UretimEmirDurumList.Contains("4"));
-                }
-                else if (type == "metalize")
-                {
-                    //EUretimEmirDurum.Metalize
-                    model = model.Where(x => x.UretimEmirDurumList.Contains("5"));
-                }
-
-                //var yaldiz = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.YaldizId != null);
-                //var boyaKod = BaseSiparisKalipListeQ().FirstOrDefault(x => x.KalipKod == Model.SiparisKalip.KalipKod && x.BoyaKodId != null);
+                var model = repo.GetAll(x=>x.Siparis.SiparisDurumId == (int)ESiparisType.Uretimde);
 
                 var dto = model.AsEnumerable().Select(x =>
                 {
@@ -269,29 +283,18 @@ namespace EgePakErp.Controllers
                         SiparisKalip = x.SiparisKalip.KalipKod,
                         KalipAd = "<b>"+x.SiparisKalip.EnjeksiyonRenk +" "+ kaliplar.FirstOrDefault(c => c.ParcaKodu == x.SiparisKalip.KalipKod).Adi
                         + "</b>" + " ( " + cari.Substring(0,10) + " ) "
-                        + " _ (" + x.SiparisKalip.Siparis.SiparisAdi + ")"
-                        
-                        //+ fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.YaldizKodList != null)?.YaldizKodList
-                        //+ " _ "
-                        //+ fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.SpreyBoyaKodId != null)?.SpreyBoyaKod.Aciklama
-                        //+ "_"
-                        //+ fixSiparisKaliplar.FirstOrDefault(m => m.KalipKod == x.SiparisKalip.KalipKod && m.MetalizeKodId != null)?.MetalizeKod.Aciklama
-                        ,
+                        + " _ (" + x.SiparisKalip.Siparis.SiparisAdi + ")",
                         Makine = x.Makine.MakineAd,
                         MakineId = x.Makine.MakineId,
                         Baslangic = x.Baslangic,
                         Bitis = x.Bitis,
                         Durum = x.UretimEmirDurum?.Durum,
-                        //UretilenAdet = x.UretilenAdet,
                         SiparisAdet = x.SiparisAdet,
-                        //KalanAdet = x.KalanAdet,
                         SiparisId = x.SiparisKalip.SiparisId,
                         SiparisAdi = x.SiparisKalip.Siparis?.SiparisAdi,
                         ClassList = x.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi ? "bg-success" : "bg-secondary",
                     };
                     return ret;
-
-
 
                 }).OrderBy(x => x.UretimEmirId).ToList();
 

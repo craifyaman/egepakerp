@@ -1,11 +1,9 @@
-﻿@{
+﻿@model List<UretimEmir>
+@{
     ViewBag.Title = "Üretim Takip";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section styles{
-    <link href="~/assets/plugins/custom/vis-timeline/vis-timeline.bundle.css" rel="stylesheet" />
-}
 <!--begin::Subheader-->
 <!--begin::Subheader-->
 <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
@@ -34,7 +32,6 @@
     </div>
 </div>
 <!--end::Subheader-->
-
 <!--begin::Entry-->
 <div class="d-flex flex-column-fluid">
     <!--begin::Container-->
@@ -43,7 +40,7 @@
         <!--begin::Row-->
         <div class="row">
             <div class="flex-row-fluid ml-lg-8">
-               
+
                 <!--begin::Card-->
                 <div class="card card-custom mt-2">
                     <!--begin::Header-->
@@ -59,7 +56,44 @@
                     <!--end::Header-->
                     <!--begin::Body-->
                     <div class="card-body">
-                        <div id="kt_docs_vistimeline_group_SicakBaski"></div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Parça</th>
+                                    <th>Cari</th>
+                                    <th>Sipariş Adet</th>
+                                    <th>Biten</th>
+                                    <th>Kalan</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var liste = Model.Where(x => x.SicakBaskiYapilacak).ToList();
+                                }
+                                @foreach (var emir in liste)
+                                {
+
+                                    var bitenAdet = emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.SicakBaski).Sum(x => x.BitenAdet);
+
+                                    <tr>
+                                        <td>@emir.SiparisKalip.EnjeksiyonRenk @emir.SiparisKalip.KalipAdi</td>
+                                        <td>
+                                            @emir.Siparis.Cari.Unvan.Substring(0, 10) ...
+                                        </td>
+                                        @*<td>@emir.Baslangic.ToString("dd MMMM HH:mm")</td>
+                                        <td>@emir.Bitis.ToString("dd MMMM HH:mm")</td>*@
+
+                                        <td>@emir.SiparisAdet</td>
+                                        <td>@bitenAdet</td>
+                                        <td>@(emir.SiparisAdet - bitenAdet)</td>
+                                        <td>
+                                            <a href="#" event="UretimEmirAksiyonFormPopup" UretimEmirId="@emir.UretimEmirId" UretimEmirAksiyonTypeId="@((int)EUretimEmirAksiyonType.SicakBaski)" class="btn btn-success">Kayıt Gir</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                     <!--end::Body-->
                 </div>
@@ -76,17 +110,11 @@
 <!--end::Entry-->
 
 @section scripts{
-    <script src="~/assets/plugins/custom/vis-timeline/vis-timeline.bundle.js.js"></script>
     <script src="~/Scripts/UretimEmir.js?v=@ScriptVersion"></script>
-    <script src="~/Scripts/Uretim.js?v=@ScriptVersion"></script>
-    <script src="~/Scripts/Aksiyon.js?v=@ScriptVersion"></script>
-    <script src="~/Scripts/Custom/WebViewer.js"></script>
-    <script src="~/Scripts/UretimAksiyon.js?v=@ScriptVersion"></script>
-
     <script>
 
         $(document).ready(function () {
-            Uretim.EventInit();
+            UretimEmir.EventInit();
         });
 
     </script>

@@ -27,6 +27,7 @@ namespace EgePakErp.Models
         public bool Birincil { get; set; }
         public bool Aktif { get; set; }
         public DateTime KayitTarihi { get; set; }
+        public ICollection<UretimEmirAksiyon> UretimEmirAksiyon { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }

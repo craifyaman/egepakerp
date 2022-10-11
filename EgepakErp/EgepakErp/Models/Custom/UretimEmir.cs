@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SelectPdf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -30,16 +31,16 @@ namespace EgePakErp.Models
         public int UretimEmirDurumId { get; set; }
         public UretimEmirDurum UretimEmirDurum { get; set; }
 
-        public string UretimEmirDurumList { get; set; }
+        //public string UretimEmirDurumList { get; set; }
 
 
-        public bool isUretimBitti { get; set; }
+        public bool? isUretimBitti { get; set; } //enjeksiyon
         public bool? isSicakBaskiBitti { get; set; }
         public bool? isSpreyBoyaBitti { get; set; }
         public bool? isMetalizeBitti { get; set; }
         public bool? isMontajBitti { get; set; }
         public bool? isEvMontajBitti { get; set; }
-
+         
    
         public bool SicakBaskiYapilacak { get; set; }
      
@@ -57,6 +58,7 @@ namespace EgePakErp.Models
 
         public ICollection<Aksiyon> Aksiyon { get; set; }
         public ICollection<UretimAksiyon> UretimAksiyon { get; set; }
+        public ICollection<UretimEmirAksiyon> UretimEmirAksiyon { get; set; }
 
         //[NotMapped]
         //public int KalanAdet
@@ -85,5 +87,4 @@ namespace EgePakErp.Models
         //}
 
     }
-
 }

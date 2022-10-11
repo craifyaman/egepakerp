@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using EgePakErp.Custom;
 using EgePakErp.Helper;
+using Newtonsoft.Json;
 
 namespace EgePakErp.Controllers
 {
@@ -154,7 +155,7 @@ namespace EgePakErp.Controllers
                 {
                     result.Data = new Response
                     {
-                        ex = filterContext.Exception,
+                        //ex = filterContext.Exception,
                         Description = "İşlem sırasında hata oluştu. Lütfen tekrar deneyin. Hatanın devam etmesi halinde teknik desteğe başvurun",
                         Success = false
                     };

@@ -16,7 +16,7 @@
                             },
                         }
                     });
-                form.UretimEmirDurumList = $("#UretimEmirDurumId").val().toString();
+                //form.UretimEmirDurumList = $("#UretimEmirDurumId").val().toString();
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;
@@ -100,7 +100,93 @@
             "html");
     }
 
-   
+
+    function UretimEmirAksiyonKaydet() {
+        debugger;
+        var validation = ValidateForm.IsValid("UretimEmirAksiyonForm", ValidationFields.UretimEmirAksiyonFormFields())
+        validation.validate().then(function (status) {
+            if (status == 'Valid') {
+                var form = $("#UretimEmirAksiyonForm").serializeJSON();
+                var keys = Object.keys(form);
+                var include = keys.slice(1, keys.length);
+                form.Include = include;
+                console.log(form);
+
+                Post("/UretimEmir/UretimEmirAksiyonKaydet",
+                    { form: form },
+                    function (response) {
+                        if (response.Success) {
+                            toastr.success(response.Description);
+                        } else {
+                            toastr.error(response.Description);
+                        }
+                    },
+                    function (x, y, z) {
+                        //Error
+                    },
+                    function () {
+                        //BeforeSend
+                    },
+                    function (r) {
+                        //Complete
+                        if (r.responseJSON.Success) {
+                            setTimeout(function () {
+                                bootbox.hideAll();
+                                location.reload();
+                            }, 2000)
+
+                        } else {
+                            console.log(r.responseJSON);
+                            toastr.error(r.responseJSON.Description);
+                        }
+
+                    },
+                    "json");
+            } else {
+                return false;
+            }
+        });
+    }
+
+    function UretimEmirAksiyonForm(UretimEmirId, UretimEmirAksiyonTypeId) {
+        Post("/UretimEmir/UretimEmirAksiyonForm",
+            { UretimEmirId: UretimEmirId, UretimEmirAksiyonTypeId: UretimEmirAksiyonTypeId },
+            function (response) {
+                bootbox.dialog({
+                    title: "Aksiyon form",
+                    message: Global.cardTemplate(response),
+                    size: 'large',
+                    buttons: {
+                        cancel: {
+                            label: "Kapat",
+                            className: 'btn-danger',
+                            callback: function () { }
+                        },
+                        ok: {
+                            label: "Kaydet",
+                            className: 'btn-info',
+                            callback: function () {
+                                UretimEmirAksiyonKaydet();
+                                return false;
+                            }
+                        }
+                    }
+                });
+
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+                Global.init();
+                $("#KisiId").select2();
+            },
+            "html");
+    }
+
 
     var handleEvent = function () {
 
@@ -111,13 +197,21 @@
             UretimEmirForm(id);
         });
 
+        $(document).on("click", "[event='UretimEmirAksiyonFormPopup']", function (e) {
+            debugger;
+            e.preventDefault();
+            var UretimEmirId = $(this).attr("UretimEmirId");
+            var UretimEmirAksiyonTypeId = $(this).attr("UretimEmirAksiyonTypeId");
+            UretimEmirAksiyonForm(UretimEmirId, UretimEmirAksiyonTypeId);
+        });
+
         $(document).on("click", "[event='UretimAksiyonFormPopup']", function (e) {
             debugger;
             e.preventDefault();
             var UretimAksiyonId = $(this).attr("UretimAksiyonId");
             UretimAksiyon.Form(UretimAksiyonId);
         });
-
+        
         
         $(document).on("change", "#SiparisId", function (event) {
             debugger;
@@ -154,6 +248,9 @@
         },
         UretimEmirForm: function (id) {
             UretimEmirForm(id);
+        },
+        UretimEmirAksiyonForm: function (UretimEmirId, UretimEmirAksiyonTypeId) {
+            UretimEmirAksiyonForm(UretimEmirId, UretimEmirAksiyonTypeId);
         }
     };
 }();

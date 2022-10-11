@@ -21,7 +21,7 @@
                         <a href="/" class="text-muted">Anasayfa</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="" class="text-muted">Üretim Takip Metalize</a>
+                        <a href="" class="text-muted">Üretim Takip Ev Montaj</a>
                     </li>
                 </ul>
                 <!--end::Breadcrumb-->
@@ -46,7 +46,7 @@
                     <!--begin::Header-->
                     <div class="card-header flex-wrap border-0 pt-6 pb-0">
                         <h3 class="card-title align-items-start flex-column">
-                            <span class="card-label font-weight-bolder text-dark">Metalize</span>
+                            <span class="card-label font-weight-bolder text-dark">Ev Montaj</span>
                             <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
                         </h3>
                         <div class="card-toolbar">
@@ -69,12 +69,12 @@
                             </thead>
                             <tbody>
                                 @{
-                                    var liste = Model.Where(x => x.MetalizeYapilacak).OrderBy(x => x.MakineId).ToList();
+                                    var liste = Model.Where(x => x.EvMontajYapilacak).ToList();
                                 }
                                 @foreach (var emir in liste)
                                 {
 
-                                    var bitenAdet = emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.Metalize).Sum(x => x.BitenAdet);
+                                    var bitenAdet = emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.EvMontaj).Sum(x => x.BitenAdet);
 
                                     <tr>
                                         <td>@emir.SiparisKalip.EnjeksiyonRenk @emir.SiparisKalip.KalipAdi</td>
@@ -86,7 +86,7 @@
                                         <td>@bitenAdet</td>
                                         <td>@(emir.SiparisAdet - bitenAdet)</td>
                                         <td>
-                                            <a href="#" event="UretimEmirAksiyonFormPopup" UretimEmirId="@emir.UretimEmirId" UretimEmirAksiyonTypeId="@((int)EUretimEmirAksiyonType.Metalize)" class="btn btn-success">Kayıt Gir</a>
+                                            <a href="#" event="UretimEmirAksiyonFormPopup" UretimEmirId="@emir.UretimEmirId" UretimEmirAksiyonTypeId="@((int)EUretimEmirAksiyonType.EvMontaj)" class="btn btn-success">Kayıt Gir</a>
                                         </td>
                                     </tr>
                                 }

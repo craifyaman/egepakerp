@@ -1242,6 +1242,103 @@ namespace EgePakErp.Controllers
 
         //}
 
+        public void BoyaKodGir()
+        {
+            List<BoyaKod> kodList = new List<BoyaKod>();
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "NATUREL",
+                Kod= "NATUREL",
+                BoyaKodTypeId= (int)EBoyaKodType.GranulBoya
+            });
+
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "PARLAK SİYAH",
+                Kod = "PARLAK SİYAH",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "ENJ. MAT SİYAH",
+                Kod = "ENJ. MAT SİYAH",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "MAT SİYAH BOYALI",
+                Kod = "MAT SİYAH BOYALI",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "PARLAK BEYAZ",
+                Kod = "PARLAK BEYAZ",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "ENJ. MAT BEYAZ",
+                Kod = "ENJ. MAT BEYAZ",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "MAT BEYAZ BOYALI",
+                Kod = "MAT BEYAZ BOYALI",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "ROSEGOLD BOYALI",
+                Kod = "ROSEGOLD BOYALI",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "GOLD BOYALI",
+                Kod = "GOLD BOYALI",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "GÜMÜŞ BOYALI",
+                Kod = "GÜMÜŞ BOYALI",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "GOLD METALİZE",
+                Kod = "GOLD METALİZE",
+                BoyaKodTypeId = (int)EBoyaKaplamaType.Metalize
+            });
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "GÜMÜŞ METALİZE",
+                Kod = "GÜMÜŞ METALİZE",
+                BoyaKodTypeId = (int)EBoyaKaplamaType.Metalize
+            });
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "GÜMÜŞ BOYALI",
+                Kod = "GÜMÜŞ BOYALI",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+            kodList.Add(new BoyaKod
+            {
+                Aciklama = "SABLAJLI",
+                Kod = "SABLAJLI",
+                BoyaKodTypeId = (int)EBoyaKodType.GranulBoya
+            });
+
+            Db.BoyaKod.AddRange(kodList);
+            Db.SaveChanges();
+        }
+        
         public void MsFircaTemizle()
         {
             var idList = "370,372,373,374,375,376,377,378,447,448,449,451";

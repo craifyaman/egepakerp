@@ -299,13 +299,13 @@
 
             },
             "json");
-
+/*
         PostToTimeLine("/UretimEmir/GetAll?type=sicakbaski", "kt_docs_vistimeline_group_SicakBaski");
         PostToTimeLine("/UretimEmir/GetAll?type=sprey", "kt_docs_vistimeline_group_Sprey");
         PostToTimeLine("/UretimEmir/GetAll?type=montaj", "kt_docs_vistimeline_group_Montaj");
         PostToTimeLine("/UretimEmir/GetAll?type=metalize", "kt_docs_vistimeline_group_Metalize");
 
-
+*/
 
         $(document).on("change", "#SiparisId", function (event) {
             debugger;

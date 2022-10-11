@@ -490,6 +490,12 @@ namespace EgePakErp.Custom
                 .AsQueryable();
             return list;
         }
+        public IQueryable<Kisi> BaseKisi()
+        {
+            var list = db.Kisi
+                .AsQueryable();
+            return list;
+        }
         public IQueryable<Cari> BaseCari()
         {
             var list = db.Cari

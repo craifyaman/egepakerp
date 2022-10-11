@@ -97,7 +97,7 @@ namespace EgePakErp.Controllers
                 repo.Insert(form);
 
                 var uretimemir = uretimEmirRepo.Get(form.UretimEmirId);
-                uretimemir.UretimEmirDurumList = uretimemir.UretimEmirDurumList + "," + form.UretimEmirDurumId;
+                //uretimemir.UretimEmirDurumList = uretimemir.UretimEmirDurumList + "," + form.UretimEmirDurumId;
                 uretimEmirRepo.Update(uretimemir);
                 response.Success = true;
                 response.Description = "Kayıt edildi.";

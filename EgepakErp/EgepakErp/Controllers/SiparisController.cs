@@ -44,7 +44,7 @@ namespace EgePakErp.Controllers
             return View(model);
         }
 
-        [Menu("Üretimdeki Siparişler", "icon-xl flaticon2-file-2", "Sipariş", 0, 5)]
+        [Menu("Depoya Aktar", "icon-xl flaticon2-file-2", "Üretim Takip", 0, 5)]
         [Yetki("Üretimdeki Siparişler", "Sipariş")]
         public ActionResult UretimdekiSiparisler()
         {

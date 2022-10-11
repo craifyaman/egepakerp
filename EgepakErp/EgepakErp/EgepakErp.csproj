@@ -177,6 +177,7 @@
     <Compile Include="Concrete\BoyaKaplamaRepository.cs" />
     <Compile Include="Concrete\MakineRepository.cs" />
     <Compile Include="Concrete\AksiyonRepository.cs" />
+    <Compile Include="Concrete\UretimEmirAksiyonRepository.cs" />
     <Compile Include="Concrete\UretimAksiyonRepository.cs" />
     <Compile Include="Concrete\ProformaFaturaRepository.cs" />
     <Compile Include="Concrete\TeklifFormRepository.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Enums\EBoyaKodType.cs" />
     <Compile Include="Enums\ESiparisType.cs" />
     <Compile Include="Enums\EStokHareketType.cs" />
+    <Compile Include="Enums\EUretimEmirAksiyonType.cs" />
     <Compile Include="Enums\EUretimEmirDurum.cs" />
     <Compile Include="Enums\EUretimSabitler.cs" />
     <Compile Include="Enums\EKoliTur.cs" />
@@ -647,6 +649,26 @@
     <Compile Include="Migrations\202210070832205_mig15.designer.cs">
       <DependentUpon>202210070832205_mig15.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202210110757532_set_enjeksiyon_to_nullable.cs" />
+    <Compile Include="Migrations\202210110757532_set_enjeksiyon_to_nullable.designer.cs">
+      <DependentUpon>202210110757532_set_enjeksiyon_to_nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210110843179_create_uretimEmirAksiyon_table.cs" />
+    <Compile Include="Migrations\202210110843179_create_uretimEmirAksiyon_table.designer.cs">
+      <DependentUpon>202210110843179_create_uretimEmirAksiyon_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210110908154_mig16.cs" />
+    <Compile Include="Migrations\202210110908154_mig16.designer.cs">
+      <DependentUpon>202210110908154_mig16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210111144464_add_kisiId_to_uretimeEmirAksiyon_table.cs" />
+    <Compile Include="Migrations\202210111144464_add_kisiId_to_uretimeEmirAksiyon_table.designer.cs">
+      <DependentUpon>202210111144464_add_kisiId_to_uretimeEmirAksiyon_table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210111246067_delete_durumList_from_uretimEmir_table.cs" />
+    <Compile Include="Migrations\202210111246067_delete_durumList_from_uretimEmir_table.designer.cs">
+      <DependentUpon>202210111246067_delete_durumList_from_uretimEmir_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\BoyaKaplama.cs" />
     <Compile Include="Models\Custom\BoyaKodSiparisKalipRel.cs" />
     <Compile Include="Models\Custom\BoyaKodType.cs" />
@@ -658,10 +680,12 @@
     <Compile Include="Models\Custom\StokHareket.cs" />
     <Compile Include="Models\Custom\StokHareketType.cs" />
     <Compile Include="Models\Custom\UretimAksiyon.cs" />
+    <Compile Include="Models\Custom\UretimEmirAksiyon.cs" />
     <Compile Include="Models\Custom\UretimEmirAksiyonRel.cs" />
     <Compile Include="Models\Custom\Aksiyon.cs" />
     <Compile Include="Models\Custom\AksiyonType.cs" />
     <Compile Include="Models\Custom\Makine.cs" />
+    <Compile Include="Models\Custom\UretimEmirAksiyonType.cs" />
     <Compile Include="Models\Custom\UretimEmirDurum.cs" />
     <Compile Include="Models\Custom\SiparisDurum.cs" />
     <Compile Include="Models\Custom\UretimEmir.cs" />
@@ -4002,12 +4026,14 @@
     <Content Include="Views\UretimAksiyon\FilterForm.cshtml" />
     <Content Include="Views\UretimAksiyon\Form.cshtml" />
     <Content Include="Views\UretimAksiyon\Index.cshtml" />
-    <Content Include="Views\Uretim\Montaj.cshtml" />
     <Content Include="Views\Uretim\SicakBaski.cshtml" />
-    <Content Include="Views\Uretim\Metalize.cshtml" />
     <Content Include="Views\Uretim\Enjeksiyon.cshtml" />
-    <Content Include="Views\Uretim\SpreyBoya.cshtml" />
     <Content Include="Views\Siparis\FilterForm.cshtml" />
+    <Content Include="Views\UretimEmir\UretimEmirAksiyonForm.cshtml" />
+    <Content Include="Views\Uretim\EvMontaj.cshtml" />
+    <Content Include="Views\Uretim\SpreyBoya.cshtml" />
+    <Content Include="Views\Uretim\Metalize.cshtml" />
+    <Content Include="Views\Uretim\Montaj.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -4315,6 +4341,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202210070832205_mig15.resx">
       <DependentUpon>202210070832205_mig15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210110757532_set_enjeksiyon_to_nullable.resx">
+      <DependentUpon>202210110757532_set_enjeksiyon_to_nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210110843179_create_uretimEmirAksiyon_table.resx">
+      <DependentUpon>202210110843179_create_uretimEmirAksiyon_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210110908154_mig16.resx">
+      <DependentUpon>202210110908154_mig16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210111144464_add_kisiId_to_uretimeEmirAksiyon_table.resx">
+      <DependentUpon>202210111144464_add_kisiId_to_uretimeEmirAksiyon_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210111246067_delete_durumList_from_uretimEmir_table.resx">
+      <DependentUpon>202210111246067_delete_durumList_from_uretimEmir_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

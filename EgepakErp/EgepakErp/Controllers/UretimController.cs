@@ -1,5 +1,8 @@
 ﻿using EgePakErp.Concrete;
 using EgePakErp.Custom;
+using EgePakErp.Enums;
+using EgePakErp.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -21,40 +24,49 @@ namespace EgePakErp.Controllers
         //    var uretimEmir = repo.GetAll();
         //    return View(uretimEmir);
         //}
-
-        [Menu("Enjeksiyon", "flaticon-cogwheel-1 icon-xl", "Üretim Takip", 4, 1)]
+        private List<UretimEmir> UretimEmirtListe()
+        {
+            return repo.GetAll(x => x.Siparis.SiparisDurumId == (int)ESiparisType.Uretimde).ToList();
+        }
+        [Menu("Enjeksiyon", "fas fa-syringe fa-2x text-info mt-2", "Üretim Takip", 4, 1)]
         public ActionResult Enjeksiyon()
         {
-            var uretimEmir = repo.GetAll();
-            var list = uretimEmir.ToList();
-            return View(uretimEmir.ToList());
+            var uretimEmir = UretimEmirtListe();
+            return View(uretimEmir);
         }
 
-        [Menu("Sıcak Baskı", "flaticon-cogwheel-1 icon-xl", "Üretim Takip", 4, 2)]
+        [Menu("Sıcak Baskı", "fas fa-compress fa-2x text-info mt-2", "Üretim Takip", 4, 2)]
         public ActionResult SicakBaski()
         {
-            var uretimEmir = repo.GetAll();
-            return View(uretimEmir.ToList());
+            var uretimEmir = UretimEmirtListe();
+            return View(uretimEmir);
         }
 
-        [Menu("Metalize", "flaticon-cogwheel-1 icon-xl", "Üretim Takip", 4, 3)]
+        [Menu("Metalize", "fas fa-paint-brush fa-2x text-info mt-2", "Üretim Takip", 4, 3)]
         public ActionResult Metalize()
         {
-            var uretimEmir = repo.GetAll();
-            return View(uretimEmir.ToList());
+            var uretimEmir = UretimEmirtListe();
+            return View(uretimEmir);
         }
 
-        [Menu("Montaj", "flaticon-cogwheel-1 icon-xl", "Üretim Takip", 4, 3)]
+        [Menu("Montaj", "fas fa-braille fa-2x text-info mt-2", "Üretim Takip", 4, 3)]
         public ActionResult Montaj()
         {
-            var uretimEmir = repo.GetAll();
-            return View(uretimEmir.ToList());
+            var uretimEmir = UretimEmirtListe();
+            return View(uretimEmir);
         }
-        [Menu("Sprey Boya", "flaticon-cogwheel-1 icon-xl", "Üretim Takip", 4, 3)]
+        [Menu("Sprey Boya", "fas fa-brush fa-2x text-info mt-2", "Üretim Takip", 4, 3)]
         public ActionResult SpreyBoya()
         {
-            var uretimEmir = repo.GetAll();
-            return View(uretimEmir.ToList());
+            var uretimEmir = UretimEmirtListe();
+            return View(uretimEmir);
+        }
+
+        [Menu("Ev Montaj", "fas fa-braille fa-2x text-info mt-2", "Üretim Takip", 4, 3)]
+        public ActionResult EvMontaj()
+        {
+            var uretimEmir = UretimEmirtListe();
+            return View(uretimEmir);
         }
 
     }
