@@ -177,12 +177,12 @@
     <Compile Include="Concrete\BoyaKaplamaRepository.cs" />
     <Compile Include="Concrete\MakineRepository.cs" />
     <Compile Include="Concrete\AksiyonRepository.cs" />
+    <Compile Include="Concrete\StokGirisHareketRepository.cs" />
+    <Compile Include="Concrete\StokCikisHareketRepository.cs" />
     <Compile Include="Concrete\UretimEmirAksiyonRepository.cs" />
     <Compile Include="Concrete\UretimAksiyonRepository.cs" />
     <Compile Include="Concrete\ProformaFaturaRepository.cs" />
     <Compile Include="Concrete\TeklifFormRepository.cs" />
-    <Compile Include="Concrete\StokGirisHareketRepository.cs" />
-    <Compile Include="Concrete\StokCikisHareketRepository.cs" />
     <Compile Include="Concrete\UretimEmirRepository.cs" />
     <Compile Include="Concrete\StokHareketRepository.cs" />
     <Compile Include="Concrete\YaldizRepository.cs" />
@@ -199,6 +199,7 @@
     <Compile Include="Concrete\_GenericRepository.cs" />
     <Compile Include="Controllers\BoyaKaplamaController.cs" />
     <Compile Include="Controllers\PdfController.cs" />
+    <Compile Include="Controllers\RaporController.cs" />
     <Compile Include="Controllers\ProformaFaturaController.cs" />
     <Compile Include="Controllers\TeklifFormController.cs" />
     <Compile Include="Controllers\StokGirisHareketController.cs" />
@@ -3540,6 +3541,24 @@
     <Content Include="File\SiparisPdf\CariId-27\Yaldiz\08_09_2022\images.pdf" />
     <Content Include="File\SiparisPdf\CariId-2\Yaldiz\01_09_2022\webviewer-demo.pdf" />
     <Content Include="File\SiparisPdf\CariId-88\Yaldiz\09_09_2022\webviewer-demo %281%29.pdf" />
+    <Content Include="Content\ProformaFatura\YEŞİLMARKA SAĞLIKLI YAŞAM ÜRÜNLERİ SAN. TİC. LTD._Teklif_Formu_2.pdf" />
+    <Content Include="Content\TeklifForm\GLOHE BİTKİSEL ÜRÜN. SAN. TİC. LTD. ŞTİ._Teklif_Formu_44.pdf" />
+    <Content Include="Content\UretimTakip\114_uretim.pdf" />
+    <Content Include="Content\UretimTakip\115_uretim.pdf" />
+    <Content Include="Content\UretimTakip\116_uretim.pdf" />
+    <Content Include="Content\UretimTakip\117_uretim.pdf" />
+    <Content Include="Content\UretimTakip\7 RENK KOZMETİK SAN.VE TİC.LTD.ŞTİ._uretim_119.pdf" />
+    <Content Include="Content\UretimTakip\7 RENK KOZMETİK SAN.VE TİC.LTD.ŞTİ._uretim_132.pdf" />
+    <Content Include="Content\UretimTakip\BİTEK MEDİKAL_uretim_117.pdf" />
+    <Content Include="Content\UretimTakip\BİTEK MEDİKAL_uretim_118.pdf" />
+    <Content Include="Content\UretimTakip\BİTEK MEDİKAL_uretim_120.pdf" />
+    <Content Include="Content\UretimTakip\BİTEK MEDİKAL_uretim_131.pdf" />
+    <Content Include="Content\UretimTakip\DOOR İÇ VE DIŞ TİCARET A.Ş._uretim_136.pdf" />
+    <Content Include="Content\UretimTakip\EXPORT SERVICE SRL_uretim_149.pdf" />
+    <Content Include="Content\UretimTakip\KALİTE &amp;  AKAR ÇELİK SAN.LTD.ŞTİ._uretim_130.pdf" />
+    <Content Include="Content\UretimTakip\KAMELYA KOZMETİK LTD.ŞTİ._uretim_133.pdf" />
+    <Content Include="Content\UretimTakip\KAMELYA KOZMETİK LTD.ŞTİ._uretim_134.pdf" />
+    <Content Include="Content\UretimTakip\YEŞİLMARKA SAĞLIKLI YAŞAM ÜRÜNLERİ SAN. TİC. LTD._uretim_152.pdf" />
     <None Include="packages.config" />
     <Content Include="Views\Cari\Detay.cshtml" />
     <Content Include="Views\Cari\FilterForm.cshtml" />
@@ -4034,6 +4053,10 @@
     <Content Include="Views\Uretim\SpreyBoya.cshtml" />
     <Content Include="Views\Uretim\Metalize.cshtml" />
     <Content Include="Views\Uretim\Montaj.cshtml" />
+    <Content Include="Views\Rapor\Index.cshtml" />
+    <Content Include="Views\Rapor\EnjeksiyonFilterForm.cshtml" />
+    <Content Include="Views\Rapor\Sevkiyat.cshtml" />
+    <Content Include="Views\Rapor\SevkiyatFilterForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">

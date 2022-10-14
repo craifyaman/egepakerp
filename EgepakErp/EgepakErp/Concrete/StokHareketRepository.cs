@@ -8,47 +8,32 @@ namespace EgePakErp.Concrete
 {
     public class StokHareketRepository : _GenericRepository<StokHareket>
     {
-        public override StokHareket Get(int id)
+        public override IQueryable<StokHareket> AllInclude()
         {
             return dbset
-                .Include(x=>x.StokHareketType)
-                .Include(x=>x.Siparis)
+                .Include(x => x.StokHareketType)
+                .Include(x => x.Siparis)
                 .Include(x => x.Siparis.Cari)
-                .Include(x=>x.SiparisKalip)
-                .Include(x=>x.StokCikisHareket)
-               .FirstOrDefault(x => x.StokHareketId== id);
+                .Include(x => x.SiparisKalip)
+                .Include(x => x.StokCikisHareket)
+                .AsQueryable();
+        }
+        public override StokHareket Get(int id)
+        {
+              return AllInclude().FirstOrDefault(x => x.StokHareketId== id);
         }
         public override StokHareket Get(Expression<Func<StokHareket, bool>> filter)
         {
-            return dbset
-                .Include(x => x.StokHareketType)
-                .Include(x => x.Siparis)
-                .Include(x => x.Siparis.Cari)
-                .Include(x => x.SiparisKalip)
-                .Include(x => x.StokCikisHareket)
-               .FirstOrDefault(filter);
+            return AllInclude().FirstOrDefault(filter);
         }
         public override IQueryable<StokHareket> GetAll()
         {
-            return dbset
-                .Include(x => x.StokHareketType)
-                .Include(x => x.Siparis)
-                .Include(x => x.Siparis.Cari)
-                .Include(x => x.SiparisKalip)
-                .Include(x => x.StokCikisHareket)
-               .AsQueryable();
+            return AllInclude();
         }
 
         public override IQueryable<StokHareket> GetAll(Expression<Func<StokHareket, bool>> filter)
         {
-            return dbset
-                .Include(x => x.StokHareketType)
-                .Include(x => x.Siparis)
-                .Include(x => x.Siparis.Cari)
-                .Include(x => x.SiparisKalip)
-                .Include(x => x.StokCikisHareket)
-                .Where(filter)
-               .AsQueryable();
+            return AllInclude().Where(filter);
         }
     }
 }

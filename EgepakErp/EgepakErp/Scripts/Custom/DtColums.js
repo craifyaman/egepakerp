@@ -705,7 +705,8 @@
             },
             {
                 field: 'Cari',
-                title: 'Cari'
+                title: 'Cari',
+                sortable:false
             },
             {
                 field: 'Durum',
@@ -1281,7 +1282,68 @@
         return columns;
     }
 
+    function enjeksiyonColumns() {
+        var columns = [
+            {
+                field: 'Id',
+                title: '#',
+            },
+            {
+                field: 'Kisi',
+                title: 'Kisi',
+                sortable:false
+            },
+            {
+                field: 'Bolum',
+                title: 'Bölüm',
+                sortable: false
+            },            
+            {
+                field: 'Parca',
+                title: 'Parca',
+            },
+            {
+                field: 'BitenAdet',
+                title: 'Adet',
+            },
+            {
+                field: 'KayitTarih',
+                title: 'Tarih',
+                width:'100px'
+            },
+            
+        ];
+        return columns;
+    }
 
+    function sevkiyatColumns() {
+        var columns = [
+            {
+                field: 'Id',
+                title: '#',
+            },
+            {
+                field: 'Cari',
+                title: 'Cari',
+                sortable: false
+            },
+            {
+                field: 'Adet',
+                title: 'Adet'
+            },
+            {
+                field: 'Aciklama',
+                title: 'Açıklama',
+            },
+            {
+                field: 'CikisTarih',
+                title: 'Çıkış Tarihi',
+                width:'100px'
+            },
+
+        ];
+        return columns;
+    }
 
     return {
         // public functions
@@ -1354,8 +1416,13 @@
         ProformaFormColumns: function () {
             return proformaFaturaFormColumns();
         },
+        EnjeksiyonColumns: function () {
+            return enjeksiyonColumns();
+        },       
+        SevkiyatColumns: function () {
+            return sevkiyatColumns();
+        },       
         
-
         GetColoums: function (name) {
             if (name == "cari") {
                 return cariColumns();

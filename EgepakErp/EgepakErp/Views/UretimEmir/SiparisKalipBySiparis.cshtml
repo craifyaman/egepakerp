@@ -10,7 +10,7 @@
 }
 
 <label>Siparis Kalıpları:</label>
-<select class="form-control" id="SiparisKalipId" name="SiparisKalipId">
+<select class="form-control BitisHesaplama" id="SiparisKalipId" name="SiparisKalipId">
     @foreach (var item in liste)
     {
         var kalip = kalipListe.FirstOrDefault(x => x.ParcaKodu == item.Kod);

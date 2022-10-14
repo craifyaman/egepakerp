@@ -1,0 +1,24 @@
+﻿<div class="row align-items-center">
+    <div class="col-lg-12 col-xl-12">
+        <div class="row align-items-center">
+
+            <div class="col-md-2 my-2 my-md-0">
+                <select id="CariId" class="select2 filterFormControl defaultSelect2">
+                    <option value="0">Tüm Cariler</option>
+                    @{
+                        var kisiList = BaseCari().ToList();
+                        foreach (var kisi in kisiList)
+                        {
+                            <option value="@kisi.CariId">@kisi.Unvan</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-2 my-2 my-md-0">
+                <input type='text' class="basicDatePicker form-control filterFormControl" name="tarih" id="tarih" placeholder="tarihi seçin" autocomplete="off" />
+            </div>
+
+        </div>
+    </div>
+</div>

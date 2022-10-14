@@ -18,6 +18,10 @@ namespace EgePakErp.Concrete
             db = new Db();
             dbset = db.Set<T>();
         }
+        public virtual IQueryable<T> AllInclude()
+        {
+            return null;
+        }
         public void AddRange(List<T> items)
         {
             dbset.AddRange(items);

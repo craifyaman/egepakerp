@@ -121,11 +121,23 @@ var KTBootstrapDatepicker = function () {
             templates: arrows
         });
     }
-
+    var base = function () {
+        $('.basicDatePicker').datepicker({
+            rtl: KTUtil.isRTL(),
+            todayHighlight: true,
+            orientation: "bottom left",
+            templates: arrows,
+            format: 'dd/mm/yyyy',
+            language: 'tr'
+        });
+    }
     return {
         // public functions
         init: function() {
             demos(); 
+        },
+        base: function () {
+            base();
         }
     };
 }();

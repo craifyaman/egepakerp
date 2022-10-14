@@ -13,7 +13,9 @@ namespace EgePakErp.Concrete
 
             return dbset
                .Include(x => x.UretimEmir)
+               .Include(x => x.UretimEmir.SiparisKalip)
                .Include(x => x.UretimEmirAksiyonType)
+               .Include(x => x.Kisi)
                .AsQueryable();
         }
         public override UretimEmirAksiyon Get(int id)

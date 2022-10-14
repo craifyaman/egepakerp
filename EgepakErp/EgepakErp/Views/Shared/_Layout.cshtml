@@ -3243,8 +3243,9 @@ License: You must have a valid license purchased only from themeforest(the above
             console.log("thrownError error", thrownError);
             console.log("statuscode", jqxhr.status);
 
-            if (jqxhr.status === 403) {
-                toastr.error(jqxhr.responseJSON);
+            if (jqxhr.status == 403) {
+                var json = jQuery.parseJSON(jqxhr.responseText);
+                toastr.warning(json.Description);
             }
             //else {
             //    toastr.error(jqxhr.responseJSON.Description);
@@ -3252,10 +3253,10 @@ License: You must have a valid license purchased only from themeforest(the above
         });
 
         $(document).ajaxComplete(function (event, jqxhr, settings, thrownError) {
-
             KTApp.unblockPage();
             Global.init();
             KTSummernoteDemo.init();
+            KTBootstrapDatepicker.base();
         });
 
 

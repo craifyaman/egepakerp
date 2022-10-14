@@ -151,15 +151,17 @@ namespace EgePakErp.Controllers
                 }
 
                 //tahmini bitiş zamanı hesaplama 
-                var _siparisKalip = siparisKalipRepo.Get(form.SiparisKalipId);
-                var _kalip = kalipRepo.Get(x => x.ParcaKodu == _siparisKalip.KalipKod);
-                var _gozSayisi = _kalip.KalipGozSayisi;
+                //var _siparisKalip = siparisKalipRepo.Get(form.SiparisKalipId);
+                //var _kalip = kalipRepo.Get(x => x.ParcaKodu == _siparisKalip.KalipKod);
+                //var _gozSayisi = _kalip.KalipGozSayisi;
 
-                var fireOrani = _kalip.KalipHammaddeRelation.FirstOrDefault().HammaddeCinsi.HammaddeFire.Oran;
-                var fireliAdet = form.SiparisAdet + (form.SiparisAdet * fireOrani / 100);
+                //var fireOrani = _kalip.KalipHammaddeRelation.FirstOrDefault().HammaddeCinsi.HammaddeFire.Oran;
+                //var fireliAdet = form.SiparisAdet + (form.SiparisAdet * fireOrani / 100);
 
-                var bitisZaman = fireliAdet * _kalip.UretimZamani / _gozSayisi;//saniye cinsinden bitis saati
-                form.Bitis = form.Baslangic.AddMinutes(bitisZaman / 60);
+                //var bitisZaman = fireliAdet * _kalip.UretimZamani / _gozSayisi;//saniye cinsinden bitis saati
+                //form.Bitis = form.Baslangic.AddMinutes(bitisZaman / 60);
+
+
                 repo.Insert(form);
 
                 var sk = siparisKalipRepo.Get(form.SiparisKalipId);
@@ -178,16 +180,16 @@ namespace EgePakErp.Controllers
                 if (entity != null)
                 {
                     //tahmini bitiş zamanı hesaplama 
-                    var _siparisKalip = siparisKalipRepo.Get(form.SiparisKalipId);
-                    var _kalip = kalipRepo.Get(x => x.ParcaKodu == _siparisKalip.KalipKod);
-                    var _gozSayisi = _kalip.KalipGozSayisi;
+                    //var _siparisKalip = siparisKalipRepo.Get(form.SiparisKalipId);
+                    //var _kalip = kalipRepo.Get(x => x.ParcaKodu == _siparisKalip.KalipKod);
+                    //var _gozSayisi = _kalip.KalipGozSayisi;
 
-                    var fireOrani = _kalip.KalipHammaddeRelation.FirstOrDefault().HammaddeCinsi.HammaddeFire.Oran;
-                    var fireliAdet = form.SiparisAdet + (form.SiparisAdet * fireOrani / 100);
+                    //var fireOrani = _kalip.KalipHammaddeRelation.FirstOrDefault().HammaddeCinsi.HammaddeFire.Oran;
+                    //var fireliAdet = form.SiparisAdet + (form.SiparisAdet * fireOrani / 100);
 
-                    var bitisZaman = fireliAdet * _kalip.UretimZamani / _gozSayisi;//saniye cinsinden bitis saati
-                    form.Bitis = form.Baslangic.AddMinutes(bitisZaman / 60);
-                    entity.Bitis = form.Bitis;
+                    //var bitisZaman = fireliAdet * _kalip.UretimZamani / _gozSayisi;//saniye cinsinden bitis saati
+                    //form.Bitis = form.Baslangic.AddMinutes(bitisZaman / 60);
+                    //entity.Bitis = form.Bitis;
                     //tamamlanma tarihi kaydetme
                     if (form.UretimEmirDurumId == (int)EUretimEmirDurum.Tamamlandi)
                     {
@@ -257,7 +259,21 @@ namespace EgePakErp.Controllers
             var kaliplar = siparisKalipRepo.GetAll(x => x.SiparisId == siparisId);
             return PartialView(kaliplar.ToList());
         }
+        
+        public string BitisTarihHesapla(int siparisAdet,int siparisKalipId)
+        {
+            //tahmini bitiş zamanı hesaplama 
+            var _siparisKalip = siparisKalipRepo.Get(siparisKalipId);
+            var _kalip = kalipRepo.Get(x => x.ParcaKodu == _siparisKalip.KalipKod);
+            var _gozSayisi = _kalip.KalipGozSayisi;
 
+            var fireOrani = _kalip.KalipHammaddeRelation.FirstOrDefault().HammaddeCinsi.HammaddeFire.Oran;
+            var fireliAdet = siparisAdet + (siparisAdet * fireOrani / 100);
+
+            var bitisZaman = fireliAdet * _kalip.UretimZamani / _gozSayisi;//saniye cinsinden bitis saati
+            double bitis = bitisZaman / 60/60; //dakika cinsinden bitiş süresi
+            return "bitiş süresi "+bitis.ToString("n1")+" saat";
+        }
 
         public JsonResult GetAll(string type)
         {

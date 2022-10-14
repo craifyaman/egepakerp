@@ -15,6 +15,54 @@
             }
         });
 
+        $(".defaultSelect2").select2();
+
+        /*
+        // input group and left alignment setup
+        $('.dateRangePicker').daterangepicker({
+            buttonClasses: ' btn',
+            applyClass: 'btn-primary',
+            cancelClass: 'btn-secondary',
+            locale: {
+                "direction": "ltr",
+                "format": "DD/M M/YYYY",
+                "separator": " - ",
+                "applyLabel": "Uygula",
+                "cancelLabel": "İptal",
+                "fromLabel": "Da",
+                "toLabel": "A",
+                "customRangeLabel": "Personalizzata",
+                "daysOfWeek": [
+                    "pzt",
+                    "Sl",
+                    "Çrş",
+                    "Prş",
+                    "Cm",
+                    "Cmt",
+                    "Pz"
+                ],
+                "monthNames": [
+                    "Ocak",
+                    "Şubat",
+                    "Mart",
+                    "Nisan",
+                    "Mayıs",
+                    "Haziran",
+                    "Temmuz",
+                    "Ağustos",
+                    "Eylül",
+                    "Ekim",
+                    "Kasım",
+                    "Aralık"
+                ],
+                "firstDay": 0
+            },
+        }, function (start, end, label) {
+            //$('.dateRangePicker').val(start.format('DD-MM-YYYY') + ' / ' + end.format('DD-MM-YYYY'));
+        }
+
+        );
+        */
 
     };
 
@@ -28,11 +76,56 @@
         return html;
     }
 
-    var parseFloatFix = function (inputId,tofix) {
+    var parseFloatFix = function (inputId, tofix) {
         debugger;
         var sonuc = parseFloat($(inputId).val().replace(",", "."));
         return sonuc.toFixed(tofix);
-        
+
+    }
+
+    var dateRange = function () {
+        // input group and left alignment setup
+        $('.dateRangePicker').daterangepicker({
+            buttonClasses: ' btn',
+            applyClass: 'btn-primary',
+            cancelClass: 'btn-secondary',
+            locale: {
+                "direction": "ltr",
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Uygula",
+                "cancelLabel": "İptal",
+                "fromLabel": "Da",
+                "toLabel": "A",
+                "customRangeLabel": "Personalizzata",
+                "daysOfWeek": [
+                    "pzt",
+                    "Sl",
+                    "Çrş",
+                    "Prş",
+                    "Cm",
+                    "Cmt",
+                    "Pz"
+                ],
+                "monthNames": [
+                    "Ocak",
+                    "Şubat",
+                    "Mart",
+                    "Nisan",
+                    "Mayıs",
+                    "Haziran",
+                    "Temmuz",
+                    "Ağustos",
+                    "Eylül",
+                    "Ekim",
+                    "Kasım",
+                    "Aralık"
+                ],
+                "firstDay": 0
+            },
+        }, function (start, end, label) {
+            $('.dateRangePicker .form-control').val(start.format('DD-MM-YYYY') + ' / ' + end.format('DD-MM-YYYY'));
+        });
     }
 
     return {
@@ -43,8 +136,11 @@
         cardTemplate: function (str) {
             return cardTemplate(str);
         },
-        parseFloatFix: function (inputId,tofix) {
+        parseFloatFix: function (inputId, tofix) {
             return parseFloatFix(inputId, tofix);
+        },
+        dateRange: function () {
+            dateRange();
         }
     };
 }();

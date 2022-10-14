@@ -8,31 +8,28 @@ namespace EgePakErp.Concrete
 {
     public class StokGirisHareketRepository : _GenericRepository<StokGirisHareket>
     {
-      
-        public override StokGirisHareket Get(int id)
-        {
-            return dbset
-                .Include(x => x.StokHareket)
-                .FirstOrDefault(x => x.StokGirisHareketId== id);
-        }
-        public override StokGirisHareket Get(Expression<Func<StokGirisHareket, bool>> filter)
-        {
-            return dbset
-                .Include(x => x.StokHareket)
-                .FirstOrDefault(filter);
-        }
-        public override IQueryable<StokGirisHareket> GetAll()
+        public override IQueryable<StokGirisHareket> AllInclude()
         {
             return dbset
                 .Include(x => x.StokHareket)
                 .AsQueryable();
         }
+        public override StokGirisHareket Get(int id)
+        {
+            return AllInclude().FirstOrDefault(x => x.StokHareketId == id);
+        }
+        public override StokGirisHareket Get(Expression<Func<StokGirisHareket, bool>> filter)
+        {
+            return AllInclude().FirstOrDefault(filter);
+        }
+        public override IQueryable<StokGirisHareket> GetAll()
+        {
+            return AllInclude();
+        }
 
         public override IQueryable<StokGirisHareket> GetAll(Expression<Func<StokGirisHareket, bool>> filter)
         {
-            return dbset
-                .Include(x => x.StokHareket)
-                .Where(filter).AsQueryable();
+            return AllInclude().Where(filter);
         }
     }
 }

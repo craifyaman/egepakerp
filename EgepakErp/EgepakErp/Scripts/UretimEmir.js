@@ -223,7 +223,30 @@
                 { siparisId: siparisId },
                 function (response) {
                     $("#SiparisKalipList").empty().html(response);
+                    $(".BitisHesaplama").trigger("change");
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+                },
+                "html");
+        });
 
+        $(document).on("change", ".BitisHesaplama", function (event) {
+            debugger;
+
+            event.preventDefault();
+            var siparisKalipId = $("#SiparisKalipId").val();
+            var siparisAdet = $("#SiparisAdet").val();
+            
+            Post("/uretimemir/BitisTarihHesapla",
+                { siparisAdet: siparisAdet, siparisKalipId: siparisKalipId },
+                function (response) {
+                    $("#sonucDiv").empty().html(response);
                 },
                 function (x, y, z) {
                     //Error
