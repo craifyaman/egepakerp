@@ -16,7 +16,7 @@
                 @foreach (var item in siparisler)
                 {
                     var attr = item.SiparisId == Model?.SiparisKalip.SiparisId ? "selected" : "";
-                    <option @attr value="@item.SiparisId" Adet="@item.SiparisAdet">@item.SiparisAdi - (@item.Cari.Unvan)</option>
+                    <option @attr value="@item.SiparisId" Adet="@item.SiparisAdet">@item.SiparisKod - (@item.Cari.Unvan)</option>
                 }
 
             </select>
@@ -82,14 +82,7 @@
 
     <div class="form-group row">
         <div class="col-lg-12">
-            <label>
-                Sipariş Adet: (Üretilen Adet =
-                @if (Model != null)
-                {
-                    @Model.UretimAksiyon.Sum(x => x.UretilenAdet)
-                }
-                )
-            </label>
+            <label>Sipariş Adet:</label>
             @Html.TextBoxFor(x => x.SiparisAdet, new { @class = "form-control BitisHesaplama", @type = "number" })
         </div>
     </div>
@@ -130,7 +123,7 @@
     @if (Model != null)
     {
 
-        <div class="form-group row">
+        @*<div class="form-group row">
             <label class="col-2 col-form-label">Enjeksiyon Bitti</label>
             <div class="col-2">
                 <span class="switch switch-outline switch-icon switch-success">
@@ -224,7 +217,7 @@
             }
 
 
-        </div>
+        </div>*@
     }
 
     @*<div class="form-group row">
@@ -459,14 +452,14 @@
                 </div>
             </div>*@
 
-        <div class="form-group row">
+        @*<div class="form-group row">
             <div class="col-lg-12">
                 <div>Üretim Aksiyon Ekle:</div>
             </div>
             <div class="col-lg-12">
                 <a href="#" class="btn btn-primary" event="UretimAksiyonFormPopup" UretimEmirId="@Model.UretimEmirId">Ekle</a>
             </div>
-        </div>
+        </div>*@
     }
 
 

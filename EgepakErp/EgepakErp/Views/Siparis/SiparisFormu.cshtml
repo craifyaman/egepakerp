@@ -1,8 +1,10 @@
 ﻿@model Siparis
+
 @{
     ViewBag.Title = "Sipariş Formu";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <link href="~/Content/Siparis.css" rel="stylesheet" />
 <!--begin::Subheader-->
 <!--begin::Subheader-->
@@ -72,7 +74,7 @@
                                 <div class="col-lg-12" id="UrunKaliplari">
                                 </div>
 
-                                <div class="col-lg-6" id="siparisSelectForm">
+                                <div class="col-lg-12" id="siparisSelectForm">
                                     @Html.HiddenFor(x => x.SiparisId)
                                     @if (Model.SiparisId == 0)
                                     {
@@ -81,7 +83,7 @@
                                         <div class="form-group row">
                                             <label>Cari:</label>
                                             @{
-                                                var cariList = BaseCari().Where(x=>x.MusteriNo != null).ToList();
+                                                var cariList = BaseCari().Where(x => x.MusteriNo != null).ToList();
                                             }
                                             <select id="CariId" name="CariId" class="form-control select2" markup="Cari" placeHolder="Cari Seçiniz">
                                                 @foreach (var c in cariList)
@@ -95,6 +97,11 @@
                                             <label>Ürün Seçimi:</label>
                                             <select id="UrunId" name="UrunId" class="form-control select2" url="/Urun/ListeSelect2" markup="Urun" placeHolder="Ürün Seçiniz">
                                             </select>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label>Sipariş İsmi:</label>
+                                            <input type="text" id="SiparisIsim" name="SiparisIsim" class="form-control" placeholder="İsim girin"/>
                                         </div>
 
                                         <div class="form-group row OzelSecim" style="display:none;" id="fircaDiv">
@@ -168,12 +175,12 @@
                                 <div class="col-lg-6">
                                     @if (Model.SiparisId != 0)
                                     {
-                                        @Html.HiddenFor(x => x.SiparisAdi);
+                                        @Html.HiddenFor(x => x.SiparisKod);
                                         @Html.HiddenFor(x => x.KayitTarihi)
                                         <input type="hidden" id="SiparisCariId" value="@Model.CariId" />
 
                                         @Html.HiddenFor(x => x.UrunId)
-                                        <div class="form-group row">
+                                        @*<div class="form-group row" style="display:none;">
 
                                             <div class="col-4">
                                                 <label>Termin Tarihi:</label>
@@ -198,19 +205,19 @@
                                                 }
                                             </div>
 
-                                        </div>
+                                        </div>*@
                                     }
                                 </div>
 
                             </div>
-                            <div class="row">
+                            @*<div class="row">
                                 <div class="col-lg-12">
                                     <div class="p-2">Açıklama</div>
                                 </div>
                                 <div class="col-lg-12">
                                     @Html.TextAreaFor(x => x.Aciklama, new { @class = "summernote" })
                                 </div>
-                            </div>
+                            </div>*@
 
                             <div class="form-group row">
                                 <div class="col-lg-12" id="maliyetTablosu">

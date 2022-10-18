@@ -17,6 +17,9 @@ namespace EgePakErp.Models
         public Kisi Kisi { get; set; }
         public DateTime KayitTarih { get; set; }
 
+        public int? MakineId { get; set; }
+        public Makine Makine { get; set; }
+
         [NotMapped]
         public List<string> Include { get; set; }
 

@@ -85,22 +85,22 @@ namespace EgePakErp.Controllers
                 {
                     model = model.Where(x => x.CariId == cariId);
                 }
-               
+
             }
 
             if (!string.IsNullOrEmpty(Request.Form["query[durumId]"]))
             {
                 int durumId = Convert.ToInt32(Request.Form["query[durumId]"].ToString());
-                if(durumId > 0)
+                if (durumId > 0)
                 {
                     model = model.Where(x => x.SiparisDurumId == durumId);
                 }
-                
+
             }
             if (!string.IsNullOrEmpty(Request.Form["query[sipNo]"]))
             {
                 string sipNo = Request.Form["query[sipNo]"].ToString();
-                model = model.Where(x => x.SiparisAdi.Contains(sipNo));
+                model = model.Where(x => x.SiparisKod.Contains(sipNo));
             }
             if (!string.IsNullOrEmpty(Request.Form["query[urun]"]))
             {
@@ -130,7 +130,8 @@ namespace EgePakErp.Controllers
             var dto = model.AsEnumerable().Select(i => new
             {
                 SiparisId = i.SiparisId,
-                SiparisAdi = i.SiparisAdi,
+                SiparisKod = i.SiparisKod,
+                SiparisAd = i.SiparisIsim,
                 Cari = i.Cari.Unvan,
                 Urun = i.Urun.UrunCinsi.Kisaltmasi + i.Urun.UrunNo,
                 UrunId = i.UrunId,
@@ -194,7 +195,7 @@ namespace EgePakErp.Controllers
 
                     if (yaldizListToString != _yaldizListToString || boyaKodListToString != _boyaKodListToString || spreyBoyaKodListToString != _spreyBoyaKodListToString)
                     {
-                        var splitSiparisNo = sip.SiparisAdi.Split('-');
+                        var splitSiparisNo = sip.SiparisKod.Split('-');
                         var siparisNo = Convert.ToInt32(splitSiparisNo[2]);
                         sipNo = siparisNo += 1;
                         break;
@@ -211,7 +212,7 @@ namespace EgePakErp.Controllers
 
                 //siparis.SiparisAdi = cari.MusteriNo + urunCinsi + urunNo + String.Join(", ", yaldizlar) + String.Join(", ", boyaKodList);
 
-                siparis.SiparisAdi = cari.MusteriNo + "-" + urunKod + "-" + sipNo;
+                siparis.SiparisKod = cari.MusteriNo + "-" + urunKod + "-" + sipNo;
                 siparis.KayitTarihi = DateTime.Now;
                 siparis.SiparisDurumId = (int)ESiparisType.SiparisAlindi;
                 siparisRepo.Insert(siparis);
@@ -295,6 +296,22 @@ namespace EgePakErp.Controllers
                 return Json(response);
             }
         }
+        public JsonResult SiparisKalipUretimAdGuncelle(List<SiparisKalipUretimDto> liste)
+        {
+            Response response = new Response();
+
+            foreach (var item in liste)
+            {
+                var SiparisKalip = siparisKalipRepo.Get(x => x.SiparisKalipId == item.SiparisKalipId);
+                SiparisKalip.EnjeksiyonRenk = item.UretimParcaAdi;
+                siparisKalipRepo.Update(SiparisKalip);
+            }
+
+            response.Success = true;
+            response.Description = "Kalıp isimleri güncellendi.";
+            return Json(response);
+
+        }
 
         public JsonResult TopluSiparisKalipGuncelle(List<SiparisKalip> liste, decimal toplam, decimal toplamUsd, decimal toplamEur, int siparisId, double nakitKatsayi, double vadeliKatsayi)
         {
@@ -351,27 +368,7 @@ namespace EgePakErp.Controllers
             }
         }
 
-        public JsonResult Guncelle(Siparis siparis)
-        {
-            Response response = new Response();
-            try
-            {
-                var _siparis = siparisRepo.Get(siparis.SiparisId);
-                _siparis.Aciklama = siparis.Aciklama;
-                _siparis.SiparisDurumId = siparis.SiparisDurumId;
-                siparisRepo.Update(_siparis);
-
-                response.Success = true;
-                response.Description = "sipariş güncellendi.";
-                return Json(response);
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Description = ex.Message;
-                return Json(response);
-            }
-        }
+      
 
         [HttpPost]
         public PartialViewResult UrunKaliplari(int urunId, List<int> exclude, List<int> includes)
@@ -385,6 +382,7 @@ namespace EgePakErp.Controllers
 
             //exclude = çıkarılan kalıpların id listesi.
             var model = new List<Kalip>();
+
             if (includes.Count() > 0)
             {
                 foreach (var item in includes)
@@ -402,7 +400,6 @@ namespace EgePakErp.Controllers
             {
                 var list = Db.KalipUrunRelation.Include("Kalip").Where(x => x.UrunId == urunId).Select(x => x.Kalip).ToList();
                 model.AddRange(list);
-
             }
 
             else
@@ -420,6 +417,8 @@ namespace EgePakErp.Controllers
             }
 
             ViewBag.urun = Db.Urun.Include(x => x.UrunCinsi).FirstOrDefault(x => x.UrunId == urunId);
+
+
             return PartialView(model.OrderBy(x => x.ParcaKodu).ToList());
         }
 
@@ -437,16 +436,20 @@ namespace EgePakErp.Controllers
             var model = new List<Kalip>();
             var kalipKodList = siparis.SiparisKalip.GroupBy(x => new { x.KalipKod }, (key, group) => new
             {
+                UretimParcaAdi = group.FirstOrDefault().EnjeksiyonRenk,
+                SiparisKalipId = group.FirstOrDefault().SiparisKalipId,
                 Kod = key.KalipKod,
-            }).Select(x => x.Kod).ToList();
+            }).ToList();
 
-            foreach (var _kod in kalipKodList)
+            foreach (var item in kalipKodList)
             {
                 try
                 {
-                    var kalip = kalipRepo.Get(x => x.ParcaKodu == _kod);
+                    var kalip = kalipRepo.Get(x => x.ParcaKodu == item.Kod);
                     if (kalip != null)
                     {
+                        kalip.UretimParcaAdi = item.UretimParcaAdi;
+                        kalip.UretimSiparisKalipId = item.SiparisKalipId;
                         model.Add(kalip);
                     }
 

@@ -59,7 +59,9 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
+                                    <th>Ürün</th>
                                     <th>Parça</th>
+
                                     <th>Cari</th>
                                     <th>Sipariş Adet</th>
                                     <th>Biten</th>
@@ -77,18 +79,27 @@
                                     var bitenAdet = emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.SicakBaski).Sum(x => x.BitenAdet);
 
                                     <tr>
-                                        <td>@emir.SiparisKalip.EnjeksiyonRenk @emir.SiparisKalip.KalipAdi</td>
+                                        <td>@emir.Siparis.Urun.UrunCinsi.Kisaltmasi @emir.Siparis.Urun.UrunNo</td>
+                                        <td>@emir.SiparisKalip.EnjeksiyonRenk </td>
+
                                         <td>
                                             @emir.Siparis.Cari.Unvan.Substring(0, 10) ...
                                         </td>
                                         @*<td>@emir.Baslangic.ToString("dd MMMM HH:mm")</td>
-                                        <td>@emir.Bitis.ToString("dd MMMM HH:mm")</td>*@
+        <td>@emir.Bitis.ToString("dd MMMM HH:mm")</td>*@
 
                                         <td>@emir.SiparisAdet</td>
                                         <td>@bitenAdet</td>
                                         <td>@(emir.SiparisAdet - bitenAdet)</td>
                                         <td>
                                             <a href="#" event="UretimEmirAksiyonFormPopup" UretimEmirId="@emir.UretimEmirId" UretimEmirAksiyonTypeId="@((int)EUretimEmirAksiyonType.SicakBaski)" class="btn btn-success">Kayıt Gir</a>
+                                            <a href="#"
+                                               event="UretimEmirAksiyonListe"
+                                               UretimEmirId="@emir.UretimEmirId"
+                                               UretimEmirAksiyonTypeId="@((int)EUretimEmirAksiyonType.SicakBaski)"
+                                               class="btn btn-info">
+                                                Kayıtları Düzenle
+                                            </a>
                                         </td>
                                     </tr>
                                 }

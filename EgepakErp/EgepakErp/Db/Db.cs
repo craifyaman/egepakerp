@@ -83,12 +83,12 @@ namespace EgePakErp
         public virtual DbSet<UretimEmir> UretimEmir { get; set; }
         public virtual DbSet<Makine> Makine { get; set; }
         public virtual DbSet<SiparisDurum> SiparisDurum { get; set; }
-        public virtual DbSet<UretimEmirDurum> UretimEmirDurum { get; set; }
-        public virtual DbSet<AksiyonType> AksiyonType { get; set; }
-        public virtual DbSet<Aksiyon> Aksiyon { get; set; }
+        //public virtual DbSet<UretimEmirDurum> UretimEmirDurum { get; set; }
+        //public virtual DbSet<AksiyonType> AksiyonType { get; set; }
+        //public virtual DbSet<Aksiyon> Aksiyon { get; set; }
         public virtual DbSet<StokHareket> StokHareket { get; set; }
         public virtual DbSet<StokHareketType> StokHareketType { get; set; }
-        public virtual DbSet<UretimAksiyon> UretimAksiyon { get; set; }
+        //public virtual DbSet<UretimAksiyon> UretimAksiyon { get; set; }
         public virtual DbSet<UretimEmirAksiyon> UretimEmirAksiyon { get; set; }
         public virtual DbSet<UretimEmirAksiyonType> UretimEmirAksiyonType { get; set; }
 

@@ -56,6 +56,12 @@ namespace EgePakErp.Models
         [NotMapped]
         public float SiparisMaliyet { get; set; }
 
+        [NotMapped]
+        public string UretimParcaAdi { get; set; }
+        [NotMapped]
+        public int UretimSiparisKalipId { get; set; }
+
+
 
     }
 }

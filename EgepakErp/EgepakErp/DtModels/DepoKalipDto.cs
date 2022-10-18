@@ -9,4 +9,12 @@ namespace EgePakErp.DtModels
         public List<int> KalipKodList { get; set; }
 
     }
+
+    public class SiparisKalipUretimDto
+    {
+        public int SiparisKalipId { get; set; }
+        public string UretimParcaAdi { get; set; }
+
+
+    }
 }

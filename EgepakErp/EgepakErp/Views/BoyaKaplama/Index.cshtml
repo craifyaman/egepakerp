@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Hatırlatıcılar";
+    ViewBag.Title = "Boya Kod";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,7 +15,7 @@
             <!--begin::Page Heading-->
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <!--begin::Page Title-->
-                <h5 class="text-dark font-weight-bold my-1 mr-5">Boya Kaplama Listesi</h5>
+                <h5 class="text-dark font-weight-bold my-1 mr-5">Boya Kod Listesi</h5>
                 <!--end::Page Title-->
                 <!--begin::Breadcrumb-->
                 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -23,7 +23,7 @@
                         <a href="/" class="text-muted">Anasayfa</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="" class="text-muted">Boya Kaplama Listesi</a>
+                        <a href="" class="text-muted">Boya Kod Listesi</a>
                     </li>
                 </ul>
                 <!--end::Breadcrumb-->
@@ -48,7 +48,7 @@
                     <!--begin::Header-->
                     <div class="card-header flex-wrap border-0 pt-6 pb-0">
                         <h3 class="card-title align-items-start flex-column">
-                            <span class="card-label font-weight-bolder text-dark">Boya Kaplama Listesi</span>
+                            <span class="card-label font-weight-bolder text-dark">Boya Kod Listesi</span>
                             <span class="text-muted mt-1 font-weight-bold font-size-sm"></span>
                         </h3>
                         <div class="card-toolbar">
@@ -56,7 +56,7 @@
                                 <!--begin::Trigger Modal-->
                                 <a href="#" id="0" class="btn btn-success font-weight-bolder font-size-sm "
                                    event="BoyaKaplamaFormPopup"
-                                   aria-haspopup="true" aria-expanded="false">Yeni Boya Kaplama Ekle</a>
+                                   aria-haspopup="true" aria-expanded="false">Yeni Boya Kod Ekle</a>
                                 <!--end::Trigger Modal-->
                             </div>
                         </div>
@@ -97,8 +97,7 @@
         $(document).ready(function () {
             Dt.DtInit("kt_datatable", "/BoyaKaplama/Liste", DtColums.BoyaKaplamaColumns(), {});
             BoyaKaplama.EventInit();
-        })
-
+        });
     </script>
 
 }

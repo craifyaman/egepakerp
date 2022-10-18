@@ -11,7 +11,8 @@ namespace EgePakErp.Models
     {
         [Key]
         public int SiparisId { get; set; }
-        public string SiparisAdi { get; set; }
+        public string SiparisKod { get; set; }
+        public string SiparisIsim { get; set; }
         public DateTime TerminTarihi { get; set; }
         public DateTime KayitTarihi { get; set; }
         public int SiparisAdet { get; set; }

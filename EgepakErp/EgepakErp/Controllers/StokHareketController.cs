@@ -42,6 +42,277 @@ namespace EgePakErp.Controllers
             return View();
         }
 
+        //public JsonResult Liste()
+        //{
+        //    bool montajli = false;
+
+        //    if (!string.IsNullOrEmpty(Request.Form["query[MontajliMi]"]))
+        //    {
+        //        montajli = Request.Form["query[MontajliMi]"].ToLower() == "true" ? true : false;
+        //    }
+
+        //    //kabasını aldır
+        //    var dtModel = new DataTableModel<dynamic>();
+        //    var dtMeta = new DataTableMeta();
+
+        //    dtMeta.field = Request.Form["sort[field]"] == null ? dtMetaField : Request.Form["sort[field]"];
+        //    dtMeta.sort = Request.Form["sort[sort]"] == null ? "Desc" : Request.Form["sort[sort]"];
+
+        //    dtMeta.page = Convert.ToInt32(Request.Form["pagination[page]"]);
+        //    dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
+
+        //    var model = repo.GetAll();
+        //    var allList = repo.GetAll().ToList();
+        //    var yaldizList = yaldizRepo.GetAll();
+        //    var BoyaKodList = boyaKodRepo.GetAll();
+        //    var BoyaKaplamaList = boyaKaplamaRepo.GetAll();
+        //    var YaldizPdfList = yaldizRepo.GetAll();
+
+        //    var montajliKaliplar = repo.GetAll(x => x.MontajliMi).ToList();
+        //    var yaldizKalipList = siparisKalipRepo.GetAll(x => x.YaldizKodList != null);
+        //    //var yaldizKalipList = siparisKalipRepo.GetAll(x => x.YaldizId != null);
+        //    var tozBoyaKodKalipList = siparisKalipRepo.GetAll(x => x.TozBoyaKodList != null);
+        //    var kalipListe = kalipRepo.GetAll();
+
+        //    if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
+        //    {
+        //        string q = Request.Form["query[searchQuery]"].ToString();
+        //        model = model
+        //            .Where(
+        //            x => x.Siparis.SiparisAdi.Contains(q) ||
+        //            x.SiparisKalip.KalipKod == q ||
+        //            x.SiparisKalip.KalipAdi.Contains(q)
+        //            );
+        //    }
+
+        //    if (!string.IsNullOrEmpty(Request.Form["query[cariId]"]))
+        //    {
+        //        int cariId = Convert.ToInt32(Request.Form["query[cariId]"].ToString());
+        //        model = model.Where(x => x.Siparis.CariId == cariId);
+        //    }
+
+        //    if (!string.IsNullOrEmpty(Request.Form["query[yer]"]))
+        //    {
+        //        string yer = Request.Form["query[cariId]"].ToString();
+        //        model = model.Where(x => x.Yer.Contains(yer));
+        //    }
+        //    if (!string.IsNullOrEmpty(Request.Form["query[adi]"]))
+        //    {
+        //        string adi = Request.Form["query[adi]"].ToString();
+        //        model = model.Where(x => (x.SiparisKalip.EnjeksiyonRenk+" "+x.SiparisKalip.KalipAdi).Contains(adi));
+        //    }
+
+        //    try
+        //    {
+        //        model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
+        //    }
+
+        //    catch (Exception)
+        //    {
+        //        model = model.OrderBy(dtMetaField + " Desc");
+        //        dtMeta.field = dtMetaField;
+        //        dtMeta.sort = "Desc";
+        //    }
+
+        //    var count = model.Count();
+
+        //    dtMeta.total = count;
+        //    dtMeta.pages = dtMeta.total / dtMeta.perpage + 1;
+
+
+        //    //sayfala
+        //    model = model.Skip((dtMeta.page - 1) * dtMeta.perpage).Take(dtMeta.perpage);
+
+        //    //kalıplar birbirine montajlı ise
+        //    if (montajli)
+        //    {
+        //        var dto = model.AsEnumerable().Where(x => x.MontajliMi == true).GroupBy(x => x.MontajKod).Select(x =>
+        //        {
+        //            var temp = x.FirstOrDefault();
+        //            var montajKod = temp.MontajKod;
+        //            var montajliList = new List<StokHareket>();
+
+        //            var GranulBoyalar = "";
+        //            var Yaldizlar = "";
+        //            var KalipAdlar = "";
+
+        //            if (montajKod != null)
+        //            {
+        //                montajliList = allList.Where(a => a.MontajKod == montajKod).ToList();
+        //            }
+
+        //            var KalipKodList = temp.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == temp.MontajKod).Select(a => a.SiparisKalip.SiparisKalipId) : new List<int>() { temp.SiparisKalip.SiparisKalipId };
+
+        //            foreach (var item in KalipKodList)
+        //            {
+        //                var siparisKalip = siparisKalipRepo.Get(item);
+        //                var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == siparisKalip.KalipKod);
+        //                if (_kalip != null)
+        //                {
+        //                    KalipAdlar += siparisKalip.EnjeksiyonRenk + " " + _kalip.Adi + "<br />";
+        //                }
+
+        //                var yaldizSiparisKalip = yaldizKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "yaldiz").ToList();
+        //                var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "tozboya").ToList();
+
+        //                if (yaldizSiparisKalip != null && yaldizSiparisKalip.Count > 0)
+        //                {
+        //                    foreach (var y in yaldizSiparisKalip)
+        //                    {
+        //                        var yKodList = y.YaldizKodList.Split(',');
+        //                        Yaldizlar += "<p class=\"BoyaKodList\">";
+        //                        foreach (var yId in yKodList)
+        //                        {
+        //                            var id = Convert.ToInt32(yId);
+        //                            Yaldizlar += _kalip.Adi + "  : " + YaldizPdfList.FirstOrDefault(a => a.YaldizId == id)?.Aciklama + "<br/>";
+        //                        }
+        //                        Yaldizlar += "</p>";
+        //                    }
+        //                }
+
+        //                if (tozBoyaKodSiparisKalip != null && tozBoyaKodSiparisKalip.Count > 0)
+        //                {
+        //                    foreach (var b in tozBoyaKodSiparisKalip)
+        //                    {
+        //                        var bKodList = b.TozBoyaKodList.Split(',');
+        //                        GranulBoyalar += "<p class=\"BoyaKodList\">";
+        //                        foreach (var bId in bKodList)
+        //                        {
+        //                            var id = Convert.ToInt32(bId);
+        //                            GranulBoyalar += _kalip.Adi + "  : " + BoyaKaplamaList.FirstOrDefault(a => a.BoyaKaplamaId == id)?.Aciklama + "<br/>";
+        //                        }
+        //                        GranulBoyalar += "</p>";
+        //                    }
+        //                }
+
+
+        //            }
+
+        //            dynamic ret = new
+        //            {
+        //                Id = temp.StokHareketId,
+        //                Type = temp.StokHareketType.Type,
+        //                SiparisId = temp.SiparisId,
+        //                SiparisKalipId = temp.SiparisKalipId,
+        //                KalipKodList = KalipAdlar,
+        //                Yer = x.FirstOrDefault(y => y.Yer != null)?.Yer,
+        //                Yaldiz = Yaldizlar,
+        //                BoyaKod = GranulBoyalar,
+        //                SiparisAdi = temp.Siparis.SiparisAdi,
+        //                CariId = temp.Siparis.CariId,
+        //                Cari = temp.Siparis.Cari.Unvan,
+        //                Adet = x.FirstOrDefault(y => y.Adet != null && y.Adet != 0)?.Adet,
+        //                Kalan = temp.DepodaKalanAdet,
+        //                MontajliMi = temp.MontajliMi,
+        //            };
+
+        //            return ret;
+
+        //        }).ToList();
+
+
+        //        dtModel.meta = dtMeta;
+        //        dtModel.data = dto.ToList<dynamic>();
+        //        return Json(dtModel);
+        //    }
+
+        //    //kalıplar tek tek girecek ise
+        //    else
+        //    {
+        //        var dto = model.AsEnumerable().Where(x => x.MontajliMi == false).Select(x =>
+        //        {
+        //            var montajKod = x.MontajKod;
+        //            var montajliList = new List<StokHareket>();
+
+        //            var GranulBoyalar = "";
+        //            var Yaldizlar = "";
+        //            var KalipAdlar = "";
+
+        //            if (montajKod != null)
+        //            {
+        //                montajliList = allList.Where(a => a.MontajKod == montajKod).ToList();
+        //            }
+
+        //            var KalipKodList = x.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == x.MontajKod).Select(a => a.SiparisKalip.SiparisKalipId) : new List<int>() { x.SiparisKalip.SiparisKalipId };
+
+
+        //            foreach (var item in KalipKodList)
+        //            {
+        //                var siparisKalip = siparisKalipRepo.Get(item);
+        //                var _kalip = kalipListe.FirstOrDefault(a => a.ParcaKodu == siparisKalip.KalipKod);
+        //                if (_kalip != null)
+        //                {
+        //                    KalipAdlar += siparisKalip.EnjeksiyonRenk + " " + _kalip.Adi + "<br />";
+        //                }
+
+        //                var yaldizSiparisKalip = yaldizKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "yaldiz").ToList();
+        //                var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "tozboya").ToList();
+
+        //                if (yaldizSiparisKalip != null && yaldizSiparisKalip.Count > 0)
+        //                {
+        //                    foreach (var y in yaldizSiparisKalip)
+        //                    {
+        //                        var yKodList = y.YaldizKodList.Split(',');
+        //                        Yaldizlar += "<p class=\"BoyaKodList\">";
+        //                        foreach (var yId in yKodList)
+        //                        {
+        //                            var id = Convert.ToInt32(yId);
+        //                            Yaldizlar += _kalip.Adi + "  : " + YaldizPdfList.FirstOrDefault(a => a.YaldizId == id)?.Aciklama + "<br/>";
+        //                        }
+        //                        Yaldizlar += "</p>";
+        //                    }
+        //                }
+
+
+        //                if (tozBoyaKodSiparisKalip != null && tozBoyaKodSiparisKalip.Count > 0)
+        //                {
+        //                    foreach (var b in tozBoyaKodSiparisKalip)
+        //                    {
+        //                        GranulBoyalar += "<p class=\"BoyaKodList\">";
+        //                        var bKodList = b.TozBoyaKodList.Split(',');
+        //                        foreach (var bId in bKodList)
+        //                        {
+        //                            var id = Convert.ToInt32(bId);
+        //                            GranulBoyalar += _kalip.Adi + "  : " + BoyaKaplamaList.FirstOrDefault(a => a.BoyaKaplamaId == id)?.Aciklama + "<br/>";
+        //                        }
+        //                        GranulBoyalar += "</p>";
+        //                    }
+
+        //                }
+
+
+        //            }
+
+        //            dynamic ret = new
+        //            {
+        //                Id = x.StokHareketId,
+        //                Type = x.StokHareketType.Type,
+        //                SiparisId = x.SiparisId,
+        //                SiparisKalipId = x.SiparisKalipId,
+        //                KalipKodList = KalipAdlar,
+        //                Yer = x.Yer,
+        //                Yaldiz = Yaldizlar,
+        //                BoyaKod = GranulBoyalar,
+        //                SiparisAdi = x.Siparis.SiparisAdi,
+        //                CariId = x.Siparis.CariId,
+        //                Cari = x.Siparis.Cari.Unvan,
+        //                Adet = x.Adet,
+        //                Kalan = x.DepodaKalanAdet,
+        //                MontajliMi = x.MontajliMi,
+        //            };
+
+        //            return ret;
+
+        //        }).ToList();
+
+
+        //        dtModel.meta = dtMeta;
+        //        dtModel.data = dto.ToList<dynamic>();
+        //        return Json(dtModel);
+        //    }
+
+        //}
+
         public JsonResult Liste()
         {
             bool montajli = false;
@@ -62,16 +333,8 @@ namespace EgePakErp.Controllers
             dtMeta.perpage = Convert.ToInt32(Request.Form["pagination[perpage]"]);
 
             var model = repo.GetAll();
-            var allList = repo.GetAll().ToList();
-            var yaldizList = yaldizRepo.GetAll();
-            var BoyaKodList = boyaKodRepo.GetAll();
-            var BoyaKaplamaList = boyaKaplamaRepo.GetAll();
-            var YaldizPdfList = yaldizRepo.GetAll();
 
             var montajliKaliplar = repo.GetAll(x => x.MontajliMi).ToList();
-            var yaldizKalipList = siparisKalipRepo.GetAll(x => x.YaldizKodList != null);
-            //var yaldizKalipList = siparisKalipRepo.GetAll(x => x.YaldizId != null);
-            var tozBoyaKodKalipList = siparisKalipRepo.GetAll(x => x.TozBoyaKodList != null);
             var kalipListe = kalipRepo.GetAll();
 
             if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
@@ -79,7 +342,7 @@ namespace EgePakErp.Controllers
                 string q = Request.Form["query[searchQuery]"].ToString();
                 model = model
                     .Where(
-                    x => x.Siparis.SiparisAdi.Contains(q) ||
+                    x => x.Siparis.SiparisKod.Contains(q) ||
                     x.SiparisKalip.KalipKod == q ||
                     x.SiparisKalip.KalipAdi.Contains(q)
                     );
@@ -99,7 +362,7 @@ namespace EgePakErp.Controllers
             if (!string.IsNullOrEmpty(Request.Form["query[adi]"]))
             {
                 string adi = Request.Form["query[adi]"].ToString();
-                model = model.Where(x => (x.SiparisKalip.EnjeksiyonRenk+" "+x.SiparisKalip.KalipAdi).Contains(adi));
+                model = model.Where(x => (x.SiparisKalip.EnjeksiyonRenk + " " + x.SiparisKalip.KalipAdi).Contains(adi));
             }
 
             try
@@ -131,16 +394,7 @@ namespace EgePakErp.Controllers
                     var temp = x.FirstOrDefault();
                     var montajKod = temp.MontajKod;
                     var montajliList = new List<StokHareket>();
-
-                    var GranulBoyalar = "";
-                    var Yaldizlar = "";
                     var KalipAdlar = "";
-
-                    if (montajKod != null)
-                    {
-                        montajliList = allList.Where(a => a.MontajKod == montajKod).ToList();
-                    }
-
                     var KalipKodList = temp.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == temp.MontajKod).Select(a => a.SiparisKalip.SiparisKalipId) : new List<int>() { temp.SiparisKalip.SiparisKalipId };
 
                     foreach (var item in KalipKodList)
@@ -152,39 +406,6 @@ namespace EgePakErp.Controllers
                             KalipAdlar += siparisKalip.EnjeksiyonRenk + " " + _kalip.Adi + "<br />";
                         }
 
-                        var yaldizSiparisKalip = yaldizKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "yaldiz").ToList();
-                        var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == temp.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "tozboya").ToList();
-
-                        if (yaldizSiparisKalip != null && yaldizSiparisKalip.Count > 0)
-                        {
-                            foreach (var y in yaldizSiparisKalip)
-                            {
-                                var yKodList = y.YaldizKodList.Split(',');
-                                Yaldizlar += "<p class=\"BoyaKodList\">";
-                                foreach (var yId in yKodList)
-                                {
-                                    var id = Convert.ToInt32(yId);
-                                    Yaldizlar += _kalip.Adi + "  : " + YaldizPdfList.FirstOrDefault(a => a.YaldizId == id)?.Aciklama + "<br/>";
-                                }
-                                Yaldizlar += "</p>";
-                            }
-                        }
-
-                        if (tozBoyaKodSiparisKalip != null && tozBoyaKodSiparisKalip.Count > 0)
-                        {
-                            foreach (var b in tozBoyaKodSiparisKalip)
-                            {
-                                var bKodList = b.TozBoyaKodList.Split(',');
-                                GranulBoyalar += "<p class=\"BoyaKodList\">";
-                                foreach (var bId in bKodList)
-                                {
-                                    var id = Convert.ToInt32(bId);
-                                    GranulBoyalar += _kalip.Adi + "  : " + BoyaKaplamaList.FirstOrDefault(a => a.BoyaKaplamaId == id)?.Aciklama + "<br/>";
-                                }
-                                GranulBoyalar += "</p>";
-                            }
-                        }
-
 
                     }
 
@@ -194,11 +415,8 @@ namespace EgePakErp.Controllers
                         Type = temp.StokHareketType.Type,
                         SiparisId = temp.SiparisId,
                         SiparisKalipId = temp.SiparisKalipId,
-                        KalipKodList = KalipAdlar,
                         Yer = x.FirstOrDefault(y => y.Yer != null)?.Yer,
-                        Yaldiz = Yaldizlar,
-                        BoyaKod = GranulBoyalar,
-                        SiparisAdi = temp.Siparis.SiparisAdi,
+                        SiparisKod = temp.Siparis.SiparisKod,
                         CariId = temp.Siparis.CariId,
                         Cari = temp.Siparis.Cari.Unvan,
                         Adet = x.FirstOrDefault(y => y.Adet != null && y.Adet != 0)?.Adet,
@@ -223,15 +441,7 @@ namespace EgePakErp.Controllers
                 {
                     var montajKod = x.MontajKod;
                     var montajliList = new List<StokHareket>();
-
-                    var GranulBoyalar = "";
-                    var Yaldizlar = "";
                     var KalipAdlar = "";
-
-                    if (montajKod != null)
-                    {
-                        montajliList = allList.Where(a => a.MontajKod == montajKod).ToList();
-                    }
 
                     var KalipKodList = x.MontajliMi == true ? montajliKaliplar.Where(a => a.MontajKod == x.MontajKod).Select(a => a.SiparisKalip.SiparisKalipId) : new List<int>() { x.SiparisKalip.SiparisKalipId };
 
@@ -244,43 +454,6 @@ namespace EgePakErp.Controllers
                         {
                             KalipAdlar += siparisKalip.EnjeksiyonRenk + " " + _kalip.Adi + "<br />";
                         }
-
-                        var yaldizSiparisKalip = yaldizKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "yaldiz").ToList();
-                        var tozBoyaKodSiparisKalip = tozBoyaKodKalipList.Where(c => c.SiparisId == x.SiparisId && c.KalipKod == siparisKalip.KalipKod && c.MaliyetType.ToLower() == "tozboya").ToList();
-
-                        if (yaldizSiparisKalip != null && yaldizSiparisKalip.Count > 0)
-                        {
-                            foreach (var y in yaldizSiparisKalip)
-                            {
-                                var yKodList = y.YaldizKodList.Split(',');
-                                Yaldizlar += "<p class=\"BoyaKodList\">";
-                                foreach (var yId in yKodList)
-                                {
-                                    var id = Convert.ToInt32(yId);
-                                    Yaldizlar += _kalip.Adi + "  : " + YaldizPdfList.FirstOrDefault(a => a.YaldizId == id)?.Aciklama + "<br/>";
-                                }
-                                Yaldizlar += "</p>";
-                            }
-                        }
-
-
-                        if (tozBoyaKodSiparisKalip != null && tozBoyaKodSiparisKalip.Count > 0)
-                        {
-                            foreach (var b in tozBoyaKodSiparisKalip)
-                            {
-                                GranulBoyalar += "<p class=\"BoyaKodList\">";
-                                var bKodList = b.TozBoyaKodList.Split(',');
-                                foreach (var bId in bKodList)
-                                {
-                                    var id = Convert.ToInt32(bId);
-                                    GranulBoyalar += _kalip.Adi + "  : " + BoyaKaplamaList.FirstOrDefault(a => a.BoyaKaplamaId == id)?.Aciklama + "<br/>";
-                                }
-                                GranulBoyalar += "</p>";
-                            }
-
-                        }
-
-
                     }
 
                     dynamic ret = new
@@ -291,9 +464,7 @@ namespace EgePakErp.Controllers
                         SiparisKalipId = x.SiparisKalipId,
                         KalipKodList = KalipAdlar,
                         Yer = x.Yer,
-                        Yaldiz = Yaldizlar,
-                        BoyaKod = GranulBoyalar,
-                        SiparisAdi = x.Siparis.SiparisAdi,
+                        SiparisKod = x.Siparis.SiparisKod,
                         CariId = x.Siparis.CariId,
                         Cari = x.Siparis.Cari.Unvan,
                         Adet = x.Adet,

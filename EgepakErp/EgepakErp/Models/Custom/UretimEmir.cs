@@ -28,8 +28,8 @@ namespace EgePakErp.Models
         //public int UretilenAdet { get; set; }
         public int SiparisAdet { get; set; }
 
-        public int UretimEmirDurumId { get; set; }
-        public UretimEmirDurum UretimEmirDurum { get; set; }
+        //public int UretimEmirDurumId { get; set; }
+        //public UretimEmirDurum UretimEmirDurum { get; set; }
 
         //public string UretimEmirDurumList { get; set; }
 
@@ -56,8 +56,8 @@ namespace EgePakErp.Models
         public int? KisiId { get; set; }
         public Kisi Kisi { get; set; }
 
-        public ICollection<Aksiyon> Aksiyon { get; set; }
-        public ICollection<UretimAksiyon> UretimAksiyon { get; set; }
+        //public ICollection<Aksiyon> Aksiyon { get; set; }
+        //public ICollection<UretimAksiyon> UretimAksiyon { get; set; }
         public ICollection<UretimEmirAksiyon> UretimEmirAksiyon { get; set; }
 
         //[NotMapped]

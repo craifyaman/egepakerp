@@ -16,10 +16,12 @@ namespace EgePakErp.Concrete
                 .Include(x => x.SiparisKalip)
                 .Include(x => x.SiparisKalip.Siparis)
                 .Include(x => x.Siparis.Cari)
-                .Include(x => x.UretimAksiyon)
-                .Include(x => x.UretimEmirDurum)
+                //.Include(x => x.UretimAksiyon)
+                //.Include(x => x.UretimEmirDurum)
                 .Include(x => x.UretimEmirAksiyon)
                 .Include(x => x.Siparis)
+                .Include(x => x.Siparis.Urun)
+                .Include(x => x.Siparis.Urun.UrunCinsi)
                 .Include("UretimEmirAksiyon.UretimEmirAksiyonType")
                 .AsQueryable();
         }

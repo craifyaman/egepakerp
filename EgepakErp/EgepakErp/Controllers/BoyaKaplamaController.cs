@@ -20,13 +20,13 @@ namespace EgePakErp.Controllers
             repo = new BoyaKaplamaRepository();
         }
         // GET: Fiyat
-        [Menu("Boya Kaplama Liste", "fa-solid fa-list-ol icon-xl", "Boya Kaplama", 0, 1)]
+        [Menu("Boya Kodları", "fa-solid fa-list-ol icon-xl", "Boya Kodları", 0, 1)]
         public ActionResult Index()
         {
             return View();
         }
 
-        [Yetki("Boya Kaplama Liste", "Boya Kaplama")]
+        [Yetki("Boya Kodları Listesi", "Boya Kodları")]
         public JsonResult Liste()
         {
             //kabasını aldır
@@ -103,7 +103,7 @@ namespace EgePakErp.Controllers
             return PartialView();
         }
 
-        [Yetki("Boya Kaplama Kaydet", "Boya Kaplama")]
+        [Yetki("Boya Kod Kaydet", "Boya Kodları")]
         public JsonResult Kaydet(BoyaKaplama form)
         {
             var response = new Response();

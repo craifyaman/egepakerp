@@ -40,16 +40,7 @@
                     },
                     function (r) {
                         //Complete
-                        if (r.responseJSON.Success) {
-                            setTimeout(function () {
-                                bootbox.hideAll();
-                                location.reload();
-                            }, 2000)
-
-                        } else {
-                            console.log(r.responseJSON);
-                            toastr.error(r.responseJSON.Description);
-                        }
+                        Global.BootBoxHideAll(r);
 
                     },
                     "json");
@@ -95,7 +86,7 @@
                 Global.init();
                 KTBootstrapDatetimepicker.init();
                 KTSelect2.init();
-                $("#UretimEmirDurumId").select2();
+               /* $("#UretimEmirDurumId").select2();*/
             },
             "html");
     }
@@ -187,6 +178,86 @@
             "html");
     }
 
+    function UretimEmirAksiyonListe(UretimEmirId, UretimEmirAksiyonTypeId) {
+        Post("/UretimEmir/UretimEmirAksiyonListe",
+            { UretimEmirId: UretimEmirId, UretimEmirAksiyonTypeId: UretimEmirAksiyonTypeId },
+            function (response) {
+                bootbox.dialog({
+                    title: "Aksiyon Listesi",
+                    message: Global.cardTemplate(response),
+                    size: 'large',
+                    buttons: {
+                        cancel: {
+                            label: "Kapat",
+                            className: 'btn-danger',
+                            callback: function () { }
+                        },
+                        ok: {
+                            label: "Kaydet",
+                            className: 'btn-info',
+                            callback: function () {
+                                //UretimEmirAksiyonKaydet();
+                                return false;
+                            }
+                        }
+                    }
+                });
+
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+                Global.init();
+                $("#KisiId").select2();
+            },
+            "html");
+    }
+
+
+    function UretimEmirSil(id) {
+        debugger;
+        Post("/UretimEmir/Sil",
+            { id: id },
+            function (response) {
+                Global.ResponseTemplate(response);
+            },
+            function (x, y, z) {
+                //toastr.error(x.responseText);
+            },
+            function () {
+                //BeforeSend
+            },
+            function (r) {
+                Global.init();
+                Global.BootBoxHideAll(r);
+            },
+            "json");
+    }
+
+    function UretimEmirAksiyonSil(id) {
+        debugger;
+        Post("/UretimEmir/UretimEmirAksiyonSil",
+            { id: id },
+            function (response) {
+                Global.ResponseTemplate(response);
+            },
+            function (x, y, z) {
+                //toastr.error(x.responseText);
+            },
+            function () {
+                //BeforeSend
+            },
+            function (r) {
+                Global.init();
+                Global.BootBoxHideAll(r);
+            },
+            "json");
+    }
+
 
     var handleEvent = function () {
 
@@ -208,10 +279,19 @@
         $(document).on("click", "[event='UretimAksiyonFormPopup']", function (e) {
             debugger;
             e.preventDefault();
-            var UretimAksiyonId = $(this).attr("UretimAksiyonId");
-            UretimAksiyon.Form(UretimAksiyonId);
+            var UretimEmirId = $(this).attr("UretimEmirId");
+            var UretimEmirAksiyonTypeId = $(this).attr("UretimEmirAksiyonTypeId");
+            UretimEmirAksiyonListe(UretimEmirId, UretimEmirAksiyonTypeId);
         });
+
         
+        $(document).on("click", "[event='UretimEmirAksiyonListe']", function (e) {
+            debugger;
+            e.preventDefault();
+            var UretimEmirId = $(this).attr("UretimEmirId");
+            var UretimEmirAksiyonTypeId = $(this).attr("UretimEmirAksiyonTypeId");
+            UretimEmirAksiyonListe(UretimEmirId, UretimEmirAksiyonTypeId);
+        });
         
         $(document).on("change", "#SiparisId", function (event) {
             debugger;
@@ -259,6 +339,98 @@
                 "html");
         });
 
+        $(document).on("click", "[event='UretimEmirSil']", function (event) {
+            event.preventDefault();
+            var id = $(this).attr("id");
+            bootbox.dialog({
+                title: "Emir Sil",
+                message: Global.cardTemplate("Emir Silinecek Onaylıyor Musunuz?"),
+                size: 'large',
+                buttons: {
+                    cancel: {
+                        label: "İptal",
+                        className: 'btn-info',
+                        callback: function () { }
+                    },
+                    ok: {
+                        label: "Sil",
+                        className: 'btn-danger',
+                        callback: function () {
+                            UretimEmirSil(id);
+                            return false;
+                        }
+                    }
+                }
+            });
+        });
+
+        $(document).on("click", "[event='UretimEmirAksiyonDuzenle']", function (e) {
+            debugger;
+            e.preventDefault();
+            var id = $(this).attr("id");
+            Post("/UretimEmir/UretimEmirAksiyonDuzenle",
+                { id: id },
+                function (response) {
+                    bootbox.dialog({
+                        title: "Aksiyon form",
+                        message: Global.cardTemplate(response),
+                        size: 'large',
+                        buttons: {
+                            cancel: {
+                                label: "Kapat",
+                                className: 'btn-danger',
+                                callback: function () { }
+                            },
+                            ok: {
+                                label: "Kaydet",
+                                className: 'btn-info',
+                                callback: function () {
+                                    UretimEmirAksiyonKaydet();
+                                    return false;
+                                }
+                            }
+                        }
+                    });
+
+                },
+                function (x, y, z) {
+                    //Error
+                },
+                function () {
+                    //BeforeSend
+                },
+                function () {
+                    Global.init();
+                    $("#KisiId").select2();
+                },
+                "html");
+        });
+
+        $(document).on("click", "[event='UretimEmirAksiyonSil']", function (event) {
+            event.preventDefault();
+            var id = $(this).attr("id");
+            bootbox.dialog({
+                title: "Kayıt Sil",
+                message: Global.cardTemplate("Kayıt Silinecek Onaylıyor Musunuz?"),
+                size: 'large',
+                buttons: {
+                    cancel: {
+                        label: "İptal",
+                        className: 'btn-info',
+                        callback: function () { }
+                    },
+                    ok: {
+                        label: "Sil",
+                        className: 'btn-danger',
+                        callback: function () {
+                            UretimEmirAksiyonSil(id);
+                            return false;
+                        }
+                    }
+                }
+            });
+        });
+
     }
 
     return {
@@ -274,6 +446,9 @@
         },
         UretimEmirAksiyonForm: function (UretimEmirId, UretimEmirAksiyonTypeId) {
             UretimEmirAksiyonForm(UretimEmirId, UretimEmirAksiyonTypeId);
+        },
+        UretimEmirSil: function (id) {
+            UretimEmirSil(id);
         }
     };
 }();

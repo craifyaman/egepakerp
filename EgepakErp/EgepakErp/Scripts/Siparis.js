@@ -696,6 +696,7 @@
             this.SiparisId;      //int
             this.CariId;         //int
             this.UrunId;         //int
+            this.SiparisIsim;    //string
             this.SiparisKalip;   //object list
             this.TeklifFiyat;    //decimal
             this.TeklifFiyatUsd; //decimal
@@ -787,6 +788,7 @@
         siparisDto.TerminTarihi = $("#TerminTarihi").val();
         siparisDto.SiparisAdet = $("#SiparisAdet").val();
         siparisDto.SiparisDurumId = $("#SiparisDurumId").val();
+        siparisDto.SiparisIsim = $("#SiparisIsim").val();
 
         var keys = Object.keys(siparisDto);
         var include = keys.slice(1, keys.length);
@@ -851,6 +853,7 @@
         }
 
         var array = $(".changed").sort();
+
         array.each(function (index, value) {
             var input = value;
             var degisen = new Degisen();
@@ -864,9 +867,12 @@
 
             if ($(input).prop('disabled') == false) {
                 degisen.isEnable = true;
-            } else {
+            }
+
+            else {
                 degisen.Status = false;
             }
+
             var yaldiz = $(input).attr("YaldizId");
             var boyaKod = $(input).attr("boyaKod");
             var spreyBoyaKod = $(input).attr("spreyBoyaKod");
@@ -908,6 +914,7 @@
             nakitKatsayi: nakitKatsayi,
             vadeliKatsayi: vadeliKatsayi
         }
+
         Post("/siparis/TopluSiparisKalipGuncelle",
             sendObj,
             function (response) {
@@ -927,10 +934,28 @@
             },
             "json");
 
-        var siparis = $("#sipForm").serializeJSON();
+        debugger;
 
-        Post("/siparis/guncelle",
-            { siparis: siparis },
+        //değişen sipariş kalıp isimlerini güncelleme
+        var liste2 = [];
+
+        var Degisen2 = function () {
+            this.SiparisKalipId;//int
+            this.UretimParcaAdi;//string
+        }
+
+        var array2 = $(".en_renk_changed").sort();
+
+        array2.each(function (index, value) {
+            var input = value;
+            var degisen = new Degisen2();
+            degisen.SiparisKalipId = input.getAttribute("SiparisKalipId");
+            degisen.UretimParcaAdi = $(input).val();
+            liste2.push(degisen);
+        });
+
+        Post("/siparis/SiparisKalipUretimAdGuncelle",
+            { liste: liste2 },
             function (response) {
                 if (response.Success) {
                     toastr.success(response.Description);
@@ -1227,6 +1252,11 @@
         $(document).on("change", ".siparisFiyat", function (event) {
             event.preventDefault();
             $(this).addClass("changed");
+        });
+
+        $(document).on("change", ".en_renk", function (event) {
+            event.preventDefault();
+            $(this).addClass("en_renk_changed");
         });
 
         $(document).on("change", "#NakitSatisKatsayi", function (event) {

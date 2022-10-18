@@ -128,6 +128,26 @@
         });
     }
 
+    var responseTemplate = function (response) {
+        debugger;
+        console.log(response);
+        response.Success == true ? toastr.success(response.Description) : toastr.error(response.Description);
+
+    }
+
+    var bootBoxHideAll = function (r) {
+        if (r.responseJSON.Success) {
+            setTimeout(function () {
+                bootbox.hideAll();
+                location.reload();
+            }, 2000)
+
+        } else {
+            console.log(r.responseJSON);
+            toastr.error(r.responseJSON.Description);
+        }
+    }
+
     return {
         // public functions
         init: function () {
@@ -141,6 +161,12 @@
         },
         dateRange: function () {
             dateRange();
+        },
+        ResponseTemplate: function (response) {
+            responseTemplate(response);
+        },
+        BootBoxHideAll: function (r) {
+            bootBoxHideAll(r);
         }
     };
 }();

@@ -14,7 +14,7 @@
             <th>Ağırlık(gr)</th>
             <th>Göz Sayısı</th>
             <th>Çevrim Süresi(sn)</th>
-            <th>Enjeksiyon Renk</th>
+            <th>Parça Adı</th>
             <th>İşlem</th>
         </tr>
     </thead>
@@ -30,7 +30,7 @@
                 <td>@item.KalipGozSayisi</td>
                 <td>@item.UretimZamani</td>
                 <td>
-                    <input type="text" id="enj_renk_@item.KalipId" class="en_renk form-control" placeholder="enjeksiyon rengi gir" value=""/>
+                    <input type="text" id="enj_renk_@item.KalipId" SiparisKalipId="@item.UretimSiparisKalipId" class="en_renk form-control" placeholder="Parça adı gir" value="@item.UretimParcaAdi"/>
                 </td>
                 <td>
                     <a href="#" class="btn btn-icon btn-danger mr-1" event="KalipListesindenCikar"> <i class="flaticon2-cancel-music"></i> </a>

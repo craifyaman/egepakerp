@@ -11,7 +11,8 @@ namespace EgePakErp.Models
         public int MakineId { get; set; }
         public string MakineAd { get; set; }
         public ICollection<UretimEmir> UretimEmir { get; set; }
-       public ICollection<UretimAksiyon> UretimAksiyon { get; set; }
+        public ICollection<UretimEmirAksiyon> UretimEmirAksiyon { get; set; }
+      // public ICollection<UretimAksiyon> UretimAksiyon { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }

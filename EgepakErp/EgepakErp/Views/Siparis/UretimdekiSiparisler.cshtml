@@ -219,9 +219,11 @@
                                 <thead>
                                     <tr>
                                         <th>İşlem</th>
-                                        <th>Firma</th>
-                                        <th>Ürün Kodu</th>
+                                        <th>Ürün</th>
                                         <th>Parça Adı</th>
+                                        <th>Firma</th>
+
+
                                         <th>Sipariş Adet</th>
                                         <th>Üretilen Adet</th>
                                         <th>Yer</th>
@@ -261,13 +263,10 @@
                                                         }
 
                                                     </td>
-                                                    <td>@item.Cari.Unvan.Substring(0, 5) ...</td>
                                                     <td>@(emir.Siparis.Urun.UrunCinsi.Adi +" "+emir.Siparis.Urun.UrunNo)</td>
-                                                    <td>@(emir.SiparisKalip.EnjeksiyonRenk + " "+ emir.SiparisKalip.KalipAdi)</td>
+                                                    <td>@emir.SiparisKalip.EnjeksiyonRenk</td>
+                                                    <td>@item.Cari.Unvan.Substring(0, 5) ...</td>                                                    
                                                     <td>@emir.SiparisAdet</td>
-                                                    @*<td>
-                                                            <input type="number" class="form-control SiparisAdetInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="@emir.UretimAksiyon.Sum(x=>x.UretilenAdet)" />
-                                                        </td>*@
                                                     <td>
                                                         <input type="number" class="form-control SiparisAdetInput" SiparisKalipId="@fixKalip.SiparisKalipId" value="0" />
                                                     </td>
@@ -327,9 +326,9 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Firma</th>
-                                        <th>Ürün Kodu</th>
+                                        <th>Ürün</th>
                                         <th>Parça Adı</th>
+                                        <th>Firma</th>
                                         <th>Sipariş Adet</th>
                                         <th>Enjeksiyon Biten</th>
                                         <th>Sıcak Baskı Biten</th>
@@ -347,9 +346,9 @@
                                         {
                                             <tr>
 
-                                                <td>@item.Cari.Unvan</td>
+                                                <td>@item.Cari.Unvan.Substring(0, 5) ...</td>
                                                 <td>@item.Urun.UrunCinsi.Kisaltmasi @item.Urun.UrunNo</td>
-                                                <td>@emir.SiparisKalip.EnjeksiyonRenk @emir.SiparisKalip.KalipAdi</td>
+                                                <td>@emir.SiparisKalip.EnjeksiyonRenk</td>
                                                 <td>@emir.SiparisAdet</td>
                                                 <td>@emir.UretimEmirAksiyon.Where(x => x.UretimEmirAksiyonTypeId == (int)EUretimEmirAksiyonType.Enjeksiyon).Sum(a => a.BitenAdet).ToString("n0")</td>
                                                 <td>

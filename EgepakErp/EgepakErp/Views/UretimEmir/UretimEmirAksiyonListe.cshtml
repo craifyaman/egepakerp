@@ -1,0 +1,25 @@
+﻿@model List<UretimEmirAksiyon>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Çalışan</th>
+            <th>Adet</th>
+            <th>Tip</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Kisi.AdSoyad</td>
+                <td>@item.BitenAdet</td>
+                <td>@item.UretimEmirAksiyonType.Type</td>
+                <td>
+                    <a class="btn btn-primary" event="UretimEmirAksiyonDuzenle" id="@item.UretimEmirAksiyonId">Düzenle</a>
+                    <a class="btn btn-danger" event="UretimEmirAksiyonSil" id="@item.UretimEmirAksiyonId">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

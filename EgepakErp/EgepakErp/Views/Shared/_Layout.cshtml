@@ -3247,6 +3247,9 @@ License: You must have a valid license purchased only from themeforest(the above
                 var json = jQuery.parseJSON(jqxhr.responseText);
                 toastr.warning(json.Description);
             }
+            else {
+                toastr.error(jqxhr.responseText);
+            }
             //else {
             //    toastr.error(jqxhr.responseJSON.Description);
             //}

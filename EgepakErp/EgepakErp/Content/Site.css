@@ -17,3 +17,7 @@
     text-align: left;
     border-radius: 5px;
 }
+
+.CPointer{
+    cursor:pointer;
+}

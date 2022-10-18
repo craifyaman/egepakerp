@@ -600,8 +600,6 @@
                     str += '<a class="btn btn-icon mr-1 btn-info" event="KalipDetay" href="#" id="' + row.KalipId + '" title="Kalıp Detay" data-toggle="tooltip" data-placement="top"><i class="flaticon-user" ></i></a> ';
 
                     return str;
-
-                    return str;
                 },
             }];
         return columns;
@@ -700,8 +698,13 @@
                 title: '#'
             },
             {
-                field: 'SiparisAdi',
-                title: 'Sipariş numarası'
+                field: 'SiparisAd',
+                title: 'Sipariş'
+            },
+            {
+                field: 'Urun',
+                title: 'Urun',
+                width: 100,
             },
             {
                 field: 'Cari',
@@ -712,11 +715,7 @@
                 field: 'Durum',
                 title: 'Durum'
             },
-            {
-                field: 'Urun',
-                title: 'Urun',
-                width: 100,
-            },
+          
             //{
             //    field: 'UrunId',
             //    title: 'Ürün Id'
@@ -739,15 +738,15 @@
                             <i class="ki ki-bold-more-hor"></i>
                         </button>
                         <div class="dropdown-menu">
-                           <a class="dropdown-item" href="/siparis/siparisformu?siparisId=${row.SiparisId}&urunId=${row.UrunId}" target="_blank">
+                           <a class="dropdown-item CPointer" href="/siparis/siparisformu?siparisId=${row.SiparisId}&urunId=${row.UrunId}" target="_blank">
                               <i class="flaticon-edit mr-3" ></i>  Düzenle
                             </a>
 
-                           <a class="dropdown-item" event="SiparisKisitliFormPopup" id="${row.SiparisId}">
+                           <a class="dropdown-item CPointer" event="SiparisKisitliFormPopup" id="${row.SiparisId}">
                              <i class="fa-solid fa-truck-fast mr-3"></i>  Hızlı Düzenle
                            </a>
 
-                            <a class="dropdown-item" href="/siparis/SiparisUretimDetayPdf?siparisId=${row.SiparisId}" target="_blank">
+                            <a class="dropdown-item CPointer" href="/siparis/SiparisUretimDetayPdf?siparisId=${row.SiparisId}" target="_blank">
                              <i class="far fa-file-pdf mr-3"></i>  Üretim Pdf Dökümü
                             </a>
 
@@ -840,6 +839,10 @@
                 title: 'Açıklama'
             },
             {
+                field: 'Cari',
+                title: 'Cari'
+            },
+            {
                 field: 'İşlem',
                 title: 'İşlem',
                 sortable: false,
@@ -865,29 +868,25 @@
                 width: 50
             },
             {
+                field: 'Siparis',
+                title: 'Siparis',
+            },
+            {
+                field: 'Urun',
+                title: 'Urun',
+            },
+            {
+                field: 'Parca',
+                title: 'Parca',
+            },
+            {
                 field: 'Baslangic',
                 title: 'Baslangic',
-            },
-            {
-                field: 'Bitis',
-                title: 'Bitis',
-            },
-            {
-                field: 'Durum',
-                title: 'Durum',
             },
             {
                 field: 'SiparisAdet',
                 title: 'Sipariş Adet',
             },
-            //{
-            //    field: 'UretilenAdet',
-            //    title: 'Üretilen Adet',
-            //},
-            //{
-            //    field: 'KalanAdet',
-            //    title: 'Kalan Adet',
-            //},
             {
                 field: 'İşlem',
                 title: 'İşlem',
@@ -896,8 +895,26 @@
                 overflow: 'visible',
                 autoHide: false,
                 template: function (row) {
-                    var str = '<a class="btn btn-icon btn-info mr-1"';
-                    str += 'event="UretimEmirFormPopup" href = "#" id = "' + row.UretimEmirId + '" title = "Hızlı Düzenle" data - toggle="tooltip" data - placement="top" > <i class="flaticon-edit" ></i> </a >'
+                    
+                    var str = `
+                    <div class="dropdown dropdown-inline mr-4" >
+                        <button type="button" class="btn btn-light-primary btn-icon btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="ki ki-bold-more-hor"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                           <a class="dropdown-item CPointer" event="UretimEmirFormPopup" id="${row.UretimEmirId}">
+                              <i class="flaticon-edit mr-3" ></i> Hızlı Düzenle
+                            </a>
+
+                           <a class="dropdown-item CPointer" event="UretimEmirSil" id="${row.UretimEmirId}">
+                             <i class="fa-solid fa-cancel mr-3"></i>  Sil
+                           </a>
+
+                        </div>
+                   </div >
+
+`;
+
                     return str;
                 },
             }];
@@ -976,8 +993,8 @@
             //    title: 'Tip',
             //},
             {
-                field: 'SiparisAdi',
-                title: 'SiparisAdi',
+                field: 'SiparisKod',
+                title: 'Siparis Kod',
             },
             {
                 field: 'Cari',

@@ -130,7 +130,7 @@
         for (var i = 0; i < fixListe.length; i++) {
             groups.add({
                 id: i,
-                content: siparisler[i].SiparisAdi,
+                content: siparisler[i].SiparisKod,
                 order: i,
             });
         }
@@ -364,35 +364,35 @@
             CustomWebViewer.View(url);
         });
 
-        $(document).on("change", "#UretimEmirDurumId", function (e) {
-            debugger;
-            var id = $(this).val();
-            if (id == 7) {
-                $("#evMontajDiv").show();
-            }
-            else {
-                $("#evMontajDiv").hide();
-            }
+        //$(document).on("change", "#UretimEmirDurumId", function (e) {
+        //    debugger;
+        //    var id = $(this).val();
+        //    if (id == 7) {
+        //        $("#evMontajDiv").show();
+        //    }
+        //    else {
+        //        $("#evMontajDiv").hide();
+        //    }
 
-        });
+        //});
 
-        $(document).on("click", "[event='UretimAksiyonFormPopup']", function (e) {
-            debugger;
-            e.preventDefault();
-            var UretimEmirId = $(this).attr("UretimEmirId"); 
-            var id = $(this).attr("id");
-            var MakineId = $("#MakineId").val();
-            UretimAksiyon.Form(id, UretimEmirId, MakineId);
-        });
+        //$(document).on("click", "[event='UretimAksiyonFormPopup']", function (e) {
+        //    debugger;
+        //    e.preventDefault();
+        //    var UretimEmirId = $(this).attr("UretimEmirId"); 
+        //    var id = $(this).attr("id");
+        //    var MakineId = $("#MakineId").val();
+        //    UretimAksiyon.Form(id, UretimEmirId, MakineId);
+        //});
 
         $(document).on("click", "[event='AksiyonEkle']", function (e) {
             debugger;
             e.preventDefault();
             var UretimEmirId = $(this).attr("UretimEmirId");
             var AksiyonType = $(this).attr("AksiyonType");
-            var UretimEmirDurumId = $(this).attr("UretimEmirDurumId");
+            //var UretimEmirDurumId = $(this).attr("UretimEmirDurumId");
             var id = $(this).attr("id");
-            Aksiyon.AksiyonForm(id, UretimEmirId, AksiyonType, UretimEmirDurumId);
+            Aksiyon.AksiyonForm(id, UretimEmirId, AksiyonType);
         });
 
         //$(document).on("click", "[event='AksiyonEkle']", function (e) {

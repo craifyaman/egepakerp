@@ -4,6 +4,11 @@
     @Html.HiddenFor(x => x.SiparisId)
     <div class="form-group row">
         <div class="col-lg-12">
+            <label>İsim:</label>
+            @Html.TextBoxFor(x => x.SiparisIsim, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-12">
             <label>açıklama:</label>
             @Html.TextAreaFor(x => x.Aciklama, new { @class = "form-control summernote" })
         </div>

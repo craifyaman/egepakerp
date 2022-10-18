@@ -471,12 +471,12 @@ namespace EgePakErp.Custom
                 .AsQueryable();
             return list;
         }
-        public IQueryable<UretimEmirDurum> BaseUretimEmirDurum()
-        {
-            var list = db.UretimEmirDurum
-                .AsQueryable();
-            return list;
-        }
+        //public IQueryable<UretimEmirDurum> BaseUretimEmirDurum()
+        //{
+        //    var list = db.UretimEmirDurum
+        //        .AsQueryable();
+        //    return list;
+        //}
         public IQueryable<UretimEmir> BaseUretimEmir()
         {
             var list = db.UretimEmir
@@ -568,18 +568,18 @@ namespace EgePakErp.Custom
             var kalip = db.Kalip.FirstOrDefault(x => x.ParcaKodu == kod);
             return kalip;
         }
-        public IQueryable<Aksiyon> BaseAksiyon()
-        {
-            var liste = db.Aksiyon
-                .Include(x => x.AksiyonType)
-                .AsQueryable();
-            return liste;
-        }
-        public IQueryable<AksiyonType> BaseAksiyonType()
-        {
-            var liste = db.AksiyonType.AsQueryable();
-            return liste;
-        }
+        //public IQueryable<Aksiyon> BaseAksiyon()
+        //{
+        //    var liste = db.Aksiyon
+        //        .Include(x => x.AksiyonType)
+        //        .AsQueryable();
+        //    return liste;
+        //}
+        //public IQueryable<AksiyonType> BaseAksiyonType()
+        //{
+        //    var liste = db.AksiyonType.AsQueryable();
+        //    return liste;
+        //}
         public IQueryable<StokHareketType> BaseStokHareketType()
         {
             var liste = db.StokHareketType.AsQueryable();

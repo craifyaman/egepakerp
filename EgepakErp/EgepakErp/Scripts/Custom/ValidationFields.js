@@ -346,11 +346,11 @@
 
     function uretimEmirFormFields() {
         var fields = {
-            UretimEmirDurumId: {
-                validators: {
-                    notEmpty: { message: 'Bos Birakilamaz' }
-                }
-            },
+            //UretimEmirDurumId: {
+            //    validators: {
+            //        notEmpty: { message: 'Bos Birakilamaz' }
+            //    }
+            //},
             Baslangic: {
                 validators: {
                     notEmpty: { message: 'Bos Birakilamaz' }

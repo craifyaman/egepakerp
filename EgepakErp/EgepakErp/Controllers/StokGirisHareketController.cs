@@ -23,7 +23,7 @@ namespace EgePakErp.Controllers
             dtMetaField = "StokGirisHareketId";
         }
 
-        [Menu("Stok Giriş Hareketleri", "fa-solid fa-industry icon-xl", "Depo", 0, 5)]
+        //[Menu("Stok Giriş Hareketleri", "fa-solid fa-industry icon-xl", "Depo", 0, 5)]
         public ActionResult Index()
         {
             return View();

@@ -10,7 +10,7 @@ namespace EgePakErp.Models
         [Key]
         public int UretimEmirDurumId { get; set; }
         public string Durum { get; set; }
-        public ICollection<UretimEmir> UretimEmir { get; set; }
+        //public ICollection<UretimEmir> UretimEmir { get; set; }
 
         [NotMapped]
         public List<string> Include { get; set; }
