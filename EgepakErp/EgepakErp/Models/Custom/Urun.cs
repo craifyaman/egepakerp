@@ -32,6 +32,14 @@ namespace EgePakErp.Models
 
         [NotMapped]
         public List<int> KalipList { get; set; }
+        [NotMapped]
+        public string TamAd
+        {
+            get
+            {
+                return this?.UrunCinsi?.Kisaltmasi + " " + this?.UrunNo;
+            }
+        }
 
     }
 }

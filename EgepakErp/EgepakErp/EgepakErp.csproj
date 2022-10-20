@@ -690,6 +690,14 @@
     <Compile Include="Migrations\202210181525279_temizle.designer.cs">
       <DependentUpon>202210181525279_temizle.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202210191402155_mig52.cs" />
+    <Compile Include="Migrations\202210191402155_mig52.designer.cs">
+      <DependentUpon>202210191402155_mig52.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202210200828020_mig61.cs" />
+    <Compile Include="Migrations\202210200828020_mig61.designer.cs">
+      <DependentUpon>202210200828020_mig61.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Custom\BoyaKaplama.cs" />
     <Compile Include="Models\Custom\BoyaKodSiparisKalipRel.cs" />
     <Compile Include="Models\Custom\BoyaKodType.cs" />
@@ -4067,6 +4075,8 @@
     <Content Include="Views\Rapor\SevkiyatFilterForm.cshtml" />
     <Content Include="Views\UretimEmir\UretimEmirAksiyonListe.cshtml" />
     <Content Include="Views\UretimEmir\UretimEmirAksiyonDuzenle.cshtml" />
+    <Content Include="Views\Siparis\Detay.cshtml" />
+    <Content Include="Views\StokHareket\Detay.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202208020842230_delete_birimId_from_hammaddeCinsi.resx">
@@ -4407,6 +4417,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202210181525279_temizle.resx">
       <DependentUpon>202210181525279_temizle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210191402155_mig52.resx">
+      <DependentUpon>202210191402155_mig52.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202210200828020_mig61.resx">
+      <DependentUpon>202210200828020_mig61.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

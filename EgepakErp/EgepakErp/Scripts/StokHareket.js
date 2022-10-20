@@ -27,7 +27,7 @@
                     },
                     function (r) {
                         //Complete
-                        if (r.responseJSON.Success) {                            
+                        if (r.responseJSON.Success) {
                             setTimeout(function () {
                                 bootbox.hideAll();
                                 $('#kt_datatable').KTDatatable('reload');
@@ -47,7 +47,7 @@
 
     function StokHareketForm(id) {
         Post("/StokHareket/form",
-            { id: id},
+            { id: id },
             function (response) {
                 var box = bootbox.dialog({
                     title: "StokHareket form",
@@ -83,6 +83,25 @@
             "html");
     }
 
+    function Sil(id) {
+        Post("/StokHareket/Sil",
+            { id: id },
+            function (response) {
+                Global.ResponseTemplate(response, true);
+            },
+            function (x, y, z) {
+                //Error
+            },
+            function () {
+                //BeforeSend
+            },
+            function () {
+                Global.init();
+            },
+            "json");
+    }
+
+
     var handleEvent = function () {
         debugger;
         $(document).on("click", "[event='StokHareketFormPopup']", function (e) {
@@ -91,6 +110,33 @@
             var id = $(this).attr("id");
             StokHareketForm(id);
         });
+
+        $(document).on("click", "[event='StokHareketSil']", function (e) {
+            debugger;
+            e.preventDefault();
+            var id = $(this).attr("id");
+            bootbox.dialog({
+                title: "Kayıt Sil",
+                message: Global.cardTemplate("Kayıt Silinecek Onaylıyor Musunuz?"),
+                size: 'large',
+                buttons: {
+                    cancel: {
+                        label: "İptal",
+                        className: 'btn-info',
+                        callback: function () { }
+                    },
+                    ok: {
+                        label: "Sil",
+                        className: 'btn-danger',
+                        callback: function () {
+                            Sil(id);
+                            return false;
+                        }
+                    }
+                }
+            });
+        });
+
     }
 
     return {

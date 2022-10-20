@@ -116,12 +116,14 @@ namespace EgePakErp.Controllers
             var dto = model.AsEnumerable().Select(i => new
             {
                 Id = i.UretimEmirAksiyonId,
+                Urun = i.UretimEmir.Siparis.Urun.TamAd,
                 UretimEmirId = i.UretimEmirId,
                 BitenAdet = i.BitenAdet,
                 KisiId = i.KisiId,
                 Kisi = i.Kisi.AdSoyad,
                 KayitTarih = i.KayitTarih.ToString("dd MM yyyy"),
-                Parca = i.UretimEmir.SiparisKalip.KalipAdi,
+                Parca = i.UretimEmir.SiparisKalip.EnjeksiyonRenk,
+                Siparis = i.UretimEmir.Siparis.SiparisIsim,
                 Bolum = i.UretimEmirAksiyonType.Type
 
             }).ToList<dynamic>();
@@ -138,7 +140,7 @@ namespace EgePakErp.Controllers
             return View();
         }
 
-        
+
         [Yetki("Sevkiyat Rapor Liste", "Rapor")]
         public JsonResult SevkiyatListe()
         {
@@ -196,6 +198,8 @@ namespace EgePakErp.Controllers
             var dto = model.AsEnumerable().Select(i => new
             {
                 Id = i.StokCikisHareketId,
+                Urun = i.StokHareket.Siparis.Urun.TamAd,
+                Parca = i.StokHareket.Adi,
                 Adet = i.Adet,
                 CikisTarih = i.CikisTarih.ToString("dd MM yyyy"),
                 StokHareketId = i.StokHareketId,

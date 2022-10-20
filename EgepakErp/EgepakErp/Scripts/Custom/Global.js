@@ -1,5 +1,12 @@
 ﻿var Global = function () {
 
+    var defaultDateLocal = function () {
+        var arr = $(".defaultDateLocal");
+        arr.each(function (index, value) {
+            var val = $(this).attr("defaultValue");
+            $(this).val(val);
+        });
+    }
     var init = function () {
 
         $('.selectpicker').selectpicker();
@@ -16,7 +23,7 @@
         });
 
         $(".defaultSelect2").select2();
-
+        defaultDateLocal();
         /*
         // input group and left alignment setup
         $('.dateRangePicker').daterangepicker({
@@ -128,11 +135,14 @@
         });
     }
 
-    var responseTemplate = function (response) {
+    var responseTemplate = function (response, isHideAll = false) {
         debugger;
         console.log(response);
         response.Success == true ? toastr.success(response.Description) : toastr.error(response.Description);
-
+        if (isHideAll == true) {
+            $('#kt_datatable').KTDatatable('reload');
+            bootbox.hideAll();
+        }
     }
 
     var bootBoxHideAll = function (r) {
@@ -148,6 +158,8 @@
         }
     }
 
+
+
     return {
         // public functions
         init: function () {
@@ -162,11 +174,14 @@
         dateRange: function () {
             dateRange();
         },
-        ResponseTemplate: function (response) {
-            responseTemplate(response);
+        ResponseTemplate: function (response, isHideAll = false) {
+            responseTemplate(response, isHideAll);
         },
         BootBoxHideAll: function (r) {
             bootBoxHideAll(r);
+        },
+        DefaultDateLocal: function () {
+            defaultDateLocal();
         }
     };
 }();

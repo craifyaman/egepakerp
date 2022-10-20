@@ -1,4 +1,5 @@
-﻿using EgePakErp.Models;
+﻿
+using EgePakErp.Models;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,8 +15,12 @@ namespace EgePakErp.Concrete
                 .Include(x => x.StokHareketType)
                 .Include(x => x.Siparis)
                 .Include(x => x.Siparis.Cari)
-                .Include(x => x.SiparisKalip)
+                //.Include(x => x.SiparisKalip)
                 .Include(x => x.StokCikisHareket)
+                .Include(x => x.StokGirisHareket)
+                .Include(x => x.Siparis.Urun)
+                .Include(x => x.Siparis.SiparisDurum)
+                .Include(x => x.Siparis.Urun.UrunCinsi)
                 .AsQueryable();
         }
         public override StokHareket Get(int id)

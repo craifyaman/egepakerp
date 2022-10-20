@@ -104,7 +104,7 @@ namespace EgePakErp.Controllers
 
             if (form.StokGirisHareketId == 0)
             {
-                form.GirisTarih = DateTime.Now;
+                form.GirisTarih = form.GirisTarih == null ? DateTime.Now : form.GirisTarih;
                 repo.Insert(form);
                 var sip = Db.StokHareket.FirstOrDefault(x => x.StokHareketId == form.StokHareketId);
                 if (sip != null)

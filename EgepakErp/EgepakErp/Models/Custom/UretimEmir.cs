@@ -21,9 +21,9 @@ namespace EgePakErp.Models
         public Makine Makine { get; set; }
 
 
-        public DateTime Baslangic { get; set; }
+        public DateTime? Baslangic { get; set; }
 
-        public DateTime Bitis { get; set; }
+        public DateTime? Bitis { get; set; }
         public DateTime? TamamlanmaTarih { get; set; }
         //public int UretilenAdet { get; set; }
         public int SiparisAdet { get; set; }

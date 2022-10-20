@@ -47,6 +47,9 @@ namespace EgePakErp.Models
         [NotMapped]
         public List<string> Include { get; set; }
 
+      
+
+
 
     }
 }

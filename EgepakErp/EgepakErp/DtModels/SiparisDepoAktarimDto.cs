@@ -7,6 +7,8 @@
         public int SiparisId { get; set; }
         public int Adet { get; set; }
         public string Yer { get; set; }
+        public string UretimParcaAdi { get; set; }
+
 
     }
 }

@@ -12,6 +12,8 @@ namespace EgePakErp.Concrete
         {
             return dbset
                 .Include(x => x.StokHareket)
+                .Include(x => x.StokHareket.Siparis.Urun)
+                .Include(x => x.StokHareket.Siparis.Urun.UrunCinsi)
                 .Include(x => x.Cari)
                 .AsQueryable();
         }

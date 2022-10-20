@@ -222,8 +222,6 @@
                                         <th>Ürün</th>
                                         <th>Parça Adı</th>
                                         <th>Firma</th>
-
-
                                         <th>Sipariş Adet</th>
                                         <th>Üretilen Adet</th>
                                         <th>Yer</th>
@@ -257,7 +255,9 @@
                                                                        Adet="@item.SiparisAdet"
                                                                        Yer=""
                                                                        SiparisKalipId="@fixKalip.SiparisKalipId"
-                                                                       UretimEmirId="@emir.UretimEmirId" />
+                                                                       UretimEmirId="@emir.UretimEmirId"
+                                                                       UretimParcaAdi="@emir.SiparisKalip.EnjeksiyonRenk"
+                                                                       />
                                                                 <span></span>
                                                             </label>
                                                         }
@@ -283,7 +283,8 @@
                                                                SiparisKalipId="@fixKalip.SiparisKalipId"
                                                                UretimEmirId="@emir.UretimEmirId"
                                                                class="btn btn-light btn-text-success btn-hover-text-success"
-                                                               title="Tekli olarak depoya ekle">
+                                                               title="Tekli olarak depoya ekle"
+                                                               UretimParcaAdi="@emir.SiparisKalip.EnjeksiyonRenk">
                                                                 depola
                                                             </a>
                                                         }

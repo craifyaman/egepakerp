@@ -18,7 +18,7 @@ namespace EgePakErp.Controllers
             repo = new BoyaKodRepository();
         }
         // GET: Fiyat
-        [Menu("Sprey Boya Kod Listesi", "fas fa-paint-brush icon-xl", "Boya Kodları", 0, 1)]
+        [Menu("Sprey Boya Kod Listesi", "fas fa-paint-brush icon-xl", "Boya Kodları", 5, 1)]
         public ActionResult Index()
         {
             return View();

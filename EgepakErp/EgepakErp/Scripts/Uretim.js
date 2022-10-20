@@ -208,12 +208,14 @@
 
     function DepoyaAktarCoklu() {
         debugger;
+
         var SiparisKalipDepoDto = function () {
             this.siparisKalipId;//int
             this.SiparisId;//int
             this.UretimEmirId;//int
             this.Adet;//int
             this.Yer;//string
+            this.UretimParcaAdi;//string
         }
 
         var SiparisKalipDepoDtoList = [];
@@ -228,6 +230,7 @@
             dto.SiparisId = $(input).attr("SiparisId");
             dto.Adet = $(input).attr("Adet");
             dto.Yer = $(input).attr("Yer");
+            dto.UretimParcaAdi = $(input).attr("UretimParcaAdi");
 
             if ($(input).prop('checked') == true) {
                 SiparisKalipDepoDtoList.push(dto);
@@ -257,10 +260,18 @@
             "json");
     }
 
-    function DepoyaAktarTekli(SiparisKalipId, SiparisId, Adet, Yer, UretimEmirId) {
+    function DepoyaAktarTekli(SiparisKalipId, SiparisId, Adet, Yer, UretimEmirId, UretimParcaAdi) {
         debugger;
+        var obj = {
+            SiparisKalipId: SiparisKalipId,
+            SiparisId: SiparisId,
+            Adet: Adet,
+            Yer: Yer,
+            UretimEmirId: UretimEmirId,
+            UretimParcaAdi: UretimParcaAdi
+        }
         Post("stokhareket/DepoyaAktarTekli",
-            { SiparisKalipId: SiparisKalipId, SiparisId: SiparisId, Adet: Adet, Yer: Yer, UretimEmirId: UretimEmirId },
+            obj,
             function (response) {
                 if (response.Success) {
                     toastr.success(response.Description);
@@ -444,7 +455,9 @@
                 var SiparisId = $(this).attr("SiparisId");
                 var Adet = $(".SiparisAdetInput[SiparisKalipId='" + SiparisKalipId + "']").val();
                 var Yer = $(".YerInput[SiparisKalipId='" + SiparisKalipId + "']").val();
-                DepoyaAktarTekli(SiparisKalipId, SiparisId, Adet, Yer, UretimEmirId);
+                var UretimParcaAdi = $(this).attr("UretimParcaAdi");
+
+                DepoyaAktarTekli(SiparisKalipId, SiparisId, Adet, Yer, UretimEmirId, UretimParcaAdi);
             }
             else {
                 toastr.warning("ürün zaten depoya eklendi");

@@ -20,7 +20,7 @@ namespace EgePakErp.Controllers
             repo = new BoyaKaplamaRepository();
         }
         // GET: Fiyat
-        [Menu("Boya Kodları", "fa-solid fa-list-ol icon-xl", "Boya Kodları", 0, 1)]
+        [Menu("Boya Kodları", "fa-solid fa-list-ol icon-xl", "Boya Kodları", 5, 2)]
         public ActionResult Index()
         {
             return View();

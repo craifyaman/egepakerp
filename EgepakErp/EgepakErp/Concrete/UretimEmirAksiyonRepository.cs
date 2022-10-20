@@ -8,7 +8,7 @@ namespace EgePakErp.Concrete
 {
     public class UretimEmirAksiyonRepository : _GenericRepository<UretimEmirAksiyon>
     {
-        private IQueryable<UretimEmirAksiyon> AllInclude()
+        public override IQueryable<UretimEmirAksiyon> AllInclude()
         {
 
             return dbset
@@ -16,6 +16,8 @@ namespace EgePakErp.Concrete
                .Include(x => x.UretimEmir.SiparisKalip)
                .Include(x => x.UretimEmirAksiyonType)
                .Include(x => x.Kisi)
+               .Include(x => x.UretimEmir.Siparis.Urun)
+               .Include(x => x.UretimEmir.Siparis.Urun.UrunCinsi)
                .AsQueryable();
         }
         public override UretimEmirAksiyon Get(int id)

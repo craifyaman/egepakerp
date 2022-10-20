@@ -5,6 +5,10 @@
 
     <div class="form-group row">
         <div class="col-lg-4">
+            <label>Adı</label>
+            <input class="form-control" name="Adi" type="text" value="@(Model?.Adi)">
+        </div>
+        <div class="col-lg-4">
             <label>Kalıp No:</label>
             <input class="form-control" name="KalipNo" type="text" value="@(Model?.KalipNo)">
         </div>
@@ -12,28 +16,9 @@
             <label>Parça Özellik İlave Plaka</label>
             <input class="form-control" name="KalipOzellik" type="text" value="@(Model?.KalipOzellik)">
         </div>
-        <div class="col-lg-4">
-            <label>Adı</label>
-            <input class="form-control" name="Adi" type="text" value="@(Model?.Adi)">
-        </div>
+
     </div>
-    @*<div class="form-group row">
-        <label class="col-3 col-form-label"></label>
-        <div class="col-9 col-form-label">
-            <div class="col-lg-4">
-                <label>Hazır Malzeme</label>
-                <span class="switch switch-outline switch-icon switch-success">
-                    <label>
-                        @{
-                            var durumChk = Model == null || Model.isHazirMalzeme ? "checked" : "";
-                        }
-                        <input class="globalSwitch" @durumChk type="checkbox" name="isHazirMalzeme" id="isHazirMalzeme" value="@(durumChk=="checked"?true:false)">
-                        <span></span>
-                    </label>
-                </span>
-            </div>
-        </div>
-    </div>*@
+
     <div class="form-group row">
         <div class="col-lg-4">
             <label>Parça Ağırlık(gr):</label>
@@ -49,19 +34,6 @@
         </div>
     </div>
 
-    @*<div class="form-group row">
-            <div class="col-lg-12">
-                <label>Üretim Temin Şekli:</label>
-                <select name="UretimTeminSekliId" class="form-control form-control-solid selectpicker" data-live-search="true" id="UretimTeminSekliId">
-                    <option value="">Seçiniz</option>
-                    @foreach (var item in baseUretimTeminSekli)
-                    {
-                        var slc = Model != null && Model.UretimTeminSekliId == item.UretimTeminSekliId ? "selected" : "";
-                        <option @slc value="@item.UretimTeminSekliId">@item.Adi</option>
-                    }
-                </select>
-            </div>
-        </div>*@
 
     <div class="form-group row">
         <div class="col-lg-12">
@@ -96,6 +68,84 @@
                 }
 
             </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-12">
+            <label>Üretim Temin Şekli:</label>
+            @{
+                var teminSekiller = baseUretimTeminSekli;
+            }
+            <select name="UretimTeminSekliId" id="UretimTeminSekliId" class="form-control">
+                @foreach (var item in teminSekiller)
+                {
+                    var attr = item.UretimTeminSekliId == Model?.UretimTeminSekliId ? "selected" : "";
+                    <option @attr value="@item.UretimTeminSekliId">@item.Adi</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-4">
+            <label>Yolluk Tipi:</label>
+            <input class="form-control" name="YollukTipi" type="text" value="@(Model?.YollukTipi)">
+        </div>
+        <div class="col-lg-4">
+            <label>Yolluk Ağırlık</label>
+            <input class="form-control" name="YollukAgirlik" type="text" value="@(Model?.YollukAgirlik)">
+        </div>
+        <div class="col-lg-4">
+            <label>Kalıp Etiket</label>
+            <input class="form-control" name="KalipEtiket" type="text" value="@(Model?.KalipEtiket)">
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-4">
+            <label>Hammadde Formül:</label>
+            @Html.TextBoxFor(x => x.HammaddeFormul, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-4">
+            <label>Yaldız Katsayı:</label>
+            @Html.TextBoxFor(x => x.Yaldiz, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-4">
+            <label>Koli içi adet:</label>
+            @Html.TextBoxFor(x => x.KoliIciAdet, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label>Sıcak baskı adet:</label>
+            @Html.TextBoxFor(x => x.SicakBaskiAdet, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-6">
+            <label>Egepak montaj adet:</label>
+            @Html.TextBoxFor(x => x.EgePakMontajAdet, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-6">
+            <label>Ev montaj maliyet:</label>
+            @Html.TextBoxFor(x => x.EvMontajMaliyet, new { @class = "form-control" })
+        </div>
+
+        <div class="col-lg-6">
+            <label>Kromplast Metalize br fiyat:</label>
+            @Html.TextBoxFor(x => x.KromPlastMetalizeBrFiyat, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-lg-6">
+            <label>Öncelik Makine:</label>
+            @Html.TextBoxFor(x => x.OncelikMakine, new { @class = "form-control" })
+        </div>
+        <div class="col-lg-6">
+            <label>Alternatif Makine:</label>
+            @Html.TextBoxFor(x => x.AlternatifMakine, new { @class = "form-control" })
         </div>
     </div>
     <div class="form-group row">

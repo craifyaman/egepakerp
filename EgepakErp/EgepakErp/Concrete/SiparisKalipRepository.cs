@@ -15,7 +15,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.TozBoyaKod)
                //.Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
-               .Include(x => x.StokHareket)
+               //.Include(x => x.StokHareket)
                .Include(x => x.MetalizeKod)
                .Include(x => x.SpreyBoyaKod)
                .FirstOrDefault(x=>x.SiparisKalipId == id);
@@ -27,7 +27,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.TozBoyaKod)
               // .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
-               .Include(x => x.StokHareket)
+               //.Include(x => x.StokHareket)
                .Include(x => x.MetalizeKod)
                .Include(x => x.SpreyBoyaKod)
                .FirstOrDefault(filter);
@@ -39,7 +39,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.TozBoyaKod)
               // .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
-               .Include(x => x.StokHareket)
+               //.Include(x => x.StokHareket)
                .Include(x => x.MetalizeKod)
                .Include(x => x.SpreyBoyaKod)
                .AsQueryable();
@@ -52,7 +52,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.TozBoyaKod)
               // .Include(x => x.Yaldiz)
                .Include(x => x.UretimEmir)
-               .Include(x => x.StokHareket)
+               //.Include(x => x.StokHareket)
                .Include(x => x.MetalizeKod)
                .Include(x => x.SpreyBoyaKod)
                .Where(filter)

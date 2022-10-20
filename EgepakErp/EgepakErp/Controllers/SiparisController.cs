@@ -63,6 +63,13 @@ namespace EgePakErp.Controllers
             return View(new Siparis());
         }
 
+        [Yetki("Sipariş Detay", "Sipariş")]
+        public ActionResult Detay(int siparisId)
+        {
+            var model = siparisRepo.Get(siparisId);
+            return View(model);
+        }
+        
         [Yetki("Sipariş Listesi", "Sipariş")]
         public JsonResult Liste()
         {
@@ -145,12 +152,14 @@ namespace EgePakErp.Controllers
             return Json(dtModel);
 
         }
+        
         public PartialViewResult Form(int? id)
         {
             id = id == null ? 0 : id.Value;
             var model = siparisRepo.Get((int)id);
             return PartialView(model);
         }
+        
         public JsonResult Kaydet(Siparis siparis)
         {
             Response response = new Response();

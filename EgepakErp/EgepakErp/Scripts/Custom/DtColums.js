@@ -738,13 +738,18 @@
                             <i class="ki ki-bold-more-hor"></i>
                         </button>
                         <div class="dropdown-menu">
-                           <a class="dropdown-item CPointer" href="/siparis/siparisformu?siparisId=${row.SiparisId}&urunId=${row.UrunId}" target="_blank">
-                              <i class="flaticon-edit mr-3" ></i>  Düzenle
-                            </a>
 
                            <a class="dropdown-item CPointer" event="SiparisKisitliFormPopup" id="${row.SiparisId}">
                              <i class="fa-solid fa-truck-fast mr-3"></i>  Hızlı Düzenle
                            </a>
+
+                           <a class="dropdown-item CPointer" href="/siparis/siparisformu?siparisId=${row.SiparisId}&urunId=${row.UrunId}" target="_blank">
+                              <i class="flaticon-edit mr-3" ></i>  Düzenle
+                           </a>
+                           <a class="dropdown-item CPointer" href="/siparis/detay?siparisId=${row.SiparisId}" target="_blank">
+                              <i class="flaticon2-information mr-3" ></i>  Detay
+                           </a>
+
 
                             <a class="dropdown-item CPointer" href="/siparis/SiparisUretimDetayPdf?siparisId=${row.SiparisId}" target="_blank">
                              <i class="far fa-file-pdf mr-3"></i>  Üretim Pdf Dökümü
@@ -993,16 +998,20 @@
             //    title: 'Tip',
             //},
             {
-                field: 'SiparisKod',
-                title: 'Siparis Kod',
+                field: 'Urun',
+                title: 'Ürün',
+            },
+            {
+                field: 'Adi',
+                title: 'Parça',
+            },
+            {
+                field: 'SiparisAdi',
+                title: 'Sipariş',
             },
             {
                 field: 'Cari',
                 title: 'Cari',
-            },
-            {
-                field: 'KalipKodList',
-                title: 'Kalıplar',
             },
             {
                 field: 'Yer',
@@ -1062,31 +1071,42 @@
                             <i class="ki ki-bold-more-hor"></i>
                         </button>
                         <div class="dropdown-menu">
-                           <a class="dropdown-item" event="StokHareketFormPopup" href = "#" id="${row.Id}">
+                           <a class="dropdown-item CPointer" event="StokHareketFormPopup" href = "#" id="${row.Id}">
                               <i class="flaticon-edit mr-3" ></i>  Hızlı düzenle
                             </a >
-                           
-                           <a class="dropdown-item" event="StokGirisHareketFormPopup" href = "#" stokHareketId = "${row.Id}">
-                             <i class="fa-solid fa-truck-fast mr-3"></i>  Giriş Hareketi Ekle
-                           </a>
-             
-                            <a class="dropdown-item" event="StokCikisHareketFormPopup" href = "#" CariId="${row.CariId}" stokHareketId = ${row.Id}>
+
+                            <a class="dropdown-item CPointer" event="StokCikisHareketFormPopup" href = "#" CariId="${row.CariId}" stokHareketId = ${row.Id}>
                              <i class="fas fa-truck-loading mr-3"></i>  Çıkış Hareketi Ekle
                             </a>
-               
-                            <a class="dropdown-item" event="CikisHareketListe" href = "#" stokHareketId = "${row.Id}">
-                              <i class="fa-solid fa-list mr-3"></i> Çıkış Hareketleri
-                            </a >
 
-                            <a class="dropdown-item" event="GirisHareketListe" href = "#" stokHareketId = "${row.Id}">
-                              <i class="fa-solid fa-list mr-3"></i> Giriş Hareketleri
-                            </a >
+                            <a class="dropdown-item CPointer" href = "/stokhareket/detay?stokhareketId=${row.Id}" target="_blank">
+                             <i class="flaticon2-information mr-3"></i>  Detay
+                            </a>
+
+                            <a class="dropdown-item CPointer" event="StokHareketSil" id="${row.Id}">
+                             <i class="flaticon2-cancel mr-3"></i>  Sil
+                            </a>
+                           <a class="dropdown-item CPointer" event="StokGirisHareketFormPopup" href = "#" stokHareketId = "${row.Id}">
+                             <i class="fa-solid fa-truck-fast mr-3"></i>  Giriş Hareketi Ekle
+                           </a>
                         </div>
                    </div >
 
 `;
 
                     return str;
+                    /*
+                     * <a class="dropdown-item" event="StokGirisHareketFormPopup" href = "#" stokHareketId = "${row.Id}">
+                             <i class="fa-solid fa-truck-fast mr-3"></i>  Giriş Hareketi Ekle
+                           </a>
+                     <a class="dropdown-item" event="CikisHareketListe" href = "#" stokHareketId = "${row.Id}">
+                              <i class="fa-solid fa-list mr-3"></i> Çıkış Hareketleri
+                            </a >
+
+                            <a class="dropdown-item" event="GirisHareketListe" href = "#" stokHareketId = "${row.Id}">
+                              <i class="fa-solid fa-list mr-3"></i> Giriş Hareketleri
+                            </a >
+                     */
                 },
             }
 
@@ -1311,13 +1331,21 @@
                 sortable:false
             },
             {
-                field: 'Bolum',
-                title: 'Bölüm',
-                sortable: false
-            },            
+                field: 'Siparis',
+                title: 'Sipariş',
+            },
+            {
+                field: 'Urun',
+                title: 'Ürün',
+            },
             {
                 field: 'Parca',
                 title: 'Parca',
+            },
+            {
+                field: 'Bolum',
+                title: 'Bölüm',
+                sortable: false
             },
             {
                 field: 'BitenAdet',
@@ -1338,6 +1366,14 @@
             {
                 field: 'Id',
                 title: '#',
+            },
+            {
+                field: 'Urun',
+                title: 'Urun',
+            },
+            {
+                field: 'Parca',
+                title: 'Parca',
             },
             {
                 field: 'Cari',
