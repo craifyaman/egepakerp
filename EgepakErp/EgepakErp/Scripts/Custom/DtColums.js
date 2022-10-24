@@ -1019,14 +1019,18 @@
             },
             {
                 field: 'Adet',
-                title: 'Depoya Giren',
-
+                title: 'Adet',
             },
             {
-                field: 'Kalan',
-                title: 'Stok',
-                width: 50
+                field: 'DepoToplam',
+                title: 'Depo Toplamı',
+                width:'100px'
             },
+            //{
+            //    field: 'Kalan',
+            //    title: 'Stok',
+            //    width: 50
+            //},
             //{
             //    field: 'Yaldiz',
             //    title: 'Yaldiz'
@@ -1326,9 +1330,14 @@
                 title: '#',
             },
             {
+                field: 'Makine',
+                title: 'Makine',
+                sortable:false
+            },
+            {
                 field: 'Kisi',
                 title: 'Kisi',
-                sortable:false
+                sortable: false
             },
             {
                 field: 'Siparis',

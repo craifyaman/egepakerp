@@ -72,8 +72,8 @@
                                         <th> Sipariş </th>
                                         <th> Cari </th>
                                         <th> Yer </th>
-                                        <th> Depoya Giren </th>
-                                        <th> Stok </th>
+                                        <th> Adet </th>
+                                        <th> Depo Toplam</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -84,7 +84,7 @@
                                         <td>@Model.Siparis.Cari.Unvan</td>
                                         <td>@Model.Yer</td>
                                         <td>@Model.Adet</td>
-                                        <td>@Model.DepodaKalanAdet</td>
+                                        <td>@Model.Toplam</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -131,6 +131,7 @@
                                         <th> Tarih </th>
                                         <th> Açıklama </th>
                                         <th> Tip </th>
+                                        <th> İşlem </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -143,6 +144,15 @@
                                             <td> @h.CikisTarih.ToString("dd MM yyyy") </td>
                                             <td> @h.Aciklama </td>
                                             <td> çıkış </td>
+                                            <td>
+                                                <a class="btn btn-primary" StokCikisHareketId="@h.StokCikisHareketId" event="cikisHareketFormPopup">
+                                                    Düzenle
+                                                </a>
+
+                                                <a class="btn btn-danger" StokCikisHareketId="@h.StokCikisHareketId" event="CikisHareketSil">
+                                                    Sil
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
 
@@ -162,6 +172,7 @@
                                         <th> Tarih </th>
                                         <th> Açıklama </th>
                                         <th> Tip </th>
+                                        <th> İşlem </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -174,6 +185,15 @@
                                             <td> @h.GirisTarih.ToString("dd MM yyyy") </td>
                                             <td> @h.Aciklama </td>
                                             <td> giriş </td>
+                                            <td>
+                                                <a class="btn btn-primary" StokGirisHareketId="@h.StokGirisHareketId" event="girisHareketFormPopup">
+                                                    Düzenle
+                                                </a>
+
+                                                <a class="btn btn-danger" StokGirisHareketId="@h.StokGirisHareketId" event="girisHareketSil">
+                                                    Sil
+                                                </a>
+                                            </td>
                                         </tr>
                                     }
 
@@ -197,11 +217,14 @@
 
 </div>
 <!--end::Entry-->
-
+<script src="~/Scripts/StokHareket.js?v=@ScriptVersion"></script>
 @section Scripts{
-    <script>
-    </script>
 
+    <script>
+        $(document).ready(function () {
+            StokHareket.EventInit();
+        })
+    </script>
 }
 
 

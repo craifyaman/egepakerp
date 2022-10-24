@@ -135,13 +135,16 @@
         });
     }
 
-    var responseTemplate = function (response, isHideAll = false) {
+    var responseTemplate = function (response, isHideAll = false, isReload = false) {
         debugger;
         console.log(response);
         response.Success == true ? toastr.success(response.Description) : toastr.error(response.Description);
         if (isHideAll == true) {
             $('#kt_datatable').KTDatatable('reload');
             bootbox.hideAll();
+        }
+        if (isReload == true) {
+            location.reload();
         }
     }
 
@@ -174,8 +177,8 @@
         dateRange: function () {
             dateRange();
         },
-        ResponseTemplate: function (response, isHideAll = false) {
-            responseTemplate(response, isHideAll);
+        ResponseTemplate: function (response, isHideAll = false, isReload = false) {
+            responseTemplate(response, isHideAll, isReload);
         },
         BootBoxHideAll: function (r) {
             bootBoxHideAll(r);

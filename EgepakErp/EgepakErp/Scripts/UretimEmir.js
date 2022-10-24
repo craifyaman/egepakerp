@@ -7,14 +7,15 @@
             if (status == 'Valid') {
                 var form = $("#UretimEmirForm").serializeJSON(
                     {
-                        customTypes: {
-                            CustomSwitch: (str, el) => {
-                                if (str == "on") {
-                                    return "true";
-                                }
-                                return "false";
-                            },
-                        }
+                        checkboxUncheckedValue: "false",
+                        //customTypes: {
+                        //    CustomSwitch: (str, el) => {
+                        //        if (str == "on") {
+                        //            return "true";
+                        //        }
+                        //        return "false";
+                        //    },
+                        //}
                     });
                 //form.UretimEmirDurumList = $("#UretimEmirDurumId").val().toString();
                 var keys = Object.keys(form);

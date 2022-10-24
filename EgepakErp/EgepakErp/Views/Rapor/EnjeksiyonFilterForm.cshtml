@@ -1,7 +1,18 @@
 ﻿<div class="row align-items-center">
     <div class="col-lg-12 col-xl-12">
         <div class="row align-items-center">
-
+            <div class="col-md-2 my-2 my-md-0">
+                <select id="MakineId" class="select2 filterFormControl defaultSelect2">
+                    <option value="0">Tüm Makineler</option>
+                    @{
+                        var makineList= BaseMakine().ToList();
+                        foreach (var makine in makineList)
+                        {
+                            <option value="@makine.MakineId">@makine.MakineAd</option>
+                        }
+                    }
+                </select>
+            </div>
             <div class="col-md-2 my-2 my-md-0">
                 <select id="KisiId" class="select2 filterFormControl defaultSelect2">
                     <option value="0">Tüm Kişiler</option>
@@ -34,13 +45,13 @@
             </div>
 
             @*<div class="col-md-2 my-2 my-md-0">
-                    <div class="input-icon">
-                        <input type="text" class="xxxx form-control form-control-solid filterFormControl " placeholder="Kalıp adı yada Kodu..." id="searchQuery" />
-                        <span>
-                            <i class="flaticon2-search-1 text-muted"></i>
-                        </span>
-                    </div>
-                </div>*@
+            <div class="input-icon">
+                <input type="text" class="xxxx form-control form-control-solid filterFormControl " placeholder="Kalıp adı yada Kodu..." id="searchQuery" />
+                <span>
+                    <i class="flaticon2-search-1 text-muted"></i>
+                </span>
+            </div>
+        </div>*@
         </div>
     </div>
 </div>

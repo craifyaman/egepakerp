@@ -15,6 +15,7 @@ namespace EgePakErp.Models
         public int StokHareketId { get; set; }
         public int StokHareketTypeId { get; set; }
         public StokHareketType StokHareketType { get; set; }
+        public string UretimEmirIdList { get; set; }
 
         public int SiparisId { get; set; }
         public Siparis Siparis { get; set; }
@@ -37,6 +38,17 @@ namespace EgePakErp.Models
             {
                 var cikanToplam = StokCikisHareket?.Sum(x => x.Adet);
                 return Adet - cikanToplam;
+            }
+        }
+
+        [NotMapped]
+        public int? Toplam
+        {
+            get
+            {
+                var cikanToplam = StokCikisHareket?.Sum(x => x.Adet);
+                var girenToplam = StokGirisHareket?.Sum(x => x.Adet);
+                return Adet - cikanToplam + girenToplam;
             }
         }
 

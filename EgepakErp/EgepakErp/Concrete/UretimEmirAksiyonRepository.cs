@@ -18,6 +18,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.Kisi)
                .Include(x => x.UretimEmir.Siparis.Urun)
                .Include(x => x.UretimEmir.Siparis.Urun.UrunCinsi)
+               .Include(x => x.Makine)
                .AsQueryable();
         }
         public override UretimEmirAksiyon Get(int id)

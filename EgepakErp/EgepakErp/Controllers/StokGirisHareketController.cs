@@ -104,19 +104,9 @@ namespace EgePakErp.Controllers
 
             if (form.StokGirisHareketId == 0)
             {
-                form.GirisTarih = form.GirisTarih == null ? DateTime.Now : form.GirisTarih;
+                form.GirisTarih = DateTime.Now;
                 repo.Insert(form);
-                var sip = Db.StokHareket.FirstOrDefault(x => x.StokHareketId == form.StokHareketId);
-                if (sip != null)
-                {
-                    sip.Adet += form.Adet;
-                    Db.SaveChanges(CurrentUser.PersonelId);
-                    response.Description = "Kayıt edildi ve stok güncellendi";
-                }
-                else
-                {
-                    response.Description = "! stok güncellenemedi";
-                }
+                response.Description = "Kayıt edildi ve stok güncellendi";
                 response.Success = true;
             }
             else

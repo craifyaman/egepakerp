@@ -60,7 +60,16 @@ namespace EgePakErp.Controllers
 
                     );
             }
+            if (!string.IsNullOrEmpty(Request.Form["query[MakineId]"]))
+            {
+                int MakineId = Convert.ToInt32(Request.Form["query[MakineId]"].ToString());
+                
+                if (MakineId > 0)
+                {
+                    model = model.Where(i => i.MakineId == MakineId);
+                }
 
+            }
             if (!string.IsNullOrEmpty(Request.Form["query[RaporTypeId]"]))
             {
                 int RaporTypeId = Convert.ToInt32(Request.Form["query[RaporTypeId]"].ToString());
@@ -89,10 +98,21 @@ namespace EgePakErp.Controllers
             if (!string.IsNullOrEmpty(baslamaTarih) && !string.IsNullOrEmpty(bitisTarih))
             {
                 DateTime baslama = DateTime.Parse(baslamaTarih);
-                DateTime bitis = DateTime.Parse(bitisTarih);
+                DateTime bitis = DateTime.Parse(bitisTarih).AddDays(1);
                 model = model.Where(i => i.KayitTarih >= baslama && i.KayitTarih <= bitis);
             }
 
+            if (!string.IsNullOrEmpty(baslamaTarih) && string.IsNullOrEmpty(bitisTarih))
+            {
+                DateTime baslama = DateTime.Parse(baslamaTarih);
+                model = model.Where(i => i.KayitTarih >= baslama);
+            }
+
+            if (string.IsNullOrEmpty(baslamaTarih) && !string.IsNullOrEmpty(bitisTarih))
+            {
+                DateTime bitis = DateTime.Parse(bitisTarih).AddDays(1);
+                model = model.Where(i => i.KayitTarih <= bitis);
+            }
             try
             {
                 model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);
@@ -116,6 +136,7 @@ namespace EgePakErp.Controllers
             var dto = model.AsEnumerable().Select(i => new
             {
                 Id = i.UretimEmirAksiyonId,
+                Makine = i.Makine?.MakineAd,
                 Urun = i.UretimEmir.Siparis.Urun.TamAd,
                 UretimEmirId = i.UretimEmirId,
                 BitenAdet = i.BitenAdet,

@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Linq.Dynamic;
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
 
@@ -95,6 +97,7 @@ namespace EgePakErp.Controllers
                 CariId = i.Siparis.CariId,
                 Cari = i.Siparis.Cari.Unvan,
                 Adet = i.Adet,
+                DepoToplam = i.Toplam,
                 Kalan = i.DepodaKalanAdet,
                 MontajliMi = i.MontajliMi,
                 Urun = i.Siparis.Urun.TamAd
@@ -547,7 +550,7 @@ namespace EgePakErp.Controllers
 
         //}
 
-        [Yetki("Detay Listesi","Depo")]
+        [Yetki("Detay Listesi", "Depo")]
         public ActionResult Detay(int stokHareketId)
         {
             var model = repo.Get(stokHareketId);
@@ -560,6 +563,44 @@ namespace EgePakErp.Controllers
 
             return PartialView(model);
         }
+
+        public PartialViewResult CikisHareketForm(int id)
+        {
+            var model = Db.StokCikisHareket.Find(id);
+            return PartialView(model);
+        }
+        [HttpPost]
+        public JsonResult CikisHareketSil(int id)
+        {
+            var response = new Response();
+            var hareket = Db.StokCikisHareket.Find(id);
+            Db.StokCikisHareket.Remove(hareket);
+            Db.SaveChanges();
+            response.Success = true;
+            response.Description = "Kayıt Silindi";
+            return Json(response);
+        }
+
+
+        public PartialViewResult GirisHareketForm(int id)
+        {
+            var model = Db.StokGirisHareket.Find(id);
+            return PartialView(model);
+        }
+        [HttpPost]
+        public JsonResult GirisHareketSil(int id)
+        {
+            var response = new Response();
+            var hareket = Db.StokGirisHareket.Find(id);
+            Db.StokGirisHareket.Remove(hareket);
+            Db.SaveChanges();
+            response.Success = true;
+            response.Description = "Kayıt Silindi";
+            return Json(response);
+        }
+
+
+
         public PartialViewResult FilterForm()
         {
             return PartialView();
@@ -571,9 +612,22 @@ namespace EgePakErp.Controllers
 
             if (form.StokHareketId == 0)
             {
-                repo.Insert(form);
-                response.Success = true;
-                response.Description = "Kayıt edildi.";
+                var hareket = repo.Get(x => x.Adi.ToLower() == form.Adi.ToLower());
+                if (hareket != null)
+                {
+                    //depoda ürün varsa stok güncelle
+                    hareket.Adet += form.Adet;
+                    repo.Update(hareket);
+                    response.Description = "Stok Güncellendi";
+                    response.Success = true;
+                }
+                else
+                {
+                    repo.Insert(form);
+                    response.Success = true;
+                    response.Description = "Kayıt edildi.";
+                }
+
             }
             else
             {
@@ -600,6 +654,81 @@ namespace EgePakErp.Controllers
 
         }
 
+
+        public JsonResult CikisHareketKaydet(StokCikisHareket form)
+        {
+            var response = new Response();
+
+            if (form.StokCikisHareketId == 0)
+            {
+                Db.StokCikisHareket.Add(form);
+                Db.SaveChanges();
+                response.Description = "Eklendi";
+                response.Success = true;
+
+            }
+            else
+            {
+                var entity = Db.StokCikisHareket.Find(form.StokCikisHareketId);
+                if (entity != null)
+                {
+                    //alanları güncelle
+                    var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                    foreach (var prop in propList)
+                    {
+                        if (form.Include.Contains(prop.Name))
+                        {
+                            prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
+                        }
+                    }
+                    Db.SaveChanges();
+                    response.Success = true;
+                    response.Description = "Güncellendi.";
+                }
+
+            }
+
+            return Json(response);
+
+        }
+
+        public JsonResult GirisHareketKaydet(StokGirisHareket form)
+        {
+            var response = new Response();
+
+            if (form.StokGirisHareketId == 0)
+            {
+                Db.StokGirisHareket.Add(form);
+                Db.SaveChanges();
+                response.Description = "Eklendi";
+                response.Success = true;
+
+            }
+            else
+            {
+                var entity = Db.StokGirisHareket.Find(form.StokGirisHareketId);
+                if (entity != null)
+                {
+                    //alanları güncelle
+                    var propList = entity.GetType().GetProperties().Where(prop => !prop.IsDefined(typeof(NotMappedAttribute), false)).ToList();
+                    foreach (var prop in propList)
+                    {
+                        if (form.Include.Contains(prop.Name))
+                        {
+                            prop.SetValue(entity, form.GetType().GetProperty(prop.Name).GetValue(form, null));
+                        }
+                    }
+                    Db.SaveChanges();
+                    response.Success = true;
+                    response.Description = "Güncellendi.";
+                }
+
+            }
+
+            return Json(response);
+
+        }
+
         [HttpPost]
         public JsonResult Sil(int id)
         {
@@ -616,40 +745,36 @@ namespace EgePakErp.Controllers
         public JsonResult DepoyaAktarTekli(int SiparisKalipId, int SiparisId, int Adet, string Yer, int UretimEmirId, string UretimParcaAdi)
         {
             var response = new Response();
-
-            StokHareket hareket = new StokHareket();
-            hareket.StokHareketTypeId = (int)EStokHareketType.Giris;
-            hareket.SiparisId = SiparisId;
-            hareket.Adet = Adet;
-            hareket.MontajliMi = false;
-            hareket.Yer = Yer;
-            hareket.Adi = UretimParcaAdi;
-
-
-            //kalıbı bul depoda diye işaretle
-            //var siparisKalip = Db.SiparisKalip.Find(hareket.SiparisKalipId);
-            //if (siparisKalip != null)
-            //{
-            //    if (siparisKalip.DepodaMi == true)
-            //    {
-            //        hareket.Adet = Adet;
-            //        repo.Update(hareket);
-            //        response.Success = true;
-            //        response.Description = "Ürünün Depodaki miktarı güncellendi !!";
-            //        return Json(response);
-            //    }
-            //    repo.Insert(hareket);
-            //    siparisKalip.DepodaMi = true;
-            //    Db.SaveChanges();
-
-            //    response.Success = true;
-            //    response.Description = "Depoya ekleme başarı ile gerçekleşti";
-            //    return Json(response);
-            //}
-
-            //response.Success = false;
-            //response.Description = "kalıp bulunamadı";
-
+            var _hareket = repo.Get(x => x.UretimEmirIdList == UretimEmirId.ToString() + ",");
+            if (_hareket != null)
+            {
+                //depoda ürün varsa stok güncelle
+                StokGirisHareket girisHareket = new StokGirisHareket();
+                girisHareket.Adet = Adet;
+                girisHareket.GirisTarih = DateTime.Now;
+                girisHareket.StokHareketId = _hareket.StokHareketId;
+                girisHareket.Aciklama = "Üretimden Eklendi";
+                Db.StokGirisHareket.Add(girisHareket);
+                Db.SaveChanges();
+                response.Description = "Giriş Hareketi Eklendi";
+                response.Success = true;
+            }
+            else
+            {
+                StokHareket hareket = new StokHareket();
+                hareket.StokHareketTypeId = (int)EStokHareketType.Giris;
+                hareket.SiparisId = SiparisId;
+                hareket.Adet = Adet;
+                hareket.MontajliMi = false;
+                hareket.Yer = Yer;
+                hareket.Adi = UretimParcaAdi;
+                hareket.UretimEmirIdList = UretimEmirId.ToString();
+                repo.Insert(hareket);
+                response.Success = true;
+                response.Description = "Ürün depoya aktarıldı";
+                response.Success = true;
+                response.Description = "Kayıt edildi.";
+            }
 
             //üretim emrini depoda olarak işaretle
             var uretimEmir = Db.UretimEmir.Find(UretimEmirId);
@@ -659,44 +784,63 @@ namespace EgePakErp.Controllers
                 Db.SaveChanges();
             }
 
-
-            repo.Insert(hareket);
-            response.Success = true;
-            response.Description = "Ürün depoya aktarıldı";
-
             return Json(response);
 
         }
         public JsonResult DepoyaAktarCoklu(List<SiparisDepoAktarimDto> liste)
         {
             var response = new Response();
-            StokHareket hareket = new StokHareket();
-            hareket.StokHareketTypeId = (int)EStokHareketType.Giris;
-            hareket.SiparisId = liste.FirstOrDefault().SiparisId;
-            hareket.Adi = "";
-            hareket.Yer = "";
-
-            foreach (var item in liste)
+            string uretimEmirIdList = "";
+            liste.ForEach(x => uretimEmirIdList += x.UretimEmirId.ToString() + ",");
+            var _hareket = repo.Get(x => x.UretimEmirIdList == uretimEmirIdList);
+            if (_hareket != null)
             {
-                hareket.Adet = item.Adet;
+                //depoda ürün varsa stok güncelle
+                StokGirisHareket girisHareket = new StokGirisHareket();
+                girisHareket.Adet = liste.Sum(x => x.Adet);
+                girisHareket.GirisTarih = DateTime.Now;
+                girisHareket.StokHareketId = _hareket.StokHareketId;
+                girisHareket.Aciklama = "Üretimden Eklendi";
+                Db.StokGirisHareket.Add(girisHareket);
+                Db.SaveChanges();
+                response.Description = "Giriş Hareketi Eklendi";
+                response.Success = true;
+            }
+            else
+            {
+                StokHareket hareket = new StokHareket();
+                hareket.StokHareketTypeId = (int)EStokHareketType.Giris;
+                hareket.SiparisId = liste.FirstOrDefault().SiparisId;
+                hareket.Adi = "";
+                hareket.Yer = "";
+                var adet = liste.FirstOrDefault(x => x.Adet != 0).Adet;
+                hareket.Adet = adet;
                 hareket.MontajliMi = false;
-                hareket.Adi += " " + item.UretimParcaAdi;
-                hareket.Yer += " " + item.Yer;
+                hareket.UretimEmirIdList = uretimEmirIdList;
 
+                foreach (var item in liste)
+                {
+                    hareket.Adi += " " + item.UretimParcaAdi;
+                    hareket.Yer += " " + item.Yer;
+
+                }
+                Db.StokHareket.Add(hareket);
+                Db.SaveChanges();
+                response.Success = true;
+                response.Description = "Depoya ekleme başarı ile gerçekleşti";
+            }
+            
+            foreach(var item in liste)
+            {
                 //üretim emrini depoda olarak işaretle
                 var uretimEmir = Db.UretimEmir.Find(item.UretimEmirId);
                 if (uretimEmir != null)
                 {
                     uretimEmir.DepodaMi = true;
+                    Db.SaveChanges();
                 }
-
-
             }
-            Db.StokHareket.Add(hareket);
-            Db.SaveChanges();
-            response.Success = true;
-            response.Description = "Depoya ekleme başarı ile gerçekleşti";
-
+            
             return Json(response);
 
         }
