@@ -91,6 +91,8 @@ namespace EgePakErp
         //public virtual DbSet<UretimAksiyon> UretimAksiyon { get; set; }
         public virtual DbSet<UretimEmirAksiyon> UretimEmirAksiyon { get; set; }
         public virtual DbSet<UretimEmirAksiyonType> UretimEmirAksiyonType { get; set; }
+        public virtual DbSet<Calisan> Calisan { get; set; }
+        public virtual DbSet<CalisanTip> CalisanTip { get; set; }
 
 
         //public virtual DbSet<UretimEmirAksiyonRel> UretimEmirAksiyonRel { get; set; }

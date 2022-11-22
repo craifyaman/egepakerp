@@ -158,7 +158,7 @@ namespace EgePakErp.Controllers
         public PartialViewResult UretimEmirAksiyonListe(int UretimEmirId, int UretimEmirAksiyonTypeId)
         {
             var model = Db.UretimEmirAksiyon
-                .Include(x => x.Kisi)
+                .Include(x => x.Calisan)
                 .Include(x => x.UretimEmirAksiyonType)
                 .Where(x => x.UretimEmirId == UretimEmirId && x.UretimEmirAksiyonTypeId == UretimEmirAksiyonTypeId).ToList();
             return PartialView(model);

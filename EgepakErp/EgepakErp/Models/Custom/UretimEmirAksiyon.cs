@@ -13,8 +13,9 @@ namespace EgePakErp.Models
         public int UretimEmirId { get; set; }
         public UretimEmir UretimEmir { get; set; }
         public int BitenAdet { get; set; }
-        public int KisiId { get; set; }
-        public Kisi Kisi { get; set; }
+        public int CalisanId { get; set; }
+        public Calisan Calisan { get; set; }
+
         public DateTime KayitTarih { get; set; }
 
         public int? MakineId { get; set; }

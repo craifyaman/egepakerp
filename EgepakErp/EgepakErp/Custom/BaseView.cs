@@ -456,6 +456,9 @@ namespace EgePakErp.Custom
         {
             var list = db.Siparis
                 .Include(x => x.Cari)
+                .Include(x => x.Urun)
+                .Include(x => x.Urun.UrunCinsi)
+                .Include(x => x.SiparisKalip)
                 .AsQueryable();
             return list;
         }
@@ -493,6 +496,12 @@ namespace EgePakErp.Custom
         public IQueryable<Kisi> BaseKisi()
         {
             var list = db.Kisi
+                .AsQueryable();
+            return list;
+        }
+        public IQueryable<Calisan> BaseCalisan()
+        {
+            var list = db.Calisan
                 .AsQueryable();
             return list;
         }

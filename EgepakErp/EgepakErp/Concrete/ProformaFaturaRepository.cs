@@ -8,7 +8,7 @@ namespace EgePakErp.Concrete
 {
     public class ProformaFaturaRepository : _GenericRepository<ProformaFatura>
     {
-        private IQueryable<ProformaFatura> AllInclude()
+        public override IQueryable<ProformaFatura> AllInclude()
         {
 
             return dbset

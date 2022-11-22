@@ -28,13 +28,13 @@ namespace EgePakErp.Controllers
             stokCikisHareketRepo = new StokCikisHareketRepository();
         }
 
-        [Menu("Enjeksiyon Raporları", "fas fa-syringe fa-2x text-info mt-2 text-info", "Rapor", 0, 7)]
+        [Menu("Üretim Raporları", "fas fa-duotone fa-gears fa-2x text-info mt-2 text-info", "Rapor", 0, 7)]
         public ActionResult Index()
         {
             return View();
         }
 
-        [Yetki("Enjeksiyon Rapor Liste", "Rapor")]
+        [Yetki("Üretim Rapor Liste", "Rapor")]
         public JsonResult EnjeksiyonListe()
         {
             //kabasını aldır
@@ -55,7 +55,7 @@ namespace EgePakErp.Controllers
             {
                 var searchQuery = Request.Form["query[searchQuery]"].ToString();
                 model = model.Where(
-                    i => i.Kisi.AdSoyad.ToLower().Contains(searchQuery.ToLower()) ||
+                    i => i.Calisan.AdSoyad.ToLower().Contains(searchQuery.ToLower()) ||
                     i.UretimEmir.SiparisKalip.EnjeksiyonRenk.ToLower().Contains(searchQuery.ToLower())
 
                     );
@@ -63,7 +63,7 @@ namespace EgePakErp.Controllers
             if (!string.IsNullOrEmpty(Request.Form["query[MakineId]"]))
             {
                 int MakineId = Convert.ToInt32(Request.Form["query[MakineId]"].ToString());
-                
+
                 if (MakineId > 0)
                 {
                     model = model.Where(i => i.MakineId == MakineId);
@@ -85,7 +85,7 @@ namespace EgePakErp.Controllers
                 int KisiId = Convert.ToInt32(Request.Form["query[KisiId]"].ToString());
                 if (KisiId > 0)
                 {
-                    model = model.Where(i => i.KisiId == KisiId);
+                    model = model.Where(i => i.CalisanId == KisiId);
                 }
 
             }
@@ -139,9 +139,9 @@ namespace EgePakErp.Controllers
                 Makine = i.Makine?.MakineAd,
                 Urun = i.UretimEmir.Siparis.Urun.TamAd,
                 UretimEmirId = i.UretimEmirId,
-                BitenAdet = i.BitenAdet,
-                KisiId = i.KisiId,
-                Kisi = i.Kisi.AdSoyad,
+                BitenAdet = i.BitenAdet.ToString("n0"),
+                CalisanId = i.CalisanId,
+                Calisan = i.Calisan.AdSoyad,
                 KayitTarih = i.KayitTarih.ToString("dd MM yyyy"),
                 Parca = i.UretimEmir.SiparisKalip.EnjeksiyonRenk,
                 Siparis = i.UretimEmir.Siparis.SiparisIsim,

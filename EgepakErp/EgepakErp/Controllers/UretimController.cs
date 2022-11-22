@@ -69,5 +69,11 @@ namespace EgePakErp.Controllers
             return View(uretimEmir);
         }
 
+        [Menu("Havuz", "fas fa-braille fa-2x text-info mt-2", "Üretim Takip", 4, 5)]
+        public ActionResult Havuz()
+        {
+            return View();
+        }
+
     }
 }

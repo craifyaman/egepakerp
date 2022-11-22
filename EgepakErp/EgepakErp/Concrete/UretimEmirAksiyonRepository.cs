@@ -15,7 +15,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.UretimEmir)
                .Include(x => x.UretimEmir.SiparisKalip)
                .Include(x => x.UretimEmirAksiyonType)
-               .Include(x => x.Kisi)
+               .Include(x => x.Calisan)
                .Include(x => x.UretimEmir.Siparis.Urun)
                .Include(x => x.UretimEmir.Siparis.Urun.UrunCinsi)
                .Include(x => x.Makine)

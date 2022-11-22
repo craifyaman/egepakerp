@@ -96,13 +96,12 @@
                                         <td>@(emir.Baslangic?.ToString("dd MMMM HH:mm"))</td>
                                         <td>@(emir.Bitis?.ToString("dd MMMM HH:mm"))</td>
 
-                                        <td>@emir.SiparisAdet</td>
-                                        <td>@bitenAdet</td>
+                                        <td>@emir.SiparisAdet.ToString("n0")</td>
+                                        <td>@bitenAdet.ToString("n0")</td>
                                         <td>
                                             <span class="badge badge-warning text-white">
                                                 @((emir.SiparisAdet - bitenAdet).ToString("n0"))
                                             </span>
-
                                         </td>
                                         <td>
                                             <a href="#"

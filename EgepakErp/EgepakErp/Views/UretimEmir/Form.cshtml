@@ -108,7 +108,8 @@
             @{
                 var val = Model == null ? DateTime.Now : Model.Baslangic;
             }
-            @Html.DateTimeLocal("Baslangic", val?.ToString("yyyy-MM-dd HH:mm"),"BitisHesaplama")
+            <input type="datetime-local" class="form-control BitisHesaplama" name="Baslangic"  value="@(Model?.Baslangic?.ToString("yyyy-MM-dd HH:mm"))"/>
+            @*@Html.DateTimeLocal("Baslangic", val?.ToString("yyyy-MM-dd HH:mm"),"BitisHesaplama")*@
 
         </div>
         <div class="col-6">

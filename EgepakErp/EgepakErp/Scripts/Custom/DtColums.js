@@ -1023,6 +1023,10 @@
             },
             {
                 field: 'DepoToplam',
+                title: 'Stok',
+            },
+            {
+                field: 'DepoToplam',
                 title: 'Depo Toplamı',
                 width:'100px'
             },
@@ -1335,8 +1339,8 @@
                 sortable:false
             },
             {
-                field: 'Kisi',
-                title: 'Kisi',
+                field: 'Calisan',
+                title: 'Çalışan',
                 sortable: false
             },
             {

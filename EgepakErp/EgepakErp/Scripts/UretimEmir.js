@@ -8,16 +8,16 @@
                 var form = $("#UretimEmirForm").serializeJSON(
                     {
                         checkboxUncheckedValue: "false",
-                        //customTypes: {
-                        //    CustomSwitch: (str, el) => {
-                        //        if (str == "on") {
-                        //            return "true";
-                        //        }
-                        //        return "false";
-                        //    },
-                        //}
+                        customTypes: {
+                            CustomSwitch: (str, el) => {
+                                if (str == "on") {
+                                    return "true";
+                                }
+                                return "false";
+                            },
+                        }
                     });
-                //form.UretimEmirDurumList = $("#UretimEmirDurumId").val().toString();
+
                 var keys = Object.keys(form);
                 var include = keys.slice(1, keys.length);
                 form.Include = include;
@@ -174,7 +174,7 @@
             },
             function () {
                 Global.init();
-                $("#KisiId").select2();
+                $("#CalisanId").select2();
             },
             "html");
     }
@@ -319,8 +319,6 @@
 
         $(document).on("change", ".BitisHesaplama", function (event) {
             debugger;
-
-            event.preventDefault();
             var siparisKalipId = $("#SiparisKalipId").val();
             var siparisAdet = $("#SiparisAdet").val();
             

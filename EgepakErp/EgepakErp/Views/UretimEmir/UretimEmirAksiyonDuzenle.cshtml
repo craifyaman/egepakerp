@@ -9,14 +9,14 @@
         <div class="col-lg-12">
             <label>Çalışan Seçin:</label>
             @{
-                var kisiList = BaseKisi().ToList();
+                var kisiList = BaseCalisan().ToList();
             }
-            <select class="form-control select2" id="KisiId" name="KisiId">
+            <select class="form-control select2" id="CalisanId" name="CalisanId">
                 <option>Çalışan Seçin</option>
                 @foreach (var item in kisiList)
                 {
-                    var attr = item.KisiId == Model?.KisiId ? "selected" : "";
-                    <option @attr value="@item.KisiId">@item.AdSoyad</option>
+                    var attr = item.CalisanId == Model?.CalisanId ? "selected" : "";
+                    <option @attr value="@item.CalisanId">@item.AdSoyad</option>
                 }
 
             </select>

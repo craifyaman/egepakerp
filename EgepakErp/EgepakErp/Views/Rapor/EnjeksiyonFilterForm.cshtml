@@ -17,10 +17,10 @@
                 <select id="KisiId" class="select2 filterFormControl defaultSelect2">
                     <option value="0">Tüm Kişiler</option>
                     @{
-                        var kisiList = BaseKisi().ToList();
+                        var kisiList = BaseCalisan().ToList();
                         foreach (var kisi in kisiList)
                         {
-                            <option value="@kisi.KisiId">@kisi.AdSoyad</option>
+                            <option value="@kisi.CalisanId">@kisi.AdSoyad</option>
                         }
                     }
                 </select>
