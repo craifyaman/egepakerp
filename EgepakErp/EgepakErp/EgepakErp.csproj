@@ -239,13 +239,9 @@
     <Compile Include="Helper\DovizHelper.cs" />
     <Compile Include="Helper\SonAylarFaturaHelper.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
-    <Compile Include="Migrations\202211160900127_create_EvMontajKisi_table.cs" />
-    <Compile Include="Migrations\202211160900127_create_EvMontajKisi_table.designer.cs">
-      <DependentUpon>202211160900127_create_EvMontajKisi_table.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202211160943576_create_calisan_table.cs" />
-    <Compile Include="Migrations\202211160943576_create_calisan_table.designer.cs">
-      <DependentUpon>202211160943576_create_calisan_table.cs</DependentUpon>
+    <Compile Include="Migrations\202211251218178_mig1.cs" />
+    <Compile Include="Migrations\202211251218178_mig1.designer.cs">
+      <DependentUpon>202211251218178_mig1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Custom\BoyaKaplama.cs" />
     <Compile Include="Models\Custom\Calisan.cs" />
@@ -3633,11 +3629,8 @@
     <Content Include="Views\Uretim\Havuz.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202211160900127_create_EvMontajKisi_table.resx">
-      <DependentUpon>202211160900127_create_EvMontajKisi_table.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202211160943576_create_calisan_table.resx">
-      <DependentUpon>202211160943576_create_calisan_table.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202211251218178_mig1.resx">
+      <DependentUpon>202211251218178_mig1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -34,11 +34,12 @@
                                 <th>
                                     <span class="text-dark-75">Sipariş</span>
                                 </th>
-                                <th style="min-width: 250px">Cari</th>
+                                <th style="min-width: 250px">Firma</th>
                                 <th style="min-width: 100px">Ürün</th>
+                                <th style="min-width: 100px">Ürün Adı</th>
                                 <th style="min-width: 100px">Kayıt Tarihi</th>
                                 <th style="min-width: 100px">Termin Tarihi</th>
-                                <th style="min-width: 100px">Sipariş Adet</th>
+                                <th style="min-width: 100px">Sipariş Miktarı(AD.)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,7 +61,11 @@
                                         @(Model.Urun.UrunCinsi.Kisaltmasi+" "+ Model.Urun.UrunNo )
                                     </span>
                                 </td>
-
+                                <td>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @(Model.SiparisIsim)
+                                    </span>
+                                </td>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
                                         @Model.KayitTarihi.ToShortDateString()
@@ -74,7 +79,7 @@
                                 </td>
                                 <td>
                                     <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                        @Model.SiparisAdet
+                                        @Model.SiparisAdet.ToString("n0")
                                     </span>
                                 </td>
 
@@ -116,13 +121,8 @@
                         <thead>
                             <tr class="text-left text-uppercase">
                                 <th style="min-width: 100px">Kalıp</th>
-                                <th style="min-width: 100px">Yaldız</th>
-                                <th style="min-width: 100px">Toz Boya Kod</th>
-                                <th style="min-width: 100px">Sprey Boya Kod</th>
-                                <th style="min-width: 100px">Metalize Kod</th>
-                                <th style="min-width: 100px">
-                                    Açıklamalar
-                                </th>
+                                <th style="min-width: 100px">Parça Adı</th>
+                                <th style="min-width: 100px">Açıklama</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -141,62 +141,68 @@
 
                                         <td>
                                             <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @foreach (var yaldiz in item)
-                                                {
-                                                    var idList = yaldiz.YaldizKodList?.Split(',');
-                                                    if (idList != null)
-                                                    {
-                                                        foreach (var id in idList)
-                                                        {
-                                                            int _id = Convert.ToInt32(id);
-                                                            var _yaldiz = BaseYaldiz().FirstOrDefault(x => x.YaldizId == _id);
-                                                            if (_yaldiz != null)
-                                                            {
-                                                                var url = "https://crm.egepak.net" + _yaldiz.PdfYol;
-                                                                <a href="@url" title="görmek için tıklayın">@_yaldiz.Aciklama</a><br />
-                                                            }
-                                                        }
-                                                    }
-
-                                                }
-
+                                                @item.FirstOrDefault().EnjeksiyonRenk
                                             </span>
                                         </td>
 
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @{
-                                                    foreach (var boya in item)
+                                        @*<td>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                    @foreach (var yaldiz in item)
                                                     {
-                                                        var idList = boya.TozBoyaKodList?.Split(',');
+                                                        var idList = yaldiz.YaldizKodList?.Split(',');
                                                         if (idList != null)
                                                         {
                                                             foreach (var id in idList)
                                                             {
                                                                 int _id = Convert.ToInt32(id);
-                                                                var aciklama = BaseBoyaKaplama().FirstOrDefault(x => x.BoyaKaplamaId == _id)?.Aciklama;
-                                                                if (aciklama != null)
+                                                                var _yaldiz = BaseYaldiz().FirstOrDefault(x => x.YaldizId == _id);
+                                                                if (_yaldiz != null)
                                                                 {
-                                                                    @aciklama <br />
+                                                                    var url = "https://crm.egepak.net" + _yaldiz.PdfYol;
+                                                                    <a href="@url" title="görmek için tıklayın">@_yaldiz.Aciklama</a><br />
                                                                 }
                                                             }
                                                         }
 
                                                     }
-                                                }
-                                                @(item.FirstOrDefault(x=>x.TozBoyaKodId != null)?.TozBoyaKod?.Aciklama)
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @(item.FirstOrDefault(x=>x.SpreyBoyaKodId != null)?.SpreyBoyaKod?.Aciklama)
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
-                                                @(item.FirstOrDefault(x=>x.MetalizeKodId!= null)?.MetalizeKod?.Aciklama)
-                                            </span>
-                                        </td>
+
+                                                </span>
+                                            </td>
+
+                                            <td>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                    @{
+                                                        foreach (var boya in item)
+                                                        {
+                                                            var idList = boya.TozBoyaKodList?.Split(',');
+                                                            if (idList != null)
+                                                            {
+                                                                foreach (var id in idList)
+                                                                {
+                                                                    int _id = Convert.ToInt32(id);
+                                                                    var aciklama = BaseBoyaKaplama().FirstOrDefault(x => x.BoyaKaplamaId == _id)?.Aciklama;
+                                                                    if (aciklama != null)
+                                                                    {
+                                                                        @aciklama <br />
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        }
+                                                    }
+                                                    @(item.FirstOrDefault(x=>x.TozBoyaKodId != null)?.TozBoyaKod?.Aciklama)
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                    @(item.FirstOrDefault(x=>x.SpreyBoyaKodId != null)?.SpreyBoyaKod?.Aciklama)
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                                    @(item.FirstOrDefault(x=>x.MetalizeKodId!= null)?.MetalizeKod?.Aciklama)
+                                                </span>
+                                            </td>*@
                                         <td>
                                             @foreach (var sKalip in item)
                                             {

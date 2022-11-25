@@ -93,38 +93,38 @@ namespace EgePakErp.Controllers
                 .Include("PersonelKisitlamaRelation.Kisitlama")
                 .FirstOrDefault(i => i.PersonelId==personelId);
 
-                //Kısıtlaması var mı yok mu  kontrol et
-                //var actionName = filterContext.ActionDescriptor.ActionName;
-                //var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + "Controller";
+                //Kısıtlaması var mı yok mu kontrol et
+                var actionName = filterContext.ActionDescriptor.ActionName;
+                var controllerName = filterContext.ActionDescriptor.ControllerDescriptor.ControllerName + "Controller";
 
-                //if (YetkiControlActionList().Any(i => i.Controller == controllerName && i.Action == actionName))
-                //{
-                //    var yetki = Kisitlamalar.FirstOrDefault(i => i.Controller == controllerName && i.Action == actionName);
+                if (YetkiControlActionList().Any(i => i.Controller == controllerName && i.Action == actionName))
+                {
+                    var yetki = Kisitlamalar.FirstOrDefault(i => i.Controller == controllerName && i.Action == actionName);
 
-                //    if (yetki == null)
-                //    {
-                //        if (filterContext.HttpContext.Request.IsAjaxRequest())
-                //        {
-                //            // Log exception first
-                //            filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                //            JsonResult result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
-                //            JavaScriptSerializer json_serializer = new JavaScriptSerializer();
-                //            result.Data = new Response
-                //            {
-                //                Description = "Bu işlemi yapmak için yetkiniz yok",
-                //                Success = false
-                //            };
-                //            filterContext.Result = result;
-                //        }
-                //        else
-                //        {
-                //            var TempData = filterContext.Controller.TempData;
-                //            TempData["Status"] = null;
-                //            filterContext.Result = RedirectToAction("Index", "Home");
+                    if (yetki == null)
+                    {
+                        if (filterContext.HttpContext.Request.IsAjaxRequest())
+                        {
+                            // Log exception first
+                            filterContext.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                            JsonResult result = new JsonResult { JsonRequestBehavior = JsonRequestBehavior.AllowGet };
+                            JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+                            result.Data = new Response
+                            {
+                                Description = "Bu işlemi yapmak için yetkiniz yok",
+                                Success = false
+                            };
+                            filterContext.Result = result;
+                        }
+                        else
+                        {
+                            var TempData = filterContext.Controller.TempData;
+                            TempData["Status"] = null;
+                            filterContext.Result = RedirectToAction("Index", "Home");
 
-                //        }
-                //    }
-                //}
+                        }
+                    }
+                }
 
             }
             base.OnActionExecuting(filterContext);
