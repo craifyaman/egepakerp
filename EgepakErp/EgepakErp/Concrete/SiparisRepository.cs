@@ -20,6 +20,7 @@ namespace EgePakErp.Concrete
                .Include(x => x.Urun.UrunCinsi)
                .Include(x => x.SiparisDurum)
                .Include(x => x.UretimEmir)
+               .Include("UretimEmir.UretimEmirAksiyon.Calisan")
                .Include("StokHareket.StokCikisHareket")
                .Include("StokHareket.StokGirisHareket")
                .Include("UretimEmir.UretimEmirAksiyon")

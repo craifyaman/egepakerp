@@ -22,6 +22,7 @@ namespace EgePakErp.Concrete
                 .Include(x => x.Siparis)
                 .Include(x => x.Siparis.Urun)
                 .Include(x => x.Siparis.Urun.UrunCinsi)
+                .Include("UretimEmirAksiyon.Calisan")
                 .Include("UretimEmirAksiyon.UretimEmirAksiyonType")
                 .AsQueryable();
         }

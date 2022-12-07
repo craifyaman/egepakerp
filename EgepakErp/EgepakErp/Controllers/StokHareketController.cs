@@ -60,11 +60,34 @@ namespace EgePakErp.Controllers
             var model = repo.GetAll();
 
             //Filtre
-            if (!string.IsNullOrEmpty(Request.Form["query[searchQuery]"]))
+            if (!string.IsNullOrEmpty(Request.Form["query[adi]"]))
             {
-                var searchQuery = Request.Form["query[searchQuery]"].ToString();
-                model = model.Where(i => i.Adi.ToLower().Contains(searchQuery.ToLower()));
+                var adi = Request.Form["query[adi]"].ToString();
+                model = model.Where(i => i.Adi.ToLower().Contains(adi.ToLower()));
             }
+
+            if (!string.IsNullOrEmpty(Request.Form["query[siparis]"]))
+            {
+                var siparis = Request.Form["query[siparis]"].ToString();
+                model = model.Where(i => i.Siparis.SiparisIsim.ToLower().Contains(siparis.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(Request.Form["query[urun]"]))
+            {
+                var urun = Request.Form["query[urun]"].ToString();
+                model = model.Where(i => (i.Siparis.Urun.UrunCinsi.Kisaltmasi.ToLower()+ i.Siparis.Urun.UrunNo).Contains(urun.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(Request.Form["query[cariId]"]))
+            {
+                var cariId = Convert.ToInt32(Request.Form["query[cariId]"].ToString());
+                if(cariId != 0)
+                {
+                    model = model.Where(i => i.Siparis.CariId == cariId);
+                }
+                
+            }
+
             try
             {
                 model = model.OrderBy(dtMeta.field + " " + dtMeta.sort);

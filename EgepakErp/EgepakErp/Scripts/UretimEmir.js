@@ -213,7 +213,7 @@
             },
             function () {
                 Global.init();
-                $("#KisiId").select2();
+                $("#CalisanId").select2();
             },
             "html");
     }

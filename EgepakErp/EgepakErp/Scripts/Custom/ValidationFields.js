@@ -515,6 +515,13 @@
                     notEmpty: { message: 'Boş olamaz' }
                 }
             },
+            CalisanId: {
+                validators: {
+                    integer: {
+                        message: 'Calışan Seçin'
+                    },
+                }
+            },
 
         };
         return fields;

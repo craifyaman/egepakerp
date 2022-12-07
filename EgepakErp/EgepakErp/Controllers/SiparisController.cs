@@ -40,8 +40,7 @@ namespace EgePakErp.Controllers
         [Yetki("Sipariş Listesi", "Sipariş")]
         public ActionResult Index()
         {
-            var model = siparisRepo.GetAll().ToList();
-            return View(model);
+            return View();
         }
 
         [Menu("Depoya Aktar", "icon-xl flaticon2-file-2", "Üretim Takip", 0, 5)]
