@@ -1,0 +1,2 @@
+Development aşamsında ms sql express kullanılmıştır. 
+Productionda mysql veya postgre sql kullanılacaktır.
