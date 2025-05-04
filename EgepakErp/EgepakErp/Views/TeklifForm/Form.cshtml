@@ -16,7 +16,7 @@
         <div class="col-12">
             <label>Cari:</label>
             @{
-                var cariList = BaseCari().Where(x => x.MusteriNo != null).ToList();
+                var cariList = BaseCari().ToList();
 
             }
             <select id="CariId" name="CariId" class="form-control select2" markup="Cari" placeHolder="Cari Seçiniz">

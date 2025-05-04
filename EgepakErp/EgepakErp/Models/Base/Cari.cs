@@ -14,7 +14,8 @@ namespace EgePakErp.Models
         public int CariId { get; set; }
         public string Kod { get; set; }
         public int? CariGrupId { get; set; }
-        public CariGrup CariGrup { get; set; }
+        public CariGrup CariGrup { get; set; } 
+       
         public string Unvan { get; set; }
         public string VergiDairesi { get; set; }
         public string VergiNumarasi { get; set; }

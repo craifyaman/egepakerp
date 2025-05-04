@@ -239,9 +239,17 @@
     <Compile Include="Helper\DovizHelper.cs" />
     <Compile Include="Helper\SonAylarFaturaHelper.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
-    <Compile Include="Migrations\202211251218178_mig1.cs" />
-    <Compile Include="Migrations\202211251218178_mig1.designer.cs">
-      <DependentUpon>202211251218178_mig1.cs</DependentUpon>
+    <Compile Include="Migrations\202502171440409_17022025-1739.cs" />
+    <Compile Include="Migrations\202502171440409_17022025-1739.Designer.cs">
+      <DependentUpon>202502171440409_17022025-1739.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202502171445082_17022025-1744.cs" />
+    <Compile Include="Migrations\202502171445082_17022025-1744.Designer.cs">
+      <DependentUpon>202502171445082_17022025-1744.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202502171447259_17022025-1747.cs" />
+    <Compile Include="Migrations\202502171447259_17022025-1747.Designer.cs">
+      <DependentUpon>202502171447259_17022025-1747.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\Custom\BoyaKaplama.cs" />
     <Compile Include="Models\Custom\Calisan.cs" />
@@ -3629,8 +3637,14 @@
     <Content Include="Views\Uretim\Havuz.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202211251218178_mig1.resx">
-      <DependentUpon>202211251218178_mig1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202502171440409_17022025-1739.resx">
+      <DependentUpon>202502171440409_17022025-1739.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202502171445082_17022025-1744.resx">
+      <DependentUpon>202502171445082_17022025-1744.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202502171447259_17022025-1747.resx">
+      <DependentUpon>202502171447259_17022025-1747.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

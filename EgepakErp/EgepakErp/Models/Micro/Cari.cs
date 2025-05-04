@@ -10,7 +10,7 @@ namespace EgePakErp.Models
 
     public partial class Cari
     {
-        public int BaglantiTipiId { get; set; }
+        public int? BaglantiTipiId { get; set; }
         public BaglantiTipi BaglantiTipi { get; set; }
         public string MuhasebeKodu1 { get; set; }
         public string MuhasebeKodu2 { get; set; }

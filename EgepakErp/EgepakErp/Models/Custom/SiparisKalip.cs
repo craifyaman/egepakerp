@@ -15,7 +15,7 @@ namespace EgePakErp.Models
         public string KalipKod { get; set; }
         public string KalipAdi { get; set; }
         public string MaliyetType { get; set; }
-        public bool isEnable { get; set; }
+        public bool? isEnable { get; set; }
         //public int? YaldizId { get; set; }
         //public Yaldiz Yaldiz { get; set; }
         public string YaldizKodList { get; set; }
@@ -40,8 +40,8 @@ namespace EgePakErp.Models
 
         public string TozBoyaKodList { get; set; }
 
-        public bool DepodaMi { get; set; }
-        public bool UretimBasladiMi { get; set; }
+        public bool? DepodaMi { get; set; }
+        public bool? UretimBasladiMi { get; set; }
         public string Aciklama { get; set; }
         public string Formul { get; set; }
         public string EnjeksiyonRenk { get; set; }

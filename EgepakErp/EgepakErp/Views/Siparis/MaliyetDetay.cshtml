@@ -20,14 +20,8 @@
     decimal sonFaturaBirimFiyat = 0;
 
     //son faturayı kontrol et
-    try
-    {
-        sonFaturaBirimFiyat = sonHammaddeHareket.BirimFiyat;
-    }
-    catch
-    {
-        sonFaturaBirimFiyat = 0;
-    }
+    sonFaturaBirimFiyat = sonHammaddeHareket != null ? sonHammaddeHareket.BirimFiyat : 0;
+
 
     decimal? son1AyOrtalamaBirimFiyat = null;
     decimal? son3AyOrtalamaBirimFiyat = null;
